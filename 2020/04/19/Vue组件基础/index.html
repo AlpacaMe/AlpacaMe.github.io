@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+  
+  <title>Vue组件基础 - 山有木兮木有枝</title>
+  <meta charset="UTF-8">
+  <meta name="description" content="玲珑骰子安红豆，入骨相思知不知">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
+  
+  
+
+  <link rel="shortcut icon" href="https://freeware.iconfactory.com/assets/hamstergeddon/preview.png# 网站图标" type="image/png" />
+  <meta name="description" content="看似不起波澜的一复一日，会突然在某一天让人看到坚持的意义">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Vue组件基础">
+<meta property="og:url" content="https://alpacame.github.io/2020/04/19/Vue%E7%BB%84%E4%BB%B6%E5%9F%BA%E7%A1%80/index.html">
+<meta property="og:site_name" content="山有木兮木有枝">
+<meta property="og:description" content="看似不起波澜的一复一日，会突然在某一天让人看到坚持的意义">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2020-04-19T12:44:32.000Z">
+<meta property="article:modified_time" content="2020-04-23T04:09:49.045Z">
+<meta property="article:author" content="AntPan">
+<meta property="article:tag" content="编程语言">
+<meta name="twitter:card" content="summary">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/combine/gh/nexmoe/nexmoe.github.io@latest/css/style.css,npm/highlight.js@9.15.8/styles/atom-one-dark.css,gh/nexmoe/nexmoe.github.io@latest/lib/mdui_043tiny/css/mdui.css,gh/nexmoe/nexmoe.github.io@latest/lib/iconfont/iconfont.css" crossorigin>
+  
+  <!--<link rel="stylesheet" href="/css/style.css?v=1587615732717">-->
+
+   
+    <style>
+      .nexmoe-avatar img:hover {
+        -webkit-transform: rotateZ(360deg);
+        -moz-transform: rotateZ(360deg);
+        transform: rotateZ(360deg);
+      }	
+    </style>
+  
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body class="mdui-drawer-body-left">
+  
+  <div id="nexmoe-background">
+    <div class="nexmoe-bg" style="background-image: url(http://img.netbian.com/file/2020/0327/c70a565b65c499b4d6d6f4210a7a103b.jpg)"></div>
+    <div class="mdui-appbar mdui-shadow-0">
+      <div class="mdui-toolbar">
+        <a mdui-drawer="{target: '#drawer', swipe: true}" title="menu" class="mdui-btn mdui-btn-icon mdui-ripple"><i class="mdui-icon nexmoefont icon-menu"></i></a>
+        <div class="mdui-toolbar-spacer"></div>
+        <!--<a href="javascript:;" class="mdui-btn mdui-btn-icon"><i class="mdui-icon material-icons">search</i></a>-->
+        <a href="/" title="AntPan" class="mdui-btn mdui-btn-icon"><img src="https://avatars0.githubusercontent.com/u/58353039?s=460&amp;u=a06eebdea982770b37397225c6a1768fa2f8a0e0&amp;v=4" alt="AntPan"></a>
+       </div>
+    </div>
+  </div>
+  <div id="nexmoe-header">
+      <div class="nexmoe-drawer mdui-drawer" id="drawer">
+    <div class="nexmoe-avatar mdui-ripple">
+        <a href="/" title="AntPan">
+            <img src="https://avatars0.githubusercontent.com/u/58353039?s=460&amp;u=a06eebdea982770b37397225c6a1768fa2f8a0e0&amp;v=4" alt="AntPan" alt="AntPan">
+        </a>
+    </div>
+    <div class="nexmoe-count">
+        <div><span>Articles</span>5</div>
+        <div><span>Tags</span>2</div>
+        <div><span>Categories</span>2</div>
+    </div>
+    <div class="nexmoe-list mdui-list" mdui-collapse="{accordion: true}">
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple" href="/" title="回到首页">
+            <i class="mdui-list-item-icon nexmoefont icon-home"></i>
+            <div class="mdui-list-item-content">
+                回到首页
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple" href="/about/index.html" title="关于博客">
+            <i class="mdui-list-item-icon nexmoefont icon-info-circle"></i>
+            <div class="mdui-list-item-content">
+                关于博客
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple" href="/archives" title="文章归档">
+            <i class="mdui-list-item-icon nexmoefont icon-container"></i>
+            <div class="mdui-list-item-content">
+                文章归档
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple" href="/PY.html" title="我的朋友">
+            <i class="mdui-list-item-icon nexmoefont icon-unorderedlist"></i>
+            <div class="mdui-list-item-content">
+                我的朋友
+            </div>
+        </a>
+        
+    </div>
+    <aside id="nexmoe-sidebar">
+  
+  <div class="nexmoe-widget-wrap">
+    <div class="nexmoe-widget nexmoe-search">
+        <form id="search_form" action_e="https://www.google.com/search?q={https://alpacame.github.io/}" onsubmit="return search();">
+            <label><input id="search_value" name="q" type="search" placeholder="Search"></label>
+        </form>
+    </div>
+</div>
+  
+  <div class="nexmoe-widget-wrap">
+    <h3 class="nexmoe-widget-title">Social</h3>
+    <div class="nexmoe-widget nexmoe-social">
+        <a class="mdui-ripple" href="https://space.bilibili.com/439098990" target="_blank" mdui-tooltip="{content: '哔哩哔哩'}" style="color: rgb(231, 106, 141);background-color: rgba(231, 106, 141, .15);">
+            <i class="nexmoefont icon-bilibili"></i>
+        </a><a class="mdui-ripple" href="https://github.com/AlpacaMe" target="_blank" mdui-tooltip="{content: 'GitHub'}" style="color: rgb(25, 23, 23);background-color: rgba(25, 23, 23, .15);">
+            <i class="nexmoefont icon-github"></i>
+        </a>
+    </div>
+</div>
+  
+  
+  <div class="nexmoe-widget-wrap">
+    <h3 class="nexmoe-widget-title">Categories</h3>
+    <div class="nexmoe-widget">
+
+      <ul class="category-list">
+
+        
+
+
+        
+
+        
+
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/Spring学习/">Spring学习</a>
+          <span class="category-list-count">1</span>
+        </li>
+
+        
+
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/Vue-js/">Vue.js</a>
+          <span class="category-list-count">3</span>
+        </li>
+
+        
+      </ul>
+
+    </div>
+  </div>
+
+
+  
+  
+  <div class="nexmoe-widget-wrap">
+    <h3 class="nexmoe-widget-title">Tag Cloud</h3>
+    <div id="randomtagcloud" class="nexmoe-widget tagcloud nexmoe-rainbow">
+      <a href="/tags/%E6%9D%82%E8%AE%B0/" style="font-size: 10px;">杂记</a> <a href="/tags/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/" style="font-size: 20px;">编程语言</a>
+    </div>
+    
+  </div>
+
+  
+  
+  <div class="nexmoe-widget-wrap">
+    <h3 class="nexmoe-widget-title">Recent Posts</h3>
+    <div class="nexmoe-widget">
+      <ul>
+        
+          <li>
+            <a href="/2020/04/23/Webpack-Vue-js%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/">Webpack+Vue.js快速入门</a>
+          </li>
+        
+          <li>
+            <a href="/2020/04/19/Vue%E7%BB%84%E4%BB%B6%E5%9F%BA%E7%A1%80/">Vue组件基础</a>
+          </li>
+        
+          <li>
+            <a href="/2020/04/16/Vue-js%E5%9F%BA%E6%9C%AC%E7%89%B9%E6%80%A7/">Vue.js基本特性</a>
+          </li>
+        
+          <li>
+            <a href="/2020/04/14/Spring%E8%A3%85%E9%85%8DBean/">Spring装配Bean</a>
+          </li>
+        
+          <li>
+            <a href="/2020/04/14/%E5%86%99%E7%BB%99%E6%9C%AA%E6%9D%A5%E7%9A%84%E8%87%AA%E5%B7%B1/">写给未来的自己</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+    <div class="nexmoe-copyright">
+        &copy; 2020 AntPan
+        Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+        & <a href="https://nexmoe.com/hexo-theme-nexmoe.html" target="_blank">Nexmoe</a>
+    </div>
+</div><!-- .nexmoe-drawer -->
+  </div>
+  <div id="nexmoe-content">
+    <div class="nexmoe-primary">
+        <div class="nexmoe-post">
+  
+      <div class="nexmoe-post-cover" style="padding-bottom: 54.166666666666664%;"> 
+          <img data-src="http://img.netbian.com/file/2020/0401/5ff86b7c37fbe15dae262fd75bbba305.jpg" data-sizes="auto" alt="Vue组件基础" class="lazyload">
+          <h1>Vue组件基础</h1>
+      </div>
+  
+  
+  <div class="nexmoe-post-meta nexmoe-rainbow" style="margin:10px 0!important;">
+    <a><i class="nexmoefont icon-calendar-fill"></i>2020年04月19日</a>
+    <a><i class="nexmoefont icon-areachart"></i>3.2k 字</a>
+    <a><i class="nexmoefont icon-time-circle-fill"></i>大概 15 分钟</a>
+</div>
+
+  <div class="nexmoe-post-right">
+    
+      <div class="nexmoe-fixed">
+        <div class="nexmoe-valign">
+            <div class="nexmoe-toc">
+                <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#"><span class="toc-number">1.</span> <span class="toc-text">看似不起波澜的一复一日，会突然在某一天让人看到坚持的意义</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#组件"><span class="toc-number">2.</span> <span class="toc-text">组件</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1、组件名"><span class="toc-number">2.1.</span> <span class="toc-text">1、组件名</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2、注册组件及其使用"><span class="toc-number">2.2.</span> <span class="toc-text">2、注册组件及其使用</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#全局注册"><span class="toc-number">2.2.1.</span> <span class="toc-text">全局注册</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#局部注册"><span class="toc-number">2.2.2.</span> <span class="toc-text">局部注册</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#基本示例"><span class="toc-number">2.2.3.</span> <span class="toc-text">基本示例</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#组件的复用"><span class="toc-number">2.2.4.</span> <span class="toc-text">组件的复用</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3、通过prop向子组件传递数据"><span class="toc-number">2.3.</span> <span class="toc-text">3、通过prop向子组件传递数据</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#Props的数据类型"><span class="toc-number">2.3.1.</span> <span class="toc-text">Props的数据类型</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#单向数据流"><span class="toc-number">2.3.2.</span> <span class="toc-text">单向数据流</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#prop数据验证"><span class="toc-number">2.3.3.</span> <span class="toc-text">prop数据验证</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#非Props的属性"><span class="toc-number">2.3.4.</span> <span class="toc-text">非Props的属性</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#禁用Attribute的继承"><span class="toc-number">2.3.5.</span> <span class="toc-text">禁用Attribute的继承</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4、单个根元素"><span class="toc-number">2.4.</span> <span class="toc-text">4、单个根元素</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5、监听子组件事件"><span class="toc-number">2.5.</span> <span class="toc-text">5、监听子组件事件</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#使用事件抛出一个值"><span class="toc-number">2.5.1.</span> <span class="toc-text">使用事件抛出一个值</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#在组件上使用v-model"><span class="toc-number">2.5.2.</span> <span class="toc-text">在组件上使用v-model</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#将原生事件绑定到组件"><span class="toc-number">2.5.3.</span> <span class="toc-text">将原生事件绑定到组件</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#6、通过插槽分发内容"><span class="toc-number">2.6.</span> <span class="toc-text">6、通过插槽分发内容</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#编译的作用域"><span class="toc-number">2.6.1.</span> <span class="toc-text">编译的作用域</span></a></li></ol></li></ol></li></ol>
+            </div>
+        </div>
+      </div>
+    
+  </div>
+
+  <article>
+    <h3 style="color:crimson;font-weight:lighter;">看似不起波澜的一复一日，会突然在某一天让人看到坚持的意义</h3>
+<a id="more"></a>
+
+<h3 id="组件"><a href="#组件" class="headerlink" title="组件"></a><b style="color:red;">组件</b></h3><h4 id="1、组件名"><a href="#1、组件名" class="headerlink" title="1、组件名"></a><b style="color:blue;">1、组件名</b></h4><p>在注册一个组件的时候必须为它取一个组件名称：</p>
+<pre><code class="javascript">Vue.component(&quot;my-component-name&quot;,options);</code></pre>
+<p>组件名的命名方式有两种:<b style="color:crimson;">使用kebad-case、使用PascalCase</b></p>
+<ul>
+<li><p><b style="color:hotpink;">Kebad-case</b> :当使用 kebab-case (短横线分隔命名) 定义一个组件时，你也必须在引用这个自定义元素时使用 kebab-case，<code>&lt;my-component-name&gt;</code></p>
+<pre><code class="javascript">Vue.component(&#39;my-component-name&#39;, { /* ... */ });</code></pre>
+</li>
+<li><p><b style="color:hotpink;">PascalCase</b> :当使用 PascalCase (首字母大写命名) 定义一个组件时，你在引用这个自定义元素时两种命名法都可以使用。也就是说 <code>&lt;MyComponentName&gt;</code> 和 <code>&lt;my-component-name&gt;</code> 都是可接受的。<i style="color:slateblue;">尽管如此，直接在 DOM (即非字符串的模板) 中使用时只有 kebab-case 是有效的</i>。</p>
+</li>
+</ul>
+<h4 id="2、注册组件及其使用"><a href="#2、注册组件及其使用" class="headerlink" title="2、注册组件及其使用"></a><b style="color:blue;">2、注册组件及其使用</b></h4><p>为了能够在模板中使用组件，这些组件必须先注册以便Vue能够识别。这里有两种组件注册的类型：<b style="color:crimson;">全局注册、局部注册</b></p>
+<h5 id="全局注册"><a href="#全局注册" class="headerlink" title="全局注册"></a><b style="color:orange;">全局注册</b></h5><p>使用<code>Vue.component(conponent-name,options)</code>构造器注册一个组件：</p>
+<ol>
+<li><b style="color:hotpink;">component-name</b>:表示组件的名称；</li>
+<li><b style="color:hotpink;">options</b> ：因为组件是可以复用的Vue实例，所以可以接受与Vue相同的选项，例如：<code>data</code>、<code>computed</code>、<code>watch</code>、<code>methods</code>。</li>
+</ol>
+<p><span style="color:maroon;">全局注册的组件可以用在其被注册之后的任何 (通过 <code>new Vue</code>) 新创建的 Vue 根实例，也包括其组件树中的所有子组件的模板中</span></p>
+<p><span style="color:crimson;">组件的使用，直接<code>&lt;component-name&gt;</code>标签就可以了</span></p>
+<pre><code class="html">&lt;component-name&gt;&lt;/component-name&gt;</code></pre>
+<h5 id="局部注册"><a href="#局部注册" class="headerlink" title="局部注册"></a><b style="color:orange;">局部注册</b></h5><p>全局注册的方式虽然是很可行的，但是在一些组件并不需要在所有的Vue的实例中去运行，所以局部注册的方式在资源的节约上面有很独到的作用。<span style="color:crimson;">局部注册就是通过一个普通的JavaScript对象来定义一个组件</span>。</p>
+<pre><code class="javascript">var ComponentA ={
+    data:function(){
+        return {
+            count:0
+        }
+    },
+    template:`&lt;button v-on:click=&quot;count++&quot;&gt;You clicked me {{count}} times.&lt;/button&gt;`
+}
+
+var Vue({
+    el:&quot;#app&quot;,
+    conponents:{
+        &#39;component-A&#39;:componentA
+    }
+})</code></pre>
+<p>对于 <code>components</code> 对象中的每个属性来说，其属性名就是自定义元素的名字，其属性值就是这个组件的选项对象。</p>
+<p><strong><span style="color:crimson;">局部注册的组件在其子组件中不可用</span></strong>，如果非要在子组件中使用，需要在子组件中也注册一次：</p>
+<pre><code class="javascript">var ComponentA={/****/}
+var ComponentB={
+    components:{
+        &#39;component-a&#39;:ComponentA
+    }
+}
+
+var Vue({
+    el:&quot;#app&quot;,
+    components:{
+        &#39;component-a&#39;:ComponentA,
+        &#39;component-b&#39;:ComponentB,
+    }
+})</code></pre>
+<h5 id="基本示例"><a href="#基本示例" class="headerlink" title="基本示例"></a><b style="color:orange;">基本示例</b></h5><pre><code class="html">&lt;div id=&quot;components-demo&quot;&gt;
+  &lt;button-counter&gt;&lt;/button-counter&gt;
+&lt;/div&gt;</code></pre>
+<pre><code class="javascript">// 定义一个名为 button-counter 的新组件
+Vue.component(&#39;button-counter&#39;, {
+  data: function () {
+    return {
+      count: 0
+    }
+  },
+  template: &#39;&lt;button v-on:click=&quot;count++&quot;&gt;You clicked me {{ count }} times.&lt;/button&gt;&#39;
+})
+//创建一个Vue的实例
+new Vue({ el: &#39;#components-demo&#39; })</code></pre>
+<p><b style="color:crimson;">与Vue实例所不同的是，Component的data必须是一个函数，因此每一个组件可以维护一份被返回对象的独立拷贝。</b></p>
+<h5 id="组件的复用"><a href="#组件的复用" class="headerlink" title="组件的复用"></a><b style="color:orange;">组件的复用</b></h5><p>组件可以像其他的HTML元素一样进行任意次数的复用：</p>
+<pre><code class="html">&lt;div id=&quot;components-demo&quot;&gt;
+  &lt;button-counter&gt;&lt;/button-counter&gt;
+  &lt;button-counter&gt;&lt;/button-counter&gt;
+  &lt;button-counter&gt;&lt;/button-counter&gt;
+&lt;/div&gt;</code></pre>
+<h4 id="3、通过prop向子组件传递数据"><a href="#3、通过prop向子组件传递数据" class="headerlink" title="3、通过prop向子组件传递数据"></a><b style="color:blue;">3、通过prop向子组件传递数据</b></h4><p><strong><span style="color:maroon;">Prop是在组件注册的时候自定义的一些属性。</span></strong> 当一个值传递给Prop的时候，它就变成了组件实例的一个属性。</p>
+<pre><code class="javascript">Vue.component(&#39;blog-post&#39;,{
+    props:[&#39;title&#39;],
+    templete:&#39;&lt;h3&gt;{{titile}}&lt;/h3&gt;&#39;
+})</code></pre>
+<pre><code class="html">&lt;blog-title title=&quot;My Prop name is title&quot; class=&quot;text-primary mt-3 &quot;&gt;&lt;/blog-title&gt;</code></pre>
+<p><b style="color:crimson;">一个组件默认可以拥有任意属性的Prop属性，任何值都可以传递给Prop。</b></p>
+<p><span style="color:maroon;">也可以使用动态的传递数据的方式给Prop属性赋值。</span></p>
+<pre><code class="html">&lt;blog-post
+  v-for=&quot;post in posts&quot;
+  v-bind:key=&quot;post.id&quot;
+  v-bind:title=&quot;post.title&quot;
+&gt;&lt;/blog-post&gt;</code></pre>
+<pre><code class="javascript">new Vue({
+  el: &#39;#blog-post-demo&#39;,
+  data: {
+    posts: [
+      { id: 1, title: &#39;My journey with Vue&#39; },
+      { id: 2, title: &#39;Blogging with Vue&#39; },
+      { id: 3, title: &#39;Why Vue is so fun&#39; }
+    ]
+  }
+})</code></pre>
+<h5 id="Props的数据类型"><a href="#Props的数据类型" class="headerlink" title="Props的数据类型"></a><b style="color:orange;">Props的数据类型</b></h5><p>props的数据类型不仅仅是字符串数组的形式，通常每一个props的数据类型都可自定义，通过对象的形式：</p>
+<pre><code class="javascript">Vue.component(&#39;component-demo&#39;,{
+    props:{
+        title:String,
+        likes:Number,
+        isPublished:Boolean,
+        commentIds:Array,
+        author:Obejct,
+        callback:Function,
+        contactsParams:Promise
+    }
+})</code></pre>
+<h5 id="单向数据流"><a href="#单向数据流" class="headerlink" title="单向数据流"></a><b style="color:orange;">单向数据流</b></h5><p>所有的Prop都使得父子prop之间形成一个单向下行绑定：<b style="color:crimson;">父级prop更新会向下流动到子组件中，但是反过来则不行。</b>这样会防止从子组件意外改变父级组件的状态，从而导致应用的数据流向难以判断。额外的，每次父级props更新的时候，子组件中的所有的prop都将会刷新为最新的值。</p>
+<p><b style="color:crimson;">常见的改变props的方式</b></p>
+<ol>
+<li><p>这个prop用来传递初始值，子组件希望将其作为本地的prop数据使用。在这种情况下，最好定义一个本地的data属性并将这个prop用作初始值。</p>
+<pre><code class="javascript">props:[&quot;initiaCounter&quot;],
+data:function(){
+    return {
+        counter:this.initiaCounter
+    }
+}</code></pre>
+</li>
+<li><p>这个prop以一种原始的值传入且需要进行转换。在这种情况下最好使用这个prop值来定义一个计算属性：</p>
+<pre><code class="javascript">props:[&quot;size&quot;],
+computed:{
+    normalizedSize:function(){
+        return this.size.trim().toLowerCase()
+    }
+}</code></pre>
+</li>
+</ol>
+<h5 id="prop数据验证"><a href="#prop数据验证" class="headerlink" title="prop数据验证"></a><b style="color:orange;">prop数据验证</b></h5><p>可以为组件的prop指定验证的要求，可以为<code>props</code>中的值提供一个带有验证需求的对象，而不是一个字符串数组。</p>
+<pre><code class="javascript">Vue.component(&#39;my-component&#39;, {
+  props: {
+    // 基础的类型检查 (`null` 和 `undefined` 会通过任何类型验证)
+    propA: Number,
+    // 多个可能的类型
+    propB: [String, Number],
+    // 必填的字符串
+    propC: {
+      type: String,
+      required: true
+    },
+    // 带有默认值的数字
+    propD: {
+      type: Number,
+      default: 100
+    },
+    // 带有默认值的对象
+    propE: {
+      type: Object,
+      // 对象或数组默认值必须从一个工厂函数获取
+      default: function () {
+        return { message: &#39;hello&#39; }
+      }
+    },
+    // 自定义验证函数
+    propF: {
+      validator: function (value) {
+        // 这个值必须匹配下列字符串中的一个
+        return [&#39;success&#39;, &#39;warning&#39;, &#39;danger&#39;].indexOf(value) !== -1
+      }
+    }
+  }
+})</code></pre>
+<h5 id="非Props的属性"><a href="#非Props的属性" class="headerlink" title="非Props的属性"></a><b style="color:orange;">非Props的属性</b></h5><p>组件可以接受任意的属性，而这些属性会被添加到这个组件的根元素上：</p>
+<pre><code class="html">&lt;bootstrap-date-input data-date-picker=&quot;actived&quot;&gt;&lt;/bootstrap-date-input&gt;</code></pre>
+<p>此时<code>data-date-piceker=&quot;active&quot;</code>就会自动添加到<code>&lt;bootstrap-date-input&gt;</code>的根元素上。</p>
+<p><b style="color:crimson;">属性之间的替换和合并</b></p>
+<p>假设，<code>&lt;bootstrap-date-input&gt;</code>的模板如下：</p>
+<pre><code class="html">&lt;input  type=&quot;date&quot; class=&quot;form-control&quot; &gt;</code></pre>
+<p>在运行该组件的时候为其添加合适的class：</p>
+<pre><code class="html">&lt;bootstrap-date-input data-date-picker=&quot;active&quot; class=&quot;date-picker-theme-dark&quot; &gt;&lt;/bootstrap-date-input&gt;</code></pre>
+<p>对于大多数的属性来说，<b style="color:crimson;">从外部提供给组件的值会替换掉内部设置好的值</b>，所以此时传入的值为<code>type=&quot;text&quot;</code>的时候，模板中的<code>type=&quot;date&quot;</code>就会被破坏掉。<b style="color:crimson;">但是，与之不同的是class和style属性，这两个属性是相互合并</b>，上述使用中，最终的class属性为<code>form-control date-picker-theme-dark</code>。</p>
+<h5 id="禁用Attribute的继承"><a href="#禁用Attribute的继承" class="headerlink" title="禁用Attribute的继承"></a><b style="color:orange;">禁用Attribute的继承</b></h5><p>在组件的选项中设置<code>inheritAttrs:false</code>即可以禁用属性继承到组件的根元素上。</p>
+<pre><code class="javascript">Vue.component(&#39;my-component&#39;,{
+    inheritAttrs:false,
+    props:[&#39;label&#39;,&#39;value&#39;],
+    template:
+    `&lt;label&gt;
+    {{label}}
+    &lt;input v-bind=&quot;$attrs&quot; 
+            v-bind:value=&quot;value&quot;
+            v-on:input=&quot;$emit(&#39;input&#39;,$event.target.value)&quot;
+    &gt;&lt;/label&gt;`
+})
+
+
+new Vue({
+    el:&quot;#app&quot;,
+    data:{
+
+    }
+})</code></pre>
+<h4 id="4、单个根元素"><a href="#4、单个根元素" class="headerlink" title="4、单个根元素"></a><b style="color:blue;">4、单个根元素</b></h4><p><span style="color:crimson;">单个根元素的意思是在声明的时候，<code>template</code>属性中必须只有一个根元素</span>。例如：<code>template:&quot;&lt;h3&gt;Vue组件基础&lt;/h3&gt;&lt;div v-html=&quot;content&quot;&gt;&lt;/div&gt;</code> 此时Vue就会报错。此时的解决的办法就是，使用一个根元素包裹他们：</p>
+<pre><code class="html">&lt;div class=&quot;blog-post&quot;&gt;
+    &lt;h3&gt; {{title}}&lt;/h3&gt;
+    &lt;div v-html=&quot;content&quot;&gt;&lt;/div&gt;
+&lt;/div&gt;</code></pre>
+<p>当Props的属性增多的时候，为每一个元素设置一个props属性是非常麻烦的一件事。</p>
+<pre><code class="html">&lt;blog-post v-for=&quot;post in posts&quot; v-bind:key=&quot;post.id&quot; v-bind:post=&quot;post&quot;&gt;&lt;/blog-post&gt;</code></pre>
+<pre><code class="javascript">Vue.component(&#39;blog-post&#39;,{
+    props:[&#39;post&#39;],
+    template:`
+    &lt;div class=&quot;blog-post&quot;&gt;
+        &lt;h3&gt;{{title}}&lt;/h3&gt;
+        &lt;div v-html=&quot;post.content&quot;&gt;&lt;/div&gt;
+    &lt;/div&gt;
+    `
+})</code></pre>
+<p>此时修改props属性的中的值为：<code>[&quot;post&quot;]</code> 就可以变成对象，然后使用<code>.</code>引用。</p>
+<h4 id="5、监听子组件事件"><a href="#5、监听子组件事件" class="headerlink" title="5、监听子组件事件"></a><b style="color:blue;">5、监听子组件事件</b></h4><pre><code class="javascript">new Vue({
+  el: &#39;#blog-posts-events-demo&#39;,
+  data: {
+    posts: [/* ... */],
+    postFontSize: 1
+  }
+})
+    Vue.component(&#39;blog-post&#39;, {
+        props: [&#39;post&#39;],
+        template: `
+    &lt;div class=&quot;blog-post&quot;&gt;
+      &lt;h3&gt;{{ post.title }}&lt;/h3&gt;
+      &lt;div v-html=&quot;post.content&quot;&gt;&lt;/div&gt;
+      &lt;button v-on:click=&quot;$emit(&#39;enlarge-text&#39;)&quot;&gt;Enlarge text&lt;/button&gt;
+    &lt;/div&gt;
+  `
+    })</code></pre>
+<p>在组件中设置<code>v-on:enlarge-text</code>自定义一个事件来处理这事情，<code>v-on</code>可以监听子组件实例的任意事件。</p>
+<pre><code class="html">        &lt;div :style=&quot;{ fontSize: postFontSize + &#39;em&#39; }&quot;&gt;
+            &lt;blog-post  
+                       v-on:enlarge-text=&quot;postFontSize += 0.1&quot; 
+                       v-for=&quot;post in posts&quot; 
+                       v-bind:key=&quot;post.id&quot; 
+                       v-bind:post=&quot;post&quot; 
+                       class=&quot;text-info&quot;&gt;&lt;/blog-post&gt;
+        &lt;/div&gt;</code></pre>
+<p>同时子组件可以通过调用内建的 <code>$emit(event-name)</code>并传入事件名称来触发一个事件：</p>
+<pre><code class="html">&lt;button v-on:click=&quot;$emit(&#39;enlarge-text&#39;)&quot;&gt;
+  Enlarge text
+&lt;/button&gt;</code></pre>
+<h5 id="使用事件抛出一个值"><a href="#使用事件抛出一个值" class="headerlink" title="使用事件抛出一个值"></a><b style="color:orange;">使用事件抛出一个值</b></h5><p>有时候使用一个特定的时间抛出一个值是很常见的做法。此时可以使用<code>$emit(event-name,params)</code>第二个参数来决定。</p>
+<pre><code class="html">&lt;button v-on:click=&quot;$emit(&#39;enlarge-text&#39;, 0.1)&quot;&gt;
+  Enlarge text
+&lt;/button&gt;</code></pre>
+<p>然后在父组件中使用<code>$event</code>访问到被抛出的值：</p>
+<pre><code class="html">&lt;blog-post
+  ...
+  v-on:enlarge-text=&quot;postFontSize += $event&quot;
+&gt;&lt;/blog-post&gt;</code></pre>
+<p><span style="color:crimson;">如果处理这个事件是一个函数，那么抛出来的值就为作为函数的第一个参数传入这个方法中：</span></p>
+<pre><code class="html">&lt;blog-post
+           ....
+           v-on:elarge-text=&quot;onEnlargeText&quot;
+           &gt;&lt;/blog-post&gt;</code></pre>
+<pre><code class="javascript">methods:{
+    onEnlargeText:function(enlargeAmount){
+        this.postFontSize+=enlargeAmount;
+    }
+}</code></pre>
+<h5 id="在组件上使用v-model"><a href="#在组件上使用v-model" class="headerlink" title="在组件上使用v-model"></a><b style="color:orange;">在组件上使用v-model</b></h5><p>自定义事件也可以创建支持<code>v-model</code>的自定义输入组件。</p>
+<pre><code class="html">&lt;custom-input  v-model=&quot;searchText&quot;&gt;&lt;/custom-input&gt;</code></pre>
+<p>为了让<code>v-model</code>可以正常的工作。必须使得：</p>
+<ul>
+<li><span style="color:maroon;">将其value属性绑定到一个名叫value的prop上</span>;</li>
+<li><span style="color:maroon;">在其input事件被触发的时候，将新的值通过自定的input事件抛出去</span></li>
+</ul>
+<pre><code class="javascript">Vue.component(&#39;custom-input&#39;,{
+    props:[&#39;value&#39;],
+    template:`
+    &lt;input v-bind:value=&quot;value&quot; v-on:input=&quot;$emit(&#39;input&#39;,$event.target.value)&quot;
+`
+})</code></pre>
+<p>此时<code>serchText</code>所绑定的数值就是从子组件中冒泡出来的。</p>
+<h5 id="将原生事件绑定到组件"><a href="#将原生事件绑定到组件" class="headerlink" title="将原生事件绑定到组件"></a><b style="color:orange;">将原生事件绑定到组件</b></h5><p>在组件上监听原生事件需要用到<code>v-model</code>的<code>native</code>属性。</p>
+<pre><code class="html">&lt;base-input v-on:focus.native=&quot;onFocus&quot;&gt;&lt;/base-input&gt;</code></pre>
+<p>但是这种在监听一个根节点为<code>&lt;lable&gt;</code>的模板组件时候并不管用。Vue提供<code>$listeners</code>属性，它是一个对象，该对象中包含了作用在这组件上所有的监听器。</p>
+<pre><code class="javascript">{
+    focus:function(event){/****/},
+    input:function(event){/****/}
+}</code></pre>
+<p>此时可以通过<code>$listeners</code>属性进行分发监听器：</p>
+<pre><code class="javascript">Vue.component(&#39;base-input&#39;,{
+    inheritAttrs:false,
+    props:[&quot;label&quot;,&quot;value&quot;],
+    computed:{
+        inputListeners:function(){
+            var vm=this;
+             // `Object.assign` 将所有的对象合并为一个新对象
+            return Object.assign({},
+                                      // 我们从父级添加所有的监听器
+                                 this.$listeners,
+                                         // 然后我们添加自定义监听器，
+                        // 或覆写一些监听器的行为
+                                 {
+                            input:function(event){
+                        vm.$emit(&#39;input&#39;,event.target.value)
+                           }
+            })
+        }
+    },
+    template:
+    `&lt;label&gt;
+    {{label}}
+    &lt;input 
+        v-bind=&quot;$attrs&quot;
+        v-bind:value=&quot;value&quot;
+        v-on=&quot;inputListeners&quot;&gt;
+    &lt;/label&gt;`
+})</code></pre>
+<h4 id="6、通过插槽分发内容"><a href="#6、通过插槽分发内容" class="headerlink" title="6、通过插槽分发内容"></a><b style="color:blue;">6、通过插槽分发内容</b></h4><p>当向一个组件内传递内容的时候可以使用<code>&lt;slot&gt;</code>标签，使用方式形如：<code>&lt;p&gt;hello&lt;/p&gt;</code>，此时组件的模板为：</p>
+<pre><code class="javascript">Vue.component(&#39;alert-box&#39; ,{
+    template:`&lt;div class=&quot;demo-alert-box&quot;&gt;
+    &lt;strong&gt;Erro!&lt;/strong&gt;
+    &lt;slot&gt;&lt;/slot&gt;
+&lt;/div&gt;`
+})</code></pre>
+<pre><code class="html">&lt;alert-box&gt;Something bad hanppend. &lt;/alert-box&gt;</code></pre>
+<h5 id="编译的作用域"><a href="#编译的作用域" class="headerlink" title="编译的作用域"></a><b style="color:orange;">编译的作用域</b></h5><p>当在插槽中运用数据的时候，插槽模板跟其他地方一样可以访问相同的实例属性，而不能访问父级元素的属性。<b style="color:crimson;">父级模板里所有的内容都是在父级作用域中编译的；子模板里所有的内容都是在子作用域中编译的。</b></p>
+<p><b style="color:orange;">插槽的后备内容</b></p>
+<p>后备内容会在插槽没有提供内容的时候被渲染出来。</p>
+<pre><code class="javascript">Vue.component(&#39;submit-button&#39;,{
+    template:
+    `&lt;button type=&quot;submit&quot;&gt;&lt;slot&gt;Submit&lt;slot&gt;&lt;/button&gt;`
+})</code></pre>
+<p>此时在父级元素的未填充的情况下,<code>&lt;submit-button&gt;&lt;/submit-button&gt;</code>依旧会显示Sumbit按钮。 <button>Submit</button> </p>
+<p>但是当填充内容的时候，submit就会被填充的内容取代，<code>&lt;submit-button&gt;Save&lt;/submit-button&gt;</code> <button>Save</button> </p>
+
+  </article>
+
+  <div class="nexmoe-post-meta nexmoe-rainbow">
+    
+        <a class="nexmoefont icon-appstore-fill -link" href="/categories/Vue-js/">Vue.js</a>
+    
+    
+        <a class="nexmoefont icon-tag-fill -link" href="/tags/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/" rel="tag">编程语言</a>
+    
+</div>
+
+  <div class="nexmoe-post-footer">
+    
+      
+  <div class="nexmoe-post-copyright">
+    <strong>Author：</strong>AntPan<br>
+    <strong>Link：</strong><a href="https://alpacame.github.io/2020/04/19/Vue%E7%BB%84%E4%BB%B6%E5%9F%BA%E7%A1%80/" title="https:&#x2F;&#x2F;alpacame.github.io&#x2F;2020&#x2F;04&#x2F;19&#x2F;Vue%E7%BB%84%E4%BB%B6%E5%9F%BA%E7%A1%80&#x2F;" target="_blank" rel="noopener">https:&#x2F;&#x2F;alpacame.github.io&#x2F;2020&#x2F;04&#x2F;19&#x2F;Vue%E7%BB%84%E4%BB%B6%E5%9F%BA%E7%A1%80&#x2F;</a><br>
+    
+      <strong>版权声明：</strong>本文采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/cn/deed.zh" target="_blank">CC BY-NC-SA 3.0 CN</a> 协议进行许可
+    
+  </div>
+
+
+    
+    <section class="nexmoe-comment">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.5.0/dist/gitalk.min.css">
+<div id="gitalk"></div>
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1.5.0/dist/gitalk.min.js"></script>
+<script type="text/javascript">
+    var gitalk = new Gitalk({
+        clientID: '80b2453b6d5f37ad6225',
+        clientSecret: '43e99fa852795c9a7b3eb924b2558c64b84bbdeb',
+        id: window.location.pathname,
+        repo: 'nexmoe.github.io',
+        owner: 'nexmoe',
+        admin: 'nexmoe'
+    })
+    gitalk.render('gitalk')
+</script>
+</section>
+  </div>
+</div>
+    </div>
+  </div>
+  <script src="https://cdn.jsdelivr.net/combine/npm/lazysizes@5.1.0/lazysizes.min.js,gh/highlightjs/cdn-release@9.15.8/build/highlight.min.js,npm/mdui@0.4.3/dist/js/mdui.min.js,gh/nexmoe/nexmoe.github.io@latest/js/app.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+<!--<script src="/js/app.js?v=1587615732718"></script>-->
+
+
+    <script src="https://cdn.jsdelivr.net/gh/xtaodada/xtaodada.github.io@0.0.2/copy.js"></script>
+
+
+ 
+<script> 
+!function(e,t,a){function n(){c(".heart{width: 10px;height: 10px;position: fixed;background: #f00;transform: rotate(45deg);-webkit-transform: rotate(45deg);-moz-transform: rotate(45deg);}.heart:after,.heart:before{content: '';width: inherit;height: inherit;background: inherit;border-radius: 50%;-webkit-border-radius: 50%;-moz-border-radius: 50%;position: fixed;}.heart:after{top: -5px;}.heart:before{left: -5px;}"),o(),r()}function r(){for(var e=0;e<d.length;e++)d[e].alpha<=0?(t.body.removeChild(d[e].el),d.splice(e,1)):(d[e].y--,d[e].scale+=.004,d[e].alpha-=.013,d[e].el.style.cssText="left:"+d[e].x+"px;top:"+d[e].y+"px;opacity:"+d[e].alpha+";transform:scale("+d[e].scale+","+d[e].scale+") rotate(45deg);background:"+d[e].color+";z-index:99999");requestAnimationFrame(r)}function o(){var t="function"==typeof e.onclick&&e.onclick;e.onclick=function(e){t&&t(),i(e)}}function i(e){var a=t.createElement("div");a.className="heart",d.push({el:a,x:e.clientX-5,y:e.clientY-5,scale:1,alpha:1,color:s()}),t.body.appendChild(a)}function c(e){var a=t.createElement("style");a.type="text/css";try{a.appendChild(t.createTextNode(e))}catch(t){a.styleSheet.cssText=e}t.getElementsByTagName("head")[0].appendChild(a)}function s(){return"rgb("+~~(255*Math.random())+","+~~(255*Math.random())+","+~~(255*Math.random())+")"}var d=[];e.requestAnimationFrame=function(){return e.requestAnimationFrame||e.webkitRequestAnimationFrame||e.mozRequestAnimationFrame||e.oRequestAnimationFrame||e.msRequestAnimationFrame||function(e){setTimeout(e,1e3/60)}}(),n()}(window,document);
+</script>
+
+  
+
+
+
+
+
+</body>
+
+</html>

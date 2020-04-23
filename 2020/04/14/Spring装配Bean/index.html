@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+  
+  <title>Spring装配Bean - 山有木兮木有枝</title>
+  <meta charset="UTF-8">
+  <meta name="description" content="玲珑骰子安红豆，入骨相思知不知">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
+  
+  
+
+  <link rel="shortcut icon" href="https://freeware.iconfactory.com/assets/hamstergeddon/preview.png# 网站图标" type="image/png" />
+  <meta name="description" content="红豆骰子生南国，入骨相思知不知">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Spring装配Bean">
+<meta property="og:url" content="https://alpacame.github.io/2020/04/14/Spring%E8%A3%85%E9%85%8DBean/index.html">
+<meta property="og:site_name" content="山有木兮木有枝">
+<meta property="og:description" content="红豆骰子生南国，入骨相思知不知">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2020-04-14T13:24:15.000Z">
+<meta property="article:modified_time" content="2020-04-23T04:05:51.373Z">
+<meta property="article:author" content="AntPan">
+<meta property="article:tag" content="编程语言">
+<meta name="twitter:card" content="summary">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/combine/gh/nexmoe/nexmoe.github.io@latest/css/style.css,npm/highlight.js@9.15.8/styles/atom-one-dark.css,gh/nexmoe/nexmoe.github.io@latest/lib/mdui_043tiny/css/mdui.css,gh/nexmoe/nexmoe.github.io@latest/lib/iconfont/iconfont.css" crossorigin>
+  
+  <!--<link rel="stylesheet" href="/css/style.css?v=1587615732721">-->
+
+   
+    <style>
+      .nexmoe-avatar img:hover {
+        -webkit-transform: rotateZ(360deg);
+        -moz-transform: rotateZ(360deg);
+        transform: rotateZ(360deg);
+      }	
+    </style>
+  
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body class="mdui-drawer-body-left">
+  
+  <div id="nexmoe-background">
+    <div class="nexmoe-bg" style="background-image: url(http://img.netbian.com/file/2020/0327/c70a565b65c499b4d6d6f4210a7a103b.jpg)"></div>
+    <div class="mdui-appbar mdui-shadow-0">
+      <div class="mdui-toolbar">
+        <a mdui-drawer="{target: '#drawer', swipe: true}" title="menu" class="mdui-btn mdui-btn-icon mdui-ripple"><i class="mdui-icon nexmoefont icon-menu"></i></a>
+        <div class="mdui-toolbar-spacer"></div>
+        <!--<a href="javascript:;" class="mdui-btn mdui-btn-icon"><i class="mdui-icon material-icons">search</i></a>-->
+        <a href="/" title="AntPan" class="mdui-btn mdui-btn-icon"><img src="https://avatars0.githubusercontent.com/u/58353039?s=460&amp;u=a06eebdea982770b37397225c6a1768fa2f8a0e0&amp;v=4" alt="AntPan"></a>
+       </div>
+    </div>
+  </div>
+  <div id="nexmoe-header">
+      <div class="nexmoe-drawer mdui-drawer" id="drawer">
+    <div class="nexmoe-avatar mdui-ripple">
+        <a href="/" title="AntPan">
+            <img src="https://avatars0.githubusercontent.com/u/58353039?s=460&amp;u=a06eebdea982770b37397225c6a1768fa2f8a0e0&amp;v=4" alt="AntPan" alt="AntPan">
+        </a>
+    </div>
+    <div class="nexmoe-count">
+        <div><span>Articles</span>5</div>
+        <div><span>Tags</span>2</div>
+        <div><span>Categories</span>2</div>
+    </div>
+    <div class="nexmoe-list mdui-list" mdui-collapse="{accordion: true}">
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple" href="/" title="回到首页">
+            <i class="mdui-list-item-icon nexmoefont icon-home"></i>
+            <div class="mdui-list-item-content">
+                回到首页
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple" href="/about/index.html" title="关于博客">
+            <i class="mdui-list-item-icon nexmoefont icon-info-circle"></i>
+            <div class="mdui-list-item-content">
+                关于博客
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple" href="/archives" title="文章归档">
+            <i class="mdui-list-item-icon nexmoefont icon-container"></i>
+            <div class="mdui-list-item-content">
+                文章归档
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple" href="/PY.html" title="我的朋友">
+            <i class="mdui-list-item-icon nexmoefont icon-unorderedlist"></i>
+            <div class="mdui-list-item-content">
+                我的朋友
+            </div>
+        </a>
+        
+    </div>
+    <aside id="nexmoe-sidebar">
+  
+  <div class="nexmoe-widget-wrap">
+    <div class="nexmoe-widget nexmoe-search">
+        <form id="search_form" action_e="https://www.google.com/search?q={https://alpacame.github.io/}" onsubmit="return search();">
+            <label><input id="search_value" name="q" type="search" placeholder="Search"></label>
+        </form>
+    </div>
+</div>
+  
+  <div class="nexmoe-widget-wrap">
+    <h3 class="nexmoe-widget-title">Social</h3>
+    <div class="nexmoe-widget nexmoe-social">
+        <a class="mdui-ripple" href="https://space.bilibili.com/439098990" target="_blank" mdui-tooltip="{content: '哔哩哔哩'}" style="color: rgb(231, 106, 141);background-color: rgba(231, 106, 141, .15);">
+            <i class="nexmoefont icon-bilibili"></i>
+        </a><a class="mdui-ripple" href="https://github.com/AlpacaMe" target="_blank" mdui-tooltip="{content: 'GitHub'}" style="color: rgb(25, 23, 23);background-color: rgba(25, 23, 23, .15);">
+            <i class="nexmoefont icon-github"></i>
+        </a>
+    </div>
+</div>
+  
+  
+  <div class="nexmoe-widget-wrap">
+    <h3 class="nexmoe-widget-title">Categories</h3>
+    <div class="nexmoe-widget">
+
+      <ul class="category-list">
+
+        
+
+
+        
+
+        
+
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/Spring学习/">Spring学习</a>
+          <span class="category-list-count">1</span>
+        </li>
+
+        
+
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/Vue-js/">Vue.js</a>
+          <span class="category-list-count">3</span>
+        </li>
+
+        
+      </ul>
+
+    </div>
+  </div>
+
+
+  
+  
+  <div class="nexmoe-widget-wrap">
+    <h3 class="nexmoe-widget-title">Tag Cloud</h3>
+    <div id="randomtagcloud" class="nexmoe-widget tagcloud nexmoe-rainbow">
+      <a href="/tags/%E6%9D%82%E8%AE%B0/" style="font-size: 10px;">杂记</a> <a href="/tags/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/" style="font-size: 20px;">编程语言</a>
+    </div>
+    
+  </div>
+
+  
+  
+  <div class="nexmoe-widget-wrap">
+    <h3 class="nexmoe-widget-title">Recent Posts</h3>
+    <div class="nexmoe-widget">
+      <ul>
+        
+          <li>
+            <a href="/2020/04/23/Webpack-Vue-js%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/">Webpack+Vue.js快速入门</a>
+          </li>
+        
+          <li>
+            <a href="/2020/04/19/Vue%E7%BB%84%E4%BB%B6%E5%9F%BA%E7%A1%80/">Vue组件基础</a>
+          </li>
+        
+          <li>
+            <a href="/2020/04/16/Vue-js%E5%9F%BA%E6%9C%AC%E7%89%B9%E6%80%A7/">Vue.js基本特性</a>
+          </li>
+        
+          <li>
+            <a href="/2020/04/14/Spring%E8%A3%85%E9%85%8DBean/">Spring装配Bean</a>
+          </li>
+        
+          <li>
+            <a href="/2020/04/14/%E5%86%99%E7%BB%99%E6%9C%AA%E6%9D%A5%E7%9A%84%E8%87%AA%E5%B7%B1/">写给未来的自己</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+    <div class="nexmoe-copyright">
+        &copy; 2020 AntPan
+        Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+        & <a href="https://nexmoe.com/hexo-theme-nexmoe.html" target="_blank">Nexmoe</a>
+    </div>
+</div><!-- .nexmoe-drawer -->
+  </div>
+  <div id="nexmoe-content">
+    <div class="nexmoe-primary">
+        <div class="nexmoe-post">
+  
+      <div class="nexmoe-post-cover" style="padding-bottom: 54.166666666666664%;"> 
+          <img data-src="http://img.netbian.com/file/2020/0210/b3be458e28848ead9ef38d96e1f29d20.jpg" data-sizes="auto" alt="Spring装配Bean" class="lazyload">
+          <h1>Spring装配Bean</h1>
+      </div>
+  
+  
+  <div class="nexmoe-post-meta nexmoe-rainbow" style="margin:10px 0!important;">
+    <a><i class="nexmoefont icon-calendar-fill"></i>2020年04月14日</a>
+    <a><i class="nexmoefont icon-areachart"></i>2.4k 字</a>
+    <a><i class="nexmoefont icon-time-circle-fill"></i>大概 11 分钟</a>
+</div>
+
+  <div class="nexmoe-post-right">
+    
+      <div class="nexmoe-fixed">
+        <div class="nexmoe-valign">
+            <div class="nexmoe-toc">
+                <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#"><span class="toc-number">1.</span> <span class="toc-text">红豆骰子生南国，入骨相思知不知</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#装配Bean"><span class="toc-number">2.</span> <span class="toc-text">装配Bean</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1、自动化的装配Bean"><span class="toc-number">2.1.</span> <span class="toc-text">1、自动化的装配Bean</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#创建可被发现的bean"><span class="toc-number">2.1.1.</span> <span class="toc-text">创建可被发现的bean</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#为组件扫描的bean命名"><span class="toc-number">2.1.2.</span> <span class="toc-text">为组件扫描的bean命名</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#设置组件扫描的包"><span class="toc-number">2.1.3.</span> <span class="toc-text">设置组件扫描的包</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#通过bean添加注解实现自动装配"><span class="toc-number">2.1.4.</span> <span class="toc-text">通过bean添加注解实现自动装配</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2、通过Java代码装配Bean"><span class="toc-number">2.2.</span> <span class="toc-text">2、通过Java代码装配Bean</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#创建配置类"><span class="toc-number">2.2.1.</span> <span class="toc-text">创建配置类</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#声明简单的bean"><span class="toc-number">2.2.2.</span> <span class="toc-text">声明简单的bean</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#在JavaConfig中实现注入"><span class="toc-number">2.2.3.</span> <span class="toc-text">在JavaConfig中实现注入</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3、使用XML装配Bean"><span class="toc-number">2.3.</span> <span class="toc-text">3、使用XML装配Bean</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#最简单的XML配置文件"><span class="toc-number">2.3.1.</span> <span class="toc-text">最简单的XML配置文件</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#装配简单的Bean"><span class="toc-number">2.3.2.</span> <span class="toc-text">装配简单的Bean</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#借助构造器注入初始化bean"><span class="toc-number">2.3.3.</span> <span class="toc-text">借助构造器注入初始化bean</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#将字面量将配进bean中"><span class="toc-number">2.3.4.</span> <span class="toc-text">将字面量将配进bean中</span></a></li></ol></li></ol></li></ol>
+            </div>
+        </div>
+      </div>
+    
+  </div>
+
+  <article>
+    <h3 style="color:crimson;font-weight:lighter;">红豆骰子生南国，入骨相思知不知</h3>
+<a id="more"></a>
+
+<h3 id="装配Bean"><a href="#装配Bean" class="headerlink" title="装配Bean"></a><b style="color:red;">装配Bean</b></h3><p>Spring容器负责创建应用程序中的Bean并通过DI来协调对象之间的关系。当描述bean如何装配的时候，Spring具有非常大的灵活性，它提供三种主要的装配机制：</p>
+<ul>
+<li><b style="color:maroon;">在XML中进行显式配置</b></li>
+<li><b style="color:maroon;">在Java中显式配置</b></li>
+<li><b style="color:maroon;">隐式的bean发现机制和自动装配</b></li>
+</ul>
+<h4 id="1、自动化的装配Bean"><a href="#1、自动化的装配Bean" class="headerlink" title="1、自动化的装配Bean"></a><b style="color:blue;">1、自动化的装配Bean</b></h4><p>Spring从两个角度实现自动化的装配：</p>
+<ul>
+<li><span style="color:tomato;">组件扫描</span> ：Spring会自动发现应用上下文中所创建的Bean;</li>
+<li><span style="color:tomato;">自动装配：</span> Spring自动满足bean之间的依赖；</li>
+</ul>
+<h5 id="创建可被发现的bean"><a href="#创建可被发现的bean" class="headerlink" title="创建可被发现的bean"></a><b style="color:orange;">创建可被发现的bean</b></h5><pre><code class="java">public interface CompactDisc{
+    void play();
+}</code></pre>
+<p>需要一个CompactDisc的实现，实际上，<span style="color:maroon;">CompactDisc接口可以有很多的实现。</span></p>
+<pre><code class="java">@Component
+public class sgtPeppers implements CompactDisc{
+    private String title=&quot;Sgt.Perpper`s Lonly Heart Club Band&quot;;
+    private String artist=&quot;The Beatles&quot;;
+
+    public void play(){
+        System.out.println(&quot;Playing&quot;+title+&quot;by&quot;+&quot;artist&quot;);
+    }
+}</code></pre>
+<ul>
+<li><code>@Component</code>注解：表明该类会作为组件类，并告知Spring要为这个类创建bean，没必要再去显示配置SgtPepeer的bean。</li>
+</ul>
+<p>此时Spring只需要开启扫描即可，但是Spring的扫描并不是默认开启的。<code>@ComponentScan</code> 注解配置Spring，命令它去寻找带有<code>@Conmponent</code>注解的类，并为其创建bean。</p>
+<pre><code class="java">package com.panhao.Automatic_assembly;
+
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+
+@Configuration
+@ComponentScan
+public class CompactDiscConfiguration {
+
+}</code></pre>
+<p>此时已经可以实现Bean的自动装配，添加测试类进行测试：</p>
+<pre><code class="java">package com.panhao.Automatic_assembly;
+
+import static org.junit.Assert.assertNotNull;
+
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(classes = CompactDiscConfiguration.class)
+public class TestAutomatic {
+
+    @Autowired
+    private CompactDisc cd;
+
+    @Test
+    public  void cdShouldNotBeNull() {
+        assertnotNull(cd);
+    }
+}</code></pre>
+<ul>
+<li><code>@ContextConfiguration</code>告诉Spring在CompactDiscConfiguration.class中加载配置；</li>
+<li><code>@ComponentScan</code>表示开启自动扫描；</li>
+</ul>
+<h5 id="为组件扫描的bean命名"><a href="#为组件扫描的bean命名" class="headerlink" title="为组件扫描的bean命名"></a><b style="color:orange;">为组件扫描的bean命名</b></h5><p>Spring上下文中所有的Bean的都会给定一个ID，如果明确的给定bean的ID，Spring会根据类名为其指定一个ID：<span style="color:maroon;">将类名的第一个字母变成小写</span>。如果想要为这个Bean设置不同的name，可以在<code>@Component</code>注解中进行设置：</p>
+<pre><code class="java">@Component(&quot;lonlyHeartClub&quot;)
+public class sgtPeppers implements CompactDisc{
+    private String title=&quot;Sgt.Perpper`s Lonly Heart Club Band&quot;;
+    private String artist=&quot;The Beatles&quot;;
+
+    public void play(){
+        System.out.println(&quot;Playing&quot;+title+&quot;by&quot;+&quot;artist&quot;);
+    }
+}</code></pre>
+<p>还要另外一种给Bean命名的方式，<span style="Color:maroon;">使用<code>@Named</code>注解</span>(<i style="color:slateblue;">Java 依赖注入规范（Java Dependency Injection）</i>)。</p>
+<pre><code class="java">package com.panhao.Automatic_assembly;
+
+import javax.inject.Named;
+
+
+
+@Named(&quot;lonlyHeartClub&quot;)
+public class SgtPepper implements CompactDisc {
+    private String title=&quot;SgtPepper&quot;;
+    private String artist=&quot;panhao&quot;;
+
+    public void play() {
+        // TODO Auto-generated method stub
+        System.out.println(&quot;Playing&quot; +title+&quot;By&quot; +artist);
+    }
+
+}
+</code></pre>
+<p>Spring支持将<code>@Name</code>作为<code>@Component</code>注解代替方案。两者之间有细微的差别，但是在大多数的情况下都可以互相替换。</p>
+<h5 id="设置组件扫描的包"><a href="#设置组件扫描的包" class="headerlink" title="设置组件扫描的包"></a><b style="color:orange;">设置组件扫描的包</b></h5><p><code>@ComponentScan</code>没有设置任何属性的时候，Spring会按照默认规则，它会<span style="color:maroon;">以配置类所在的包作为基础包来扫描组件</span>。<code>@componentScan</code>中的value属性是用来设置basepackage的值：</p>
+<pre><code class="java">package com.panhao.Automatic_assembly;
+
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+
+@Configuration
+//扫描com.panhao包下所有的文件
+@ComponentScan(basepackages=&quot;com.panhao&quot;)
+public class CompactDiscConfiguration {
+
+}</code></pre>
+<p><i style="color:slateblue;">basepackage可以配置多个包，形式为：<code>@ComponentScan(basepackage={&quot;com.panhao.Service&quot;,&quot;com.panhao.DI})</code></i></p>
+<p>basepackages的值的类型是String，在代码重构的时候会带来错误的风险。<code>@ComponentScan</code>提供了basePackageClasses的属性，用来设置扫描类的，形式和basepackages一样的。</p>
+<pre><code class="java">@ComponentScan(basePackageClass={CDPlayer.class,DVDPlayer.class})</code></pre>
+<h5 id="通过bean添加注解实现自动装配"><a href="#通过bean添加注解实现自动装配" class="headerlink" title="通过bean添加注解实现自动装配"></a><b style="color:orange;">通过bean添加注解实现自动装配</b></h5><p>自动装配就是让Spring自动满足bean依赖的一种方法，在满足依赖的过程中，会在Spring应用上下文中寻找匹配某个bean需求的其他bean。</p>
+<pre><code class="java">@Component
+public class CDPlayer implements MediaPlayer{
+
+    @Autowired
+    public CDPlayer(CompactDisc cd){
+        this.cd=cd;
+    }
+
+    public void play(){
+        cd.play();
+    }
+}</code></pre>
+<ul>
+<li>在构造器上添加<code>@Autowired</code>注解，这表明在<span style="color:maroon;">创建CDPlayer的bean的时候，会通过这个构造器进行实例化并且会传入一个可设置给CompactDisc类型的bean</span>。</li>
+</ul>
+<p><span style="color:crimson;"><code>@Autowired</code>注解不仅能够用在构造器上，还能用在setter属性上</span>。如果CDPlayer有一个CompactDisc()方法，那么可以采用以下的方式配置：</p>
+<pre><code class="java">@Autowired
+public void setCompactDisc(CompactDisc cd){
+    this.cd=cd;
+}</code></pre>
+<p>在Spring初始化bean之后，它会尽可能去满足bean的依赖。实际上<code>setter()</code>方法并没有什么不同，<code>@Autowired</code>注解可以用在类的任何方法上。</p>
+<p><span style="color:olive;">不管是构造器还、setter方法还是其他的方法，Spring就会尝试满足方法参数上所声明的依赖。假如有且只有一个bean匹配依赖的需求的话，那么这个bean不会被装配进来。如果没有匹配的bean，那么应用在上下文的时候，Spring会抛出一个异常。</span>（<i style="color:slateblue;">为了避免异常的出现，可以将<code>@Autowired</code>的required属性设置为false</i>）<span style="color:olive;">如果有多个bean都能满足依赖，Spring将会抛出一个异常，表明没有明确的指定要选择哪个bean进行自动装配。</span></p>
+<p>与<code>@Name</code>注解与<code>@Component</code>注解可以互换一样，<code>@Inject</code>（<i style="color:slateblue;">Java依赖注入所提供的注解</i>）也可以与<code>@Autowired</code>互换，虽有细微的不一样，但是多数的场景可以互换。</p>
+<h4 id="2、通过Java代码装配Bean"><a href="#2、通过Java代码装配Bean" class="headerlink" title="2、通过Java代码装配Bean"></a><b style="color:blue;">2、通过Java代码装配Bean</b></h4><h5 id="创建配置类"><a href="#创建配置类" class="headerlink" title="创建配置类"></a><b style="color:orange;">创建配置类</b></h5><pre><code class="java">@Configuration
+public class CDPlayerConfig{
+
+}</code></pre>
+<ul>
+<li>创建JavaConfig类的关键在于为其添加<code>@Configuration</code>注解。<code>@Configuration</code>注解表明这是一个配置类，该类该包含在Spring应用上下文中如何创建Bean的细节。</li>
+</ul>
+<h5 id="声明简单的bean"><a href="#声明简单的bean" class="headerlink" title="声明简单的bean"></a><b style="color:orange;">声明简单的bean</b></h5><pre><code class="java">@Bean
+public CompactDisc sgtPeppers(){
+    return new CompactDisc
+}</code></pre>
+<ul>
+<li><code>@Bean</code>注解会告诉Spring这个方法返回一个对象，该对象要注册为Spring应用上下文中的bean。<code>@Bean</code>拥有属性<code>name</code>用来设置bean的名称。</li>
+</ul>
+<h5 id="在JavaConfig中实现注入"><a href="#在JavaConfig中实现注入" class="headerlink" title="在JavaConfig中实现注入"></a><b style="color:orange;">在JavaConfig中实现注入</b></h5><pre><code class="java">@Bean
+public CDPlayer cdPlayed(){
+    return new CDPlayer(sgtPeppers())
+}</code></pre>
+<h4 id="3、使用XML装配Bean"><a href="#3、使用XML装配Bean" class="headerlink" title="3、使用XML装配Bean"></a><b style="color:blue;">3、使用XML装配Bean</b></h4><h5 id="最简单的XML配置文件"><a href="#最简单的XML配置文件" class="headerlink" title="最简单的XML配置文件"></a><b style="color:orange;">最简单的XML配置文件</b></h5><pre><code class="xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot;
+    xmlns:context=&quot;http://www.springframework.org/schema/context&quot;
+    xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+    xsi:schemaLocation=&quot;http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context-4.3.xsd&quot;&gt;
+
+        &lt;context:annotation-config&gt;&lt;/context:annotation-config&gt;
+
+        &lt;bean id=&quot;testEditor&quot; class=&quot;com.panhao.Automatic_assembly.test.TestEditor&quot;&gt;&lt;/bean&gt;
+
+
+        &lt;bean id=&quot;spellChecker&quot; class=&quot;com.panhao.Automatic_assembly.test.SpellChecker&quot;&gt;&lt;/bean&gt;
+
+&lt;/beans&gt;</code></pre>
+<h5 id="装配简单的Bean"><a href="#装配简单的Bean" class="headerlink" title="装配简单的Bean"></a><b style="color:orange;">装配简单的Bean</b></h5><p><b style="color:crimson;"><code>&lt;bean&gt;&lt;/bean&gt;</code></b>元素的标签的是和<strong><code>@Bean</code></strong>注解的作用是一致的。</p>
+<pre><code class="xml">&lt;bean  class=&quot;soundsystem.SgtPepper&quot;&gt;&lt;/bean&gt;</code></pre>
+<p>此时一个最简单的声明Bean就完成了，（<i style="color:slateblue;">创建这个bean的类通过class属性来指定，并且要求使用全限定名</i>），此处没有给出明确的ID，所以默认ID为：<code>soundsystem.SgtPepper#0</code>，其中<code>#0</code>是用来区分其它同类型的bean的。<code>&lt;bean /&gt;</code>标签借助<code>id</code>属性对bean进行命名。</p>
+<pre><code class="xml">&lt;bean id=&quot;sgtPepper&quot; class=&quot;soundsystem.SgtPepper&quot;&gt;&lt;/bean&gt;</code></pre>
+<h5 id="借助构造器注入初始化bean"><a href="#借助构造器注入初始化bean" class="headerlink" title="借助构造器注入初始化bean"></a><b style="color:orange;">借助构造器注入初始化bean</b></h5><p><span style="color:crimson;">在Spring中只有一种声明bean的方式，使用<code>&lt;bean /&gt;</code>元素并指定class属性。</span>Spring会从这里获取必要的信息来创建bean。</p>
+<p>在XML声明DI的时候有多种配置方法可供选择：</p>
+<ul>
+<li><span style="color:olive;"><code>&lt;constructor-arg &gt;</code>元素</span></li>
+<li><span style="color:olive;">使用Spring3.0所引入的c命名空间</span></li>
+</ul>
+<p>在已经声明sgtPepper这个bean的条件下，使用<code>&lt;constructor-arg/&gt;</code>对CDplayer进行注入：</p>
+<pre><code class="xml">&lt;bean id=&quot;cdPlayer&quot; class=&quot;soundssystems.CDPlayer&quot; &gt;
+    &lt;constructor-arg ref=&quot;compactDisc&quot;  /&gt;
+&lt;/bean&gt;</code></pre>
+<p>使用c命名空间的时候需要在顶部声明：</p>
+<pre><code class="xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot;
+    xmlns:context=&quot;http://www.springframework.org/schema/context&quot;
+           xmlns:c=&quot;http://www.springframeword.org/schema/c&quot;
+    xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+    xsi:schemaLocation=&quot;http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context-4.3.xsd&quot;&gt;
+
+        &lt;context:annotation-config&gt;&lt;/context:annotation-config&gt;
+    &lt;bean id=&quot;sgtPepper&quot; class=&quot;soundsystem.SgtPepper&quot;&gt;&lt;/bean&gt;
+
+        &lt;bean id=&quot;cdPlayer&quot; class=&quot;soundsystem.CDPlayer&quot; c:cd-ref=&quot;compactDisc&quot;&gt;&lt;/bean&gt;
+
+&lt;/beans&gt;</code></pre>
+<ul>
+<li><p><code>c:cd-ref=&quot;compactDisc&quot;</code> :其中<code>c</code>表示命名空间前缀，<code>cd</code>表示构造器参数的名称；<code>-ref</code>表示注入bean的应用；<code>compactDisc</code>要注入的bean的ID。</p>
+<ol>
+<li>c命名是通过应用构造器参数的名称，需要在编译的时候，将调试标志保存在代码中，如果移除调试的标志，代码就无法正常的执行。</li>
+</ol>
+<ul>
+<li><p><b style="color:gold;">使用参数的位置替代参数的名称</b></p>
+<pre><code class="xml">&lt;bean id=&quot;cdPlayer&quot; class=&quot;soundsystem.CDPlayer&quot; c:_0-ref=&quot;compactDisc&quot;&gt;&lt;/bean&gt;</code></pre>
+<p>由于XML中不允许数字作为属性的第一个字符，因此必须在前面添加一个下划线<code>_</code>作为前缀。</p>
+<p><span style="color:crimson;">当构造器只有一个参数的时候，可以连位置信息都不用给：</span></p>
+<pre><code class="xml">&lt;bean id=&quot;cdPlayer&quot; class=&quot;soundsystem.CDPlayer&quot; c:_-ref=&quot;compactDisc&quot;&gt;&lt;/bean&gt;</code></pre>
+</li>
+</ul>
+</li>
+</ul>
+<h5 id="将字面量将配进bean中"><a href="#将字面量将配进bean中" class="headerlink" title="将字面量将配进bean中"></a><b style="color:orange;">将字面量将配进bean中</b></h5><p>假设CompactDisc拥有实现类：</p>
+<pre><code class="java">public BlankDisc implements CompactDisc{
+
+    private String title;
+    private String artist;
+
+    public BlankDisc(String title,String artist){
+        this.titile=title;
+        this.artist=artist;
+    }
+    public void play(){
+        System.out.println(&quot;Playing &quot;+title+&quot; By &quot;+artist);
+    }
+}</code></pre>
+<p>此时使用<code>&lt;constructor-arg/&gt;</code>装配的时候：</p>
+<pre><code class="xml">&lt;bean id=&quot;blankDisc&quot; class=&quot;soundsystem.BlankDisc&quot;&gt;
+    &lt;constructor-arg value=&quot;Sgt Pepper Lonly Hearts Clubs Band&quot; /&gt;
+    &lt;constructor-arg value=&quot;The Beatles&quot; /&gt;
+&lt;/bean&gt;</code></pre>
+<p>使用c命名空间装配的时候：</p>
+<pre><code class="xml">&lt;bean id=&quot;blankDisc&quot; class=&quot;soundsystem.BlankDisc&quot; 
+      c:_title=&quot;Sgt Pepper Lonly Hearts Clubs Band&quot;
+      c:_artist=&quot;The Beatles&quot;&gt;
+&lt;/bean&gt;</code></pre>
+<ul>
+<li><span style="color:crimson;">装配字面量与装配引用的区别在于属性名中去掉了<code>-ref</code>的后缀</span></li>
+</ul>
+
+  </article>
+
+  <div class="nexmoe-post-meta nexmoe-rainbow">
+    
+        <a class="nexmoefont icon-appstore-fill -link" href="/categories/Spring%E5%AD%A6%E4%B9%A0/">Spring学习</a>
+    
+    
+        <a class="nexmoefont icon-tag-fill -link" href="/tags/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/" rel="tag">编程语言</a>
+    
+</div>
+
+  <div class="nexmoe-post-footer">
+    
+      
+  <div class="nexmoe-post-copyright">
+    <strong>Author：</strong>AntPan<br>
+    <strong>Link：</strong><a href="https://alpacame.github.io/2020/04/14/Spring%E8%A3%85%E9%85%8DBean/" title="https:&#x2F;&#x2F;alpacame.github.io&#x2F;2020&#x2F;04&#x2F;14&#x2F;Spring%E8%A3%85%E9%85%8DBean&#x2F;" target="_blank" rel="noopener">https:&#x2F;&#x2F;alpacame.github.io&#x2F;2020&#x2F;04&#x2F;14&#x2F;Spring%E8%A3%85%E9%85%8DBean&#x2F;</a><br>
+    
+      <strong>版权声明：</strong>本文采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/cn/deed.zh" target="_blank">CC BY-NC-SA 3.0 CN</a> 协议进行许可
+    
+  </div>
+
+
+    
+    <section class="nexmoe-comment">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.5.0/dist/gitalk.min.css">
+<div id="gitalk"></div>
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1.5.0/dist/gitalk.min.js"></script>
+<script type="text/javascript">
+    var gitalk = new Gitalk({
+        clientID: '80b2453b6d5f37ad6225',
+        clientSecret: '43e99fa852795c9a7b3eb924b2558c64b84bbdeb',
+        id: window.location.pathname,
+        repo: 'nexmoe.github.io',
+        owner: 'nexmoe',
+        admin: 'nexmoe'
+    })
+    gitalk.render('gitalk')
+</script>
+</section>
+  </div>
+</div>
+    </div>
+  </div>
+  <script src="https://cdn.jsdelivr.net/combine/npm/lazysizes@5.1.0/lazysizes.min.js,gh/highlightjs/cdn-release@9.15.8/build/highlight.min.js,npm/mdui@0.4.3/dist/js/mdui.min.js,gh/nexmoe/nexmoe.github.io@latest/js/app.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+<!--<script src="/js/app.js?v=1587615732723"></script>-->
+
+
+    <script src="https://cdn.jsdelivr.net/gh/xtaodada/xtaodada.github.io@0.0.2/copy.js"></script>
+
+
+ 
+<script> 
+!function(e,t,a){function n(){c(".heart{width: 10px;height: 10px;position: fixed;background: #f00;transform: rotate(45deg);-webkit-transform: rotate(45deg);-moz-transform: rotate(45deg);}.heart:after,.heart:before{content: '';width: inherit;height: inherit;background: inherit;border-radius: 50%;-webkit-border-radius: 50%;-moz-border-radius: 50%;position: fixed;}.heart:after{top: -5px;}.heart:before{left: -5px;}"),o(),r()}function r(){for(var e=0;e<d.length;e++)d[e].alpha<=0?(t.body.removeChild(d[e].el),d.splice(e,1)):(d[e].y--,d[e].scale+=.004,d[e].alpha-=.013,d[e].el.style.cssText="left:"+d[e].x+"px;top:"+d[e].y+"px;opacity:"+d[e].alpha+";transform:scale("+d[e].scale+","+d[e].scale+") rotate(45deg);background:"+d[e].color+";z-index:99999");requestAnimationFrame(r)}function o(){var t="function"==typeof e.onclick&&e.onclick;e.onclick=function(e){t&&t(),i(e)}}function i(e){var a=t.createElement("div");a.className="heart",d.push({el:a,x:e.clientX-5,y:e.clientY-5,scale:1,alpha:1,color:s()}),t.body.appendChild(a)}function c(e){var a=t.createElement("style");a.type="text/css";try{a.appendChild(t.createTextNode(e))}catch(t){a.styleSheet.cssText=e}t.getElementsByTagName("head")[0].appendChild(a)}function s(){return"rgb("+~~(255*Math.random())+","+~~(255*Math.random())+","+~~(255*Math.random())+")"}var d=[];e.requestAnimationFrame=function(){return e.requestAnimationFrame||e.webkitRequestAnimationFrame||e.mozRequestAnimationFrame||e.oRequestAnimationFrame||e.msRequestAnimationFrame||function(e){setTimeout(e,1e3/60)}}(),n()}(window,document);
+</script>
+
+  
+
+
+
+
+
+</body>
+
+</html>
