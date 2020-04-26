@@ -1,0 +1,1100 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+  
+  <title>Spring Boot中的Spring Ioc - 山有木兮木有枝</title>
+  <meta charset="UTF-8">
+  <meta name="description" content="玲珑骰子安红豆，入骨相思知不知">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
+  
+  
+
+  <link rel="shortcut icon" href="https://freeware.iconfactory.com/assets/hamstergeddon/preview.png# 网站图标" type="image/png" />
+  <meta name="description" content="无可奈何花落去，似曾相识燕归来">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Spring Boot中的Spring Ioc">
+<meta property="og:url" content="https://alpacame.github.io/2020/04/26/Spring-Boot%E4%B8%AD%E7%9A%84Spring-Ioc/index.html">
+<meta property="og:site_name" content="山有木兮木有枝">
+<meta property="og:description" content="无可奈何花落去，似曾相识燕归来">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://img-blog.csdn.net/20180417170012191?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3doejAwMDAw/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70">
+<meta property="og:image" content="https://img-blog.csdn.net/20180417170834403?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3doejAwMDAw/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70">
+<meta property="og:image" content="https://img-blog.csdn.net/20180417171232161?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3doejAwMDAw/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70">
+<meta property="og:image" content="https://img-blog.csdn.net/20180417171723363?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3doejAwMDAw/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70">
+<meta property="og:image" content="https://img-blog.csdn.net/20180417172846797?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3doejAwMDAw/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70">
+<meta property="article:published_time" content="2020-04-26T11:50:08.000Z">
+<meta property="article:modified_time" content="2020-04-26T12:32:58.894Z">
+<meta property="article:author" content="AntPan">
+<meta property="article:tag" content="编程语言">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://img-blog.csdn.net/20180417170012191?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3doejAwMDAw/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/combine/gh/nexmoe/nexmoe.github.io@latest/css/style.css,npm/highlight.js@9.15.8/styles/atom-one-dark.css,gh/nexmoe/nexmoe.github.io@latest/lib/mdui_043tiny/css/mdui.css,gh/nexmoe/nexmoe.github.io@latest/lib/iconfont/iconfont.css" crossorigin>
+  
+  <!--<link rel="stylesheet" href="/css/style.css?v=1587904642773">-->
+
+   
+    <style>
+      .nexmoe-avatar img:hover {
+        -webkit-transform: rotateZ(360deg);
+        -moz-transform: rotateZ(360deg);
+        transform: rotateZ(360deg);
+      }	
+    </style>
+  
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body class="mdui-drawer-body-left">
+  
+  <div id="nexmoe-background">
+    <div class="nexmoe-bg" style="background-image: url(http://img.netbian.com/file/2020/0327/c70a565b65c499b4d6d6f4210a7a103b.jpg)"></div>
+    <div class="mdui-appbar mdui-shadow-0">
+      <div class="mdui-toolbar">
+        <a mdui-drawer="{target: '#drawer', swipe: true}" title="menu" class="mdui-btn mdui-btn-icon mdui-ripple"><i class="mdui-icon nexmoefont icon-menu"></i></a>
+        <div class="mdui-toolbar-spacer"></div>
+        <!--<a href="javascript:;" class="mdui-btn mdui-btn-icon"><i class="mdui-icon material-icons">search</i></a>-->
+        <a href="/" title="AntPan" class="mdui-btn mdui-btn-icon"><img src="https://avatars0.githubusercontent.com/u/58353039?s=460&amp;u=a06eebdea982770b37397225c6a1768fa2f8a0e0&amp;v=4" alt="AntPan"></a>
+       </div>
+    </div>
+  </div>
+  <div id="nexmoe-header">
+      <div class="nexmoe-drawer mdui-drawer" id="drawer">
+    <div class="nexmoe-avatar mdui-ripple">
+        <a href="/" title="AntPan">
+            <img src="https://avatars0.githubusercontent.com/u/58353039?s=460&amp;u=a06eebdea982770b37397225c6a1768fa2f8a0e0&amp;v=4" alt="AntPan" alt="AntPan">
+        </a>
+    </div>
+    <div class="nexmoe-count">
+        <div><span>Articles</span>6</div>
+        <div><span>Tags</span>2</div>
+        <div><span>Categories</span>3</div>
+    </div>
+    <div class="nexmoe-list mdui-list" mdui-collapse="{accordion: true}">
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple" href="/" title="回到首页">
+            <i class="mdui-list-item-icon nexmoefont icon-home"></i>
+            <div class="mdui-list-item-content">
+                回到首页
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple" href="/about/index.html" title="关于博客">
+            <i class="mdui-list-item-icon nexmoefont icon-info-circle"></i>
+            <div class="mdui-list-item-content">
+                关于博客
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple" href="/archives" title="文章归档">
+            <i class="mdui-list-item-icon nexmoefont icon-container"></i>
+            <div class="mdui-list-item-content">
+                文章归档
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple" href="/PY.html" title="我的朋友">
+            <i class="mdui-list-item-icon nexmoefont icon-unorderedlist"></i>
+            <div class="mdui-list-item-content">
+                我的朋友
+            </div>
+        </a>
+        
+    </div>
+    <aside id="nexmoe-sidebar">
+  
+  <div class="nexmoe-widget-wrap">
+    <div class="nexmoe-widget nexmoe-search">
+        <form id="search_form" action_e="https://www.google.com/search?q={https://alpacame.github.io/}" onsubmit="return search();">
+            <label><input id="search_value" name="q" type="search" placeholder="Search"></label>
+        </form>
+    </div>
+</div>
+  
+  <div class="nexmoe-widget-wrap">
+    <h3 class="nexmoe-widget-title">Social</h3>
+    <div class="nexmoe-widget nexmoe-social">
+        <a class="mdui-ripple" href="https://space.bilibili.com/439098990" target="_blank" mdui-tooltip="{content: '哔哩哔哩'}" style="color: rgb(231, 106, 141);background-color: rgba(231, 106, 141, .15);">
+            <i class="nexmoefont icon-bilibili"></i>
+        </a><a class="mdui-ripple" href="https://github.com/AlpacaMe" target="_blank" mdui-tooltip="{content: 'GitHub'}" style="color: rgb(25, 23, 23);background-color: rgba(25, 23, 23, .15);">
+            <i class="nexmoefont icon-github"></i>
+        </a>
+    </div>
+</div>
+  
+  
+  <div class="nexmoe-widget-wrap">
+    <h3 class="nexmoe-widget-title">Categories</h3>
+    <div class="nexmoe-widget">
+
+      <ul class="category-list">
+
+        
+
+
+        
+
+        
+
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/Spring-Boot/">Spring Boot</a>
+          <span class="category-list-count">1</span>
+        </li>
+
+        
+
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/Spring学习/">Spring学习</a>
+          <span class="category-list-count">1</span>
+        </li>
+
+        
+
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/Vue-js/">Vue.js</a>
+          <span class="category-list-count">3</span>
+        </li>
+
+        
+      </ul>
+
+    </div>
+  </div>
+
+
+  
+  
+  <div class="nexmoe-widget-wrap">
+    <h3 class="nexmoe-widget-title">Tag Cloud</h3>
+    <div id="randomtagcloud" class="nexmoe-widget tagcloud nexmoe-rainbow">
+      <a href="/tags/%E6%9D%82%E8%AE%B0/" style="font-size: 10px;">杂记</a> <a href="/tags/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/" style="font-size: 20px;">编程语言</a>
+    </div>
+    
+  </div>
+
+  
+  
+  <div class="nexmoe-widget-wrap">
+    <h3 class="nexmoe-widget-title">Recent Posts</h3>
+    <div class="nexmoe-widget">
+      <ul>
+        
+          <li>
+            <a href="/2020/04/26/Spring-Boot%E4%B8%AD%E7%9A%84Spring-Ioc/">Spring Boot中的Spring Ioc</a>
+          </li>
+        
+          <li>
+            <a href="/2020/04/23/Webpack-Vue-js%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/">Webpack+Vue.js快速入门</a>
+          </li>
+        
+          <li>
+            <a href="/2020/04/19/Vue%E7%BB%84%E4%BB%B6%E5%9F%BA%E7%A1%80/">Vue组件基础</a>
+          </li>
+        
+          <li>
+            <a href="/2020/04/16/Vue-js%E5%9F%BA%E6%9C%AC%E7%89%B9%E6%80%A7/">Vue.js基本特性</a>
+          </li>
+        
+          <li>
+            <a href="/2020/04/14/Spring%E8%A3%85%E9%85%8DBean/">Spring装配Bean</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+    <div class="nexmoe-copyright">
+        &copy; 2020 AntPan
+        Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+        & <a href="https://nexmoe.com/hexo-theme-nexmoe.html" target="_blank">Nexmoe</a>
+    </div>
+</div><!-- .nexmoe-drawer -->
+  </div>
+  <div id="nexmoe-content">
+    <div class="nexmoe-primary">
+        <div class="nexmoe-post">
+  
+      <div class="nexmoe-post-cover" style="padding-bottom: 54.166666666666664%;"> 
+          <img data-src="http://img.netbian.com/file/2020/0303/cebe60d26013d393c51aabb6028c6a1f.jpg" data-sizes="auto" alt="Spring Boot中的Spring Ioc" class="lazyload">
+          <h1>Spring Boot中的Spring Ioc</h1>
+      </div>
+  
+  
+  <div class="nexmoe-post-meta nexmoe-rainbow" style="margin:10px 0!important;">
+    <a><i class="nexmoefont icon-calendar-fill"></i>2020年04月26日</a>
+    <a><i class="nexmoefont icon-areachart"></i>5.6k 字</a>
+    <a><i class="nexmoefont icon-time-circle-fill"></i>大概 27 分钟</a>
+</div>
+
+  <div class="nexmoe-post-right">
+    
+      <div class="nexmoe-fixed">
+        <div class="nexmoe-valign">
+            <div class="nexmoe-toc">
+                <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#"><span class="toc-number">1.</span> <span class="toc-text">无可奈何花落去，似曾相识燕归来</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Spring-Boot"><span class="toc-number">1.1.</span> <span class="toc-text">Spring Boot</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1、Spring-Boot搭建Eclipse开发环境"><span class="toc-number">1.1.1.</span> <span class="toc-text">1、Spring Boot搭建Eclipse开发环境</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2、使用自定义的配置"><span class="toc-number">1.1.2.</span> <span class="toc-text">2、使用自定义的配置</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#全注解下的Spring-Ioc"><span class="toc-number">1.2.</span> <span class="toc-text">全注解下的Spring Ioc</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1、Ioc容器简介"><span class="toc-number">1.2.1.</span> <span class="toc-text">1、Ioc容器简介</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2、Ioc的实例"><span class="toc-number">1.2.2.</span> <span class="toc-text">2、Ioc的实例</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3、Spring-Boot装备Bean"><span class="toc-number">1.2.3.</span> <span class="toc-text">3、Spring Boot装备Bean</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4、自定义Bean"><span class="toc-number">1.2.4.</span> <span class="toc-text">4、自定义Bean</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5、依赖注入"><span class="toc-number">1.2.5.</span> <span class="toc-text">5、依赖注入</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#6、Bean的生命周期"><span class="toc-number">1.2.6.</span> <span class="toc-text">6、Bean的生命周期</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#7、使用属性文件"><span class="toc-number">1.2.7.</span> <span class="toc-text">7、使用属性文件</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#8、条件装配"><span class="toc-number">1.2.8.</span> <span class="toc-text">8、条件装配</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#9、Bean的作用域"><span class="toc-number">1.2.9.</span> <span class="toc-text">9、Bean的作用域</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#10、-Profile的使用"><span class="toc-number">1.2.10.</span> <span class="toc-text">10、@Profile的使用</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#11、使用Spring-El表达式"><span class="toc-number">1.2.11.</span> <span class="toc-text">11、使用Spring El表达式</span></a></li></ol></li></ol></li></ol>
+            </div>
+        </div>
+      </div>
+    
+  </div>
+
+  <article>
+    <h2 style="color:crimson;font-weight:lighter;">无可奈何花落去，似曾相识燕归来</h2>
+<a id="more"></a>
+
+<h3 id="Spring-Boot"><a href="#Spring-Boot" class="headerlink" title="Spring Boot"></a><b style="color:red;">Spring Boot</b></h3><p>​    Spring Boot是一个基于Spring框架搭建起来的应用，其次它会嵌入Tomcat、Jetty或者Undertow等服务器，并不需要传统的WAR文件进行部署，搭建Spring Boot项目<span style="color:crimson;">并不需要单独下载Tomcat等传统的服务器；</span>同时提供通过Maven（或者Grandle）依赖的starter，这些starter可以直接获取开发所需要的相关包，通过这些starter项目就能以Java Application的形式运行Spring Boot的项目，<span style="color:crimson;">而无须其他的配置</span>；对于配置，Spring Boot提供的Spring框架的最大自动化的配置，大量使用自动配置，使得开发者对Spring的配置尽量少些；此外还提供一些监测、自动监测的功能和外部配置，<span style="color:crimson;">与此同时没有附加代码和XML配置的要求</span>。</p>
+<h4 id="1、Spring-Boot搭建Eclipse开发环境"><a href="#1、Spring-Boot搭建Eclipse开发环境" class="headerlink" title="1、Spring Boot搭建Eclipse开发环境"></a><b style="color:blue;">1、Spring Boot搭建Eclipse开发环境</b></h4><p><b style="color:orange;">安装STS插件</b></p>
+<p>点击：<span style="color:crimson;">Help=&gt;Eclipse Markplace=&gt;popular=&gt;Spring Tool Suite(STS) For Eclipse=&gt;install</span></p>
+<p><i style="color:slateblue;">以下图片皆来自于：</i> <a href="https://blog.csdn.net/whz00000" target="_blank" rel="noopener">https://blog.csdn.net/whz00000</a></p>
+<img src="https://img-blog.csdn.net/20180417170012191?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3doejAwMDAw/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70" >
+
+<p><b style="color:orange;">创建项目</b></p>
+<p><span style="color:crimson;">File=&gt;new=&gt;project=&gt;Spring Started Project</span></p>
+<p><img src="https://img-blog.csdn.net/20180417170834403?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3doejAwMDAw/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70"></img></p>
+
+
+
+<p><b style="color:orange;">项目设置</b></p>
+<img src="https://img-blog.csdn.net/20180417171232161?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3doejAwMDAw/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70" >
+
+
+
+<ul>
+<li><b style="color:hotpink;">name</b> 选项是项目的名称；</li>
+<li><b style="color:hotpink;">package</b> 是在项目创立之后为你默认新建的一个包；</li>
+</ul>
+<p><b style="color:orange;">添加项目依赖</b></p>
+<img src="https://img-blog.csdn.net/20180417171723363?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3doejAwMDAw/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70" >
+
+
+
+<p>左侧选择，添加到右侧之后点击<button>Finish</button>就可以了。</p>
+<p><b style="color:orange;">目录结构</b></p>
+<img src="https://img-blog.csdn.net/20180417172846797?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3doejAwMDAw/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70" />
+
+
+
+<p><b style="color:orange;">编写测试代码</b></p>
+<pre><code class="java">package com.panhao.demo;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class MyfirstSpringBootApplication {
+
+    public static void main(String[] args) {
+        SpringApplication.run(MyfirstSpringBootApplication.class, args);
+    }
+
+}</code></pre>
+<p>然后在浏览器的地址栏输入：<a href="http://localhost:8080/hello" target="_blank" rel="noopener">http://localhost:8080/hello</a>然后观察控制台是否打印出“HelloWorld”。</p>
+<p><b style="color:crimson;">仔细观察Maven仓库会发现，在Maven仓库中的spring-boot-starter-web-2.0.0.RELEASE.pom文件中有一个配置，其实在SpringBoot内部已经做了初始的配置。这就是SpringBoot不用配置那么多却可以运行Spring程序。</b></p>
+<h4 id="2、使用自定义的配置"><a href="#2、使用自定义的配置" class="headerlink" title="2、使用自定义的配置"></a><b style="color:blue;">2、使用自定义的配置</b></h4><p>在<code>src/main/resource/</code>文件夹下面有一个文件<code>application.properties</code>，在该文件夹添加设置就会覆盖原来的原始设置：</p>
+<pre><code class="properties">server.port=8090
+spring.mvc.view.prefix=/WEB-INF/jsp/
+spring.mvc.view.suffix=.jsp</code></pre>
+<p>然后在控制台就可以看到：<span style="color:tomato;">Tomcat started on port(s): 8090 (http) with context path ‘’</span>字样表示端口已经从默认的8080端口改到8090端口。</p>
+<p>Spring Boot的参数的配置除了使用properties文件之外，还可以使用<code>yml</code>文件等，它还会以下列<span style="color:crimson;">优先级的顺序</span>进行加载：</p>
+<ul>
+<li>命令行参数</li>
+<li>来自<code>java:comp/env</code>的JNDI属性；</li>
+<li>Java系统属性（<code>System.getProperties();</code>）</li>
+<li>操作系统环境变量；</li>
+<li>RandomValuePropertySource配置的 <code>random.*</code>属性值。</li>
+<li>jar包外部的<code>application-{profile}.properties</code>或<code>application.yml</code>（带<code>spring.profile</code>）配置文件；</li>
+<li>jar包内部的<code>application-{profile}.properties</code>或<code>application.ym</code>（带<code>spring.profile</code>）配置文件；</li>
+<li>jar包外部的<code>application.properties</code>或<code>application.yml</code>（不带<code>spring.profile</code>）配置文件；</li>
+<li>jar包内部的<code>application.properties</code>或<code>application.ym</code>（不带<code>spring.profile</code>）配置文件；</li>
+<li><code>@Comfiguration</code>注解类上的<code>@PropertySource</code>；</li>
+<li>通过<code>SpringApplication.setDefaultProperties</code>指定的默认的属性。</li>
+</ul>
+<p><i style="color:slateblue;">实际上，yml文件的配置与properties文件只是简写和缩进的区别，因此差异不大。</i></p>
+<h3 id="全注解下的Spring-Ioc"><a href="#全注解下的Spring-Ioc" class="headerlink" title="全注解下的Spring Ioc"></a><b style="color:red;">全注解下的Spring Ioc</b></h3><p>Spring最成功的是其提出的理念，而不是技术的本身。它所依赖的两个核心理念：<b style="color:crimson;">一个是控制反转Ioc（Inversion of Control），另一个就是面向切面编程（Aspect Oriented Programming）</b>。</p>
+<p>Ioc容器是Spring的核心，可以说Spring是一种基于Ioc容器的编程框架。因为Spring Boot是基于注解的开发Spring Ioc。Ioc需要具备两个基本的功能：</p>
+<ul>
+<li>通过描述管理Bean，包括发布和获取Bean；</li>
+<li>通过描述完成Bean之间的依赖关系；</li>
+</ul>
+<h4 id="1、Ioc容器简介"><a href="#1、Ioc容器简介" class="headerlink" title="1、Ioc容器简介"></a><b style="color:blue;">1、Ioc容器简介</b></h4><p>Spring Ioc容器是一个管理Bean的容器，在Spring的定义中，它要求所有的Ioc容器都需要实现接口<code>BeanFactory</code>，它是顶级容器接口。</p>
+<pre><code class="java">package org.springframework.beans.factory;
+
+import org.springframework.beans.BeansException;
+import org.springframework.core.ResolvableType;
+import org.springframework.lang.Nullable;
+
+public interface BeanFactory {
+
+           //前缀
+    String FACTORY_BEAN_PREFIX = &quot;&amp;&quot;;
+    //多个getBean()的方法
+    Object getBean(String name) throws BeansException;
+    &lt;T&gt; T getBean(String name, Class&lt;T&gt; requiredType) throws BeansException;
+    Object getBean(String name, Object... args) throws BeansException;
+    &lt;T&gt; T getBean(Class&lt;T&gt; requiredType) throws BeansException;
+    &lt;T&gt; T getBean(Class&lt;T&gt; requiredType, Object... args) throws BeansException;
+
+         &lt;T&gt; ObjectProvider&lt;T&gt; getBeanProvider(Class&lt;T&gt; requiredType);
+    &lt;T&gt; ObjectProvider&lt;T&gt; getBeanProvider(ResolvableType requiredType);
+    //是否包含Bean
+         boolean containsBean(String name);
+        //是否是单例
+    boolean isSingleton(String name) throws NoSuchBeanDefinitionException;
+        //是否是原型
+    boolean isPrototype(String name) throws NoSuchBeanDefinitionException;
+        //是否类型匹配
+    boolean isTypeMatch(String name, ResolvableType typeToMatch) throws NoSuchBeanDefinitionException;
+    boolean isTypeMatch(String name, Class&lt;?&gt; typeToMatch) throws NoSuchBeanDefinitionException;
+    @Nullable
+         //获取Bean的类型
+    Class&lt;?&gt; getType(String name) throws NoSuchBeanDefinitionException;
+         //获取bean的别名
+    String[] getAliases(String name);
+
+}
+</code></pre>
+<ul>
+<li><p><code>getBean()</code>方法是Ioc容器中最重要的方法之一，它的意义是从Ioc容器中获取Bean，在Ioc容器中允许按照类型、名称获取Bean。</p>
+</li>
+<li><p><code>isSingleton()</code>方法判断Bean是否是单例模式的（<i style="color:slateblue;">Spring  Ioc容器中，默认的情况下，Bean都是单例存在的，也就是使用getBean方法返回的都是同一个对象</i>）。</p>
+</li>
+<li><p><code>isProperty()</code>方法与isSingleton()方法相反，如果返回值是<code>true</code>，那么使用getBean方法返回的都是同一个对象时，Spring Ioc容器就会创建一个新的Bean返回给调用者。</p>
+<p>由于<code>BeanFactory</code>的功能还不够强大，因此Spring在BeanFactory的基础上，还有一个更高级的接口<code>AplicationContext</code>。它是BeanFactory的子接口之一，在Spring的体系中<b style="color:crimson;">BeanFactory和ApplicationContext</b>是最为重要的接口设计。在平常设计中使用大部分的<b style="color:crimson;">ApplicationContext</b>接口的实现类。</p>
+</li>
+</ul>
+<h4 id="2、Ioc的实例"><a href="#2、Ioc的实例" class="headerlink" title="2、Ioc的实例"></a><b style="color:blue;">2、Ioc的实例</b></h4><p>创建实体类：</p>
+<pre><code class="java">package com.panhao.demo.pojo;
+
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
+@Getter
+@Setter
+@ToString
+public class User {
+
+    private Long id;
+    private String userName;
+    private String note;
+
+}</code></pre>
+<p>然后创建Ioc容器的配置类：</p>
+<pre><code class="java">package com.panhao.demo.config;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+import com.panhao.demo.pojo.User;
+
+@Configuration
+public class AppConfig {
+
+    @Bean(name = &quot;user&quot;)
+    public User initUser() {
+        User user=new User();
+        user.setId(1L);
+        user.setUserName(&quot;user_name_1&quot;);
+        user.setNote(&quot;note_1&quot;);
+        return user;
+    }
+}</code></pre>
+<ul>
+<li><code>@Configuration</code>代表这是一个Java配置文件。</li>
+<li><code>@Bean</code>代表将initUser方法返回的POJO类装配到SpringIoc容器中，而其属性值<code>name</code>定义这个Bean的名称。如果没有设置该属性，则将方法名称“initUser”作为Bean的名称保存到Spring Ioc中。</li>
+</ul>
+<p>创建测试类，利用<b style="color:crimson;">AnnotationConfigApplicationContext</b>类加载Spring Ioc容器：</p>
+<pre><code class="java">package com.panhao.demo.config;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+
+import com.panhao.demo.pojo.User;
+
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
+public class IocTest {
+
+    public static void main(String[] args) {
+        ApplicationContext ctx=new AnnotationConfigApplicationContext(AppConfig.class);
+        User user=ctx.getBean(User.class);
+        log.info(user.toString());
+    }
+}</code></pre>
+<ul>
+<li><p><code>@Slf4j</code>是lombok插件的日志引用，实际上相当于：</p>
+<pre><code class="java">private static Logger log=LoggerFactory.getLogger(IocTest.class);</code></pre>
+</li>
+</ul>
+<p>在控制台观察到输出：<span style="color:crimson;">11:23:12.232 [main] INFO com.panhao.demo.config.IocTest - User(id=1, userName=user_name_1, note=note_1)</span></p>
+<h4 id="3、Spring-Boot装备Bean"><a href="#3、Spring-Boot装备Bean" class="headerlink" title="3、Spring Boot装备Bean"></a><b style="color:blue;">3、Spring Boot装备Bean</b></h4><p>Spring允许使用XML配置或者是Java配置文件装配Bean，但是由于Spring Boot是基于注解的方式。所以Spring Boot装配Bean的方式略微不同。</p>
+<p><b style="color:orange;">通过扫描装配Bean</b></p>
+<p>如果每一个Bean都是用<code>@Bean</code>配置的话相对来说会很麻烦，使用<code>@Component</code>和<code>@ComponentScan</code>。</p>
+<ol>
+<li><b style="color:crimson;">@Component </b>：是标明那个类被扫描进Spring Ioc容器中；</li>
+<li><b style="color:crimson;">@ComponentScan</b> ：标明采用何种策略去扫描装配Bean；</li>
+</ol>
+<p>此时在实体上添加<code>@Component</code>表示这是一个组件，告诉Spring Ico将其装配成Bean：</p>
+<pre><code class="java">package com.panhao.demo.config;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
+@Component(&quot;user&quot;)
+@Setter
+@Getter
+@ToString
+public class User {
+
+    @Value(&quot;1&quot;)
+    private Long id;
+    @Value(&quot;user_name_1&quot;)
+    private String userName;
+    @Value(&quot;note_1&quot;)
+    private String note;
+
+}
+</code></pre>
+<ul>
+<li><b style="color:crimson;">@Value</b> 表示给这个Bean的各个属性设置一个值。</li>
+</ul>
+<p>然后就可以将AppConfig中配置的<code>@Bean</code>删掉，添加<code>@ComponentScan</code>，因为Spring IOC会扫描到User，然后自动装配实例Bean。</p>
+<pre><code class="java">package com.panhao.demo.config;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+
+import com.panhao.demo.pojo.User;
+
+@Configuration
+@ComponentScan
+public class AppConfig {
+}
+</code></pre>
+<p>最后测试这个Bean：</p>
+<pre><code class="java">package com.panhao.demo.config;
+
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+
+import com.panhao.demo.pojo.User;
+
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
+public class IocTest {
+
+    public static void main(String[] args) {
+        ApplicationContext ctx=new AnnotationConfigApplicationContext(AppConfig.class);
+        User user=ctx.getBean(User.class);
+        log.info(user.toString());
+    }
+}
+</code></pre>
+<p>在控制台看到如下输出：</p>
+<pre><code class="java">10:15:14.743 [main] INFO com.panhao.demo.config.IocTest - UserComponent(id=1, userName=user_name_1, note=note_1)</code></pre>
+<p>表示Spring自动装配Bean成功。</p>
+<p><b style="color:orange;">@ComponentScan常用配置</b></p>
+<ul>
+<li><b style="color:crimson;">basePackages</b> :定义扫描的包名；</li>
+<li><b style="color:crimson;">basePackageClasaaes</b> ：定义扫描的类；</li>
+<li><b style="color:crimson;">includeFilters</b> ：定义满足过滤器条件的Bean才会被扫描到；</li>
+<li><b style="color:crimson;">excludeFilter</b>：定义排除满足条件的过滤器之后所有的Bean才会被扫描到；  </li>
+</ul>
+<p>加入在<code>com.panhao.demo</code>包下有两个类，分别被<code>@Component</code>和<code>@Service</code>所标注，此时不想加载被@Service标注的类加载到IOC容器中，可以这样设置@ComponentScan：</p>
+<pre><code class="java">@ComponentScan(basePackages=&quot;com.panhao.demo.*&quot;,excludeFilter={@Filter(classes={Service.class})})</code></pre>
+<ul>
+<li><b style="color:crimson;">@Service</b> :该注解注入了@Component，所以在默认情况下它会被Spring扫描到Ioc容器中。</li>
+</ul>
+<p>为了达到更好的效果可以使用<code>@SpringBootApplication</code>注解，该注解注入了@ComponentScan，此时可以修改上述配置：</p>
+<pre><code class="java">@SpringBootApplication
+@ComponentScan(basePackages=&quot;Com.panhao.demo&quot;,exculdeFilter={@Filter(classes=Service.class)})</code></pre>
+<h4 id="4、自定义Bean"><a href="#4、自定义Bean" class="headerlink" title="4、自定义Bean"></a><b style="color:blue;">4、自定义Bean</b></h4><p>在Java应用中需要引入很多的第三方的包，并且很有可能希望第三方包的类对象也放到Spring Ioc容器中，此时<code>@Bean</code>注解就发挥很大的作用。</p>
+<p>在pom.xml文件中引入相关的依赖：</p>
+<pre><code class="xml">        &lt;dependency&gt;
+            &lt;groupId&gt;org.apache.commons&lt;/groupId&gt;
+            &lt;artifactId&gt;commons-dbcp2&lt;/artifactId&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;mysql&lt;/groupId&gt;
+            &lt;artifactId&gt;mysql-connector-java&lt;/artifactId&gt;
+        &lt;/dependency&gt;</code></pre>
+<p>然后就可以直接在AppConfig.class文件中定义一个Bean：</p>
+<pre><code class="Java">package com.panhao.demo.config;
+
+
+import java.util.Properties;
+
+import javax.sql.DataSource;
+
+import org.apache.commons.dbcp2.BasicDataSource;
+import org.apache.commons.dbcp2.BasicDataSourceFactory;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+
+
+
+@Configuration
+@SpringBootApplication
+@ComponentScan(basePackages = &quot;com.panhao.demo&quot;)
+public class AppConfig {
+
+    @Bean(name = &quot;dateSource&quot;)
+    public DataSource getDataSource() {
+        Properties props=new Properties();
+        props.setProperty(&quot;driver&quot;, &quot;com.mysql.jdbc.cj.Driver&quot;);
+        props.setProperty(&quot;url&quot;, &quot;jdbc:mysql://localhost:3306/mybatis?useSSL=false&amp;serverTimezone=UTC&quot;);
+        props.setProperty(&quot;username&quot;, &quot;root&quot;);
+        props.setProperty(&quot;password&quot;, &quot;panhao&quot;);
+        DataSource dataSource=null;
+        try {
+            dataSource=BasicDataSourceFactory.createDataSource(props);
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return dataSource;
+    }
+}
+</code></pre>
+<p>可以 测试文件中通过获取这个Bean测试Spring Ioc是否实例化了这个Bean。</p>
+<h4 id="5、依赖注入"><a href="#5、依赖注入" class="headerlink" title="5、依赖注入"></a><b style="color:blue;">5、依赖注入</b></h4><p>除了上述的装备Bean，Spring Ioc还有一个主要的作用就是依赖注入（DI）。</p>
+<p>假设人类依赖于动物做事情，先定义一个人类接口和一个动物接口：</p>
+<pre><code class="java">package com.panhao.demo.pojo;
+
+public interface Person {
+
+    //使用动物服务
+    public void service();
+
+    public void setAnimal(Animal animal);
+}
+</code></pre>
+<pre><code class="java">package com.panhao.demo.pojo;
+
+public interface Animal {
+    public void use();
+}</code></pre>
+<p>然后设置人和动物的实现类，实现注入：</p>
+<pre><code class="java">package com.panhao.demo.pojo;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+@Component
+public class BussinessPerson implements Person{
+
+    @Autowired
+    private Animal animal;
+
+    public void service() {
+        // TODO Auto-generated method stub
+        this.animal.use();
+    }
+
+    public void setAnimal(Animal animal) {
+        // TODO Auto-generated method stub
+        this.animal=animal;
+    }
+
+}
+</code></pre>
+<pre><code class="java">package com.panhao.demo.pojo;
+
+import org.springframework.stereotype.Component;
+
+@Component
+public class Dog implements Animal{
+
+    public void use() {
+        // TODO Auto-generated method stub
+        System.out.println(&quot;狗&quot;+Dog.class.getSimpleName()+&quot;看门用的。&quot;);
+    }
+
+}
+</code></pre>
+<ul>
+<li><b style="color:crimson;">@Autowired</b> 是Spring中常用的注解之一，十分重要。它会根据属性的类型找到对应的Bean进行注入。这里Dog是动物的一种，所以Spring Ioc容器就会把Dog的实例注入到BussinessPerson中。</li>
+</ul>
+<p>测试注入的Bean是否成功：</p>
+<pre><code class="java">package com.panhao.demo.config;
+
+public class IocTest {
+
+    public static void main(String[] args) {
+        ApplicationContext ctx=new AnnotationConfigApplicationContext(AppConfig.class);
+        Person person=ctx.getBean(BussinessPerson.class);
+        person.service();
+    }
+}</code></pre>
+<p>在控制可以看到输出：<span style="color:crimson;">狗Dog看门用的。</span></p>
+<p><b style="color:orange;">@Autowired注解</b></p>
+<p>当只有一个Animal实现类的时候，这么写Spring Ioc容器会正常运行。当拥有两个Animal的实现类的时候，Spring Ioc就会因为没有指定注入哪一个Bean而发生异常：</p>
+<pre><code class="java">No qualifying bean of type &#39;com.panhao.demo.pojo.Animal&#39; available: expected single matching bean but found 2: cat,dog</code></pre>
+<p><span style="color:crimson;">可以通过修改BussinessPerson中属性的名称来表示要注入的是cat还是dog</span></p>
+<pre><code class="java">@Autowired
+private Animal dog;//表示注入的是dog</code></pre>
+<p><span style="color:maroon;">@Autowired首先它会根据类型找到对应的Bean，如果对应类型的Bean不是唯一的，那么它会根据Bean的名称进行匹配。如果匹配上得上，就会使用该Bean；如果无法匹配就会报出异常。</span></p>
+<p>其次@Autowired是一个必须找到匹配类型Bean的注解，如果没有找到就会抛出异常。如果不是非常确定标注的属性是否是存在的可以使用它的<code>required</code>属性，来允许它为空：<code>@Autowired(required=false)</code></p>
+<p><b style="color:orange;">@Primary和@Qualifier</b></p>
+<ul>
+<li><b style="color:crimson;">@Primary</b> 是一个修改优先权的注解，当有猫有狗的时候，假设需要猫，就在猫类的定义上添加<code>@Primary</code>就可以了。</li>
+</ul>
+<p>但是当<code>@Primary</code>在多个类上做了注解的时候，Spring Ioc依旧是不知道要是用那个类注入。此时，使用<code>@Qualifier</code>提供了更大的灵活性。</p>
+<ul>
+<li><p><b style="color:crimson;">@Qualifier</b> 它的配置项value需要一个字符串去定义，它将于@Autowired组合在一起，通过类型和名称一起找到Bean。</p>
+<pre><code class="java">@Autowired
+@Qualifier(value=&quot;dog&quot;)
+private Animal animal=null;</code></pre>
+</li>
+</ul>
+<p><b style="color:orange;">带有参数的构造方法类的装配</b></p>
+<p>使用@Autowired对构造方法的参数进行注入。</p>
+<pre><code class="java">package com.panhao.demo.pojo;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Component;
+
+@Component
+public class BussinessPerson implements Person{
+
+    private Animal animal=null;
+
+    public BussinessPerson( @Autowired @Qualifier(&quot;dog&quot;) Animal animal) {
+        this.animal=animal;
+    }
+
+    public void service() {
+        // TODO Auto-generated method stub
+        this.animal.use();
+    }
+
+    public void setAnimal(Animal animal) {
+        // TODO Auto-generated method stub
+        this.animal=animal;
+    }
+
+}</code></pre>
+<p>对构造方法参数进行注入，在每次构造一个对象的时候都会自动的注入Animal，@Qualifier注解的使用时为了避免歧义性。</p>
+<h4 id="6、Bean的生命周期"><a href="#6、Bean的生命周期" class="headerlink" title="6、Bean的生命周期"></a><b style="color:blue;">6、Bean的生命周期</b></h4><p>一个Bean的生命周期包括：Bean的定义，Bean的初始化，Bean的生存期和Bean的销毁。</p>
+<p>在<code>@ComponentScan</code>中有一个lazeinit的配置项，用于延迟加载Bean，只有在用到的时候才去加载这个Bean。其值的类型为Boolean，默认值为False，表示在扫描的到时候就进行加载。设置为True，表示延迟加载。</p>
+<pre><code class="java">@ComponentScan(basePackages=&quot;com.panhao.demo.*&quot;,lazyinit=true)</code></pre>
+<p>对于第三方的Bean，<code>@Bean</code>注解提供了关于生命周期函数的设置initMethod以及destoryMethod表示在生命周期函数中的哪一个函数进行初始化，哪一个函数进行销毁。</p>
+<pre><code class="java">@Bean(initMethod=&quot;init&quot;,destoryMethod=&quot;destory&quot;)</code></pre>
+<h4 id="7、使用属性文件"><a href="#7、使用属性文件" class="headerlink" title="7、使用属性文件"></a><b style="color:blue;">7、使用属性文件</b></h4><p>首先添加<code>spring-boot-configuration-processor</code>依赖：</p>
+<pre><code class="xml">        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-boot-configuration-processor&lt;/artifactId&gt;
+            &lt;optional&gt;true&lt;/optional&gt;
+        &lt;/dependency&gt;</code></pre>
+<p>有了依赖，就可以使用<code>application.properties</code>进行工作。</p>
+<pre><code class="properties">jdbc.driver=com.mysql.cj.jdbc.Driver
+jdbc.url=jdbc:mysql://localhost:3306/mybatis?useSSL=false&amp;serverTimezone=UTC
+jdbc.username=root
+jdbc.password=panhao</code></pre>
+<p>关于它的引用有两种方式：</p>
+<ul>
+<li><p><b style="color:hotpink;">用Spring表达式</b>：</p>
+<pre><code class="java">package com.panhao.demo.pojo;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+
+@Component
+public class DataBaseProperties {
+
+    private String driverName=null;
+
+</code></pre>
+</li>
+</ul>
+<pre><code>  private String url=null;
+
+
+  private String username=null;
+
+
+  private String password=null;
+
+  public String getDriverName() {
+      return driverName;
+  }
+  @Value(&quot;${jdbc.driverName}&quot;)
+  public void setDriverName(String driverName) {
+      System.out.println(driverName);
+      this.driverName = driverName;
+  }
+
+  public String getUrl() {
+      return url;
+  }
+  @Value(&quot;${jdbc.url}&quot;)
+  public void setUrl(String url) {
+      System.out.println(url);
+      this.url = url;
+  }
+
+  public String getUsername() {
+      return username;
+  }
+  @Value(&quot;${jdbc.username}&quot;)
+  public void setUsername(String username) {
+      System.out.println(username);
+      this.username = username;
+  }
+
+  public String getPassword() {
+      return password;
+  }
+  @Value(&quot;${jdbc.password}&quot;)
+  public void setPassword(String password) {
+      System.out.println(password);
+      this.password = password;
+  }</code></pre><p>  }</p>
+<pre><code>
+  使用@Value注解和`${属性名}`的形式调用属性值。
+
+* &lt;b style=&quot;color:hotpink;&quot;&gt;使用@ConfigurationProperties&lt;/b&gt;：
+
+  ```java
+  package com.panhao.demo.pojo;
+
+  import org.springframework.beans.factory.annotation.Value;
+  import org.springframework.boot.context.properties.ConfigurationProperties;
+  import org.springframework.stereotype.Component;
+
+  @Component
+  @ConfigurationProperties(&quot;jdbc&quot;)
+  @Getter
+  @Setter
+  @ToString
+  public class DataBaseProperties {
+
+      private String driverName=null;
+
+
+      private String url=null;
+
+
+      private String username=null;
+
+
+      private String password=null;
+
+  }</code></pre><p>  使用<code>@ConfigurationPrperties</code>注解指定properties文件中的属性名的前缀。此时设置的时候属性名要与properties的属性值中名字相同。</p>
+<p>以上两种方式需要在Application文件中添加<code>@PropertySource()</code></p>
+<pre><code class="java">package com.panhao.demo;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.PropertySource;
+
+@SpringBootApplication
+@PropertySource(value = {&quot;classpath:jdbc.properties&quot;},ignoreResourceNotFound = true)
+public class MyfirstSpringBootApplication {
+
+    public static void main(String[] args) {
+        SpringApplication.run(MyfirstSpringBootApplication.class, args);
+    }
+
+}</code></pre>
+<ul>
+<li>在使用除了<code>application.properties</code>文件以外的propertieswe文件的时候，需要使用<code>@PropertySource</code>注解，其中Value属性是为了指定properties文件的位置，ignoreResourceNotFound</li>
+</ul>
+<p>然后启动Spring Boot可以在控制台看到输出：</p>
+<pre><code class="java">panhao
+jdbc:mysql://localhost:3306/mybatis?useSSL=false&amp;serverTimezone=UTC
+root
+com.mysql.cj.jdbc.Driver</code></pre>
+<h4 id="8、条件装配"><a href="#8、条件装配" class="headerlink" title="8、条件装配"></a><b style="color:blue;">8、条件装配</b></h4><p>有些时候某些客观因素会使一些Bean无法进行初始化。例如，配置数据源的时候，配置中漏掉一些配置会造成数据源不能连接上。在这样的情况下，Ioc容器如果还进行数据源的装配，就会导致应用无法继续。此时希望Ioc容器不去装配数据源。</p>
+<p>使用<code>@Conditional</code>注解，它需要配置另外一个接口完成Condition（org.springframework.context.annotation.Condition）来完成对应的功能。</p>
+<p>首先创建DatabaseConditional.class，当环境配置不齐全的时候，不实例化这个Bean：</p>
+<pre><code class="java">package com.panhao.demo.config;
+
+import org.springframework.context.annotation.Condition;
+import org.springframework.context.annotation.ConditionContext;
+import org.springframework.core.env.Environment;
+import org.springframework.core.type.AnnotatedTypeMetadata;
+
+public class DatabaseConditional implements Condition{
+
+    public boolean matches(ConditionContext context, AnnotatedTypeMetadata metadata) {
+        // TODO Auto-generated method stub
+        //取出环境配置
+        Environment env=context.getEnvironment();
+
+        return env.containsProperty(&quot;jdbc.driverName&quot;)
+                &amp;&amp;env.containsProperty(&quot;jdbc.url&quot;)
+                &amp;&amp;env.containsProperty(&quot;jdbc.username&quot;)
+                &amp;&amp;env.containsProperty(&quot;jdbc.password&quot;);
+    }
+
+}</code></pre>
+<p>实现Condition接口，需要重写<code>matches()</code>方法，当match方法返回值为true的时候才会装配数据库连接池。</p>
+<p>然后修改Bean的注入，加上<code>@Conditional</code>注解：</p>
+<pre><code class="java">package com.panhao.demo.config;
+
+
+import java.util.Properties;
+
+import javax.sql.DataSource;
+
+import org.apache.commons.dbcp2.BasicDataSource;
+import org.apache.commons.dbcp2.BasicDataSourceFactory;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Conditional;
+import org.springframework.context.annotation.Configuration;
+
+
+
+@Configuration
+@SpringBootApplication
+@ComponentScan(basePackages = &quot;com.panhao.demo&quot;)
+public class AppConfig {
+
+    @Bean(name = &quot;dateSource&quot;,destroyMethod = &quot;close&quot;)
+    @Conditional(value =DatabaseConditional.class )
+    public DataSource getDataSource(
+            @Value(&quot;{$jdbc.driverName}&quot;)String driver,
+            @Value(&quot;${jdbc.url}&quot;)String url,
+            @Value(&quot;${jdbc.username}&quot;)String username,
+            @Value(&quot;${jdbc.password}&quot;)String password) {
+        Properties props=new Properties();
+        props.setProperty(&quot;driver&quot;, driver);
+        props.setProperty(&quot;url&quot;, url);
+        props.setProperty(&quot;username&quot;, username);
+        props.setProperty(&quot;password&quot;, password);
+        DataSource dataSource=null;
+        try {
+            dataSource=BasicDataSourceFactory.createDataSource(props);
+            System.out.println(&quot;正在装配DataSource&quot;);
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return dataSource;
+    }
+}</code></pre>
+<p>在控制台可以看到输出：<span style="color:crimson;">正在装配DataSource</span>；当将jdbc.properties中任意一个配置注释掉的时候，控制台将不会输出这句话，表示条件不符合没有装配实例Bean。</p>
+<h4 id="9、Bean的作用域"><a href="#9、Bean的作用域" class="headerlink" title="9、Bean的作用域"></a><b style="color:blue;">9、Bean的作用域</b></h4><p>在BeanFactory的源码中存在：<code>isSingleton()</code>和<code>isProperty()</code>两个方法，用来判断Bean的类型。在Spring 应用中Bean有两种类型，一种是单例，即实例化的Bean在Spring Ioc容器中都是唯一的存在；一种是原型，即实例化的Bean，Spring Ioc容器新建的。</p>
+<p>设置Bean的模式的在Spring中使用的是：<code>@Scope()</code>注解。</p>
+<pre><code class="java">package com.panhao.demo.pojo;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
+@Component
+//@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+public class ScopeBean {
+
+    @Value(&quot;name_Scope&quot;)
+    private String name;
+}
+</code></pre>
+<p>首先注释掉@Scope采用默认的单例模式：</p>
+<pre><code class="java">package com.panhao.demo.config;
+
+import javax.sql.DataSource;
+
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+
+import com.panhao.demo.pojo.BussinessPerson;
+import com.panhao.demo.pojo.Person;
+import com.panhao.demo.pojo.ScopeBean;
+import com.panhao.demo.pojo.User;
+
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
+public class IocTest {
+
+    public static void main(String[] args) {
+        ApplicationContext ctx=new AnnotationConfigApplicationContext(AppConfig.class);
+        ScopeBean sb1=ctx.getBean(ScopeBean.class);
+        ScopeBean sb2=ctx.getBean(ScopeBean.class);
+        System.out.println(sb1==sb2);
+    }
+}
+</code></pre>
+<p>控制台输出字样：<span style="color:crimson;">true</span>。如果不注释@Scope，会发现控制台输出为false。表示设置Scope为Prototype的时候，每次调用这个Bean的时候Spring Ioc容器都会新建一个实例以供使用。</p>
+<h4 id="10、-Profile的使用"><a href="#10、-Profile的使用" class="headerlink" title="10、@Profile的使用"></a><b style="color:blue;">10、@Profile的使用</b></h4><p>@Profile的使用，是用来指定不同环境下的配置文件的。比如现在由三个各不同的环境下的配置文件：dev、env、test。然后对应的配置文件为：application-dev.properties、application-test.properties、application-env.properties;</p>
+<p>可以在application.properties中指定对应的当前环境：</p>
+<pre><code class="properties">spring.profiles.active=test</code></pre>
+<p>然后需要指定的代码的环境下使用@Profile:</p>
+<pre><code class="java">package com.panhao.demo.config;
+
+
+import java.util.Properties;
+
+import javax.sql.DataSource;
+
+import org.apache.commons.dbcp2.BasicDataSource;
+import org.apache.commons.dbcp2.BasicDataSourceFactory;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Conditional;
+import org.springframework.context.annotation.Configuration;
+
+
+
+@Configuration
+@SpringBootApplication
+@ComponentScan(basePackages = &quot;com.panhao.demo&quot;)
+public class AppConfig {
+
+    @Bean(name = &quot;dateSource&quot;,destroyMethod = &quot;close&quot;)
+    @Profile(&quot;dev&quot;)
+    public DataSource getDataSource(
+            @Value(&quot;{$jdbc.driverName}&quot;)String driver,
+            @Value(&quot;${jdbc.url}&quot;)String url,
+            @Value(&quot;${jdbc.username}&quot;)String username,
+            @Value(&quot;${jdbc.password}&quot;)String password) {
+        Properties props=new Properties();
+        props.setProperty(&quot;driver&quot;, driver);
+        props.setProperty(&quot;url&quot;, url);
+        props.setProperty(&quot;username&quot;, username);
+        props.setProperty(&quot;password&quot;, password);
+        DataSource dataSource=null;
+        try {
+            dataSource=BasicDataSourceFactory.createDataSource(props);
+            System.out.println(&quot;正在装配DataSource&quot;);
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return dataSource;
+    }
+}</code></pre>
+<p>Spring Ioc会去application.properties中查询被激活的是哪一个环境，然后就会去读取相应的配置文件实例化这个Bean。</p>
+<h4 id="11、使用Spring-El表达式"><a href="#11、使用Spring-El表达式" class="headerlink" title="11、使用Spring El表达式"></a><b style="color:blue;">11、使用Spring El表达式</b></h4><p>通过Spring EL可以拥有更强大的运算规则来更好的装配Bean。</p>
+<p><span style="color:crimson;">最常用的就是使用<code>${...}</code>的形式读取属性文件的值</span></p>
+<pre><code class="java">@Value(&quot;${jdbc.username}&quot;)
+private String username;</code></pre>
+<p>除此之外<span style="color:crimson;">它还可以调用方法</span></p>
+<pre><code class="java">@Value(&quot;#{T(System).currentTimeMillis()}&quot;)
+private Long  initTime=null;</code></pre>
+<ul>
+<li><code>#{...}</code> 代表启用Spring的表达式，它将具有运算的功能；<code>T{...}</code> 代表引入的是类；（<i style="color:slateblue;">System是Java.lang.*包的类，这是Java默认加载的包，因此可以不必写全限定名，如果是其他的包，则需要写出全限定名才能引用类；</i>）<code>currentMillis</code>是System的静态的方法，也就是调用一次<code>System.currentMillis()</code>方法来返回当前时间的毫秒值为这个属性赋值。</li>
+</ul>
+<p>此外还可以<span style="color:crimson;">还可以直接给属性赋值</span></p>
+<pre><code class="java">//赋值字符串
+@Value(&quot;#{&#39;使用Spring EL 赋值字符串&#39;}&quot;)
+private String str=null;
+//科学计数法赋值
+@Value(&quot;#{9.3E3}&quot;)
+private double d;
+//赋值浮点数
+@Value(&quot;#{3.14}&quot;)
+private float pi;</code></pre>
+<p>甚至有时候可以<span style="color:crimson;">使用其他的Bean的属性来给当前Bean赋值</span>：</p>
+<pre><code class="java">@Value(&quot;#{beanName.str}&quot;)
+private String otherBeanProp= null;</code></pre>
+<ul>
+<li>这里的BeanName是在Spring Ioc容器中注册的Bean的name属性的值。</li>
+</ul>
+<p>还可以使用<code>?</code>来表示判断这个属性是否为空：</p>
+<pre><code class="java">@Value(&quot;#{beanName.str?.toUpperCase()}&quot;)</code></pre>
+<p>当这个属性不为空的时候，就可以将其全部变成大写的。</p>
+<p><span style="color:crimson;">除了以上所有的功能外，最主要的是计算功能</span></p>
+<pre><code class="java">//数学运算
+@Value(&quot;#{1+2}&quot;)
+private int run;
+//浮点数比较运算
+@Value(&quot;#{beanName.pi==3.14f}&quot;)
+private boolean piFlag;
+//字符串比较运算
+@Value(&quot;#{beanName.str eq &#39;Spring Boot&#39;}&quot;)
+private boolean srtFlag;
+//字符串连接
+@Value(&quot;#{beanName.str + &#39;String 连接字符串&#39;}&quot;)
+private String strApp=null;
+//三元运算
+@Value(&quot;#{beanName.d&gt;100?&#39;大于&#39;:&#39;小于&#39;}&quot;)
+private String resultDesc=null;</code></pre>
+<p>常用的Spring EL表达式就是上述这些。</p>
+
+  </article>
+
+  <div class="nexmoe-post-meta nexmoe-rainbow">
+    
+        <a class="nexmoefont icon-appstore-fill -link" href="/categories/Spring-Boot/">Spring Boot</a>
+    
+    
+        <a class="nexmoefont icon-tag-fill -link" href="/tags/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/" rel="tag">编程语言</a>
+    
+</div>
+
+  <div class="nexmoe-post-footer">
+    
+      
+  <div class="nexmoe-post-copyright">
+    <strong>Author：</strong>AntPan<br>
+    <strong>Link：</strong><a href="https://alpacame.github.io/2020/04/26/Spring-Boot%E4%B8%AD%E7%9A%84Spring-Ioc/" title="https:&#x2F;&#x2F;alpacame.github.io&#x2F;2020&#x2F;04&#x2F;26&#x2F;Spring-Boot%E4%B8%AD%E7%9A%84Spring-Ioc&#x2F;" target="_blank" rel="noopener">https:&#x2F;&#x2F;alpacame.github.io&#x2F;2020&#x2F;04&#x2F;26&#x2F;Spring-Boot%E4%B8%AD%E7%9A%84Spring-Ioc&#x2F;</a><br>
+    
+      <strong>版权声明：</strong>本文采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/cn/deed.zh" target="_blank">CC BY-NC-SA 3.0 CN</a> 协议进行许可
+    
+  </div>
+
+
+    
+    <section class="nexmoe-comment">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.5.0/dist/gitalk.min.css">
+<div id="gitalk"></div>
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1.5.0/dist/gitalk.min.js"></script>
+<script type="text/javascript">
+    var gitalk = new Gitalk({
+        clientID: '80b2453b6d5f37ad6225',
+        clientSecret: '43e99fa852795c9a7b3eb924b2558c64b84bbdeb',
+        id: window.location.pathname,
+        repo: 'nexmoe.github.io',
+        owner: 'nexmoe',
+        admin: 'nexmoe'
+    })
+    gitalk.render('gitalk')
+</script>
+</section>
+  </div>
+</div>
+    </div>
+  </div>
+  <script src="https://cdn.jsdelivr.net/combine/npm/lazysizes@5.1.0/lazysizes.min.js,gh/highlightjs/cdn-release@9.15.8/build/highlight.min.js,npm/mdui@0.4.3/dist/js/mdui.min.js,gh/nexmoe/nexmoe.github.io@latest/js/app.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+<!--<script src="/js/app.js?v=1587904642775"></script>-->
+
+
+    <script src="https://cdn.jsdelivr.net/gh/xtaodada/xtaodada.github.io@0.0.2/copy.js"></script>
+
+
+ 
+<script> 
+!function(e,t,a){function n(){c(".heart{width: 10px;height: 10px;position: fixed;background: #f00;transform: rotate(45deg);-webkit-transform: rotate(45deg);-moz-transform: rotate(45deg);}.heart:after,.heart:before{content: '';width: inherit;height: inherit;background: inherit;border-radius: 50%;-webkit-border-radius: 50%;-moz-border-radius: 50%;position: fixed;}.heart:after{top: -5px;}.heart:before{left: -5px;}"),o(),r()}function r(){for(var e=0;e<d.length;e++)d[e].alpha<=0?(t.body.removeChild(d[e].el),d.splice(e,1)):(d[e].y--,d[e].scale+=.004,d[e].alpha-=.013,d[e].el.style.cssText="left:"+d[e].x+"px;top:"+d[e].y+"px;opacity:"+d[e].alpha+";transform:scale("+d[e].scale+","+d[e].scale+") rotate(45deg);background:"+d[e].color+";z-index:99999");requestAnimationFrame(r)}function o(){var t="function"==typeof e.onclick&&e.onclick;e.onclick=function(e){t&&t(),i(e)}}function i(e){var a=t.createElement("div");a.className="heart",d.push({el:a,x:e.clientX-5,y:e.clientY-5,scale:1,alpha:1,color:s()}),t.body.appendChild(a)}function c(e){var a=t.createElement("style");a.type="text/css";try{a.appendChild(t.createTextNode(e))}catch(t){a.styleSheet.cssText=e}t.getElementsByTagName("head")[0].appendChild(a)}function s(){return"rgb("+~~(255*Math.random())+","+~~(255*Math.random())+","+~~(255*Math.random())+")"}var d=[];e.requestAnimationFrame=function(){return e.requestAnimationFrame||e.webkitRequestAnimationFrame||e.mozRequestAnimationFrame||e.oRequestAnimationFrame||e.msRequestAnimationFrame||function(e){setTimeout(e,1e3/60)}}(),n()}(window,document);
+</script>
+
+  
+
+
+
+
+
+</body>
+
+</html>
