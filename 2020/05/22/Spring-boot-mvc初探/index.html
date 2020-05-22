@@ -1,0 +1,1149 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+  
+  <title>Spring boot mvc初探 - 山有木兮木有枝</title>
+  <meta charset="UTF-8">
+  <meta name="description" content="玲珑骰子安红豆，入骨相思知不知">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
+  
+  
+
+  <link rel="shortcut icon" href="https://freeware.iconfactory.com/assets/hamstergeddon/preview.png# 网站图标" type="image/png" />
+  <meta name="description" content="淡荡春光寒食天，玉炉沈水袅残烟">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Spring boot mvc初探">
+<meta property="og:url" content="https://alpacame.github.io/2020/05/22/Spring-boot-mvc%E5%88%9D%E6%8E%A2/index.html">
+<meta property="og:site_name" content="山有木兮木有枝">
+<meta property="og:description" content="淡荡春光寒食天，玉炉沈水袅残烟">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="f:%5Cblog%5CAlpacaMe%5Csource_posts%5CMvc%E6%A1%86%E6%9E%B6.png">
+<meta property="og:image" content="f:%5Cblog%5CAlpacaMe%5Csource_posts%5CBootMvc%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84.png">
+<meta property="article:published_time" content="2020-05-22T01:27:45.000Z">
+<meta property="article:modified_time" content="2020-05-22T01:39:38.915Z">
+<meta property="article:author" content="AntPan">
+<meta property="article:tag" content="编程语言">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="f:%5Cblog%5CAlpacaMe%5Csource_posts%5CMvc%E6%A1%86%E6%9E%B6.png">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/combine/gh/nexmoe/nexmoe.github.io@latest/css/style.css,npm/highlight.js@9.15.8/styles/atom-one-dark.css,gh/nexmoe/nexmoe.github.io@latest/lib/mdui_043tiny/css/mdui.css,gh/nexmoe/nexmoe.github.io@latest/lib/iconfont/iconfont.css" crossorigin>
+  
+  <!--<link rel="stylesheet" href="/css/style.css?v=1590111835889">-->
+
+   
+    <style>
+      .nexmoe-avatar img:hover {
+        -webkit-transform: rotateZ(360deg);
+        -moz-transform: rotateZ(360deg);
+        transform: rotateZ(360deg);
+      }	
+    </style>
+  
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body class="mdui-drawer-body-left">
+  
+  <div id="nexmoe-background">
+    <div class="nexmoe-bg" style="background-image: url(http://img.netbian.com/file/2020/0327/c70a565b65c499b4d6d6f4210a7a103b.jpg)"></div>
+    <div class="mdui-appbar mdui-shadow-0">
+      <div class="mdui-toolbar">
+        <a mdui-drawer="{target: '#drawer', swipe: true}" title="menu" class="mdui-btn mdui-btn-icon mdui-ripple"><i class="mdui-icon nexmoefont icon-menu"></i></a>
+        <div class="mdui-toolbar-spacer"></div>
+        <!--<a href="javascript:;" class="mdui-btn mdui-btn-icon"><i class="mdui-icon material-icons">search</i></a>-->
+        <a href="/" title="AntPan" class="mdui-btn mdui-btn-icon"><img src="https://avatars0.githubusercontent.com/u/58353039?s=460&amp;u=a06eebdea982770b37397225c6a1768fa2f8a0e0&amp;v=4" alt="AntPan"></a>
+       </div>
+    </div>
+  </div>
+  <div id="nexmoe-header">
+      <div class="nexmoe-drawer mdui-drawer" id="drawer">
+    <div class="nexmoe-avatar mdui-ripple">
+        <a href="/" title="AntPan">
+            <img src="https://avatars0.githubusercontent.com/u/58353039?s=460&amp;u=a06eebdea982770b37397225c6a1768fa2f8a0e0&amp;v=4" alt="AntPan" alt="AntPan">
+        </a>
+    </div>
+    <div class="nexmoe-count">
+        <div><span>Articles</span>10</div>
+        <div><span>Tags</span>2</div>
+        <div><span>Categories</span>3</div>
+    </div>
+    <div class="nexmoe-list mdui-list" mdui-collapse="{accordion: true}">
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple" href="/" title="回到首页">
+            <i class="mdui-list-item-icon nexmoefont icon-home"></i>
+            <div class="mdui-list-item-content">
+                回到首页
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple" href="/about/index.html" title="关于博客">
+            <i class="mdui-list-item-icon nexmoefont icon-info-circle"></i>
+            <div class="mdui-list-item-content">
+                关于博客
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple" href="/archives" title="文章归档">
+            <i class="mdui-list-item-icon nexmoefont icon-container"></i>
+            <div class="mdui-list-item-content">
+                文章归档
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple" href="/PY.html" title="我的朋友">
+            <i class="mdui-list-item-icon nexmoefont icon-unorderedlist"></i>
+            <div class="mdui-list-item-content">
+                我的朋友
+            </div>
+        </a>
+        
+    </div>
+    <aside id="nexmoe-sidebar">
+  
+  <div class="nexmoe-widget-wrap">
+    <div class="nexmoe-widget nexmoe-search">
+        <form id="search_form" action_e="https://www.google.com/search?q={https://alpacame.github.io/}" onsubmit="return search();">
+            <label><input id="search_value" name="q" type="search" placeholder="Search"></label>
+        </form>
+    </div>
+</div>
+  
+  <div class="nexmoe-widget-wrap">
+    <h3 class="nexmoe-widget-title">Social</h3>
+    <div class="nexmoe-widget nexmoe-social">
+        <a class="mdui-ripple" href="https://space.bilibili.com/439098990" target="_blank" mdui-tooltip="{content: '哔哩哔哩'}" style="color: rgb(231, 106, 141);background-color: rgba(231, 106, 141, .15);">
+            <i class="nexmoefont icon-bilibili"></i>
+        </a><a class="mdui-ripple" href="https://github.com/AlpacaMe" target="_blank" mdui-tooltip="{content: 'GitHub'}" style="color: rgb(25, 23, 23);background-color: rgba(25, 23, 23, .15);">
+            <i class="nexmoefont icon-github"></i>
+        </a>
+    </div>
+</div>
+  
+  
+  <div class="nexmoe-widget-wrap">
+    <h3 class="nexmoe-widget-title">Categories</h3>
+    <div class="nexmoe-widget">
+
+      <ul class="category-list">
+
+        
+
+
+        
+
+        
+
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/Spring-Boot/">Spring Boot</a>
+          <span class="category-list-count">5</span>
+        </li>
+
+        
+
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/Spring学习/">Spring学习</a>
+          <span class="category-list-count">1</span>
+        </li>
+
+        
+
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/Vue-js/">Vue.js</a>
+          <span class="category-list-count">3</span>
+        </li>
+
+        
+      </ul>
+
+    </div>
+  </div>
+
+
+  
+  
+  <div class="nexmoe-widget-wrap">
+    <h3 class="nexmoe-widget-title">Tag Cloud</h3>
+    <div id="randomtagcloud" class="nexmoe-widget tagcloud nexmoe-rainbow">
+      <a href="/tags/%E6%9D%82%E8%AE%B0/" style="font-size: 10px;">杂记</a> <a href="/tags/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/" style="font-size: 20px;">编程语言</a>
+    </div>
+    
+  </div>
+
+  
+  
+  <div class="nexmoe-widget-wrap">
+    <h3 class="nexmoe-widget-title">Recent Posts</h3>
+    <div class="nexmoe-widget">
+      <ul>
+        
+          <li>
+            <a href="/2020/05/22/Spring-boot-mvc%E5%88%9D%E6%8E%A2/">Spring boot mvc初探</a>
+          </li>
+        
+          <li>
+            <a href="/2020/05/08/Spring-Boot%E6%95%B0%E6%8D%AE%E5%BA%93%E5%88%9D%E8%AF%86/">Spring Boot数据库初识</a>
+          </li>
+        
+          <li>
+            <a href="/2020/05/08/Spring-Boot%E6%B3%A8%E8%A7%A3%E5%A4%A7%E5%85%A8/">Spring Boot注解大全</a>
+          </li>
+        
+          <li>
+            <a href="/2020/05/02/Spring-Boot-AOP%E7%BC%96%E7%A8%8B%E5%88%9D%E6%8E%A2/">Spring Boot AOP编程初探</a>
+          </li>
+        
+          <li>
+            <a href="/2020/04/26/Spring-Boot%E4%B8%AD%E7%9A%84Spring-Ioc/">Spring Boot中的Spring Ioc</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+    <div class="nexmoe-copyright">
+        &copy; 2020 AntPan
+        Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+        & <a href="https://nexmoe.com/hexo-theme-nexmoe.html" target="_blank">Nexmoe</a>
+    </div>
+</div><!-- .nexmoe-drawer -->
+  </div>
+  <div id="nexmoe-content">
+    <div class="nexmoe-primary">
+        <div class="nexmoe-post">
+  
+      <div class="nexmoe-post-cover" style="padding-bottom: 54.166666666666664%;"> 
+          <img data-src="http://img.netbian.com/file/2017/1016/0ec3c19d70d938e81ee1bcc3a0f3bc84.jpg" data-sizes="auto" alt="Spring boot mvc初探" class="lazyload">
+          <h1>Spring boot mvc初探</h1>
+      </div>
+  
+  
+  <div class="nexmoe-post-meta nexmoe-rainbow" style="margin:10px 0!important;">
+    <a><i class="nexmoefont icon-calendar-fill"></i>2020年05月22日</a>
+    <a><i class="nexmoefont icon-areachart"></i>8k 字</a>
+    <a><i class="nexmoefont icon-time-circle-fill"></i>大概 40 分钟</a>
+</div>
+
+  <div class="nexmoe-post-right">
+    
+      <div class="nexmoe-fixed">
+        <div class="nexmoe-valign">
+            <div class="nexmoe-toc">
+                <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#"><span class="toc-number">1.</span> <span class="toc-text">淡荡春光寒食天，玉炉沈水袅残烟</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Spring-Mvc框架的设计"><span class="toc-number">1.0.1.</span> <span class="toc-text">Spring Mvc框架的设计</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#1、-Mvc框架流程"><span class="toc-number">1.0.2.</span> <span class="toc-text">1、 Mvc框架流程</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2、Spring-Mvc流程"><span class="toc-number">1.0.3.</span> <span class="toc-text">2、Spring Mvc流程</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3、Spring-Mvc开发流程"><span class="toc-number">1.0.4.</span> <span class="toc-text">3、Spring Mvc开发流程 </span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4、Spring-Mvc深入开发"><span class="toc-number">1.0.5.</span> <span class="toc-text">4、Spring Mvc深入开发</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#处理器映射"><span class="toc-number">1.0.5.1.</span> <span class="toc-text">处理器映射</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#控制器获取参数"><span class="toc-number">1.0.5.2.</span> <span class="toc-text">控制器获取参数</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#传递数组"><span class="toc-number">1.0.5.3.</span> <span class="toc-text">传递数组</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#传递JSON"><span class="toc-number">1.0.5.4.</span> <span class="toc-text">传递JSON</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#通过URL传递参数"><span class="toc-number">1.0.5.5.</span> <span class="toc-text">通过URL传递参数</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#自定义参数转换规则"><span class="toc-number">1.0.5.6.</span> <span class="toc-text">自定义参数转换规则</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#数据验证"><span class="toc-number">1.0.5.7.</span> <span class="toc-text">数据验证</span></a></li></ol></li></ol></li></ol></li></ol>
+            </div>
+        </div>
+      </div>
+    
+  </div>
+
+  <article>
+    <h2 style="color:crimson;font-weight:lighter;">淡荡春光寒食天，玉炉沈水袅残烟</h2>
+
+<a id="more"></a>
+
+<h4 id="Spring-Mvc框架的设计"><a href="#Spring-Mvc框架的设计" class="headerlink" title="Spring Mvc框架的设计"></a><b style="color:red;">Spring Mvc框架的设计</b></h4><h4 id="1、-Mvc框架流程"><a href="#1、-Mvc框架流程" class="headerlink" title="1、 Mvc框架流程"></a><b style="color:blue;">1、 Mvc框架流程</b></h4><p><img data-sizes="auto" data-src="F:%5Cblog%5CAlpacaMe%5Csource_posts%5CMvc%E6%A1%86%E6%9E%B6.png" alt="" class="lazyload"></p>
+<p>Mvc框架的执行流程：</p>
+<ol>
+<li>处理请求首先达到控制器。<span style="color:hotpink;">控制器的作用是进行请求分发，这样它会根据请求的内容去访问模型层。</span></li>
+<li>现今互联网数据主要从NoSQL中来，而且对于数据库而言往往还是数据库的事务机制，为了适应这样的变化，设计者往往会把模型层细分为两层，即服务层Service和数据访问层DAO。</li>
+<li>当控制器获取到由模型层返回的数据的后，就将其渲染到视图中，这样就可以展示给用户了。</li>
+</ol>
+<h4 id="2、Spring-Mvc流程"><a href="#2、Spring-Mvc流程" class="headerlink" title="2、Spring Mvc流程"></a><b style="color:blue;">2、Spring Mvc流程</b></h4><p>![](F:\blog\AlpacaMe\source_posts\Spring Mvc.png)</p>
+<p>严格的来说，Spring Mvc运行并非是需要经过所有的流程，<code>@ResponseBody</code>注解的时候就不会进行ViewResolver这个流程。在Web服务启动的过程中，如果在Spring Boot机制下启用Mvc，它就开始初始化一些重要的组件，如<code>DisPatcherServlet</code>、<code>HandlerAdapter</code>的实现类<code>RequestmappingHanlder</code> 等。</p>
+<h4 id="3、Spring-Mvc开发流程"><a href="#3、Spring-Mvc开发流程" class="headerlink" title="3、Spring Mvc开发流程 "></a><b style="color:blue;">3、Spring Mvc开发流程 </b></h4><p>创建一个UserController.java作为测试的控制器：</p>
+<pre><code class="java">package com.panhao.controller;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
+
+import com.panhao.pojo.User;
+
+@Controller
+@RequestMapping(&quot;/user&quot;)
+public class UserController {
+
+
+    @RequestMapping(&quot;/get&quot;)
+    @ResponseBody
+    public User getUser() {
+        User user=new User();
+        user.setUsername(&quot;username&quot;);
+        user.setAge(22);
+        return user;
+    }
+}</code></pre>
+<p>然后启动Spring Boot项目，在浏览器中输入<a href="http://localhost:8080/user/get" target="_blank" rel="noopener">http://localhost:8080/user/get</a></p>
+<p>就可以在页面看到返回值为：<code>{&quot;username&quot;:&quot;username&quot;,&quot;age&quot;:22,&quot;note&quot;:null}</code></p>
+<ol>
+<li><p><b style="color:crimson;">@Controller</b> 表明这是一个控制器，然后<b style="color:crimson;">@RequestMapping</b> 代表请求的路径和控制器（或其方法）的映射关系，它会在web服务器启动Spring Mvc时，就被扫描到<code>HandlerMapping</code>的机制中存储，之后在用户发起请求的时候被<code>DispatcherServlet</code>拦截后，通过URL和其它的条件，通过<code>HandlerMapper</code>机制就能找到对应的控制器（或其方法）进行响应。只是通过HandlerMapping返回的是一个<code>HandlerExecutionChain</code>对象。</p>
+<pre><code class="java">    public class HandlerExecutionChain {
+    //日志
+    private static final Log logger = LogFactory.getLog(HandlerExecutionChain.class);
+    //处理器
+    private final Object handler;
+    //拦截器数组
+    @Nullable
+    private HandlerInterceptor[] interceptors;
+    //拦截器列表
+    @Nullable
+    private List&lt;HandlerInterceptor&gt; interceptorList;
+    //拦截器当前下标
+    private int interceptorIndex = -1;
+
+    ...
+
+}</code></pre>
+<p><span style="color:hotpink;">HandlerExecuteChain对象包含一个Handler</span>，这里的处理器是对Controller的包装。因为控制器方法可能存在参数，那么处理器就可以读入HTTP和上下文的相关参数，然后在传递给控制器方法。而控制器返回后，处理器又可以通过配置信息对控制器的返回结果进行处理。</p>
+</li>
+<li><p>在处理器调用控制器时，它首先用过模型层得到数据，再放入模型层中，最后将返回模型和视图（ModelAndView）对象，这里控制器设置的视图名称是<code>user/details</code>。</p>
+</li>
+</ol>
+<p><b style="color:orange;">配置视图解析器</b></p>
+<p>虽然说Spring Boot在启动Web服务器的时候会执行<code>ViewResolver</code>的自动初始化执行。当然也可以定制InternalResourceViewResolver初始化，可以在配置文件中<code>application.properties</code>中进行配置。</p>
+<pre><code class="properties">spring.mvc.view.prefix=/WEB-INF/jsp/
+spring.mvc.view.suffix=.jsp</code></pre>
+<p>进行上述的修改之后，在控制器中返回是<code>user/details</code>，那么它就会找到<code>/WEN-INF/jsp/user/details.jsp</code> 作为视图。</p>
+<p>视图解析器定位到视图后，<span style="color:hotpink;">视图的作用是将数据模型渲染，这样就能够响应用户的请求。</span>这一步就是视图将数据模型渲染出来，用来展示给用户查看。</p>
+<p><b style="color:orange;">通过MappingJackson2JsonView转换出JSON</b></p>
+<p>目前前后台分离的趋势，使用JSON已经是主流的方式，正如之前使用<code>@ResponseBody</code>标注的方法一样，在后面Spring Mvc会把数据转换为JSON数据集，但是在这里暂时不谈论<code>@ResponseBody</code> ，因为它会采用处理器内部的机制。使用<code>MappingJackson2JsonView</code> 也可以达到最终的效果。</p>
+<pre><code class="java">@Controller
+@RequestMapping(&quot;/user&quot;)
+public class UserController {
+
+    @RequestMapping(&quot;/detailForJson&quot;)
+    public ModelAndView detailsForJson(Integer id) {
+        User user=new User();
+        user.setUsername(&quot;username
+        user.setAge(22);
+        user.setNote(&quot;note&quot;)
+        ModelAndView mv=new ModelAndView();
+        MappingJackson2JsonView jsonView=new MappingJackson2JsonView();
+        mv.setView(jsonView);
+        mv.addObject(&quot;user&quot;,user);
+        return mv;
+    }
+}</code></pre>
+<p>在浏览器输入<a href="http://localhost:8080/user/detailForJson" target="_blank" rel="noopener">http://localhost:8080/user/detailForJson</a>  将返回一个JSON的字符串：</p>
+<pre><code class="json">{&quot;user&quot;:{&quot;username&quot;:&quot;username&quot;,&quot;age&quot;:22,&quot;note&quot;:&quot;note&quot;}}</code></pre>
+<ul>
+<li><p>在控制器方法中模型和视图（ModelAndView）中捆绑了JSON视图（MappingJackson2JsonView）和数据模型（User对象），然后返回，其结果也会转变为JSON，只是需要注意的是<span style="color:hotpink;">这一步与使用JSP作为视图是不一样的，是因为JSON视图是没有视图解析器的定位视图，它不是一个逻辑视图，只是需要将数据模型转为JSON对象而已</span>。</p>
+<p><span style="color:slateblue;">@ResponseBody则是在一个处理器内部机制转换的</span></p>
+</li>
+</ul>
+<h4 id="4、Spring-Mvc深入开发"><a href="#4、Spring-Mvc深入开发" class="headerlink" title="4、Spring Mvc深入开发"></a><b style="color:blue;">4、Spring Mvc深入开发</b></h4><h5 id="处理器映射"><a href="#处理器映射" class="headerlink" title="处理器映射"></a><b style="color:orange;">处理器映射</b></h5><p>如果Web工程使用了Spring Mvc，那么它在启动阶段就会将注解<code>@RequestMapping</code>所配置的内容保存到处理器映射（HandlerMapping）机制中去，然后等待请求的到来，通过拦截请求信息与HandlerMapping进行匹配，找到对应的处理器（它包含控制器的逻辑），并将处理器及其拦截器保存到HandlerExecuteChain对象中，返回给DispatcherServlet，这样DispatcherServlet就可以运行它们了。</p>
+<p>关于<code>@RequestMapping</code>的配置如下的源码所示：</p>
+<pre><code class="java">@Target({ElementType.TYPE, ElementType.METHOD})
+@Retention(RetentionPolicy.RUNTIME)
+@Documented
+@Mapping
+public @interface RequestMapping {
+    //配置请求映射的名称
+    String name() default &quot;&quot;;
+    //通过路径映射
+    @AliasFor(&quot;path&quot;)
+    String[] value() default {};
+    //通过路径映射回path配置项
+    @AliasFor(&quot;value&quot;)
+    String[] path() default {};
+    //限制只响应HTTP请求类型，如GET、POST、HEAD、OPTIONS、PUT、TRACE等
+    RequestMethod[] method() default {};
+    //当存在对应的HTTP参数时才响应请求
+    String[] params() default {};
+    //限制请求头存在对应的参数的时候才响应
+    String[] headers() default {};
+     //限定HTTP请求体提交的类型，如application/json、text/html
+    String[] consumes() default {};
+    //限定返回的内容类型，仅当HTTP请求头中的Accept类型中包含该指定的类型时才返回
+    String[] produces() default {};
+
+}</code></pre>
+<ol>
+<li>可以通过配置<b style="color:crimson;">value和path</b>来设置请求的URL。配置项value和path可以通过正则表达式来让方法匹配多个请求（<span style="color:slateblue;">从现实的角度上将，如果不是有必要，尽量不要这么做</span>）。</li>
+<li><b style="color:crimson;">method</b>配置项可以限定HTTP请求的类型，可以区分HTTP的GET或者是POST等不同的请求。（<span style="color:slateblue;">在Spring4.3版本以后，为了简化method配置项的配置，新增了几个注解，如@GetMapping、@PostMapping、@PatchMapping、@PutMapping和@DeleteMapping</span>）。</li>
+</ol>
+<h5 id="控制器获取参数"><a href="#控制器获取参数" class="headerlink" title="控制器获取参数"></a><b style="color:orange;">控制器获取参数</b></h5><p>处理器是对控制器的包装，在处理器运行的过程中会调度控制器的方法，只是<span style="color:yellowgreen;">它在进入控制器方法之前会对HTTP的参数和上下文进行解析，将它们转换为控制器所需要的参数</span>。</p>
+<p><b style="color:peru;">在无注解下获取参数</b></p>
+<p>在没有注解的情况下，Spring Mvc也可以获取参数，且参数允许为空，<span style="color:olive;">唯一的要求是参数的名称和HTTP请求的参数名保持一致</span>。</p>
+<pre><code class="java">package com.panhao.controller;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+@Controller
+@RequestMapping(value = &quot;/my&quot;)
+public class MyController {
+
+    @GetMapping(&quot;/no/annotation&quot;)
+    @ResponseBody
+    public Map&lt;String, Object&gt; noAnnotation(Integer intVal,Long longVal,String str){
+        Map&lt;String, Object&gt; paramsMap =new HashMap&lt;String, Object&gt;();
+        paramsMap.put(&quot;intVal&quot;, intVal);
+        paramsMap.put(&quot;longVal&quot;, longVal);
+        paramsMap.put(&quot;str&quot;, str);
+        return paramsMap;
+    }
+}</code></pre>
+<p>启动SpringBoot项目之后再浏览器输入地址：<a href="http://localhost:8080/my/no/annotation?intVal=10&amp;longVal=200" target="_blank" rel="noopener">http://localhost:8080/my/no/annotation?intVal=10&amp;longVal=200</a></p>
+<p>然后在浏览看到如下返回信息：<code>{&quot;str&quot;:null,&quot;intVal&quot;:10,&quot;longVal&quot;:200}</code></p>
+<p><b style="color:peru;">使用@RequestParam获取参数</b></p>
+<p>Spring Mvc提供注解<b style="color:crimson;">@RequestParam</b>来确定前后端参数名称的映射关系。</p>
+<pre><code class="java">package com.panhao.controller;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+@Controller
+@RequestMapping(value = &quot;/my&quot;)
+public class MyController {    
+    @GetMapping(&quot;/annotation&quot;)
+    @ResponseBody
+    public Map&lt;String, Object&gt; requestParam(@RequestParam(&quot;int_val&quot;)Integer intVal,
+                                            @RequestParam(&quot;long_val&quot;)Long longVal,
+                                            @RequestParam(&quot;str_val&quot;)String str){
+        Map&lt;String, Object&gt; paramsMap =new HashMap&lt;String, Object&gt;();
+        paramsMap.put(&quot;intVal&quot;, intVal);
+        paramsMap.put(&quot;longVal&quot;, longVal);
+        paramsMap.put(&quot;str&quot;, str);
+        return paramsMap;
+    }
+}</code></pre>
+<p>启动Spring Boot项目之后再浏览器地址栏输入：<a href="http://localhost:8080/my/annotation?int_val=1&amp;long_val=2&amp;str_val=str" target="_blank" rel="noopener">http://localhost:8080/my/annotation?int_val=1&amp;long_val=2&amp;str_val=str</a></p>
+<p>可以看到页面返回的内容为：<code>{&quot;str&quot;:&quot;str&quot;,&quot;intVal&quot;:1,&quot;longVal&quot;:2}</code></p>
+<p><b style="color:tomato;">注意事项</b></p>
+<ol>
+<li><p>此时将请求地址中任意一个参数去掉就会得到异常报错的信息。因为在默认的情况下@RequestParam标注的参数是不能为空的，为了允许它为空，可以在配置它的<b style="color:crimson;">required属性值为false</b>。</p>
+<pre><code class="java">@RequestParam(value=&quot;str_val&quot;,required=false)String strVal</code></pre>
+</li>
+</ol>
+<h5 id="传递数组"><a href="#传递数组" class="headerlink" title="传递数组"></a><b style="color:peru;">传递数组</b></h5><p>Spring Mvc内部已经能够支持用逗号分隔的数组参数。</p>
+<pre><code class="java">package com.panhao.controller;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+@Controller
+@RequestMapping(value = &quot;/my&quot;)
+public class MyController {
+
+    @GetMapping(&quot;/requestArray&quot;)
+    @ResponseBody
+    public Map&lt;String, Object&gt; requestArray(
+            int[] intArr,long[] longArr,String[] strArr){
+        Map&lt;String, Object&gt; paramsMap=new HashMap&lt;String, Object&gt;();
+        paramsMap.put(&quot;intArr&quot;,intArr);
+        paramsMap.put(&quot;longArr&quot;, longArr);
+        paramsMap.put(&quot;strArr&quot;,strArr);
+        return paramsMap;
+    }
+}</code></pre>
+<p>启动Spring Boot项目在浏览器地址栏输入：<a href="http://localhost:8080/my/requestArray?intArr=1,2,3&amp;longArr=4,5,6&amp;strArr=str1,str2,str3" target="_blank" rel="noopener">http://localhost:8080/my/requestArray?intArr=1,2,3&amp;longArr=4,5,6&amp;strArr=str1,str2,str3</a></p>
+<p>然后在页面中就可以看到：<code>{&quot;intArr&quot;:[1,2,3],&quot;strArr&quot;:[&quot;str1&quot;,&quot;str2&quot;,&quot;str3&quot;],&quot;longArr&quot;:[4,5,6]}</code></p>
+<h5 id="传递JSON"><a href="#传递JSON" class="headerlink" title="传递JSON"></a><b style="color:peru;">传递JSON</b></h5><p>由于传递JSON的时候需要用到POST的请求所以在开始需要建立一个form表单来作为POST请求的发起者。由于JSP技术是在是老的掉牙，确实不想写JSP页面，所以在此特地配置一下Spring Mvc的静态文件资源路径以及视图解析器。</p>
+<p><span style="color:hotpink;">Spring Boot的Mvc配置主要依赖于类<code>WebMvcConfigurer</code>接口，该接口中有很多的方法都是用来设置MVC的各种配置为。</span></p>
+<pre><code class="java">package com.panhao.configuration;
+
+import org.springframework.context.annotation.Configuration;
+import org.springframework.core.Ordered;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
+import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.view.InternalResourceViewResolver;
+
+@Configuration
+//@EnableWebMvc
+public class WebConfiguration implements WebMvcConfigurer {
+
+//    配置静态资源访问路径
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler(&quot;/**&quot;).addResourceLocations(&quot;classpath:/static/&quot;);
+        registry.addResourceHandler(&quot;/**.html&quot;).addResourceLocations(&quot;classpath:/static/pages/&quot;);
+        registry.addResourceHandler(&quot;/**.js&quot;).addResourceLocations(&quot;classpath:/static/&quot;);
+        registry.addResourceHandler(&quot;/**.css&quot;).addResourceLocations(&quot;classpath:/static/&quot;);
+    }
+
+//    配置视图解析器
+    @Override
+    public void configureViewResolvers(ViewResolverRegistry registry) {
+        registry.viewResolver(new InternalResourceViewResolver(&quot;/pages/&quot;, &quot;.html&quot;));
+    }
+//配置欢迎页面
+    @Override
+    public void addViewControllers(ViewControllerRegistry registry) {
+        registry.addViewController(&quot;/&quot;).setViewName(&quot;index&quot;);
+        registry.setOrder(Ordered.HIGHEST_PRECEDENCE);
+    }
+}
+</code></pre>
+<ol>
+<li><code>addResourceHandlers</code> 是用来配置静态资源访问路径的，一旦Mapping中出现对应的请求，就将其映射到指定的文件夹中。</li>
+<li><code>configureViewResolvers</code> 是用来配置视图解析器的。例如在<code>Controller</code>中返回的为<code>index</code>，实际上返回就是<code>/pages/index.html</code></li>
+</ol>
+<p><span style="color:slateblue;">网上关于视图解析的实在太多，但是关于目录结构结合起来的也比较少，刚开是配置的也是踩了不少的坑。附上目录结构图：</span></p>
+<p><img data-sizes="auto" data-src="F:%5Cblog%5CAlpacaMe%5Csource_posts%5CBootMvc%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84.png" alt="" class="lazyload"></p>
+<p>此时需要一个页面来作为POST请求的发起：</p>
+<pre><code class="html">&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;首页&lt;/title&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;../dist/bootStrap-4.0/css/bootstrap.css&quot;&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;../dist/adminlte/css/adminlte.css&quot;&gt;
+    &lt;script src=&quot;../plugins/jquery/jquery.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;../dist/bootStrap-4.0/js/bootstrap.bundle.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;../dist/bootStrap-4.0/js/bootstrap.js&quot;&gt;&lt;/script&gt;
+&lt;/head&gt;
+
+&lt;body&gt;
+    &lt;div class=&quot;container&quot;&gt;
+        &lt;div class=&quot;card card-outline card-success shadow mt-3 col-md-6 mx-auto&quot;&gt;
+            &lt;div class=&quot;card-header&quot;&gt;
+                &lt;h4 class=&quot;ml-3&quot;&gt;登录&lt;/h4&gt;
+            &lt;/div&gt;
+            &lt;div class=&quot;card-body&quot;&gt;
+                &lt;form&gt;
+                    &lt;div class=&quot;form-group d-flex flex-row&quot;&gt;
+                        &lt;label for=&quot;username&quot; class=&quot;col-md-2&quot;&gt;姓名：&lt;/label&gt;
+                        &lt;input type=&quot;text&quot; class=&quot;form-control col-md-9&quot; id=&quot;username&quot;&gt;
+                    &lt;/div&gt;
+                    &lt;div class=&quot;form-group d-flex flex-row&quot;&gt;
+                        &lt;label for=&quot;age&quot; class=&quot;col-md-2&quot;&gt;年龄：&lt;/label&gt;
+                        &lt;input type=&quot;number&quot; min=&quot;18&quot; max=&quot;45&quot; step=&quot;1&quot; class=&quot;form-control col-md-9&quot; id=&quot;age&quot;&gt;
+                    &lt;/div&gt;
+                    &lt;div class=&quot;form-group d-flex flex-row&quot;&gt;
+                        &lt;label for=&quot;note&quot; class=&quot;col-md-2&quot;&gt;年龄：&lt;/label&gt;
+                        &lt;textarea class=&quot;col-md-9 form-control&quot; name=&quot;&quot; id=&quot;note&quot; rows=&quot;5&quot;&gt;&lt;/textarea&gt;
+                    &lt;/div&gt;
+                &lt;/form&gt;
+            &lt;/div&gt;
+            &lt;div class=&quot;card-footer&quot;&gt;
+                &lt;button type=&quot;button&quot; class=&quot;btn btn-sm btn-primary&quot; id=&quot;submit&quot;&gt;提交&lt;/button&gt;
+                &lt;a href=&quot;../../user/url/200&quot; class=&quot;ml-4&quot; style=&quot;font-size: 15px;&quot;&gt;&lt;i&gt;还没有账号？点击注册&lt;/i&gt;&lt;/a&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div style=&quot;visibility: hidden;&quot; class=&quot;alert alert-danger alert-dismissible fade show  col-sm-5 fixed-top mt-2 mx-auto &quot; id=&quot;alert&quot;&gt;
+            &lt;button type=&quot;button&quot; class=&quot;close&quot;&gt;&amp;times;&lt;/button&gt;
+            请填写&lt;strong&gt;完整的&lt;/strong&gt; 用户信息
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/body&gt;
+&lt;script&gt;
+    $(&quot;button.close&quot;).click(function () {
+        $(&quot;#alert&quot;).css(&quot;visibility&quot;, &quot;hidden&quot;);
+    });
+    $(&quot;#submit&quot;).click(function () {
+        var username = $(&quot;#username&quot;).val();
+        var age = $(&quot;#age&quot;).val();
+        var note = $(&quot;#note&quot;).val();
+        console.log(username, age, note);
+        if ($.trim(username) != &quot;&quot; &amp;&amp; age != &quot;&quot; &amp;&amp; $.trim(note) != &quot;&quot;) {
+            var  params={
+                username:username,
+                age:age,
+                note:note
+            };
+            $.post({
+                url:&quot;../../user/insert&quot;,
+                contentType:&quot;application/json&quot;,
+                data:JSON.stringify(params),
+                success:result=&gt;{
+                    console.log(result);
+                }
+            })
+        }else{
+            $(&quot;#alert&quot;).css(&quot;visibility&quot;, &quot;visible&quot;);
+        }
+
+    })
+&lt;/script&gt;
+&lt;/html&gt;</code></pre>
+<p>此时前端页面已经写完了，但是后端还没有对应的Controller处理这个请求：</p>
+<pre><code class="java">package com.panhao.controller;
+
+import java.util.Map;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
+
+import com.panhao.pojo.User;
+
+@Controller
+@RequestMapping(&quot;/user&quot;)
+public class UserController {    
+    @PostMapping(&quot;/insert&quot;)
+    @ResponseBody
+    public User insert(@RequestBody User user){
+        return user;
+    }
+}</code></pre>
+<p>在前端页面进行填写相关的信息之后，点击提交按钮，可以在控制台看到如下输出：</p>
+<pre><code class="json">{username: &quot;username&quot;, age: 22, note: &quot;note&quot;}</code></pre>
+<ol>
+<li>为方法的参数标注上<b style="color:crimson;">@RequestBody</b> ，意味着它接受到前端提交的JSON请求体，而在<span style="color:yellowgreen;">JSON请求体与User类之间的属性名称是保持一致的</span>，这样Spring Mvc就会通过这层映射关系将JSON请求体转换为User对象。</li>
+</ol>
+<h5 id="通过URL传递参数"><a href="#通过URL传递参数" class="headerlink" title="通过URL传递参数"></a><b style="color:peru;">通过URL传递参数</b></h5><p>在一些网站中，提出了REST风格的，这是参数往往通过URL进行传递。<span style="color:hotpink;">可以通过处理器映射和注解@PathVariable的组合获取URL参数</span>。首先通过处理器映射可以定位参数的位置和名称，而<b style="color:crimson;">@PathVariable</b> 则可以通过名称来获取参数。</p>
+<pre><code class="java">package com.panhao.controller;
+
+@Controller
+@RequestMapping(&quot;/user&quot;)
+public class UserController {
+
+    @GetMapping(&quot;/url/{id}&quot;)
+    @ResponseBody
+    public Map&lt;String, Object&gt; get(@PathVariable(&quot;id&quot;)Long id) {
+        Map&lt;String, Object&gt;paramsMap=new HashMap&lt;String, Object&gt;();
+        paramsMap.put(&quot;id&quot;, id);
+        paramsMap.put(&quot;success&quot;, true);
+        return paramsMap;
+    }
+}</code></pre>
+<ol>
+<li><b style="color:crimson;">{id}</b>表示占位符，此时在浏览器输入<a href="http://localhost:8080/user/url/1" target="_blank" rel="noopener">http://localhost:8080/user/url/1</a> ，表示的就是id的值为1。</li>
+<li><b style="color:crimson;">@PathVariable</b> 表示将id的值与方法的参数<code>Long id</code>进行映射。</li>
+</ol>
+<p>然后页面点击上个页面中的超链接，就可以在浏览器看到如下的返回信息：<code>{&quot;success&quot;:true,&quot;id&quot;:200}</code></p>
+<p><b style="color:peru;">获取格式化参数</b></p>
+<p>在一些应用中，往往需要格式化数据，其中最为典型的就是日期以及货币。<span style="color:hotpink;">Spring Mvc也对此提供了良好的支持。对日期和数字类型的转换注解处理，分别是@DateTimeFormat和@NumberFormat。</span> 其中<b style="color:crimson;">@DateTimeFormat</b>是针对日期格式化的，<b style="color:crimson;">@NumberFormat</b>则是针对数字进行格式化的。</p>
+<p>新建一个表单实现请求：</p>
+<pre><code class="java">&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;首页&lt;/title&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;../dist/bootStrap-4.0/css/bootstrap.css&quot;&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;../dist/adminlte/css/adminlte.css&quot;&gt;
+    &lt;script src=&quot;../plugins/jquery/jquery.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;../dist/bootStrap-4.0/js/bootstrap.bundle.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;../dist/bootStrap-4.0/js/bootstrap.js&quot;&gt;&lt;/script&gt;
+&lt;/head&gt;
+
+&lt;body&gt;
+    &lt;div class=&quot;container&quot;&gt;
+        &lt;div class=&quot;card card-outline card-primary shadow mx-auto mt-2 col-md-6&quot;&gt;
+            &lt;div class=&quot;card-header&quot;&gt;
+                &lt;h4&gt;日期格式化&lt;/h4&gt;
+            &lt;/div&gt;
+            &lt;div class=&quot;card-body&quot;&gt;
+                &lt;form&gt;
+                    &lt;div class=&quot;form-group d-flex flex-row&quot;&gt;
+                        &lt;label for=&quot;date&quot; class=&quot;col-md-2&quot;&gt;日期：&lt;/label&gt;
+                        &lt;input type=&quot;datetime&quot; class=&quot;form-control col-md-9&quot; id=&quot;dateTime&quot; value=&quot;2017-08-08&quot;&gt;
+                    &lt;/div&gt;
+                    &lt;div class=&quot;form-group d-flex flex-row&quot;&gt;
+                        &lt;label for=&quot;money&quot; class=&quot;col-md-2&quot;&gt;货币：&lt;/label&gt;
+                        &lt;input type=&quot;text&quot; class=&quot;form-control col-md-9&quot; id=&quot;money&quot; value=&quot;1,234,567.89&quot;&gt;
+                    &lt;/div&gt;
+                &lt;/form&gt;
+            &lt;/div&gt;
+            &lt;div class=&quot;card-footer&quot;&gt;
+                &lt;button type=&quot;button&quot; class=&quot;btn btn-sm btn-primary&quot; id=&quot;format&quot;&gt;格式化&lt;/button&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/body&gt;
+&lt;script&gt;
+    $(&quot;#format&quot;).click(function(){
+        var date=$(&quot;#dateTime&quot;).val();
+        var moeny=$(&quot;#money&quot;).val();
+        console.log(date);
+        console.log(moeny);
+        $.post({
+            url:&quot;../../user/format&quot;,
+            data:{
+                date:date,
+                moeny:moeny
+            },
+            success:result=&gt;{
+                console.log(result);
+            }
+        })
+    })
+&lt;/script&gt;
+&lt;/html&gt;</code></pre>
+<p>对应的后端处理器为：</p>
+<pre><code class="java">@Controller
+@RequestMapping(&quot;/user&quot;)
+public class UserController {
+
+    @RequestMapping(&quot;/format&quot;)
+    @ResponseBody
+    public Map&lt;String, Object&gt; format(
+            @DateTimeFormat(iso = ISO.DATE)Date date,
+            @NumberFormat(pattern = &quot;#,###.##&quot;)Double moeny){
+        Map&lt;String, Object&gt; dataMap=new HashMap&lt;String, Object&gt;();
+        dataMap.put(&quot;date&quot;,date);
+        dataMap.put(&quot;number&quot;, moeny);
+        return dataMap;
+    }
+}</code></pre>
+<p>最后返回的就是：</p>
+<pre><code class="json">{date: &quot;2017-08-08T00:00:00.000+00:00&quot;, number: 1234567.89}</code></pre>
+<ol>
+<li><span style="color:slateblue;">可以看到前端传输进去的dateTime类型和text类型最后在后端转换之后传过来的就是date格式和double格式。</span></li>
+</ol>
+<h5 id="自定义参数转换规则"><a href="#自定义参数转换规则" class="headerlink" title="自定义参数转换规则"></a><b style="color:peru;">自定义参数转换规则</b></h5><p>Http的请求头包含请求头（Header）、请求体（Body）、URL和参数等内容，服务器还包含其上下文环境和客户端交互会话（Session）机制，而这里的<span style="color:yellowgreen;">消息转换是请求体的转换</span>。</p>
+<ol>
+<li><p><b style="color:royalblue;">处理器获取参数的逻辑</b></p>
+<p>当一个请求到来的时，在处理器执行的过程中，它首先会从HTTP请求和上下文环境来得到参数。如果是简易的参数它会以简单的转换器进行转换，而这些简单的转换器是Spring Mvc自身已经提供了的。但是如果是转换HTTP请求体（Body），它就会调用HttpMessageConverter接口的方法对请求体的信息进行转换，首先它会判断能否对请求体进行转换，如果可以就将其转换为为Java类型。</p>
+<pre><code class="java">package org.springframework.http.converter;
+
+public interface HttpMessageConverter&lt;T&gt; {
+    //是否可读，其中clazz为Java类型，mediaType为Http请求类型
+    boolean canRead(Class&lt;?&gt; clazz, @Nullable MediaType mediaType);
+    //判断clazz类型是否能够转换为mediaType媒体类型
+          //其中clazz是Java类型，mediaType是媒体类型
+    boolean canWrite(Class&lt;?&gt; clazz, @Nullable MediaType mediaType);
+
+    //可支持的媒体类型的列表
+    List&lt;MediaType&gt; getSupportedMediaTypes();
+    //当canRead验证通过后，读入HTTP请求信息
+    T read(Class&lt;? extends T&gt; clazz, HttpInputMessage inputMessage)
+            throws IOException, HttpMessageNotReadableException;
+    //当canWrite方法验证通过以后，写入响应
+    void write(T t, @Nullable MediaType contentType, HttpOutputMessage outputMessage)
+            throws IOException, HttpMessageNotWritableException;
+
+}</code></pre>
+<ul>
+<li>代码中控制器的方法的参数标注了<b style="color:crimson;">@RequestBody</b> ，所以处理器会采用请求体（Body）的内容进行参数转换，而前端的请求体为JSON类型，所以它首先会调用<code>canRead</code>方法来确定请求体是否可读。如果判定为可读之后，接着就是使用<code>read</code>方法，将前端提交的用户JSON类型的请求体转换为控制器的用户（User）类参数，这样控制器就能够得到参数了。</li>
+</ul>
+<p>在Spring Mvc中，是通过<b style="color:crimson;">WebDataBinder</b>机制来获取参数的，<span style="color:hotpink;">它的主要作用就是解析HTTP请求的上下文，然后在控制器的调用之前转换参数并其提供验证功能，为调用控制器方法做准备</span>。处理器会从HTTP请求中读取数据，然后通过三种接口来进行各类参数的转换，这三种接口是Converter、Formatter和GenericConverter。</p>
+<ol>
+<li><b style="color:crimson;">Converter</b> 普通转换器，例如，有一个Integer类型的控制器参数，而从HTTP对应的字符串，对应的Converter就会将字符串转换为Integer类型；</li>
+<li><b style="color:crimson;">Formatter</b> 格式转换器，类似那些日期字符串就是通过它按照约定的格式转换为日期；</li>
+<li><b style="color:crimson;">GenericConverter</b> 将HTTP参数转换为数组； </li>
+<li>对于数据类型的转换，Spring Mvc提供了一个服务机制去管理，它就是<code>ConversionService</code>接口。在默认的情况下，会使用这个接口的子类，<code>DefaultFormattingConversionService</code>对象来管理这些类。</li>
+</ol>
+</li>
+<li><p><b style="color:royalblue;">一对一转换器（Converter）</b></p>
+</li>
+</ol>
+<p>Converter是一对一转换器，也就是从一种类型转换成另一种类型，其接口定义十分简单：</p>
+<pre><code class="java">package org.springframework.core.convert.converter;
+@FunctionalInterface
+public interface Converter&lt;S, T&gt; {
+    //转换方法，S代表原类型，T代表目标类型
+         @Nullable
+    T convert(S source);
+}</code></pre>
+<ul>
+<li>这个接口的类型有源类型（S）和目标类型（T）两种，它们通过<code>convert</code>方法进行转换。</li>
+</ul>
+<p>自定参数规则只需要实现这个接口就可以：</p>
+<pre><code class="java">package com.panhao.converter;
+@Component
+public class StringToUserConverter implements Converter&lt;String, User&gt; {
+
+    @Override
+    public User convert(String source) {
+        User user=new User();
+        String[] strArr=source.split(&quot;-&quot;);
+        String username=strArr[0];
+        Integer age=Integer.parseInt(strArr[1]);
+        String note=strArr[2];
+        user.setUsername(username);
+        user.setAge(age);
+        user.setNote(note);
+        return user;
+    }
+}</code></pre>
+<ul>
+<li>用<code>@Component</code>注解注释，会在项目启动的时候被Spring Boot扫描到Spring Ioc容器中。</li>
+</ul>
+<h5 id="数据验证"><a href="#数据验证" class="headerlink" title="数据验证"></a><b style="color:peru;">数据验证</b></h5><p>一般情况下，在参数转换出来之后，紧跟着往往需要验证参数的合法性，因此Spring Mvc也提供了验证机制。<span style="color:hotpink;">一方面，它可以支持JSR-303注解验证，在默认的情况下Spring Boot会引入关于Hibernate Validator机制来支持JSR-303验证规范；另外一方面，因为业务会比较复杂，所有需要自定义验证规则。</span></p>
+<ol>
+<li><p><b style="color:royalblue;">JSR-303验证</b></p>
+<p>JSR-303验证主要是通过注解的方式进行的。这里先定义一个需要验证的POJO，此时需要在其属性中加入相关的注解。当引入<code>spring-boot-web-starter</code> 时，该starter会默认引入Hibernate-validator，也就是Hibernate Validator框架。在pom.xml文件中引入以下依赖：</p>
+<pre><code class="java">&lt;dependency&gt;
+  &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+  &lt;artifactId&gt;spring-boot-starter-validation&lt;/artifactId&gt;
+  &lt;version&gt;2.2.2.RELEASE&lt;/version&gt;
+  &lt;scope&gt;compile&lt;/scope&gt;
+  &lt;exclusions&gt;
+    &lt;exclusion&gt;
+      &lt;artifactId&gt;tomcat-embed-el&lt;/artifactId&gt;
+      &lt;groupId&gt;org.apache.tomcat.embed&lt;/groupId&gt;
+    &lt;/exclusion&gt;
+  &lt;/exclusions&gt;
+&lt;/dependency&gt;</code></pre>
+<p>这里需要一个需要被验证的Bean：</p>
+<pre><code class="java">package com.panhao.pojo;
+
+import java.util.Date;
+
+import javax.validation.constraints.DecimalMax;
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.Future;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
+import org.hibernate.validator.constraints.Range;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import lombok.Data;
+
+@Data
+public class ValidatorPojo {
+
+    @NotNull(message = &quot;id不能为空&quot;)
+    private Integer id;
+
+</code></pre>
+</li>
+</ol>
+<pre><code>   @Future(message = &quot;需要一个将来的日期&quot;) //    只能是将来的日期</code></pre><p>   //    @Past 只能是过去的日期<br>       @DateTimeFormat(pattern = “yyyy-MM-dd”) //    日期格式转换<br>       @NotNull //    不能为空<br>       private Date date;</p>
+<pre><code>   @NotNull
+   @DecimalMin(value = &quot;0.1&quot;) //最小值为0.1元
+   @DecimalMax(value = &quot;10000.00&quot;)//最大值为10000元
+   private Double doubleValue =null;
+
+   @Min(value = 1,message = &quot;最小值为1&quot;) //最小值为1
+   @Max(value = 88,message = &quot;最大值为88&quot;) //最小值为88
+   @NotNull //不能为空
+   private Integer integer;
+
+
+   @Range(min = 1,max = 88,message = &quot;范围为1-88&quot;)//限定范围
+   private Long range;
+
+   @Email(message = &quot;邮箱格式错误&quot;)
+   private String email;
+
+   @Size(min = 20,max = 30,message = &quot;字符串长度要求20-30之间。&quot;)
+   private String size;</code></pre><p>   }</p>
+<pre><code>
+   此时在后端需要添加对应的Controller：
+
+   ```java
+   package com.panhao.pojo;
+
+   @Controller
+   @RequestMapping(&quot;/valid&quot;)
+   public class ValidateController {
+
+       @GetMapping(&quot;/page&quot;)
+       public String validatePage() {
+           return &quot;test&quot;;
+       }
+
+       @RequestMapping(value = &quot;/validate&quot;)
+       @ResponseBody
+       public Map&lt;String, Object&gt; validate(
+               @Valid @RequestBody ValidatorPojo vp,Errors errors){
+           Map&lt;String, Object&gt; errMap=new HashMap&lt;String, Object&gt;();
+   //        获取错误列表
+           List&lt;ObjectError&gt; oes=errors.getAllErrors();
+           for(ObjectError oe:oes) {
+               String key=null;
+               String message=null;
+   //            字段错误
+               if(oe instanceof FieldError) {
+                   FieldError fe=(FieldError) oe;
+                   key=fe.getField();//获取错误验证字段名
+               }else {
+   //                非字段错误
+                   key=oe.getObjectName();
+               }
+   //            错误信息
+               String msg=oe.getDefaultMessage();
+               errMap.put(key, msg);
+           }
+           return errMap;
+
+       }
+   }</code></pre><p>   此时在前端页面中提交的数据会被转换成ValidatePojo数据，然后根据验证规则向前端返回消息。</p>
+<p>   创建前段页面，添加表格实现请求模拟：</p>
+<pre><code class="html">   &lt;!DOCTYPE html&gt;
+   &lt;html lang=&quot;en&quot;&gt;
+
+   &lt;head&gt;
+       &lt;meta charset=&quot;UTF-8&quot;&gt;
+       &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+       &lt;title&gt;首页&lt;/title&gt;
+       &lt;link rel=&quot;stylesheet&quot; href=&quot;../dist/bootStrap-4.0/css/bootstrap.css&quot;&gt;
+       &lt;link rel=&quot;stylesheet&quot; href=&quot;../dist/adminlte/css/adminlte.css&quot;&gt;
+       &lt;script src=&quot;../plugins/jquery/jquery.js&quot;&gt;&lt;/script&gt;
+       &lt;script src=&quot;../dist/bootStrap-4.0/js/bootstrap.bundle.js&quot;&gt;&lt;/script&gt;
+       &lt;script src=&quot;../dist/bootStrap-4.0/js/bootstrap.js&quot;&gt;&lt;/script&gt;
+       &lt;style&gt;
+   &lt;/head&gt;
+
+   &lt;body&gt;
+       &lt;div class=&quot;container mt-2&quot;&gt;
+           &lt;div class=&quot;card card-outline card-primary mx-auto col-md-6 shadow&quot;&gt;
+               &lt;div class=&quot;card-header&quot;&gt;
+                   &lt;h4&gt;数据验证提交表单&lt;/h4&gt;
+               &lt;/div&gt;
+               &lt;div class=&quot;card-body&quot;&gt;
+                   &lt;form&gt;
+                       &lt;div class=&quot;form-group d-flex flex-row&quot;&gt;
+                           &lt;label for=&quot;id&quot; class=&quot;col-md-2 mt-2&quot;&gt;ID:&lt;/label&gt;
+                           &lt;input type=&quot;number&quot; class=&quot;form-control col-md-9&quot; value=&quot;120&quot; id=&quot;id&quot;&gt;
+                       &lt;/div&gt;
+                       &lt;div class=&quot;form-group d-flex flex-row&quot;&gt;
+                           &lt;label for=&quot;date&quot; class=&quot;col-md-2 mt-2&quot;&gt;date:&lt;/label&gt;
+                           &lt;input type=&quot;datetime&quot; class=&quot;form-control col-md-9&quot; value=&quot;2028-03-13&quot; id=&quot;date&quot;&gt;
+                       &lt;/div&gt;
+                       &lt;div class=&quot;form-group d-flex flex-row&quot;&gt;
+                           &lt;label for=&quot;doubleValue&quot; class=&quot;col-md-4 mt-2&quot;&gt;doubleValue:&lt;/label&gt;
+                           &lt;input type=&quot;number&quot; step=&quot;0.05&quot; class=&quot;form-control col-md-7&quot; value=&quot;0.15&quot; id=&quot;doubleValue&quot;&gt;
+                       &lt;/div&gt;
+                       &lt;div class=&quot;form-group d-flex flex-row&quot;&gt;
+                           &lt;label for=&quot;integer&quot; class=&quot;col-md-3 mt-2&quot;&gt;Integer:&lt;/label&gt;
+                           &lt;input type=&quot;number&quot; class=&quot;form-control col-md-9&quot; value=&quot;75&quot; id=&quot;integer&quot;&gt;
+                       &lt;/div&gt;
+                       &lt;div class=&quot;form-group d-flex flex-row&quot;&gt;
+                           &lt;label for=&quot;range&quot; class=&quot;col-md-2 mt-2&quot;&gt;Long:&lt;/label&gt;
+                           &lt;input type=&quot;number&quot; class=&quot;form-control col-md-9&quot; value=&quot;75&quot; id=&quot;range&quot;&gt;
+                       &lt;/div&gt;
+                       &lt;div class=&quot;form-group d-flex flex-row&quot;&gt;
+                           &lt;label for=&quot;email&quot; class=&quot;col-md-2 mt-2&quot;&gt;Email:&lt;/label&gt;
+                           &lt;input type=&quot;email&quot; class=&quot;form-control col-md-9&quot; value=&quot;1920734752@qq.com&quot; id=&quot;email&quot;&gt;
+                       &lt;/div&gt;
+                       &lt;div class=&quot;form-group d-flex flex-row&quot;&gt;
+                           &lt;label for=&quot;size&quot; class=&quot;col-md-2 mt-2&quot;&gt;Size:&lt;/label&gt;
+                           &lt;input type=&quot;text&quot; class=&quot;form-control col-md-9&quot; value=&quot;湖北省武汉市青山区武汉科技大学学生公寓学2栋214&quot; id=&quot;size&quot;&gt;
+                       &lt;/div&gt;
+                   &lt;/form&gt;
+               &lt;/div&gt;
+               &lt;div class=&quot;card-footer&quot;&gt;
+                   &lt;button class=&quot;btn btn-sm btn-primary&quot; id=&quot;submit&quot;&gt;提交&lt;/button&gt;
+                   &lt;a href=&quot;&quot; style=&quot;font-size: 10px;position: relative;left: 200px;&quot;&gt;&lt;i&gt;还没有账号？点击注册&lt;/i&gt;&lt;/a&gt;
+               &lt;/div&gt;
+           &lt;/div&gt;
+       &lt;/div&gt;
+   &lt;/body&gt;
+   &lt;script&gt;
+       $(&quot;#submit&quot;).click(function(){
+           var id=$(&quot;#id&quot;).val();
+           var date=$(&quot;#date&quot;).val();
+           var doubleValue=$(&quot;#doubleValue&quot;).val();
+           var integer=$(&quot;#integer&quot;).val();
+           var range=$(&quot;#range&quot;).val();
+           var email=$(&quot;#email&quot;).val();
+           var size=$(&quot;#size&quot;).val();
+
+           console.log(id)
+           console.log(date);
+           console.log(doubleValue)
+           console.log(integer);
+           console.log(range)
+           console.log(email);
+           console.log(size);
+
+           var params={
+               id:id,
+               date:date,
+               doubleValue:doubleValue,
+               integer:integer,
+               range:range,
+               email:email,
+               size:size
+           }
+
+           $.post({
+               url:&quot;../../valid/validate&quot;,
+               contentType:&quot;application/json&quot;,
+               data:JSON.stringify(params),
+               success:result=&gt;{
+                   console.log(result);
+               }
+           })
+       })
+   &lt;/script&gt;
+   &lt;/html&gt;</code></pre>
+<p>   此时点击Submit按钮的时候就会向后端传输数据过去，然后会返回不满足要求的信息：</p>
+<pre><code class="java">   //更改邮箱格式，去掉@符号，后端返回消息 ：邮箱格式错误
+   {email: &quot;邮箱格式错误&quot;}</code></pre>
+<ol start="2">
+<li><p><b style="color:royalblue;">参数验证机制</b></p>
+<p>Spring还提供了自己的参数验证机制。在参数转换的时候，可以看到Spring Mvc中，存在<code>WebDataBinder</code>机制进行管理，<span style="color:hotpink;">在默认的情况下Spring会自动地根据上下文通过注册了的转换器转换出控制器所需的参数</span>。在WebDataBinder中除了可以注册转换器外，还允许注册验证器（Validator）。</p>
+<pre><code class="java">package org.springframework.validation;
+public interface Validator {
+
+    /**
+    判定当前验证器是否支持该Class类型的验证
+    @Param clazz --POJO类型
+    @return 当前验证器是否支持该POJO类型验证
+    **/
+    boolean supports(Class&lt;?&gt; clazz);
+
+    /**
+    如果support返回true，则这个方法执行验证逻辑
+    @param target 被验证的POJO对象
+    @param errors 错误对象
+    **/
+    void validate(Object target, Errors errors);
+
+}
+</code></pre>
+<p>创建自定义的验证器也是非常简单的一件事情，只需要实现上述接口即可：</p>
+<pre><code class="java">package com.panhao.validator;
+
+import org.springframework.util.StringUtils;
+import org.springframework.validation.Errors;
+import org.springframework.validation.Validator;
+
+import com.panhao.pojo.User;
+
+public class UserValidator implements Validator{
+//    该验证器只支持User类验证
+    @Override
+    public boolean supports(Class&lt;?&gt; clazz) {
+        // TODO Auto-generated method stub
+        return clazz.equals(User.class);
+    }
+
+    @Override
+    public void validate(Object target, Errors errors) {
+        // TODO Auto-generated method stub
+        if(target==null) {
+            errors.rejectValue(&quot;&quot;, null,&quot;用户不能为空&quot;);
+            return ;
+        }
+//        强制转换
+        User user=(User) target;
+//        用户名非空串
+        if(StringUtils.isEmpty(user.getUsername())) {
+//            增加错误
+            errors.rejectValue(&quot;username&quot;, null, &quot;用户名不能为空&quot;);
+        }
+    }
+
+}
+</code></pre>
+<p>此时验证器并不会自动启动它，因为还没有==绑定WebBinder机制==。在Spring Mvc中提供了一个注解<b style="color:crimson;">@InitBinder</b> 标注的方法。<span style="color:yellowgreen;">它的作用是在执行控制器之前，处理器会先执行被@InitBinder标注的方法</span>。这时可以将WebDataBinder对象作为参数传递到方法中，通过这层关系得到WebDataBinder对象。这个对象有一个<code>setValidator方法</code>，它可以绑定自定义的验证器。</p>
+<pre><code class="java">package com.panhao.controller;
+@Controller
+@RequestMapping(&quot;/user&quot;)
+public class UserController {
+    @InitBinder
+    public void InitBinder(WebDataBinder binder) {
+//        绑定验证器
+        binder.setValidator(new UserValidator());
+//        定义日期参数格式，参数不再需要注解@DataTimeFormat，boolean参数表示允许为空
+        binder.registerCustomEditor(Date.class, new CustomDateEditor(new SimpleDateFormat(&quot;yyyy-MM-dd&quot;),false));
+
+    }
+
+</code></pre>
+</li>
+</ol>
+<pre><code>   @RequestMapping(&quot;/valida&quot;)
+   @ResponseBody
+   public Map&lt;String, Object&gt; validator(
+           @Valid User user,Errors errors,Date date){
+       Map&lt;String, Object&gt; map=new HashMap&lt;String, Object&gt;();
+       map.put(&quot;user&quot;,user);
+       map.put(&quot;date&quot;,date);</code></pre><p>   //        判断是否存在错误<br>           if(errors.hasErrors()) {<br>   //            获取全部的错误<br>               List<ObjectError> oes=errors.getAllErrors();<br>               for(ObjectError oe:oes) {<br>   //                判断是否字段错误<br>                   if(oe instanceof FieldError) {<br>   //                    字段错误<br>                       FieldError fe= (FieldError) oe;<br>                       map.put(fe.getField(), fe.getDefaultMessage());<br>                   }else {<br>   //                    对象错误<br>                       map.put(oe.getObjectName(), oe.getDefaultMessage());<br>                   }<br>               }<br>           }<br>           return map;<br>       }</p>
+<p>   }</p>
+<pre><code>
+   * `initBinder` 方法因为标注注解&lt;b style=&quot;color:crimson;&quot;&gt;@InitBinder&lt;/b&gt;，因此会在控制器方法前被执行，并且将`WebDataBinder`对象传递进去，在这个方法里绑定了自定义的验证器`UserValidator`，而且设置了日期的格式，所以在控制器方法中已经不再需要使用&lt;b style=&quot;color:crimson;&quot;&gt;@DateTimeFormat&lt;/b&gt;去定义日期格式化。
+
+此时在浏览器输入：&lt;http://localhost:8080/user/valida?age=22&amp;note=note_1&amp;date=2018-01-01&gt;
+
+就可以看到返回值为：
+
+```json
+{&quot;date&quot;:&quot;2017-12-31T16:00:00.000+00:00&quot;,&quot;user&quot;:{&quot;username&quot;:null,&quot;age&quot;:22,&quot;note&quot;:&quot;note_1&quot;,&quot;date&quot;:&quot;2017-12-31T16:00:00.000+00:00&quot;},&quot;username&quot;:&quot;用户名不能为空&quot;}</code></pre>
+  </article>
+
+  <div class="nexmoe-post-meta nexmoe-rainbow">
+    
+        <a class="nexmoefont icon-appstore-fill -link" href="/categories/Spring-Boot/">Spring Boot</a>
+    
+    
+        <a class="nexmoefont icon-tag-fill -link" href="/tags/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/" rel="tag">编程语言</a>
+    
+</div>
+
+  <div class="nexmoe-post-footer">
+    
+      
+  <div class="nexmoe-post-copyright">
+    <strong>Author：</strong>AntPan<br>
+    <strong>Link：</strong><a href="https://alpacame.github.io/2020/05/22/Spring-boot-mvc%E5%88%9D%E6%8E%A2/" title="https:&#x2F;&#x2F;alpacame.github.io&#x2F;2020&#x2F;05&#x2F;22&#x2F;Spring-boot-mvc%E5%88%9D%E6%8E%A2&#x2F;" target="_blank" rel="noopener">https:&#x2F;&#x2F;alpacame.github.io&#x2F;2020&#x2F;05&#x2F;22&#x2F;Spring-boot-mvc%E5%88%9D%E6%8E%A2&#x2F;</a><br>
+    
+      <strong>版权声明：</strong>本文采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/cn/deed.zh" target="_blank">CC BY-NC-SA 3.0 CN</a> 协议进行许可
+    
+  </div>
+
+
+    
+    <section class="nexmoe-comment">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.5.0/dist/gitalk.min.css">
+<div id="gitalk"></div>
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1.5.0/dist/gitalk.min.js"></script>
+<script type="text/javascript">
+    var gitalk = new Gitalk({
+        clientID: '80b2453b6d5f37ad6225',
+        clientSecret: '43e99fa852795c9a7b3eb924b2558c64b84bbdeb',
+        id: window.location.pathname,
+        repo: 'nexmoe.github.io',
+        owner: 'nexmoe',
+        admin: 'nexmoe'
+    })
+    gitalk.render('gitalk')
+</script>
+</section>
+  </div>
+</div>
+    </div>
+  </div>
+  <script src="https://cdn.jsdelivr.net/combine/npm/lazysizes@5.1.0/lazysizes.min.js,gh/highlightjs/cdn-release@9.15.8/build/highlight.min.js,npm/mdui@0.4.3/dist/js/mdui.min.js,gh/nexmoe/nexmoe.github.io@latest/js/app.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+<!--<script src="/js/app.js?v=1590111835890"></script>-->
+
+
+    <script src="https://cdn.jsdelivr.net/gh/xtaodada/xtaodada.github.io@0.0.2/copy.js"></script>
+
+
+ 
+<script> 
+!function(e,t,a){function n(){c(".heart{width: 10px;height: 10px;position: fixed;background: #f00;transform: rotate(45deg);-webkit-transform: rotate(45deg);-moz-transform: rotate(45deg);}.heart:after,.heart:before{content: '';width: inherit;height: inherit;background: inherit;border-radius: 50%;-webkit-border-radius: 50%;-moz-border-radius: 50%;position: fixed;}.heart:after{top: -5px;}.heart:before{left: -5px;}"),o(),r()}function r(){for(var e=0;e<d.length;e++)d[e].alpha<=0?(t.body.removeChild(d[e].el),d.splice(e,1)):(d[e].y--,d[e].scale+=.004,d[e].alpha-=.013,d[e].el.style.cssText="left:"+d[e].x+"px;top:"+d[e].y+"px;opacity:"+d[e].alpha+";transform:scale("+d[e].scale+","+d[e].scale+") rotate(45deg);background:"+d[e].color+";z-index:99999");requestAnimationFrame(r)}function o(){var t="function"==typeof e.onclick&&e.onclick;e.onclick=function(e){t&&t(),i(e)}}function i(e){var a=t.createElement("div");a.className="heart",d.push({el:a,x:e.clientX-5,y:e.clientY-5,scale:1,alpha:1,color:s()}),t.body.appendChild(a)}function c(e){var a=t.createElement("style");a.type="text/css";try{a.appendChild(t.createTextNode(e))}catch(t){a.styleSheet.cssText=e}t.getElementsByTagName("head")[0].appendChild(a)}function s(){return"rgb("+~~(255*Math.random())+","+~~(255*Math.random())+","+~~(255*Math.random())+")"}var d=[];e.requestAnimationFrame=function(){return e.requestAnimationFrame||e.webkitRequestAnimationFrame||e.mozRequestAnimationFrame||e.oRequestAnimationFrame||e.msRequestAnimationFrame||function(e){setTimeout(e,1e3/60)}}(),n()}(window,document);
+</script>
+
+  
+
+
+
+
+
+</body>
+
+</html>
