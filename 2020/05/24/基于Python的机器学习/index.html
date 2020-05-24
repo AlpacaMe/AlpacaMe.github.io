@@ -19,19 +19,19 @@
 <meta property="og:site_name" content="山有木兮木有枝">
 <meta property="og:description" content="我也有诗和远方，只不过诗很烂，远方也很黑暗">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://alpacame.github.io/2020/05/24/%E5%9F%BA%E4%BA%8EPython%E7%9A%84%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/KNN.jpg">
+<meta property="og:image" content="https://alpacame.github.io/2020/05/24/%E5%9F%BA%E4%BA%8EPython%E7%9A%84%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/KNN-1590306902410.jpg">
 <meta property="og:image" content="https://alpacame.github.io/2020/05/24/%E5%9F%BA%E4%BA%8EPython%E7%9A%84%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/KNN-classify.jpg">
 <meta property="og:image" content="https://alpacame.github.io/2020/05/24/%E5%9F%BA%E4%BA%8EPython%E7%9A%84%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/KNNS.jpg">
 <meta property="og:image" content="https://alpacame.github.io/2020/05/24/%E5%9F%BA%E4%BA%8EPython%E7%9A%84%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/Regressor.jpg">
 <meta property="article:published_time" content="2020-05-24T07:38:39.000Z">
-<meta property="article:modified_time" content="2020-05-24T07:48:48.223Z">
+<meta property="article:modified_time" content="2020-05-24T07:57:27.834Z">
 <meta property="article:author" content="AntPan">
 <meta property="article:tag" content="编程语言">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://alpacame.github.io/2020/05/24/%E5%9F%BA%E4%BA%8EPython%E7%9A%84%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/KNN.jpg">
+<meta name="twitter:image" content="https://alpacame.github.io/2020/05/24/%E5%9F%BA%E4%BA%8EPython%E7%9A%84%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/KNN-1590306902410.jpg">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/combine/gh/nexmoe/nexmoe.github.io@latest/css/style.css,npm/highlight.js@9.15.8/styles/atom-one-dark.css,gh/nexmoe/nexmoe.github.io@latest/lib/mdui_043tiny/css/mdui.css,gh/nexmoe/nexmoe.github.io@latest/lib/iconfont/iconfont.css" crossorigin>
   
-  <!--<link rel="stylesheet" href="/css/style.css?v=1590306541697">-->
+  <!--<link rel="stylesheet" href="/css/style.css?v=1590307059282">-->
 
    
     <style>
@@ -298,7 +298,7 @@ plt.scatter(x[:, 0], x[:, 1], c=y, cmap=plt.cm.get_cmap(&quot;Paired&quot;), edg
 plt.savefig(&quot;F:\\StudyNote\\image\\KNN.jpg&quot;)
 plt.show()</code></pre>
 <p>具体的显示情况如下：</p>
-<p><img src="KNN.jpg"></img></p>
+<p><img data-sizes="auto" data-src="KNN-1590306902410.jpg" alt="" class="lazyload"></p>
 <ul>
 <li><p><b style="color:crimson;">make_blobs(n_sample=200,centers=2,random_state=8)</b> </p>
 <p>==n_sample==：表示数据样本点个数，默认值100；</p>
@@ -335,7 +335,7 @@ plt.title(&quot;Classifier:KNN&quot;)
 
 plt.show()</code></pre>
 <p>产生的结果如下图所示：</p>
-<p><img src="KNN-classify.jpg"></img></p>
+<p><img data-sizes="auto" data-src="KNN-classify.jpg" alt="" class="lazyload"></p>
 <ul>
 <li><p><b style="color:crimson;">clf = KNeighborsClassifier()</b> </p>
 <p>==n_neighbors==：指的是K值的大小，就是在做分类时，选取问题点最近的多少个近邻；</p>
@@ -391,7 +391,7 @@ plt.ylim(yy.min(), yy.max())
 plt.title(&quot;Classifier:KNN&quot;)
 plt.show()</code></pre>
 <p>其结果如下图所示：</p>
-<p><img src='KNNS.jpg'></img></p>
+<p><img data-sizes="auto" data-src="KNNS.jpg" alt="" class="lazyload"></p>
 <p>K最近邻算法仍然可以把大部分的数据点放置于正确的分类中，但是有一小部分还是进入了错误的分类中，这些分类错误的数据点基本都是互相重合的位于图像中心点的位置。</p>
 <p>模型正确率可以通过<b style="color:crimson;">clf.score(X,y)</b> 来得到：</p>
 <pre><code class="python">print(&#39;\n\n\n&#39;)
@@ -438,7 +438,7 @@ print(&#39;模型正确率：{:.2f}&#39;.format(reg.score(X, y)))
 print(&#39;===================&#39;)
 print(&#39;\n&#39;)</code></pre>
 <p>其结果如下所示：</p>
-<p><img src="Regressor.jpg"></img></p>
+<p><img data-sizes="auto" data-src="Regressor.jpg" alt="" class="lazyload"></p>
 <p>此时模型的准确率只有0.77，有一点差强人意，修改K的数值为1：</p>
 <pre><code class="python">reg = KNeighborsRegressor(n_neighbors=2)</code></pre>
 <p>此时模型的准确率就可以提升到0.86，可以说是显著提升的。</p>
@@ -489,7 +489,7 @@ print(&#39;\n&#39;)</code></pre>
   </div>
   <script src="https://cdn.jsdelivr.net/combine/npm/lazysizes@5.1.0/lazysizes.min.js,gh/highlightjs/cdn-release@9.15.8/build/highlight.min.js,npm/mdui@0.4.3/dist/js/mdui.min.js,gh/nexmoe/nexmoe.github.io@latest/js/app.js"></script>
 <script>hljs.initHighlightingOnLoad();</script>
-<!--<script src="/js/app.js?v=1590306541699"></script>-->
+<!--<script src="/js/app.js?v=1590307059284"></script>-->
 
 
     <script src="https://cdn.jsdelivr.net/gh/xtaodada/xtaodada.github.io@0.0.2/copy.js"></script>
