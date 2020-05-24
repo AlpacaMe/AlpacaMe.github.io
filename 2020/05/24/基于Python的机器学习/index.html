@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+  
+  <title>基于Python的机器学习 - 山有木兮木有枝</title>
+  <meta charset="UTF-8">
+  <meta name="description" content="玲珑骰子安红豆，入骨相思知不知">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
+  
+  
+
+  <link rel="shortcut icon" href="https://freeware.iconfactory.com/assets/hamstergeddon/preview.png# 网站图标" type="image/png" />
+  <meta name="description" content="我也有诗和远方，只不过诗很烂，远方也很黑暗">
+<meta property="og:type" content="article">
+<meta property="og:title" content="基于Python的机器学习">
+<meta property="og:url" content="https://alpacame.github.io/2020/05/24/%E5%9F%BA%E4%BA%8EPython%E7%9A%84%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/index.html">
+<meta property="og:site_name" content="山有木兮木有枝">
+<meta property="og:description" content="我也有诗和远方，只不过诗很烂，远方也很黑暗">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://alpacame.github.io/2020/05/24/%E5%9F%BA%E4%BA%8EPython%E7%9A%84%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/KNN.jpg">
+<meta property="og:image" content="https://alpacame.github.io/2020/05/24/%E5%9F%BA%E4%BA%8EPython%E7%9A%84%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/KNN-classify.jpg">
+<meta property="og:image" content="https://alpacame.github.io/2020/05/24/%E5%9F%BA%E4%BA%8EPython%E7%9A%84%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/KNNS.jpg">
+<meta property="og:image" content="https://alpacame.github.io/2020/05/24/%E5%9F%BA%E4%BA%8EPython%E7%9A%84%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/Regressor.jpg">
+<meta property="article:published_time" content="2020-05-24T07:38:39.000Z">
+<meta property="article:modified_time" content="2020-05-24T07:48:48.223Z">
+<meta property="article:author" content="AntPan">
+<meta property="article:tag" content="编程语言">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://alpacame.github.io/2020/05/24/%E5%9F%BA%E4%BA%8EPython%E7%9A%84%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/KNN.jpg">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/combine/gh/nexmoe/nexmoe.github.io@latest/css/style.css,npm/highlight.js@9.15.8/styles/atom-one-dark.css,gh/nexmoe/nexmoe.github.io@latest/lib/mdui_043tiny/css/mdui.css,gh/nexmoe/nexmoe.github.io@latest/lib/iconfont/iconfont.css" crossorigin>
+  
+  <!--<link rel="stylesheet" href="/css/style.css?v=1590306541697">-->
+
+   
+    <style>
+      .nexmoe-avatar img:hover {
+        -webkit-transform: rotateZ(360deg);
+        -moz-transform: rotateZ(360deg);
+        transform: rotateZ(360deg);
+      }	
+    </style>
+  
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body class="mdui-drawer-body-left">
+  
+  <div id="nexmoe-background">
+    <div class="nexmoe-bg" style="background-image: url(http://img.netbian.com/file/2020/0327/c70a565b65c499b4d6d6f4210a7a103b.jpg)"></div>
+    <div class="mdui-appbar mdui-shadow-0">
+      <div class="mdui-toolbar">
+        <a mdui-drawer="{target: '#drawer', swipe: true}" title="menu" class="mdui-btn mdui-btn-icon mdui-ripple"><i class="mdui-icon nexmoefont icon-menu"></i></a>
+        <div class="mdui-toolbar-spacer"></div>
+        <!--<a href="javascript:;" class="mdui-btn mdui-btn-icon"><i class="mdui-icon material-icons">search</i></a>-->
+        <a href="/" title="AntPan" class="mdui-btn mdui-btn-icon"><img src="https://avatars0.githubusercontent.com/u/58353039?s=460&amp;u=a06eebdea982770b37397225c6a1768fa2f8a0e0&amp;v=4" alt="AntPan"></a>
+       </div>
+    </div>
+  </div>
+  <div id="nexmoe-header">
+      <div class="nexmoe-drawer mdui-drawer" id="drawer">
+    <div class="nexmoe-avatar mdui-ripple">
+        <a href="/" title="AntPan">
+            <img src="https://avatars0.githubusercontent.com/u/58353039?s=460&amp;u=a06eebdea982770b37397225c6a1768fa2f8a0e0&amp;v=4" alt="AntPan" alt="AntPan">
+        </a>
+    </div>
+    <div class="nexmoe-count">
+        <div><span>Articles</span>11</div>
+        <div><span>Tags</span>2</div>
+        <div><span>Categories</span>4</div>
+    </div>
+    <div class="nexmoe-list mdui-list" mdui-collapse="{accordion: true}">
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple" href="/" title="回到首页">
+            <i class="mdui-list-item-icon nexmoefont icon-home"></i>
+            <div class="mdui-list-item-content">
+                回到首页
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple" href="/about/index.html" title="关于博客">
+            <i class="mdui-list-item-icon nexmoefont icon-info-circle"></i>
+            <div class="mdui-list-item-content">
+                关于博客
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple" href="/archives" title="文章归档">
+            <i class="mdui-list-item-icon nexmoefont icon-container"></i>
+            <div class="mdui-list-item-content">
+                文章归档
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple" href="/PY.html" title="我的朋友">
+            <i class="mdui-list-item-icon nexmoefont icon-unorderedlist"></i>
+            <div class="mdui-list-item-content">
+                我的朋友
+            </div>
+        </a>
+        
+    </div>
+    <aside id="nexmoe-sidebar">
+  
+  <div class="nexmoe-widget-wrap">
+    <div class="nexmoe-widget nexmoe-search">
+        <form id="search_form" action_e="https://www.google.com/search?q={https://alpacame.github.io/}" onsubmit="return search();">
+            <label><input id="search_value" name="q" type="search" placeholder="Search"></label>
+        </form>
+    </div>
+</div>
+  
+  <div class="nexmoe-widget-wrap">
+    <h3 class="nexmoe-widget-title">Social</h3>
+    <div class="nexmoe-widget nexmoe-social">
+        <a class="mdui-ripple" href="https://space.bilibili.com/439098990" target="_blank" mdui-tooltip="{content: '哔哩哔哩'}" style="color: rgb(231, 106, 141);background-color: rgba(231, 106, 141, .15);">
+            <i class="nexmoefont icon-bilibili"></i>
+        </a><a class="mdui-ripple" href="https://github.com/AlpacaMe" target="_blank" mdui-tooltip="{content: 'GitHub'}" style="color: rgb(25, 23, 23);background-color: rgba(25, 23, 23, .15);">
+            <i class="nexmoefont icon-github"></i>
+        </a>
+    </div>
+</div>
+  
+  
+  <div class="nexmoe-widget-wrap">
+    <h3 class="nexmoe-widget-title">Categories</h3>
+    <div class="nexmoe-widget">
+
+      <ul class="category-list">
+
+        
+
+
+        
+
+        
+
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/Spring-Boot/">Spring Boot</a>
+          <span class="category-list-count">5</span>
+        </li>
+
+        
+
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/Spring学习/">Spring学习</a>
+          <span class="category-list-count">1</span>
+        </li>
+
+        
+
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/Vue-js/">Vue.js</a>
+          <span class="category-list-count">3</span>
+        </li>
+
+        
+
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/机器学习/">机器学习</a>
+          <span class="category-list-count">1</span>
+        </li>
+
+        
+      </ul>
+
+    </div>
+  </div>
+
+
+  
+  
+  <div class="nexmoe-widget-wrap">
+    <h3 class="nexmoe-widget-title">Tag Cloud</h3>
+    <div id="randomtagcloud" class="nexmoe-widget tagcloud nexmoe-rainbow">
+      <a href="/tags/%E6%9D%82%E8%AE%B0/" style="font-size: 10px;">杂记</a> <a href="/tags/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/" style="font-size: 20px;">编程语言</a>
+    </div>
+    
+  </div>
+
+  
+  
+  <div class="nexmoe-widget-wrap">
+    <h3 class="nexmoe-widget-title">Recent Posts</h3>
+    <div class="nexmoe-widget">
+      <ul>
+        
+          <li>
+            <a href="/2020/05/24/%E5%9F%BA%E4%BA%8EPython%E7%9A%84%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">基于Python的机器学习</a>
+          </li>
+        
+          <li>
+            <a href="/2020/05/22/Spring-boot-mvc%E5%88%9D%E6%8E%A2/">Spring boot mvc初探</a>
+          </li>
+        
+          <li>
+            <a href="/2020/05/08/Spring-Boot%E6%95%B0%E6%8D%AE%E5%BA%93%E5%88%9D%E8%AF%86/">Spring Boot数据库初识</a>
+          </li>
+        
+          <li>
+            <a href="/2020/05/08/Spring-Boot%E6%B3%A8%E8%A7%A3%E5%A4%A7%E5%85%A8/">Spring Boot注解大全</a>
+          </li>
+        
+          <li>
+            <a href="/2020/05/02/Spring-Boot-AOP%E7%BC%96%E7%A8%8B%E5%88%9D%E6%8E%A2/">Spring Boot AOP编程初探</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+    <div class="nexmoe-copyright">
+        &copy; 2020 AntPan
+        Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+        & <a href="https://nexmoe.com/hexo-theme-nexmoe.html" target="_blank">Nexmoe</a>
+    </div>
+</div><!-- .nexmoe-drawer -->
+  </div>
+  <div id="nexmoe-content">
+    <div class="nexmoe-primary">
+        <div class="nexmoe-post">
+  
+      <div class="nexmoe-post-cover" style="padding-bottom: 54.166666666666664%;"> 
+          <img data-src="http://img.netbian.com/file/2020/0516/8169431837be79f7ff21c09a7daec2e6.jpg" data-sizes="auto" alt="基于Python的机器学习" class="lazyload">
+          <h1>基于Python的机器学习</h1>
+      </div>
+  
+  
+  <div class="nexmoe-post-meta nexmoe-rainbow" style="margin:10px 0!important;">
+    <a><i class="nexmoefont icon-calendar-fill"></i>2020年05月24日</a>
+    <a><i class="nexmoefont icon-areachart"></i>2.6k 字</a>
+    <a><i class="nexmoefont icon-time-circle-fill"></i>大概 12 分钟</a>
+</div>
+
+  <div class="nexmoe-post-right">
+    
+      <div class="nexmoe-fixed">
+        <div class="nexmoe-valign">
+            <div class="nexmoe-toc">
+                <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#"><span class="toc-number">1.</span> <span class="toc-text">我也有诗和远方，只不过诗很烂，远方也很黑暗</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#基于python语言的环境配置"><span class="toc-number">1.1.</span> <span class="toc-text">基于python语言的环境配置</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1、Python的下载和安装"><span class="toc-number">1.1.1.</span> <span class="toc-text">1、Python的下载和安装</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2、一些必须库的安装以及功能简介"><span class="toc-number">1.1.2.</span> <span class="toc-text">2、一些必须库的安装以及功能简介</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#Numpy-基础科学计算库"><span class="toc-number">1.1.2.1.</span> <span class="toc-text">Numpy-基础科学计算库</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Scipy-强大的科学计算工具集"><span class="toc-number">1.1.2.2.</span> <span class="toc-text">Scipy-强大的科学计算工具集</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#pands-数据分析的利器"><span class="toc-number">1.1.2.3.</span> <span class="toc-text">pands-数据分析的利器</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#matplotlib-数据可视化利器"><span class="toc-number">1.1.2.4.</span> <span class="toc-text">matplotlib-数据可视化利器</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#scikit-learn-非常流行的Python机器学习库"><span class="toc-number">1.1.2.5.</span> <span class="toc-text">scikit-learn-非常流行的Python机器学习库</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#K最近邻算法"><span class="toc-number">1.2.</span> <span class="toc-text">K最近邻算法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1、原理"><span class="toc-number">1.2.1.</span> <span class="toc-text">1、原理</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2、K最近邻算法的用法"><span class="toc-number">1.2.2.</span> <span class="toc-text">2、K最近邻算法的用法</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#K最近邻算法在分类任务中的应用"><span class="toc-number">1.2.2.1.</span> <span class="toc-text">K最近邻算法在分类任务中的应用</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#K最近邻算法处理多元分类任务"><span class="toc-number">1.2.2.2.</span> <span class="toc-text">K最近邻算法处理多元分类任务</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#K最近邻算法用于回归分析"><span class="toc-number">1.2.2.3.</span> <span class="toc-text">K最近邻算法用于回归分析</span></a></li></ol></li></ol></li></ol></li></ol>
+            </div>
+        </div>
+      </div>
+    
+  </div>
+
+  <article>
+    <h2 style="color:crimson;font-weight:lighter;">我也有诗和远方，只不过诗很烂，远方也很黑暗</h2>
+
+<a id="more"></a>
+
+<h3 id="基于python语言的环境配置"><a href="#基于python语言的环境配置" class="headerlink" title="基于python语言的环境配置"></a><b style="color:red;">基于python语言的环境配置</b></h3><h4 id="1、Python的下载和安装"><a href="#1、Python的下载和安装" class="headerlink" title="1、Python的下载和安装"></a><b style="color:blue;">1、Python的下载和安装</b></h4><p>首先在Python官网下载：<a href="http://www.python.org" target="_blank" rel="noopener">http://www.python.org</a> 下载Python安装包，在官网首页找到DownLoads按钮，鼠标悬停在上面时会出现一个下拉菜单，在下拉菜单中根据自己的操作系统选择对应的Python版本。</p>
+<h4 id="2、一些必须库的安装以及功能简介"><a href="#2、一些必须库的安装以及功能简介" class="headerlink" title="2、一些必须库的安装以及功能简介"></a><b style="color:blue;">2、一些必须库的安装以及功能简介</b></h4><p>学习机器学习有一些必须要安装的库作为配置的环境。这些库包括：<b style="color:crimson;">Numpy、Scipy、matplotlib、pandas、IPython以及非常核心的scikit-learn。</b></p>
+<h5 id="Numpy-基础科学计算库"><a href="#Numpy-基础科学计算库" class="headerlink" title="Numpy-基础科学计算库"></a><b style="color:orange;">Numpy-基础科学计算库</b></h5><p>Numpy是一个Python中非常基础的用于进行科学计算的库，它的功能包括高维数组（array）计算、线性代数计算、傅里叶变换以及产生伪随机数等。Numpy对于scikit-learn来说是至关重要，因为scikit-learn使用Numpy数组形式的数据来进行处理，所以需要把数据转化成Numpy数组的形式，而多维数组也是Numpy的核心功能之一。</p>
+<pre><code class="python">pip install numpy</code></pre>
+<p>即可安装Numpy</p>
+<h5 id="Scipy-强大的科学计算工具集"><a href="#Scipy-强大的科学计算工具集" class="headerlink" title="Scipy-强大的科学计算工具集"></a><b style="color:orange;">Scipy-强大的科学计算工具集</b></h5><p>Scipy是一个Python中用于进行科学计算的工具集，它有很多的功能，如计算统计学分布、信号处理、计算线性代数方程等。scikit-learn需要使用Scipy来对算法进行执行，其中用的最多的就是Scipy中的sparse函数。sparse函数用来生成稀疏矩阵，而稀疏矩阵用来存储那些大部分数值为0的np数组，这种类型的数组在scikit-learn的实际应用也非常的常见。</p>
+<pre><code class="python">pip install scipy</code></pre>
+<h5 id="pands-数据分析的利器"><a href="#pands-数据分析的利器" class="headerlink" title="pands-数据分析的利器"></a><b style="color:orange;">pands-数据分析的利器</b></h5><p>pandas是一个Python中用于进行数据分析的库，它可以生成类似Excel表格式的数据表，而且可以对数据表进行修改操作。pandas还有个强大的功能，它可以从很多不同种类的数据库中提取数据，如SQL数据库、Excel表格甚至CSV文件。pandas还支持在不同的列中使用不同类型的数据，如整型数、浮点数，或是字符串。</p>
+<pre><code class="python">pip install pandas</code></pre>
+<h5 id="matplotlib-数据可视化利器"><a href="#matplotlib-数据可视化利器" class="headerlink" title="matplotlib-数据可视化利器"></a><b style="color:orange;">matplotlib-数据可视化利器</b></h5><p>matplotlib是一个Python的绘图库，它以各种硬拷贝格式和跨平台的交互式环境生成出版质量级别的图形，它能够输出的图像包括折线图、散点图、直方图等。</p>
+<pre><code class="python">pip install matplotlib</code></pre>
+<h5 id="scikit-learn-非常流行的Python机器学习库"><a href="#scikit-learn-非常流行的Python机器学习库" class="headerlink" title="scikit-learn-非常流行的Python机器学习库"></a><b style="color:orange;">scikit-learn-非常流行的Python机器学习库</b></h5><p>scikit-learn是一个建立在Scipy基础上的用于机器学习的python模块。scikit-learn包含众多定级机器学期算法，它主要有六大类基本功能，分别是：<b style="color:crimson;">分类、回归、聚类、数据降维、模型选择和数据预处理</b>。</p>
+<pre><code class="python">pip install -U scikit-learn</code></pre>
+<h3 id="K最近邻算法"><a href="#K最近邻算法" class="headerlink" title="K最近邻算法"></a><b style="color:red;">K最近邻算法</b></h3><p>K最近邻算法的原理，就如成语中所说的“近朱者赤，近墨者黑”。</p>
+<h4 id="1、原理"><a href="#1、原理" class="headerlink" title="1、原理"></a><b style="color:blue;">1、原理</b></h4><p>K最近邻算法的原理在<b style="color:crimson;">分类</b>中有很多种的应用场景：</p>
+<ol>
+<li>新的数据点离谁近，就和谁属于同一类。<span style="color:hotpink;">当将K选为1时候表示，就会有很高的错误率，假设与新数据最近邻算法的数据刚好是误判的，就会造成新数据点的判断也是错误的</span>。</li>
+<li>当将K值选为3的时候，表示要选最近的三个数据点进行分类判别。然后判断这三个数据点中的分类情况，如果A类多，表示新数据点分为A类，如果是B类占比多，表示新数据点分为B类。</li>
+</ol>
+<p>在scikit-learn中，K最近邻算法的K值是通过<b style="color:crimson;">n_neighbors</b> 参数来调节的。</p>
+<p><span style="color:slateblue;">K最近邻算法也可以用于回归，原理和其用于分类是相同的。当使用K最近邻回归计算某个数据点的预测值的时，模型会选择离该数据点最近的若干个训练数据集中的点，并且将它们的y值取平均值，并把该平均值作为新数据点的预测值。</span></p>
+<h4 id="2、K最近邻算法的用法"><a href="#2、K最近邻算法的用法" class="headerlink" title="2、K最近邻算法的用法"></a><b style="color:blue;">2、K最近邻算法的用法</b></h4><h5 id="K最近邻算法在分类任务中的应用"><a href="#K最近邻算法在分类任务中的应用" class="headerlink" title="K最近邻算法在分类任务中的应用"></a><b style="color:orange;">K最近邻算法在分类任务中的应用</b></h5><p>scikit-learn中，内置了若干个玩具数据集（Toys Datasets），还有一些API可以自动生成一些数据集。</p>
+<pre><code class="python">#!/usr/bin/env python
+# -*- coding:utf-8 -*-
+# @Time  : 2020/5/24 10:50
+# @Author: 潘浩
+# @File  : KNN.py
+
+
+# 导入数据集生成器
+from sklearn.datasets import make_blobs
+# 导入KNN分类器
+from sklearn.neighbors import KNeighborsClassifier
+# 导入画图工具
+import matplotlib.pyplot as plt
+# 导入数据集拆分工具
+from sklearn.model_selection import train_test_split
+import numpy as np
+
+# 生成样本数为200，分类为2的数据集
+data = make_blobs(n_samples=200, centers=2, random_state=8)
+x, y = data
+# 将生成的数据集进行可视化
+plt.scatter(x[:, 0], x[:, 1], c=y, cmap=plt.cm.get_cmap(&quot;Paired&quot;), edgecolors=None, alpha=0.8)
+plt.savefig(&quot;F:\\StudyNote\\image\\KNN.jpg&quot;)
+plt.show()</code></pre>
+<p>具体的显示情况如下：</p>
+<p><img src="KNN.jpg"></img></p>
+<ul>
+<li><p><b style="color:crimson;">make_blobs(n_sample=200,centers=2,random_state=8)</b> </p>
+<p>==n_sample==：表示数据样本点个数，默认值100；</p>
+<p>==n_features==: 表示数据的维度，默认值是2；</p>
+<p>==centers==：产生数据的中心店，默认值是3；</p>
+<p>==cluster_std==：数据集的标准差，浮点数或者浮点数序列，默认1.0；</p>
+<p>==center_box==：中心确定之后的数据边界，默认值（-10.0，10.0）；</p>
+<p>==shuffle==：洗乱，默认值是true；</p>
+<p>==random_state==：随机生成器的种子；</p>
+</li>
+<li><p><b style="color:crimson;">plt.scatter(x=x[0,:],y=x[:,1],c=y,camp=plt.cm.get_cmap(‘spring’),edgecolors=’k’,alpha=0.8)</b> </p>
+<p>==x,y==表示的输入数据；c表示色彩或者颜色序列，可选默认；</p>
+<p>==marker==表示点的形状，可选，默认为‘o’；</p>
+<p>==cmap==表示Colormap，可选，默认为None；</p>
+<p>==alpha==表示数据的亮度，可选范围是0-1；</p>
+<p>==lindwidths==表示线条的宽度。</p>
+</li>
+</ul>
+<p><span style="color:crimson;">以上产生的数据可以看做是机器学习的训练数据集，是已知数据。</span>就是基于这些数据用算法进行模型的训练，然后再对新的未知数据进行分类或者回归。</p>
+<p>在上述代码的基础上拟合训练集数据：</p>
+<pre><code class="python">clf = KNeighborsClassifier()
+clf.fit(x, y)
+
+x_min, x_max = x[:, 0].min() - 1, x[:, 0].max() + 1
+y_min, y_max = x[:, 1].min() - 1, x[:, 1].max() + 1
+xx, yy = np.meshgrid(np.arange(x_min, x_max, 0.02), np.arange(y_min, y_max, 0.02))
+z = clf.predict(np.c_[xx.ravel(), yy.ravel()])
+z = z.reshape(xx.shape)
+plt.pcolormesh(xx, yy, z, cmap=plt.cm.get_cmap(&quot;Pastel1&quot;))
+plt.scatter(x[:, 0], x[:, 1], c=y, cmap=plt.cm.get_cmap(&quot;spring&quot;), edgecolors=&#39;k&#39;)
+plt.xlim(xx.min(), xx.max())
+plt.ylim(yy.min(), yy.max())
+plt.title(&quot;Classifier:KNN&quot;)
+
+plt.show()</code></pre>
+<p>产生的结果如下图所示：</p>
+<p><img src="KNN-classify.jpg"></img></p>
+<ul>
+<li><p><b style="color:crimson;">clf = KNeighborsClassifier()</b> </p>
+<p>==n_neighbors==：指的是K值的大小，就是在做分类时，选取问题点最近的多少个近邻；</p>
+<p>==weights==：在进行分类判断时给最近邻附上的加权，默认的‘uniform’是等权加权，还有‘distance’选项是按照距离的倒数进行加权，也可以使用用户自己定义的其他加权的方法；</p>
+<p>==algorithm==：分类时采取的算法，有<b style="color:yellowgreen;">brute、kd_tree、ball_tree</b>；</p>
+<p>==leaf_size==：是Kd_tree或ball_tree生成的树叶的大小；</p>
+</li>
+<li><p><b style="color:crimson;">xx, yy = np.meshgrid(np.arange(x_min, x_max, 0.02), np.arange(y_min, y_max, 0.02)) </b> 用两个坐标轴上的点在平面上画格</p>
+</li>
+<li><p><b style="color:crimson;">plt.pcolormmesh(xx,yy,z,cmap=plt.cm.get_cmp(‘Pastel1’))</b> 在于能够直观表现出分类边界。</p>
+<p> ==xx，yy==：表示的是分类的区间的边界</p>
+</li>
+</ul>
+<p>此时如果有新的数据输入的话，就会根据自动将数据分到对应的类中。</p>
+<p>在<code>plt.show()</code>前面加上：</p>
+<pre><code class="python">plt.scatter(6.75, 4.82, marker=&#39;*&#39;, c=&#39;red&#39;, s=200)</code></pre>
+<p>就是上图的五角星符号，可以看到被分到了浅色区域。</p>
+<h5 id="K最近邻算法处理多元分类任务"><a href="#K最近邻算法处理多元分类任务" class="headerlink" title="K最近邻算法处理多元分类任务"></a><b style="color:orange;">K最近邻算法处理多元分类任务</b></h5><p>生成多元分类任务所使用的数据集，为了让难度足够大，修改make_blobs的center参数，把数据类型修改为5个，同时修改n_samples参数，将样本数量增加到500个：</p>
+<pre><code class="python">#!/usr/bin/env python
+# -*- coding:utf-8 -*-
+# @Time  : 2020/5/24 14:52
+# @Author: 潘浩
+# @File  : KNNS.py
+
+
+# 导入数据集生成器
+from sklearn.datasets import make_blobs
+# 导入KNN分类器
+from sklearn.neighbors import KNeighborsClassifier
+# 导入画图工具
+import matplotlib.pyplot as plt
+# 导入数据集拆分工具
+from sklearn.model_selection import train_test_split
+import numpy as np
+
+# 生成样本数为500，分类数为5的数据集
+data = make_blobs(n_samples=500, centers=5, random_state=8)
+X, y = data
+# 用散点图将数据集进行可视化
+# plt.scatter(X[:, 0], X[:, 1], c=y, cmap=plt.cm.get_cmap(&#39;spring&#39;), edgecolors=&#39;k&#39;)
+
+clf = KNeighborsClassifier()
+clf.fit(X, y)
+x_min, x_max = X[:, 0].min() - 1, X[:, 0].max() + 1
+y_min, y_max = X[:, 0].min() - 1, X[:, 0].max() + 1
+xx, yy = np.meshgrid(np.arange(x_min, x_max, 0.02), np.arange(y_min, y_max, 0.02))
+Z = clf.predict(np.c_[xx.ravel(), yy.ravel()])
+Z = Z.reshape(xx.shape)
+plt.pcolormesh(xx, yy, Z, cmap=plt.cm.get_cmap(&#39;Pastel1&#39;))
+plt.scatter(X[:, 0], X[:, 1], c=y, cmap=plt.get_cmap(&#39;spring&#39;), edgecolors=&#39;k&#39;)
+plt.xlim(xx.min(), xx.max())
+plt.ylim(yy.min(), yy.max())
+plt.title(&quot;Classifier:KNN&quot;)
+plt.show()</code></pre>
+<p>其结果如下图所示：</p>
+<p><img src='KNNS.jpg'></img></p>
+<p>K最近邻算法仍然可以把大部分的数据点放置于正确的分类中，但是有一小部分还是进入了错误的分类中，这些分类错误的数据点基本都是互相重合的位于图像中心点的位置。</p>
+<p>模型正确率可以通过<b style="color:crimson;">clf.score(X,y)</b> 来得到：</p>
+<pre><code class="python">print(&#39;\n\n\n&#39;)
+print(&#39;代码运行结果：&#39;)
+print(&#39;===================&#39;)
+print(&#39;模型正确率：{:.2f}&#39;.format(clf.score(X, y)))
+print(&#39;===================&#39;)
+print(&#39;\n\n\n&#39;)</code></pre>
+<p>打印出来的结果如下：</p>
+<pre><code class="python">代码运行结果：
+===================
+模型正确率：0.96
+===================</code></pre>
+<h5 id="K最近邻算法用于回归分析"><a href="#K最近邻算法用于回归分析" class="headerlink" title="K最近邻算法用于回归分析"></a><b style="color:orange;">K最近邻算法用于回归分析</b></h5><p>在scikit-learn的数据集生成器中，有一个非常好的用于回归分析的数据集生成器，make_regression函数。</p>
+<pre><code class="python">#!/usr/bin/env python
+# -*- coding:utf-8 -*-
+# @Time  : 2020/5/24 15:15
+# @Author: 潘浩
+# @File  : Regresssion.py
+
+
+# 导入数据集生成器
+from sklearn.datasets import make_regression
+# 导入KNN分类器
+from sklearn.neighbors import KNeighborsRegressor
+# 导入画图工具
+import matplotlib.pyplot as plt
+import numpy as np
+
+X, y = make_regression(n_features=1, n_informative=1, noise=50, random_state=8)
+
+reg = KNeighborsRegressor()
+reg.fit(X, y)
+z = np.linspace(-3, 3, 200).reshape(-1, 1)
+plt.scatter(X, y, c=&#39;red&#39;, edgecolors=&#39;k&#39;)
+plt.plot(z, reg.predict(z), c=&#39;k&#39;, linewidth=3)
+plt.title(&#39;KNN Regressor&#39;)
+plt.show()
+
+print(&#39;\n&#39;)
+print(&#39;代码运行结果：&#39;)
+print(&#39;===================&#39;)
+print(&#39;模型正确率：{:.2f}&#39;.format(reg.score(X, y)))
+print(&#39;===================&#39;)
+print(&#39;\n&#39;)</code></pre>
+<p>其结果如下所示：</p>
+<p><img src="Regressor.jpg"></img></p>
+<p>此时模型的准确率只有0.77，有一点差强人意，修改K的数值为1：</p>
+<pre><code class="python">reg = KNeighborsRegressor(n_neighbors=2)</code></pre>
+<p>此时模型的准确率就可以提升到0.86，可以说是显著提升的。</p>
+
+  </article>
+
+  <div class="nexmoe-post-meta nexmoe-rainbow">
+    
+        <a class="nexmoefont icon-appstore-fill -link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a>
+    
+    
+        <a class="nexmoefont icon-tag-fill -link" href="/tags/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/" rel="tag">编程语言</a>
+    
+</div>
+
+  <div class="nexmoe-post-footer">
+    
+      
+  <div class="nexmoe-post-copyright">
+    <strong>Author：</strong>AntPan<br>
+    <strong>Link：</strong><a href="https://alpacame.github.io/2020/05/24/%E5%9F%BA%E4%BA%8EPython%E7%9A%84%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" title="https:&#x2F;&#x2F;alpacame.github.io&#x2F;2020&#x2F;05&#x2F;24&#x2F;%E5%9F%BA%E4%BA%8EPython%E7%9A%84%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0&#x2F;" target="_blank" rel="noopener">https:&#x2F;&#x2F;alpacame.github.io&#x2F;2020&#x2F;05&#x2F;24&#x2F;%E5%9F%BA%E4%BA%8EPython%E7%9A%84%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0&#x2F;</a><br>
+    
+      <strong>版权声明：</strong>本文采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/cn/deed.zh" target="_blank">CC BY-NC-SA 3.0 CN</a> 协议进行许可
+    
+  </div>
+
+
+    
+    <section class="nexmoe-comment">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.5.0/dist/gitalk.min.css">
+<div id="gitalk"></div>
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1.5.0/dist/gitalk.min.js"></script>
+<script type="text/javascript">
+    var gitalk = new Gitalk({
+        clientID: '80b2453b6d5f37ad6225',
+        clientSecret: '43e99fa852795c9a7b3eb924b2558c64b84bbdeb',
+        id: window.location.pathname,
+        repo: 'nexmoe.github.io',
+        owner: 'nexmoe',
+        admin: 'nexmoe'
+    })
+    gitalk.render('gitalk')
+</script>
+</section>
+  </div>
+</div>
+    </div>
+  </div>
+  <script src="https://cdn.jsdelivr.net/combine/npm/lazysizes@5.1.0/lazysizes.min.js,gh/highlightjs/cdn-release@9.15.8/build/highlight.min.js,npm/mdui@0.4.3/dist/js/mdui.min.js,gh/nexmoe/nexmoe.github.io@latest/js/app.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+<!--<script src="/js/app.js?v=1590306541699"></script>-->
+
+
+    <script src="https://cdn.jsdelivr.net/gh/xtaodada/xtaodada.github.io@0.0.2/copy.js"></script>
+
+
+ 
+<script> 
+!function(e,t,a){function n(){c(".heart{width: 10px;height: 10px;position: fixed;background: #f00;transform: rotate(45deg);-webkit-transform: rotate(45deg);-moz-transform: rotate(45deg);}.heart:after,.heart:before{content: '';width: inherit;height: inherit;background: inherit;border-radius: 50%;-webkit-border-radius: 50%;-moz-border-radius: 50%;position: fixed;}.heart:after{top: -5px;}.heart:before{left: -5px;}"),o(),r()}function r(){for(var e=0;e<d.length;e++)d[e].alpha<=0?(t.body.removeChild(d[e].el),d.splice(e,1)):(d[e].y--,d[e].scale+=.004,d[e].alpha-=.013,d[e].el.style.cssText="left:"+d[e].x+"px;top:"+d[e].y+"px;opacity:"+d[e].alpha+";transform:scale("+d[e].scale+","+d[e].scale+") rotate(45deg);background:"+d[e].color+";z-index:99999");requestAnimationFrame(r)}function o(){var t="function"==typeof e.onclick&&e.onclick;e.onclick=function(e){t&&t(),i(e)}}function i(e){var a=t.createElement("div");a.className="heart",d.push({el:a,x:e.clientX-5,y:e.clientY-5,scale:1,alpha:1,color:s()}),t.body.appendChild(a)}function c(e){var a=t.createElement("style");a.type="text/css";try{a.appendChild(t.createTextNode(e))}catch(t){a.styleSheet.cssText=e}t.getElementsByTagName("head")[0].appendChild(a)}function s(){return"rgb("+~~(255*Math.random())+","+~~(255*Math.random())+","+~~(255*Math.random())+")"}var d=[];e.requestAnimationFrame=function(){return e.requestAnimationFrame||e.webkitRequestAnimationFrame||e.mozRequestAnimationFrame||e.oRequestAnimationFrame||e.msRequestAnimationFrame||function(e){setTimeout(e,1e3/60)}}(),n()}(window,document);
+</script>
+
+  
+
+
+
+
+
+</body>
+
+</html>
