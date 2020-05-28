@@ -23,15 +23,22 @@
 <meta property="og:image" content="https://alpacame.github.io/2020/05/24/%E5%9F%BA%E4%BA%8EPython%E7%9A%84%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/KNNClassify.jpg">
 <meta property="og:image" content="https://alpacame.github.io/2020/05/24/%E5%9F%BA%E4%BA%8EPython%E7%9A%84%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/KNNS.jpg">
 <meta property="og:image" content="https://alpacame.github.io/2020/05/24/%E5%9F%BA%E4%BA%8EPython%E7%9A%84%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/Regressor.jpg">
+<meta property="og:image" content="https://alpacame.github.io/2020/05/24/%E5%9F%BA%E4%BA%8EPython%E7%9A%84%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/LinearRegression.jpg">
+<meta property="og:image" content="https://alpacame.github.io/2020/05/24/%E5%9F%BA%E4%BA%8EPython%E7%9A%84%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/LinearRegression1.jpg">
+<meta property="og:image" content="https://alpacame.github.io/2020/05/24/%E5%9F%BA%E4%BA%8EPython%E7%9A%84%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/LinearRegression2.jpg">
+<meta property="og:image" content="https://alpacame.github.io/2020/05/24/%E5%9F%BA%E4%BA%8EPython%E7%9A%84%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/alpha.jpg">
+<meta property="og:image" content="https://alpacame.github.io/2020/05/24/%E5%9F%BA%E4%BA%8EPython%E7%9A%84%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/BernoulliNBCounts.jpg">
+<meta property="og:image" content="https://alpacame.github.io/2020/05/24/%E5%9F%BA%E4%BA%8EPython%E7%9A%84%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/GaussianNB.jpg">
+<meta property="og:image" content="https://alpacame.github.io/2020/05/24/%E5%9F%BA%E4%BA%8EPython%E7%9A%84%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/MultinomiaNB.jpg">
 <meta property="article:published_time" content="2020-05-24T07:38:39.000Z">
-<meta property="article:modified_time" content="2020-05-24T08:23:14.077Z">
+<meta property="article:modified_time" content="2020-05-28T00:54:27.627Z">
 <meta property="article:author" content="AntPan">
 <meta property="article:tag" content="编程语言">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://alpacame.github.io/2020/05/24/%E5%9F%BA%E4%BA%8EPython%E7%9A%84%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/KNN.jpg">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/combine/gh/nexmoe/nexmoe.github.io@latest/css/style.css,npm/highlight.js@9.15.8/styles/atom-one-dark.css,gh/nexmoe/nexmoe.github.io@latest/lib/mdui_043tiny/css/mdui.css,gh/nexmoe/nexmoe.github.io@latest/lib/iconfont/iconfont.css" crossorigin>
   
-  <!--<link rel="stylesheet" href="/css/style.css?v=1590308604178">-->
+  <!--<link rel="stylesheet" href="/css/style.css?v=1590627293958">-->
 
    
     <style>
@@ -230,8 +237,8 @@
   
   <div class="nexmoe-post-meta nexmoe-rainbow" style="margin:10px 0!important;">
     <a><i class="nexmoefont icon-calendar-fill"></i>2020年05月24日</a>
-    <a><i class="nexmoefont icon-areachart"></i>2.6k 字</a>
-    <a><i class="nexmoefont icon-time-circle-fill"></i>大概 12 分钟</a>
+    <a><i class="nexmoefont icon-areachart"></i>6.6k 字</a>
+    <a><i class="nexmoefont icon-time-circle-fill"></i>大概 31 分钟</a>
 </div>
 
   <div class="nexmoe-post-right">
@@ -239,7 +246,7 @@
       <div class="nexmoe-fixed">
         <div class="nexmoe-valign">
             <div class="nexmoe-toc">
-                <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#"><span class="toc-number">1.</span> <span class="toc-text">我也有诗和远方，只不过诗很烂，远方也很黑暗</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#基于python语言的环境配置"><span class="toc-number">1.1.</span> <span class="toc-text">基于python语言的环境配置</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1、Python的下载和安装"><span class="toc-number">1.1.1.</span> <span class="toc-text">1、Python的下载和安装</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2、一些必须库的安装以及功能简介"><span class="toc-number">1.1.2.</span> <span class="toc-text">2、一些必须库的安装以及功能简介</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#Numpy-基础科学计算库"><span class="toc-number">1.1.2.1.</span> <span class="toc-text">Numpy-基础科学计算库</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Scipy-强大的科学计算工具集"><span class="toc-number">1.1.2.2.</span> <span class="toc-text">Scipy-强大的科学计算工具集</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#pands-数据分析的利器"><span class="toc-number">1.1.2.3.</span> <span class="toc-text">pands-数据分析的利器</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#matplotlib-数据可视化利器"><span class="toc-number">1.1.2.4.</span> <span class="toc-text">matplotlib-数据可视化利器</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#scikit-learn-非常流行的Python机器学习库"><span class="toc-number">1.1.2.5.</span> <span class="toc-text">scikit-learn-非常流行的Python机器学习库</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#K最近邻算法"><span class="toc-number">1.2.</span> <span class="toc-text">K最近邻算法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1、原理"><span class="toc-number">1.2.1.</span> <span class="toc-text">1、原理</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2、K最近邻算法的用法"><span class="toc-number">1.2.2.</span> <span class="toc-text">2、K最近邻算法的用法</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#K最近邻算法在分类任务中的应用"><span class="toc-number">1.2.2.1.</span> <span class="toc-text">K最近邻算法在分类任务中的应用</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#K最近邻算法处理多元分类任务"><span class="toc-number">1.2.2.2.</span> <span class="toc-text">K最近邻算法处理多元分类任务</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#K最近邻算法用于回归分析"><span class="toc-number">1.2.2.3.</span> <span class="toc-text">K最近邻算法用于回归分析</span></a></li></ol></li></ol></li></ol></li></ol>
+                <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#"><span class="toc-number">1.</span> <span class="toc-text">我也有诗和远方，只不过诗很烂，远方也很黑暗</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#基于python语言的环境配置"><span class="toc-number">1.1.</span> <span class="toc-text">基于python语言的环境配置</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1、Python的下载和安装"><span class="toc-number">1.1.1.</span> <span class="toc-text">1、Python的下载和安装</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2、一些必须库的安装以及功能简介"><span class="toc-number">1.1.2.</span> <span class="toc-text">2、一些必须库的安装以及功能简介</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#Numpy-基础科学计算库"><span class="toc-number">1.1.2.1.</span> <span class="toc-text">Numpy-基础科学计算库</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Scipy-强大的科学计算工具集"><span class="toc-number">1.1.2.2.</span> <span class="toc-text">Scipy-强大的科学计算工具集</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#pands-数据分析的利器"><span class="toc-number">1.1.2.3.</span> <span class="toc-text">pands-数据分析的利器</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#matplotlib-数据可视化利器"><span class="toc-number">1.1.2.4.</span> <span class="toc-text">matplotlib-数据可视化利器</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#scikit-learn-非常流行的Python机器学习库"><span class="toc-number">1.1.2.5.</span> <span class="toc-text">scikit-learn-非常流行的Python机器学习库</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#K最近邻算法"><span class="toc-number">1.2.</span> <span class="toc-text">K最近邻算法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1、原理"><span class="toc-number">1.2.1.</span> <span class="toc-text">1、原理</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2、K最近邻算法的用法"><span class="toc-number">1.2.2.</span> <span class="toc-text">2、K最近邻算法的用法</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#K最近邻算法在分类任务中的应用"><span class="toc-number">1.2.2.1.</span> <span class="toc-text">K最近邻算法在分类任务中的应用</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#K最近邻算法处理多元分类任务"><span class="toc-number">1.2.2.2.</span> <span class="toc-text">K最近邻算法处理多元分类任务</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#K最近邻算法用于回归分析"><span class="toc-number">1.2.2.3.</span> <span class="toc-text">K最近邻算法用于回归分析</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3、红酒预测实例"><span class="toc-number">1.2.3.</span> <span class="toc-text">3、红酒预测实例</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#广义线性模型"><span class="toc-number">1.3.</span> <span class="toc-text">广义线性模型</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1、基本概念"><span class="toc-number">1.3.1.</span> <span class="toc-text">1、基本概念</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2、最基本的线性模型-线性回归"><span class="toc-number">1.3.2.</span> <span class="toc-text">2、最基本的线性模型-线性回归</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3、使用L2正则化的线性模型-岭回归"><span class="toc-number">1.3.3.</span> <span class="toc-text">3、使用L2正则化的线性模型-岭回归</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4、使用L1正则化的线性模型-套索回归"><span class="toc-number">1.3.4.</span> <span class="toc-text">4、使用L1正则化的线性模型-套索回归</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#朴素贝叶斯算法"><span class="toc-number">1.4.</span> <span class="toc-text">朴素贝叶斯算法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1、基本概念-1"><span class="toc-number">1.4.1.</span> <span class="toc-text">1、基本概念</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2、朴素贝叶斯算法的不同方法"><span class="toc-number">1.4.2.</span> <span class="toc-text">2、朴素贝叶斯算法的不同方法</span></a></li></ol></li></ol></li></ol>
             </div>
         </div>
       </div>
@@ -248,7 +255,6 @@
 
   <article>
     <h2 style="color:crimson;font-weight:lighter;">我也有诗和远方，只不过诗很烂，远方也很黑暗</h2>
-
 <a id="more"></a>
 
 <h3 id="基于python语言的环境配置"><a href="#基于python语言的环境配置" class="headerlink" title="基于python语言的环境配置"></a><b style="color:red;">基于python语言的环境配置</b></h3><h4 id="1、Python的下载和安装"><a href="#1、Python的下载和安装" class="headerlink" title="1、Python的下载和安装"></a><b style="color:blue;">1、Python的下载和安装</b></h4><p>首先在Python官网下载：<a href="http://www.python.org" target="_blank" rel="noopener">http://www.python.org</a> 下载Python安装包，在官网首页找到DownLoads按钮，鼠标悬停在上面时会出现一个下拉菜单，在下拉菜单中根据自己的操作系统选择对应的Python版本。</p>
@@ -273,14 +279,7 @@
 <p>在scikit-learn中，K最近邻算法的K值是通过<b style="color:crimson;">n_neighbors</b> 参数来调节的。</p>
 <p><span style="color:slateblue;">K最近邻算法也可以用于回归，原理和其用于分类是相同的。当使用K最近邻回归计算某个数据点的预测值的时，模型会选择离该数据点最近的若干个训练数据集中的点，并且将它们的y值取平均值，并把该平均值作为新数据点的预测值。</span></p>
 <h4 id="2、K最近邻算法的用法"><a href="#2、K最近邻算法的用法" class="headerlink" title="2、K最近邻算法的用法"></a><b style="color:blue;">2、K最近邻算法的用法</b></h4><h5 id="K最近邻算法在分类任务中的应用"><a href="#K最近邻算法在分类任务中的应用" class="headerlink" title="K最近邻算法在分类任务中的应用"></a><b style="color:orange;">K最近邻算法在分类任务中的应用</b></h5><p>scikit-learn中，内置了若干个玩具数据集（Toys Datasets），还有一些API可以自动生成一些数据集。</p>
-<pre><code class="python">#!/usr/bin/env python
-# -*- coding:utf-8 -*-
-# @Time  : 2020/5/24 10:50
-# @Author: 潘浩
-# @File  : KNN.py
-
-
-# 导入数据集生成器
+<pre><code class="python"># 导入数据集生成器
 from sklearn.datasets import make_blobs
 # 导入KNN分类器
 from sklearn.neighbors import KNeighborsClassifier
@@ -354,14 +353,7 @@ plt.show()</code></pre>
 <pre><code class="python">plt.scatter(6.75, 4.82, marker=&#39;*&#39;, c=&#39;red&#39;, s=200)</code></pre>
 <p>就是上图的五角星符号，可以看到被分到了浅色区域。</p>
 <h5 id="K最近邻算法处理多元分类任务"><a href="#K最近邻算法处理多元分类任务" class="headerlink" title="K最近邻算法处理多元分类任务"></a><b style="color:orange;">K最近邻算法处理多元分类任务</b></h5><p>生成多元分类任务所使用的数据集，为了让难度足够大，修改make_blobs的center参数，把数据类型修改为5个，同时修改n_samples参数，将样本数量增加到500个：</p>
-<pre><code class="python">#!/usr/bin/env python
-# -*- coding:utf-8 -*-
-# @Time  : 2020/5/24 14:52
-# @Author: 潘浩
-# @File  : KNNS.py
-
-
-# 导入数据集生成器
+<pre><code class="python"># 导入数据集生成器
 from sklearn.datasets import make_blobs
 # 导入KNN分类器
 from sklearn.neighbors import KNeighborsClassifier
@@ -406,14 +398,7 @@ print(&#39;\n\n\n&#39;)</code></pre>
 模型正确率：0.96
 ===================</code></pre>
 <h5 id="K最近邻算法用于回归分析"><a href="#K最近邻算法用于回归分析" class="headerlink" title="K最近邻算法用于回归分析"></a><b style="color:orange;">K最近邻算法用于回归分析</b></h5><p>在scikit-learn的数据集生成器中，有一个非常好的用于回归分析的数据集生成器，make_regression函数。</p>
-<pre><code class="python">#!/usr/bin/env python
-# -*- coding:utf-8 -*-
-# @Time  : 2020/5/24 15:15
-# @Author: 潘浩
-# @File  : Regresssion.py
-
-
-# 导入数据集生成器
+<pre><code class="python"># 导入数据集生成器
 from sklearn.datasets import make_regression
 # 导入KNN分类器
 from sklearn.neighbors import KNeighborsRegressor
@@ -442,6 +427,427 @@ print(&#39;\n&#39;)</code></pre>
 <p>此时模型的准确率只有0.77，有一点差强人意，修改K的数值为1：</p>
 <pre><code class="python">reg = KNeighborsRegressor(n_neighbors=2)</code></pre>
 <p>此时模型的准确率就可以提升到0.86，可以说是显著提升的。</p>
+<h4 id="3、红酒预测实例"><a href="#3、红酒预测实例" class="headerlink" title="3、红酒预测实例"></a><b style="color:blue;">3、红酒预测实例</b></h4><p>红酒预测的实例一般分为四个特定的步骤：</p>
+<ol>
+<li>从Skelearn的dataset模块载入模块</li>
+<li>将数据集分成训练集和测试集</li>
+<li>指定KNeighborsClassifier</li>
+<li>输入新的数据点</li>
+<li>输出预测的种类</li>
+</ol>
+<pre><code class="python">from sklearn.datasets import load_wine
+from sklearn.model_selection import train_test_split
+from sklearn.neighbors import KNeighborsClassifier
+import numpy as np
+
+# 从sklearn的dataset模块载入数据
+wine_dataset = load_wine()
+# print(&quot;红酒数据集中的键：\n{}&quot;.format(wine_dataset.keys()))
+# print(&quot;数据概况：{}&quot;.format(wine_dataset[&#39;data&#39;].shape))
+# print(wine_dataset[&#39;DESCR&#39;])
+# 将数据集拆分为训练数据集和测试数据集
+# 用X表示数据的特征，而用y表示数据对应的标签
+X_train, X_test, y_train, y_test = train_test_split(wine_dataset[&#39;data&#39;], wine_dataset[&#39;target&#39;], random_state=0)
+# print(&#39;X_train shape:{}&#39;.format(X_train.shape))
+# print(&#39;X_test shape:{}&#39;.format(X_test.shape))
+# print(&#39;y_train shape:{}&#39;.format(y_train.shape))
+# print(&#39;y_test shape:{}&#39;.format(y_test.shape))
+# 指定模型n_neighbors参数值为1
+knn = KNeighborsClassifier(n_neighbors=1)
+knn.fit(X_train, y_train)
+# print(knn)
+# print(&quot;测试数据集得分:{:.2f}&quot;.format(knn.score(X_test, y_test)))
+# 输入新的数据点
+X_new = np.array([[13.2, 2.77, 2.51, 18.5, 96.6, 1.04, 2.55, 0.57, 1.47, 6.2, 1.05, 3.33, 820]])
+# 进行预测
+prediction = knn.predict(X_new)
+print(&quot;预测新红酒的分类为：{}&quot;.format(wine_dataset[&#39;target_names&#39;][prediction]))</code></pre>
+<h3 id="广义线性模型"><a href="#广义线性模型" class="headerlink" title="广义线性模型"></a><b style="color:red;">广义线性模型</b></h3><p>线性模型是一类广泛用于机器学习领域的预测模型，线性模型是输入数据集的特征的线性函数建模，并对结果进行预测的方法。</p>
+<h4 id="1、基本概念"><a href="#1、基本概念" class="headerlink" title="1、基本概念"></a><b style="color:blue;">1、基本概念</b></h4><p>常用线性模型包括：<b style="color:crimson;">线性回归、岭回归、套索回归、逻辑回归和线性SVC等</b></p>
+<p><b style="color:orange;">线性回归</b></p>
+<pre><code class="python">import numpy as np
+import matplotlib.pyplot as plt
+# 导入线性回归模型
+from sklearn.linear_model import LinearRegression
+
+# 输入两个点的坐标
+X = [[1], [4]]
+y = [3, 5]
+# 用线性模型拟合这个两个点
+lr = LinearRegression().fit(X, y)
+# 画出两个点和直线图形
+z = np.linspace(0, 5, 20)
+plt.scatter(X, y, s=80, c=&#39;red&#39;)
+plt.plot(z, lr.predict(z.reshape(-1, 1)), c=&#39;blue&#39;)
+plt.title(&#39;Straight Line&#39;)
+plt.show()</code></pre>
+<ul>
+<li>X和y就像是数据集中的数据，然后经过LinearRegression的拟合得到直线<code>lr.predict(z.shape(-1,1))</code>。</li>
+</ul>
+<p>其结果如下所示：</p>
+<p><img src="LinearRegression.jpg"></img></p>
+<p>利用<code>print(&#39;y={:.3f}&#39;.format(lr.coef_[0]), &#39;x&#39;, &#39;+{:.3f}&#39;.format(lr.intercept_))</code> 即可打印出出来拟合出来之后的函数：</p>
+<pre><code class="python">y=0.667 x +2.333</code></pre>
+<p>当输入改为三个点的时候：</p>
+<pre><code class="python">X = [[1], [4], [3]]
+y = [3, 5, 3]</code></pre>
+<p>此时直线的输出和拟合的情况又有了很大的不同：</p>
+<pre><code class="python">y=0.571 x +2.143</code></pre>
+<p><img src="LinearRegression1.jpg"></img></p>
+<p>实际应用中数据量远远大于3或者2，以Scikit-learn生成的make_regression数据集作为例子：</p>
+<pre><code class="python">import numpy as np
+import matplotlib.pyplot as plt
+# 导入线性回归模型
+from sklearn.linear_model import LinearRegression
+from sklearn.datasets import make_regression
+
+# 生成用于回归分析的数据集
+X, y = make_regression(n_samples=50, n_features=1, n_informative=1, noise=50, random_state=1)
+# 使用线性模型对数据进行拟合
+reg = LinearRegression()
+reg.fit(X, y)
+# scikit-learn总是以下划线作为来自训练集的属性的结尾
+print(&#39;y={:.3f}&#39;.format(reg.coef_[0]), &#39;x&#39;, &#39;+{:.3f}&#39;.format(reg.intercept_))
+# z是生成的等差数列，用来画出线性模型的图形
+z = np.linspace(-3, 3, 200).reshape(-1, 1)
+plt.scatter(X, y, c=&#39;blue&#39;, s=60)
+plt.plot(z, reg.predict(z), c=&#39;k&#39;)
+plt.title(&#39;Linear Regression&#39;)
+plt.show()</code></pre>
+<p>它拟合结果为：</p>
+<pre><code class="python">y=79.525 x +10.922</code></pre>
+<p><img src="LinearRegression2.jpg"></img></p>
+<p><b style="color:orange;">线性模型的特点</b></p>
+<p><b style="color:yellowgreen;">用于线性回归分析的线性模型在特征数为1的数据集中，是使用一条直线来进行预测分析的，而当数据的特征数量达到2时，则是一个平面，而对于更多特征数量的数据集来说，则是一个高维度的超平面。</b></p>
+<h4 id="2、最基本的线性模型-线性回归"><a href="#2、最基本的线性模型-线性回归" class="headerlink" title="2、最基本的线性模型-线性回归"></a><b style="color:blue;">2、最基本的线性模型-线性回归</b></h4><p>线性回归是，也称为普通最小二乘法（OLS），是在回归分析中最简单也是最经典的线性模型。</p>
+<p><b style="color:orange;">线性回归的最基本原理</b></p>
+<p>线性回归的原理是，找到当训练集中y的预测值和其真实值的平方差最小的时候，所对应的w值和b值。线性回归没有可供用户调节的参数，这就是它的优势。</p>
+<pre><code class="python">import numpy as np
+import matplotlib.pyplot as plt
+# 导入线性回归模型
+from sklearn.linear_model import LinearRegression
+from sklearn.datasets import make_regression
+from sklearn.model_selection import train_test_split
+
+X, y = make_regression(n_samples=100, n_features=2, n_informative=2, random_state=38)
+X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=8)
+lr = LinearRegression().fit(X_train, y_train)
+print(&quot;lr.coef_:{}&quot;.format(lr.coef_[:]))
+print(&quot;lr.intercept_:{}&quot;.format(lr.intercept_))</code></pre>
+<p>此时它的w值和d的值为：</p>
+<pre><code class="python">lr.coef_:[70.38592453  7.43213621]
+lr.intercept_:-1.4210854715202004e-14</code></pre>
+<p>所以此时拟合的函数为：<b style="color:crimson;">y=70.3859<code>*</code>X1+7.4321<code>*</code>X2-1.42e^-14</b></p>
+<p>此时因为数据集没有添加噪声所以训练集和测试集的得分都是1。</p>
+<h4 id="3、使用L2正则化的线性模型-岭回归"><a href="#3、使用L2正则化的线性模型-岭回归" class="headerlink" title="3、使用L2正则化的线性模型-岭回归"></a><b style="color:blue;">3、使用L2正则化的线性模型-岭回归</b></h4><p>岭回归是一种能够避免过拟合的线性模型。在岭回归中，模型会保留所有的特征变量，但是会减小特征变量的系数值，让特征变量对预测结果的影响变小，在岭回归中是通过改变其alpha参数来控制减小特征变量系数的程度。</p>
+<pre><code class="python">import numpy as np
+import matplotlib.pyplot as plt
+# 导入L2回归模型
+from sklearn.linear_model import Ridge
+from sklearn.linear_model import LinearRegression
+from sklearn.datasets import load_diabetes
+from sklearn.model_selection import train_test_split
+
+X, y = load_diabetes().data, load_diabetes().target
+X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=8)
+lr = LinearRegression().fit(X_train, y_train)
+print(&quot;线性回归训练集得分：{:.3f}&quot;.format(lr.score(X_train, y_train)))
+print(&quot;线性回归测试集得分：{:.3f}&quot;.format(lr.score(X_test, y_test)))
+ridge = Ridge().fit(X_train, y_train)
+ridge10 = Ridge(alpha=10).fit(X_train, y_train)
+ridge01 = Ridge(alpha=0.1).fit(X_train, y_train)
+print(&quot;岭回归训练集得分：{:.3f}&quot;.format(ridge.score(X_train, y_train)))
+print(&quot;岭回归测试集得分：{:.3f}&quot;.format(ridge.score(X_test, y_test)))
+# 绘制alpha=1时的模型系数
+plt.plot(ridge.coef_, &#39;s&#39;, label=&#39;Ridge alpha=1&#39;)
+# 绘制alpha=10时的模型系数
+plt.plot(ridge10.coef_, &#39;s&#39;, label=&#39;Ridge alpha=10&#39;)
+# 绘制alpha=0.1时的模型系数
+plt.plot(ridge01.coef_, &#39;s&#39;, label=&#39;Ridge alpha=0.1&#39;)
+# 绘制线性回归的系数做对比
+plt.plot(lr.coef_, &#39;o&#39;, label=&quot;Linear regression&quot;)
+plt.xlabel(&quot;cofficient index&quot;)
+plt.ylabel(&quot;cofficient magnitude&quot;)
+plt.hlines(0, 0, len(lr.coef_))
+plt.legend()
+plt.show()</code></pre>
+<p>上述包含了alpha函数对岭回归的影响以及与线性回归的对比：</p>
+<p><img src="alpha.jpg"></img></p>
+<ul>
+<li>横轴表示是特征变量的序号：X=0表示的是第一个特征变量，y轴表示的是对应特征变量的数量。</li>
+<li>可以看出来，当alpha=10的时候，橙色的点都在y=0附近；当alpha=1的时候，y值的浮动范围有很大的增加；当alpha=0.1时，可以看到岭回归的系数和线性回归的系数非常接近。</li>
+</ul>
+<h4 id="4、使用L1正则化的线性模型-套索回归"><a href="#4、使用L1正则化的线性模型-套索回归" class="headerlink" title="4、使用L1正则化的线性模型-套索回归"></a><b style="color:blue;">4、使用L1正则化的线性模型-套索回归</b></h4><p>与岭回归不同的是套索回归，有一部分特征的系数会正好等于0，也就是说，有一些特征会彻底被模型忽略掉，也可以看成是模型对于特征    进行自动选择的一种方式。</p>
+<pre><code class="python">import numpy as np
+import matplotlib.pyplot as plt
+# 导入L2回归模型
+from sklearn.linear_model import Ridge
+from sklearn.linear_model import LinearRegression
+from sklearn.linear_model import Lasso
+from sklearn.datasets import load_diabetes
+from sklearn.model_selection import train_test_split
+
+X, y = load_diabetes().data, load_diabetes().target
+X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=8)
+lasso = Lasso().fit(X_train, y_train)
+print(&quot;套索回归在训练集的得分：{:.2f}&quot;.format(lasso.score(X_train, y_train)))
+print(&quot;套索回归在测试集的得分：{:.2f}&quot;.format(lasso.score(X_test, y_test)))
+print(&quot;套索回归使用的特征数量：{}&quot;.format(np.sum(lasso.coef_ != 0)))</code></pre>
+<p>此时输出为：</p>
+<pre><code class="python">套索回归在训练集的得分：0.36
+套索回归在测试集的得分：0.37
+套索回归使用的特征数量：3</code></pre>
+<p>套索回归在训练集和数据集的得分都非常糟糕。在10个特征数量中，也仅仅使用了3个。</p>
+<p>在套索回归中，依旧可以使用alpha参数来调节，将alpha参数设置为0.1时:</p>
+<pre><code class="python">lasso = Lasso(alpha=0.1, max_iter=10000).fit(X_train, y_train)
+==================================================
+套索回归在训练集的得分：0.52
+套索回归在测试集的得分：0.48
+套索回归使用的特征数量：7</code></pre>
+<p>此时套索回归有了更好的表现。</p>
+<h3 id="朴素贝叶斯算法"><a href="#朴素贝叶斯算法" class="headerlink" title="朴素贝叶斯算法"></a><b style="color:red;">朴素贝叶斯算法</b></h3><p>朴素贝叶斯是经典的机器算法之一，也是为数不多的基于概率的算法。</p>
+<h4 id="1、基本概念-1"><a href="#1、基本概念-1" class="headerlink" title="1、基本概念"></a><b style="color:blue;">1、基本概念</b></h4><p>贝叶斯分类是一类算法的总称，这类算法均以贝叶斯定理为基础，所以统称为贝叶斯分类，而朴素贝叶斯是贝叶斯分类中最简单的，也是最常见的一种方法。</p>
+<p>假设在过去的7天当中，有3天下雨，4天没有下雨。用0代表没有下雨，用1代表下雨了，而在这7天当中还有一些，包括刮北风、闷热、多云，以及天气预报给出的信息：</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>刮北风</th>
+<th>闷热</th>
+<th>多云</th>
+<th>天气预报有雨</th>
+<th>实际是否下雨</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>第一天</td>
+<td>否</td>
+<td>是</td>
+<td>否</td>
+<td>是</td>
+<td>否</td>
+</tr>
+<tr>
+<td>第二天</td>
+<td>是</td>
+<td>是</td>
+<td>是</td>
+<td>否</td>
+<td>是</td>
+</tr>
+<tr>
+<td>第三天</td>
+<td>否</td>
+<td>是</td>
+<td>是</td>
+<td>否</td>
+<td>是</td>
+</tr>
+<tr>
+<td>第四天</td>
+<td>否</td>
+<td>否</td>
+<td>否</td>
+<td>是</td>
+<td>否</td>
+</tr>
+<tr>
+<td>第五天</td>
+<td>否</td>
+<td>是</td>
+<td>是</td>
+<td>否</td>
+<td>是</td>
+</tr>
+<tr>
+<td>第六天</td>
+<td>否</td>
+<td>是</td>
+<td>否</td>
+<td>是</td>
+<td>否</td>
+</tr>
+<tr>
+<td>第七天</td>
+<td>是</td>
+<td>否</td>
+<td>否</td>
+<td>是</td>
+<td>否</td>
+</tr>
+</tbody></table>
+<p>用0表示否，用1表示是，可以将实际是否下雨抽象为一个数组：</p>
+<pre><code class="python"># 实际下雨情况
+y=[0,1,1,0,1,0,0]
+# 其他特征情况
+X=[[0, 1, 0, 1],
+      [1, 1, 1, 0],
+      [0, 1, 1, 0],
+      [0, 0, 0, 1],
+      [0, 1, 1, 0],
+      [0, 1, 0, 1],
+      [1, 0, 0, 1]]</code></pre>
+<p>那么对于朴素贝叶斯来说，它会根据上面的情况进行推理。假设现在有一天，没有刮北风，也不闷热，但是多云，天气预报也没有雨，经过贝叶斯预测结果为：</p>
+<pre><code class="python">import numpy as np
+from sklearn.naive_bayes import BernoulliNB
+
+X = np.array([[0, 1, 0, 1],
+              [1, 1, 1, 0],
+              [0, 1, 1, 0],
+              [0, 0, 0, 1],
+              [0, 1, 1, 0],
+              [0, 1, 0, 1],
+              [1, 0, 0, 1]])
+y = np.array([0, 1, 1, 0, 1, 0, 0])
+# 对不同的分类计算每个特征为1的数量
+counts = {}
+for label in np.unique(y):
+    counts[label] = X[y == label].sum(axis=0)
+# print(&quot;feature counts:\n{}&quot;.format(counts))
+# 使用贝努力贝叶斯拟合数据
+clf = BernoulliNB()
+clf.fit(X, y)
+# 要进行预测的这一天，没有刮北风，也不闷热
+# 但是多云，天气预报说没有雨
+Next_Day = [[0, 0, 1, 0]]
+pre = clf.predict(Next_Day)
+if pre == [1]:
+    print(&quot;要下雨了，快收衣服呀！&quot;)
+else:
+    print(&quot;放心，这又是一个艳阳高照的晴天！&quot;)</code></pre>
+<p>此时预测的结果为：</p>
+<pre><code class="python">要下雨了，快收衣服呀！</code></pre>
+<p>通过<code>print(clf.predict_proba(Another_Day))</code>可以得到当天预测下雨和不下雨的概率：</p>
+<pre><code class="python">[[0.13848881 0.86151119]]#第一项是不下雨的概率，第二项是下雨的概率</code></pre>
+<h4 id="2、朴素贝叶斯算法的不同方法"><a href="#2、朴素贝叶斯算法的不同方法" class="headerlink" title="2、朴素贝叶斯算法的不同方法"></a><b style="color:blue;">2、朴素贝叶斯算法的不同方法</b></h4><p>朴素贝叶斯算法包含多种方法，在scikit-learn中，朴素贝叶斯有三种方法：<b style="color:crimson;">贝努力朴素贝叶斯、高斯贝叶斯、多项式朴素贝叶斯</b>。</p>
+<p><b style="color:orange;">贝努力朴素贝叶斯</b></p>
+<p>这种方法比较适用于符合贝努力分布的数据集，贝努力分布也被称之为“二项分布”和“0-1分布”。</p>
+<p>当特征数据增加，数据变得复杂的时候，贝叶斯的处理就显得捉襟见肘：</p>
+<pre><code class="python"># 导入数据集生成工具
+from sklearn.datasets import make_blobs
+# 导入数据集拆分工具
+from sklearn.model_selection import train_test_split
+# 导入贝努力贝叶斯拟合工具
+from sklearn.naive_bayes import BernoulliNB
+# 导入画图工具
+import matplotlib.pyplot as plt
+import numpy as np
+
+# 生成样本数量为500，分类数为5的数据集
+X, y = make_blobs(n_samples=500, centers=5, random_state=8)
+# 将数据拆分为训练集和测试集
+X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=8)
+# 使用贝努力贝叶斯拟合数据
+nb = BernoulliNB()
+nb.fit(X_train, y_train)
+# print(&quot;模型得分：{:.3f}&quot;.format(nb.score(X_test, y_test)))
+
+x_min, x_max = X[:, 0].min() - 0.5, X[:, 0].max() + 0.5
+y_min, y_max = X[:, 1].min() - 0.5, X[:, 0].max() + 0.5
+
+xx, yy = np.meshgrid(np.arange(x_min, x_max, 0.02), np.arange(y_min, y_max, 0.02))
+z = nb.predict(np.c_[(xx.ravel(), yy.ravel())]).reshape(xx.shape)
+plt.pcolormesh(xx, yy, z, cmap=plt.cm.get_cmap(&quot;Pastel1&quot;))
+plt.scatter(X_train[:, 0], X_train[:, 1], c=y_train, cmap=plt.cm.get_cmap(&quot;cool&quot;), edgecolors=&#39;k&#39;)
+plt.scatter(X_test[:, 0], X_test[:, 1], c=y_test, cmap=plt.cm.get_cmap(&quot;cool&quot;), marker=&#39;*&#39;, edgecolors=&#39;k&#39;)
+plt.xlim(xx.min(), xx.max())
+plt.ylim(yy.min(), yy.max())
+plt.title(&quot;Classifier: BernoulliNB&quot;)
+plt.show()</code></pre>
+<p>其结果如下：</p>
+<p><img src="BernoulliNBCounts.jpg"></img></p>
+<p><span style="color:slateblue;">贝努力贝叶斯的模型十分的简单，它分别在纵轴等于0和横轴等于0的位置画两条直线，当使用贝叶斯的默认参数binarize=0.0时，模型对于数据的判断是：如果特征1大于或等于0，且特征2大于或等于0，则将数据归为一类；如果特征1小于且特征2也小于0，则归为另一类，其余的数据则分为第三类。</span></p>
+<p><b style="color:orange;">高斯朴素贝叶斯</b></p>
+<p>假设样本数据符合高斯分布，或者说符合正态分布时所用的算法。</p>
+<pre><code class="python"># 导入数据集生成工具
+from sklearn.datasets import make_blobs
+# 导入数据集拆分工具
+from sklearn.model_selection import train_test_split
+# 导入高斯贝叶斯拟合工具
+from sklearn.naive_bayes import GaussianNB
+# 导入画图工具
+import matplotlib.pyplot as plt
+import numpy as np
+
+# 导入高斯拟合工具
+
+# 生成样本数量为500，分类数为5的数据集
+X, y = make_blobs(n_samples=500, centers=5, random_state=8)
+# 将数据拆分为训练集和测试集
+X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=8)
+gnb = GaussianNB()
+gnb.fit(X_train, y_train)
+print(&quot;模型得分：{:.3f}&quot;.format(gnb.score(X_test, y_test)))</code></pre>
+<p>得到的分数是：<code>模型得分：0.968</code> ，这说明手工数据集的特征基本上符合正态分布的情况。</p>
+<p>此时高斯朴素贝叶斯的工作流程就是：</p>
+<pre><code class="python">x_min, x_max = X[:, 0].min() - 0.5, X[:, 0].max() + 0.5
+y_min, y_max = X[:, 1].min() - 0.5, X[:, 0].max() + 0.5
+
+xx, yy = np.meshgrid(np.arange(x_min, x_max, 0.02), np.arange(y_min, y_max, 0.02))
+z = gnb.predict(np.c_[(xx.ravel(), yy.ravel())]).reshape(xx.shape)
+plt.pcolormesh(xx, yy, z, cmap=plt.cm.get_cmap(&quot;Pastel1&quot;))
+plt.scatter(X_train[:, 0], X_train[:, 1], c=y_train, cmap=plt.cm.get_cmap(&quot;cool&quot;), edgecolors=&#39;k&#39;)
+plt.scatter(X_test[:, 0], X_test[:, 1], c=y_test, cmap=plt.cm.get_cmap(&quot;cool&quot;), marker=&#39;*&#39;)
+plt.xlim(xx.min(), xx.max())
+plt.ylim(yy.min(), yy.max())
+plt.title(&quot;Classifier: GaussianNB&quot;)
+plt.show()</code></pre>
+<p>此时结果如下：</p>
+<p><img src="GaussianNB.jpg"></img></p>
+<p>​    可见高斯贝叶斯的边界比朴素贝叶斯的边界要复杂的多。</p>
+<p><b style="color:orange;">多项式朴素贝叶斯</b></p>
+<p>拟合多项式分布的数据集。</p>
+<pre><code class="python"># 导入数据集生成工具
+from sklearn.datasets import make_blobs
+# 导入数据集拆分工具
+from sklearn.model_selection import train_test_split
+# 导入画图工具
+import matplotlib.pyplot as plt
+import numpy as np
+from sklearn.naive_bayes import MultinomialNB
+from sklearn.preprocessing import MinMaxScaler
+
+# 生成样本数量为500，分类数为5的数据集
+X, y = make_blobs(n_samples=500, centers=5, random_state=8)
+# 将数据拆分为训练集和测试集
+X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=8)
+scaler = MinMaxScaler()
+scaler.fit(X_train)
+X_train_scaled = scaler.transform(X_train)
+X_test_scaled = scaler.transform(X_test)
+
+mnb = MultinomialNB()
+mnb.fit(X_train_scaled, y_train)
+print(&quot;模型得分结果：{:.3f}&quot;.format(mnb.score(X_test_scaled, y_test)))</code></pre>
+<p>利用多项式对该数据集进行拟合的时候会发现拟合的效果并不好，模型的得分只有0.32.</p>
+<pre><code class="python"># 生成样本数量为500，分类数为5的数据集
+X, y = make_blobs(n_samples=500, centers=5, random_state=8)
+# 将数据拆分为训练集和测试集
+X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=8)
+scaler = MinMaxScaler()
+scaler.fit(X_train)
+X_train_scaled = scaler.transform(X_train)
+X_test_scaled = scaler.transform(X_test)
+
+mnb = MultinomialNB()
+mnb.fit(X_train_scaled, y_train)
+print(&quot;模型得分结果：{:.3f}&quot;.format(mnb.score(X_test_scaled, y_test)))
+
+x_min, x_max = X[:, 0].min() - 0.5, X[:, 0].max() + 0.5
+y_min, y_max = X[:, 1].min() - 0.5, X[:, 0].max() + 0.5
+
+xx, yy = np.meshgrid(np.arange(x_min, x_max, 0.02), np.arange(y_min, y_max, 0.02))
+z = mnb.predict(np.c_[(xx.ravel(), yy.ravel())]).reshape(xx.shape)
+plt.pcolormesh(xx, yy, z, cmap=plt.cm.get_cmap(&quot;Pastel1&quot;))
+plt.scatter(X_train[:, 0], X_train[:, 1], c=y_train, cmap=plt.cm.get_cmap(&quot;cool&quot;), edgecolors=&#39;k&#39;)
+plt.scatter(X_test[:, 0], X_test[:, 1], c=y_test, cmap=plt.cm.get_cmap(&quot;cool&quot;), marker=&quot;*&quot;)
+plt.xlim(xx.min(), xx.max())
+plt.ylim(yy.min(), yy.max())
+plt.title(&quot;MultinomiaNB&quot;)
+plt.show()</code></pre>
+<p>绘制出多项式朴素贝叶斯的拟合边界：</p>
+<p><img src="MultinomiaNB.jpg"></img></p>
+<p>可以看到他将大部分的数据都放入了错误的分类中。</p>
 
   </article>
 
@@ -489,7 +895,7 @@ print(&#39;\n&#39;)</code></pre>
   </div>
   <script src="https://cdn.jsdelivr.net/combine/npm/lazysizes@5.1.0/lazysizes.min.js,gh/highlightjs/cdn-release@9.15.8/build/highlight.min.js,npm/mdui@0.4.3/dist/js/mdui.min.js,gh/nexmoe/nexmoe.github.io@latest/js/app.js"></script>
 <script>hljs.initHighlightingOnLoad();</script>
-<!--<script src="/js/app.js?v=1590308604180"></script>-->
+<!--<script src="/js/app.js?v=1590627293960"></script>-->
 
 
     <script src="https://cdn.jsdelivr.net/gh/xtaodada/xtaodada.github.io@0.0.2/copy.js"></script>
