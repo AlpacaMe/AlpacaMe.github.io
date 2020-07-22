@@ -20,13 +20,13 @@
 <meta property="og:description" content="如果生活还是很苦，说明你还是不够努力">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2020-05-29T09:20:44.000Z">
-<meta property="article:modified_time" content="2020-05-29T09:26:25.063Z">
+<meta property="article:modified_time" content="2020-07-22T02:44:53.125Z">
 <meta property="article:author" content="AntPan">
 <meta property="article:tag" content="编程语言">
 <meta name="twitter:card" content="summary">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/combine/gh/nexmoe/nexmoe.github.io@latest/css/style.css,npm/highlight.js@9.15.8/styles/atom-one-dark.css,gh/nexmoe/nexmoe.github.io@latest/lib/mdui_043tiny/css/mdui.css,gh/nexmoe/nexmoe.github.io@latest/lib/iconfont/iconfont.css" crossorigin>
   
-  <!--<link rel="stylesheet" href="/css/style.css?v=1590744412723">-->
+  <!--<link rel="stylesheet" href="/css/style.css?v=1595385916672">-->
 
    
     <style>
@@ -232,8 +232,8 @@
   
   <div class="nexmoe-post-meta nexmoe-rainbow" style="margin:10px 0!important;">
     <a><i class="nexmoefont icon-calendar-fill"></i>2020年05月29日</a>
-    <a><i class="nexmoefont icon-areachart"></i>508 字</a>
-    <a><i class="nexmoefont icon-time-circle-fill"></i>大概 2 分钟</a>
+    <a><i class="nexmoefont icon-areachart"></i>649 字</a>
+    <a><i class="nexmoefont icon-time-circle-fill"></i>大概 3 分钟</a>
 </div>
 
   <div class="nexmoe-post-right">
@@ -250,14 +250,13 @@
 
   <article>
     <h2 style="color:crimson;font-weight:lighter;">如果生活还是很苦，说明你还是不够努力</h2>
-
 <a id="more"></a>
 
 <p>最近在做项目的时候老是遇到各种各样的问题，所以特此记录一下，希望在闲暇的时间里能够将这些小的问题解决掉。</p>
 <h3 id="HTML-CSS-JavaScript-Jquery"><a href="#HTML-CSS-JavaScript-Jquery" class="headerlink" title="HTML+CSS+JavaScript+Jquery"></a><b style="color:blue;">HTML+CSS+JavaScript+Jquery</b></h3><ol>
 <li><p><b style="color:red;">网页背景铺满：</b></p>
 <pre><code class="css">body{
-    background-img:url(&quot;1.jpg&quot;);
+    background-image:url(&quot;1.jpg&quot;);
     background-size:100%;
     background-repeat:no-repeat;
 }</code></pre>
@@ -335,6 +334,14 @@ SimpleDateFormat simpleDateFormat =new SimpleDateFormat(&quot;yyyy-MM-dd-HH:mm:s
         String b=simpleDateFormat.format(dateTime);
 </code></pre>
 </li>
+<li><p><b style="color:red;">Double类型的数值之间的比较</b></p>
+<p>在计算机中数值类型和都是转换成二进制进行存储的。严格意义上float、double类型都无法精确的表示小数，他们是无线趋近于那个小数。所以Double类型是不可以用<code>==</code>来做判断。</p>
+<pre><code class="java">Double a=1.01;
+Double b=1.01;
+Systemout.out.println(a==b); //控制台打印输出的值为false
+System.out.println(String.valueOf(a)==String.valueOf(b)); //控制台打印输出依旧为false
+System.out.println(Double.doubleToLongBits(a)==Double.doubleToLongBits(b)); //控制台打印输出为true</code></pre>
+</li>
 </ol>
 
   </article>
@@ -383,7 +390,7 @@ SimpleDateFormat simpleDateFormat =new SimpleDateFormat(&quot;yyyy-MM-dd-HH:mm:s
   </div>
   <script src="https://cdn.jsdelivr.net/combine/npm/lazysizes@5.1.0/lazysizes.min.js,gh/highlightjs/cdn-release@9.15.8/build/highlight.min.js,npm/mdui@0.4.3/dist/js/mdui.min.js,gh/nexmoe/nexmoe.github.io@latest/js/app.js"></script>
 <script>hljs.initHighlightingOnLoad();</script>
-<!--<script src="/js/app.js?v=1590744412725"></script>-->
+<!--<script src="/js/app.js?v=1595385916674"></script>-->
 
 
     <script src="https://cdn.jsdelivr.net/gh/xtaodada/xtaodada.github.io@0.0.2/copy.js"></script>
