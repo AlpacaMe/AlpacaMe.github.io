@@ -315,7 +315,7 @@
     </div>
     <div class="article-meta">
         
-            Created At : <time class="date" title='Updated At: 2020-05-28 08:54:27'>2020-05-24 15:38</time>
+            Created At : <time class="date" title='Updated At: 2020-11-03 14:36:16'>2020-05-24 15:38</time>
         
     </div>
     <div class="article-meta">
@@ -410,20 +410,20 @@ plt.show()</code></pre>
 <p><img src="KNN.jpg"></img></p>
 <ul>
 <li><p><b style="color:crimson;">make_blobs(n_sample=200,centers=2,random_state=8)</b> </p>
-<p>==n_sample==：表示数据样本点个数，默认值100；</p>
-<p>==n_features==: 表示数据的维度，默认值是2；</p>
-<p>==centers==：产生数据的中心店，默认值是3；</p>
-<p>==cluster_std==：数据集的标准差，浮点数或者浮点数序列，默认1.0；</p>
-<p>==center_box==：中心确定之后的数据边界，默认值（-10.0，10.0）；</p>
-<p>==shuffle==：洗乱，默认值是true；</p>
-<p>==random_state==：随机生成器的种子；</p>
+<p>n_sample：表示数据样本点个数，默认值100；</p>
+<p>n_features: 表示数据的维度，默认值是2；</p>
+<p>centers：产生数据的中心店，默认值是3；</p>
+<p>cluster_std：数据集的标准差，浮点数或者浮点数序列，默认1.0；</p>
+<p>center_box：中心确定之后的数据边界，默认值（-10.0，10.0）；</p>
+<p>shuffle：洗乱，默认值是true；</p>
+<p>random_state：随机生成器的种子；</p>
 </li>
 <li><p><b style="color:crimson;">plt.scatter(x=x[0,:],y=x[:,1],c=y,camp=plt.cm.get_cmap(‘spring’),edgecolors=’k’,alpha=0.8)</b> </p>
-<p>==x,y==表示的输入数据；c表示色彩或者颜色序列，可选默认；</p>
-<p>==marker==表示点的形状，可选，默认为‘o’；</p>
-<p>==cmap==表示Colormap，可选，默认为None；</p>
-<p>==alpha==表示数据的亮度，可选范围是0-1；</p>
-<p>==lindwidths==表示线条的宽度。</p>
+<p>x,y表示的输入数据；c表示色彩或者颜色序列，可选默认；</p>
+<p>marker表示点的形状，可选，默认为‘o’；</p>
+<p>cmap表示Colormap，可选，默认为None；</p>
+<p>alpha表示数据的亮度，可选范围是0-1；</p>
+<p>lindwidths表示线条的宽度。</p>
 </li>
 </ul>
 <p><span style="color:crimson;">以上产生的数据可以看做是机器学习的训练数据集，是已知数据。</span>就是基于这些数据用算法进行模型的训练，然后再对新的未知数据进行分类或者回归。</p>
@@ -447,15 +447,15 @@ plt.show()</code></pre>
 <p><img src="KNNClassify.jpg"></img></p>
 <ul>
 <li><p><b style="color:crimson;">clf = KNeighborsClassifier()</b> </p>
-<p>==n_neighbors==：指的是K值的大小，就是在做分类时，选取问题点最近的多少个近邻；</p>
-<p>==weights==：在进行分类判断时给最近邻附上的加权，默认的‘uniform’是等权加权，还有‘distance’选项是按照距离的倒数进行加权，也可以使用用户自己定义的其他加权的方法；</p>
-<p>==algorithm==：分类时采取的算法，有<b style="color:yellowgreen;">brute、kd_tree、ball_tree</b>；</p>
-<p>==leaf_size==：是Kd_tree或ball_tree生成的树叶的大小；</p>
+<p>n_neighbors：指的是K值的大小，就是在做分类时，选取问题点最近的多少个近邻；</p>
+<p>weights：在进行分类判断时给最近邻附上的加权，默认的‘uniform’是等权加权，还有‘distance’选项是按照距离的倒数进行加权，也可以使用用户自己定义的其他加权的方法；</p>
+<p>algorithm：分类时采取的算法，有<b style="color:yellowgreen;">brute、kd_tree、ball_tree</b>；</p>
+<p>leaf_size：是Kd_tree或ball_tree生成的树叶的大小；</p>
 </li>
 <li><p><b style="color:crimson;">xx, yy = np.meshgrid(np.arange(x_min, x_max, 0.02), np.arange(y_min, y_max, 0.02)) </b> 用两个坐标轴上的点在平面上画格</p>
 </li>
 <li><p><b style="color:crimson;">plt.pcolormmesh(xx,yy,z,cmap=plt.cm.get_cmp(‘Pastel1’))</b> 在于能够直观表现出分类边界。</p>
-<p> ==xx，yy==：表示的是分类的区间的边界</p>
+<p> xx，yy：表示的是分类的区间的边界</p>
 </li>
 </ul>
 <p>此时如果有新的数据输入的话，就会根据自动将数据分到对应的类中。</p>
