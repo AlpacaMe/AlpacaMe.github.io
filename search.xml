@@ -1,0 +1,3544 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  <entry>
+    <title>Spring装配Bean</title>
+    <url>/2020/04/14/Spring%E8%A3%85%E9%85%8DBean/</url>
+    <content><![CDATA[<h2 style="color:crimson;font-weight:lighter;">红豆骰子生南国，入骨相思知不知</h2>
+
+<a id="more"></a>
+
+<h3 id="装配Bean"><a href="#装配Bean" class="headerlink" title="装配Bean"></a><b style="color:red;">装配Bean</b></h3><p>Spring容器负责创建应用程序中的Bean并通过DI来协调对象之间的关系。当描述bean如何装配的时候，Spring具有非常大的灵活性，它提供三种主要的装配机制：</p>
+<ul>
+<li><b style="color:maroon;">在XML中进行显式配置</b></li>
+<li><b style="color:maroon;">在Java中显式配置</b></li>
+<li><b style="color:maroon;">隐式的bean发现机制和自动装配</b></li>
+</ul>
+<h4 id="1、自动化的装配Bean"><a href="#1、自动化的装配Bean" class="headerlink" title="1、自动化的装配Bean"></a><b style="color:blue;">1、自动化的装配Bean</b></h4><p>Spring从两个角度实现自动化的装配：</p>
+<ul>
+<li><span style="color:tomato;">组件扫描</span> ：Spring会自动发现应用上下文中所创建的Bean;</li>
+<li><span style="color:tomato;">自动装配：</span> Spring自动满足bean之间的依赖；</li>
+</ul>
+<h5 id="创建可被发现的bean"><a href="#创建可被发现的bean" class="headerlink" title="创建可被发现的bean"></a><b style="color:orange;">创建可被发现的bean</b></h5><pre><code class="java">public interface CompactDisc{
+    void play();
+}</code></pre>
+<p>需要一个CompactDisc的实现，实际上，<span style="color:maroon;">CompactDisc接口可以有很多的实现。</span></p>
+<pre><code class="java">@Component
+public class sgtPeppers implements CompactDisc{
+    private String title=&quot;Sgt.Perpper`s Lonly Heart Club Band&quot;;
+    private String artist=&quot;The Beatles&quot;;
+
+    public void play(){
+        System.out.println(&quot;Playing&quot;+title+&quot;by&quot;+&quot;artist&quot;);
+    }
+}</code></pre>
+<ul>
+<li><code>@Component</code>注解：表明该类会作为组件类，并告知Spring要为这个类创建bean，没必要再去显示配置SgtPepeer的bean。</li>
+</ul>
+<p>此时Spring只需要开启扫描即可，但是Spring的扫描并不是默认开启的。<code>@ComponentScan</code> 注解配置Spring，命令它去寻找带有<code>@Conmponent</code>注解的类，并为其创建bean。</p>
+<pre><code class="java">package com.panhao.Automatic_assembly;
+
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+
+@Configuration
+@ComponentScan
+public class CompactDiscConfiguration {
+
+}</code></pre>
+<p>此时已经可以实现Bean的自动装配，添加测试类进行测试：</p>
+<pre><code class="java">package com.panhao.Automatic_assembly;
+
+import static org.junit.Assert.assertNotNull;
+
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(classes = CompactDiscConfiguration.class)
+public class TestAutomatic {
+
+    @Autowired
+    private CompactDisc cd;
+
+    @Test
+    public  void cdShouldNotBeNull() {
+        assertnotNull(cd);
+    }
+}</code></pre>
+<ul>
+<li><code>@ContextConfiguration</code>告诉Spring在CompactDiscConfiguration.class中加载配置；</li>
+<li><code>@ComponentScan</code>表示开启自动扫描；</li>
+</ul>
+<h5 id="为组件扫描的bean命名"><a href="#为组件扫描的bean命名" class="headerlink" title="为组件扫描的bean命名"></a><b style="color:orange;">为组件扫描的bean命名</b></h5><p>Spring上下文中所有的Bean的都会给定一个ID，如果明确的给定bean的ID，Spring会根据类名为其指定一个ID：<span style="color:maroon;">将类名的第一个字母变成小写</span>。如果想要为这个Bean设置不同的name，可以在<code>@Component</code>注解中进行设置：</p>
+<pre><code class="java">@Component(&quot;lonlyHeartClub&quot;)
+public class sgtPeppers implements CompactDisc{
+    private String title=&quot;Sgt.Perpper`s Lonly Heart Club Band&quot;;
+    private String artist=&quot;The Beatles&quot;;
+
+    public void play(){
+        System.out.println(&quot;Playing&quot;+title+&quot;by&quot;+&quot;artist&quot;);
+    }
+}</code></pre>
+<p>还要另外一种给Bean命名的方式，<span style="Color:maroon;">使用<code>@Named</code>注解</span>(<i style="color:slateblue;">Java 依赖注入规范（Java Dependency Injection）</i>)。</p>
+<pre><code class="java">package com.panhao.Automatic_assembly;
+
+import javax.inject.Named;
+
+
+
+@Named(&quot;lonlyHeartClub&quot;)
+public class SgtPepper implements CompactDisc {
+    private String title=&quot;SgtPepper&quot;;
+    private String artist=&quot;panhao&quot;;
+
+    public void play() {
+        // TODO Auto-generated method stub
+        System.out.println(&quot;Playing&quot; +title+&quot;By&quot; +artist);
+    }
+
+}
+</code></pre>
+<p>Spring支持将<code>@Name</code>作为<code>@Component</code>注解代替方案。两者之间有细微的差别，但是在大多数的情况下都可以互相替换。</p>
+<h5 id="设置组件扫描的包"><a href="#设置组件扫描的包" class="headerlink" title="设置组件扫描的包"></a><b style="color:orange;">设置组件扫描的包</b></h5><p><code>@ComponentScan</code>没有设置任何属性的时候，Spring会按照默认规则，它会<span style="color:maroon;">以配置类所在的包作为基础包来扫描组件</span>。<code>@componentScan</code>中的value属性是用来设置basepackage的值：</p>
+<pre><code class="java">package com.panhao.Automatic_assembly;
+
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+
+@Configuration
+//扫描com.panhao包下所有的文件
+@ComponentScan(basepackages=&quot;com.panhao&quot;)
+public class CompactDiscConfiguration {
+
+}</code></pre>
+<p><i style="color:slateblue;">basepackage可以配置多个包，形式为：<code>@ComponentScan(basepackage={&quot;com.panhao.Service&quot;,&quot;com.panhao.DI})</code></i></p>
+<p>basepackages的值的类型是String，在代码重构的时候会带来错误的风险。<code>@ComponentScan</code>提供了basePackageClasses的属性，用来设置扫描类的，形式和basepackages一样的。</p>
+<pre><code class="java">@ComponentScan(basePackageClass={CDPlayer.class,DVDPlayer.class})</code></pre>
+<h5 id="通过bean添加注解实现自动装配"><a href="#通过bean添加注解实现自动装配" class="headerlink" title="通过bean添加注解实现自动装配"></a><b style="color:orange;">通过bean添加注解实现自动装配</b></h5><p>自动装配就是让Spring自动满足bean依赖的一种方法，在满足依赖的过程中，会在Spring应用上下文中寻找匹配某个bean需求的其他bean。</p>
+<pre><code class="java">@Component
+public class CDPlayer implements MediaPlayer{
+
+    @Autowired
+    public CDPlayer(CompactDisc cd){
+        this.cd=cd;
+    }
+
+    public void play(){
+        cd.play();
+    }
+}</code></pre>
+<ul>
+<li>在构造器上添加<code>@Autowired</code>注解，这表明在<span style="color:maroon;">创建CDPlayer的bean的时候，会通过这个构造器进行实例化并且会传入一个可设置给CompactDisc类型的bean</span>。</li>
+</ul>
+<p><span style="color:crimson;"><code>@Autowired</code>注解不仅能够用在构造器上，还能用在setter属性上</span>。如果CDPlayer有一个CompactDisc()方法，那么可以采用以下的方式配置：</p>
+<pre><code class="java">@Autowired
+public void setCompactDisc(CompactDisc cd){
+    this.cd=cd;
+}</code></pre>
+<p>在Spring初始化bean之后，它会尽可能去满足bean的依赖。实际上<code>setter()</code>方法并没有什么不同，<code>@Autowired</code>注解可以用在类的任何方法上。</p>
+<p><span style="color:olive;">不管是构造器还、setter方法还是其他的方法，Spring就会尝试满足方法参数上所声明的依赖。假如有且只有一个bean匹配依赖的需求的话，那么这个bean不会被装配进来。如果没有匹配的bean，那么应用在上下文的时候，Spring会抛出一个异常。</span>（<i style="color:slateblue;">为了避免异常的出现，可以将<code>@Autowired</code>的required属性设置为false</i>）<span style="color:olive;">如果有多个bean都能满足依赖，Spring将会抛出一个异常，表明没有明确的指定要选择哪个bean进行自动装配。</span></p>
+<p>与<code>@Name</code>注解与<code>@Component</code>注解可以互换一样，<code>@Inject</code>（<i style="color:slateblue;">Java依赖注入所提供的注解</i>）也可以与<code>@Autowired</code>互换，虽有细微的不一样，但是多数的场景可以互换。</p>
+<h4 id="2、通过Java代码装配Bean"><a href="#2、通过Java代码装配Bean" class="headerlink" title="2、通过Java代码装配Bean"></a><b style="color:blue;">2、通过Java代码装配Bean</b></h4><h5 id="创建配置类"><a href="#创建配置类" class="headerlink" title="创建配置类"></a><b style="color:orange;">创建配置类</b></h5><pre><code class="java">@Configuration
+public class CDPlayerConfig{
+
+}</code></pre>
+<ul>
+<li>创建JavaConfig类的关键在于为其添加<code>@Configuration</code>注解。<code>@Configuration</code>注解表明这是一个配置类，该类该包含在Spring应用上下文中如何创建Bean的细节。</li>
+</ul>
+<h5 id="声明简单的bean"><a href="#声明简单的bean" class="headerlink" title="声明简单的bean"></a><b style="color:orange;">声明简单的bean</b></h5><pre><code class="java">@Bean
+public CompactDisc sgtPeppers(){
+    return new CompactDisc
+}</code></pre>
+<ul>
+<li><code>@Bean</code>注解会告诉Spring这个方法返回一个对象，该对象要注册为Spring应用上下文中的bean。<code>@Bean</code>拥有属性<code>name</code>用来设置bean的名称。</li>
+</ul>
+<h5 id="在JavaConfig中实现注入"><a href="#在JavaConfig中实现注入" class="headerlink" title="在JavaConfig中实现注入"></a><b style="color:orange;">在JavaConfig中实现注入</b></h5><pre><code class="java">@Bean
+public CDPlayer cdPlayed(){
+    return new CDPlayer(sgtPeppers())
+}</code></pre>
+<h4 id="3、使用XML装配Bean"><a href="#3、使用XML装配Bean" class="headerlink" title="3、使用XML装配Bean"></a><b style="color:blue;">3、使用XML装配Bean</b></h4><h5 id="最简单的XML配置文件"><a href="#最简单的XML配置文件" class="headerlink" title="最简单的XML配置文件"></a><b style="color:orange;">最简单的XML配置文件</b></h5><pre><code class="xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot;
+    xmlns:context=&quot;http://www.springframework.org/schema/context&quot;
+    xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+    xsi:schemaLocation=&quot;http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context-4.3.xsd&quot;&gt;
+
+        &lt;context:annotation-config&gt;&lt;/context:annotation-config&gt;
+
+        &lt;bean id=&quot;testEditor&quot; class=&quot;com.panhao.Automatic_assembly.test.TestEditor&quot;&gt;&lt;/bean&gt;
+
+
+        &lt;bean id=&quot;spellChecker&quot; class=&quot;com.panhao.Automatic_assembly.test.SpellChecker&quot;&gt;&lt;/bean&gt;
+
+&lt;/beans&gt;</code></pre>
+<h5 id="装配简单的Bean"><a href="#装配简单的Bean" class="headerlink" title="装配简单的Bean"></a><b style="color:orange;">装配简单的Bean</b></h5><p><b style="color:crimson;"><code>&lt;bean&gt;&lt;/bean&gt;</code></b>元素的标签的是和<strong><code>@Bean</code></strong>注解的作用是一致的。</p>
+<pre><code class="xml">&lt;bean  class=&quot;soundsystem.SgtPepper&quot;&gt;&lt;/bean&gt;</code></pre>
+<p>此时一个最简单的声明Bean就完成了，（<i style="color:slateblue;">创建这个bean的类通过class属性来指定，并且要求使用全限定名</i>），此处没有给出明确的ID，所以默认ID为：<code>soundsystem.SgtPepper#0</code>，其中<code>#0</code>是用来区分其它同类型的bean的。<code>&lt;bean /&gt;</code>标签借助<code>id</code>属性对bean进行命名。</p>
+<pre><code class="xml">&lt;bean id=&quot;sgtPepper&quot; class=&quot;soundsystem.SgtPepper&quot;&gt;&lt;/bean&gt;</code></pre>
+<h5 id="借助构造器注入初始化bean"><a href="#借助构造器注入初始化bean" class="headerlink" title="借助构造器注入初始化bean"></a><b style="color:orange;">借助构造器注入初始化bean</b></h5><p><span style="color:crimson;">在Spring中只有一种声明bean的方式，使用<code>&lt;bean /&gt;</code>元素并指定class属性。</span>Spring会从这里获取必要的信息来创建bean。</p>
+<p>在XML声明DI的时候有多种配置方法可供选择：</p>
+<ul>
+<li><span style="color:olive;"><code>&lt;constructor-arg &gt;</code>元素</span></li>
+<li><span style="color:olive;">使用Spring3.0所引入的c命名空间</span></li>
+</ul>
+<p>在已经声明sgtPepper这个bean的条件下，使用<code>&lt;constructor-arg/&gt;</code>对CDplayer进行注入：</p>
+<pre><code class="xml">&lt;bean id=&quot;cdPlayer&quot; class=&quot;soundssystems.CDPlayer&quot; &gt;
+    &lt;constructor-arg ref=&quot;compactDisc&quot;  /&gt;
+&lt;/bean&gt;</code></pre>
+<p>使用c命名空间的时候需要在顶部声明：</p>
+<pre><code class="xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot;
+    xmlns:context=&quot;http://www.springframework.org/schema/context&quot;
+           xmlns:c=&quot;http://www.springframeword.org/schema/c&quot;
+    xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+    xsi:schemaLocation=&quot;http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context-4.3.xsd&quot;&gt;
+
+        &lt;context:annotation-config&gt;&lt;/context:annotation-config&gt;
+    &lt;bean id=&quot;sgtPepper&quot; class=&quot;soundsystem.SgtPepper&quot;&gt;&lt;/bean&gt;
+
+        &lt;bean id=&quot;cdPlayer&quot; class=&quot;soundsystem.CDPlayer&quot; c:cd-ref=&quot;compactDisc&quot;&gt;&lt;/bean&gt;
+
+&lt;/beans&gt;</code></pre>
+<ul>
+<li><p><code>c:cd-ref=&quot;compactDisc&quot;</code> :其中<code>c</code>表示命名空间前缀，<code>cd</code>表示构造器参数的名称；<code>-ref</code>表示注入bean的应用；<code>compactDisc</code>要注入的bean的ID。</p>
+<ol>
+<li>c命名是通过应用构造器参数的名称，需要在编译的时候，将调试标志保存在代码中，如果移除调试的标志，代码就无法正常的执行。</li>
+</ol>
+<ul>
+<li><p><b style="color:gold;">使用参数的位置替代参数的名称</b></p>
+<pre><code class="xml">&lt;bean id=&quot;cdPlayer&quot; class=&quot;soundsystem.CDPlayer&quot; c:_0-ref=&quot;compactDisc&quot;&gt;&lt;/bean&gt;</code></pre>
+<p>由于XML中不允许数字作为属性的第一个字符，因此必须在前面添加一个下划线<code>_</code>作为前缀。</p>
+<p><span style="color:crimson;">当构造器只有一个参数的时候，可以连位置信息都不用给：</span></p>
+<pre><code class="xml">&lt;bean id=&quot;cdPlayer&quot; class=&quot;soundsystem.CDPlayer&quot; c:_-ref=&quot;compactDisc&quot;&gt;&lt;/bean&gt;</code></pre>
+</li>
+</ul>
+</li>
+</ul>
+<h5 id="将字面量将配进bean中"><a href="#将字面量将配进bean中" class="headerlink" title="将字面量将配进bean中"></a><b style="color:orange;">将字面量将配进bean中</b></h5><p>假设CompactDisc拥有实现类：</p>
+<pre><code class="java">public BlankDisc implements CompactDisc{
+
+    private String title;
+    private String artist;
+
+    public BlankDisc(String title,String artist){
+        this.titile=title;
+        this.artist=artist;
+    }
+    public void play(){
+        System.out.println(&quot;Playing &quot;+title+&quot; By &quot;+artist);
+    }
+}</code></pre>
+<p>此时使用<code>&lt;constructor-arg/&gt;</code>装配的时候：</p>
+<pre><code class="xml">&lt;bean id=&quot;blankDisc&quot; class=&quot;soundsystem.BlankDisc&quot;&gt;
+    &lt;constructor-arg value=&quot;Sgt Pepper Lonly Hearts Clubs Band&quot; /&gt;
+    &lt;constructor-arg value=&quot;The Beatles&quot; /&gt;
+&lt;/bean&gt;</code></pre>
+<p>使用c命名空间装配的时候：</p>
+<pre><code class="xml">&lt;bean id=&quot;blankDisc&quot; class=&quot;soundsystem.BlankDisc&quot; 
+      c:_title=&quot;Sgt Pepper Lonly Hearts Clubs Band&quot;
+      c:_artist=&quot;The Beatles&quot;&gt;
+&lt;/bean&gt;</code></pre>
+<ul>
+<li><span style="color:crimson;">装配字面量与装配引用的区别在于属性名中去掉了<code>-ref</code>的后缀</span></li>
+</ul>
+]]></content>
+      <categories>
+        <category>Spring学习</category>
+      </categories>
+      <tags>
+        <tag>编程语言</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Webpack+Vue.js快速入门</title>
+    <url>/2020/04/23/Webpack-Vue-js%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/</url>
+    <content><![CDATA[<h2 style="color:crimson;font-weight:lighter;">总有一些孤独需要一个人承受</h2>
+<a id="more"></a>
+
+<h3 id="webpack-Vue-js开发准备"><a href="#webpack-Vue-js开发准备" class="headerlink" title="webpack+Vue.js开发准备"></a><b style="color:red;">webpack+Vue.js开发准备</b></h3><h4 id="1、webpack简介"><a href="#1、webpack简介" class="headerlink" title="1、webpack简介"></a><b style="color:blue;">1、webpack简介</b></h4><p>官方网站为：<a href="https://github.com/webpack/webpack" target="_blank" rel="noopener">https://github.com/webpack/webpack</a></p>
+<p>webpack是一个打包工具，可以把js、css、node、module、coffeescrip、scss/less、图片等都打包在一起。</p>
+<h5 id="webpack的安装与使用"><a href="#webpack的安装与使用" class="headerlink" title="webpack的安装与使用"></a><b style="color:orange;">webpack的安装与使用</b></h5><p>通过node.js以及npm包管理工具完成安装：</p>
+<pre><code class="java">$  npm install -g webpack</code></pre>
+<p>安装weibpack-cli</p>
+<pre><code class="java">$ npm install webpack-cli</code></pre>
+<p>安装webpack-dev-server</p>
+<pre><code class="java">$ npm install webpack-dev-server  -g</code></pre>
+<ul>
+<li><code>-g</code>: 代表全局安装</li>
+</ul>
+<h5 id="Vue安装"><a href="#Vue安装" class="headerlink" title="Vue安装"></a><b style="color:orange;">Vue安装</b></h5><p>安装Vue和Vue-cli是一样的道理：</p>
+<pre><code class="java">$ npm install vue vue-cli -g</code></pre>
+<h4 id="2、创建Vue项目及其简介"><a href="#2、创建Vue项目及其简介" class="headerlink" title=" 2、创建Vue项目及其简介"></a><b style="color:blue;"> 2、创建Vue项目及其简介</b></h4><p>创建Vue项目使用CMD命令：</p>
+<pre><code class="javascript">cd D:\VueProgram\</code></pre>
+<p>通过<code>cd</code>命令符进入你的工作空间。</p>
+<pre><code class="javascript">vue init webpack vuetest</code></pre>
+<p>就会在该文件夹下面创建一个名称为vuetest的项目，其目录的结构如下：</p>
+<p><img src="F:%5Cblog%5CAlpacaMe%5Csource_posts%5CVue%E9%A1%B9%E7%9B%AE%E7%BB%93%E6%9E%84-1587615546328.png" alt=""></p>
+<p>然后运行：</p>
+<pre><code class="javascript">$ npm install //安装项目所有的依赖文件
+$ npm run build //编译项目所有的文件
+$ npm run dev //启动服务器</code></pre>
+<p>打开浏览器在，地址栏输出<a style="color:teal;">https://localhost:8080</a>就可以之间看到项目运行出来的。</p>
+<h5 id="各个文件夹的作用及其简介"><a href="#各个文件夹的作用及其简介" class="headerlink" title="各个文件夹的作用及其简介"></a><b style="color:orange;">各个文件夹的作用及其简介</b></h5><pre><code class="javascript">build/ //编译用到的各种脚本
+config/  //各种配置
+dist/   //打包后的各种文件夹
+node_modules/  //node的第三方包
+src/    //源代码
+static/    //静态文件
+index.html      //最外层文件
+package.json    //node项目配置文件</code></pre>
+<ul>
+<li><code>build</code> :该文件夹中保留了各种打包脚本，是不可或缺的，不可以随意的更改。</li>
+<li><code>config</code> :与部署和配置有关。</li>
+<li><code>dist</code>： 打包之后的文件都在这里。</li>
+<li><code>node_modules</code> ：node项目所用到的第三方的包特别的多，也特别的大。所有在<code>package.json</code>中定义的第三方包都会被下载到该文件夹内。</li>
+<li><code>src</code> ：是核心源代码所在的目录。<ol>
+<li><span style="color:crimson;">assets</span> :文件夹用到的图片都可以放在这里。</li>
+<li><span style="color:crimson;">router/index.js</span> ：是路由文件，定义了各个页面对应的url。</li>
+<li><span style="color:crimson;">components</span> ：用到的视图和组件所在的文件夹（核心）。</li>
+<li><span style="color:crimson;">APP.vue</span> ：就是二级页面的模板。所有其他页面的VUE.js页面都应该作为该模板的一部分被渲染出来。</li>
+<li><span style="color:crimson;">main.js</span> ：没有实际的业务逻辑，但是为了支撑整个Vue.js框架，很有必要存在。</li>
+</ol>
+</li>
+</ul>
+<h3 id="Webpack-Vue-js实战"><a href="#Webpack-Vue-js实战" class="headerlink" title="Webpack+Vue.js实战"></a><b style="color:red;">Webpack+Vue.js实战</b></h3><h4 id="1、创建页面"><a href="#1、创建页面" class="headerlink" title="1、创建页面"></a><b style="color:blue;">1、创建页面</b></h4><p>创建页面的步骤有两步：</p>
+<ul>
+<li>创建路由</li>
+<li>新建Vue页面</li>
+</ul>
+<h5 id="新建路由"><a href="#新建路由" class="headerlink" title="新建路由"></a><b style="color:orange;">新建路由</b></h5><p>默认路由页面是在<code>src/router/index.js</code>页面中，将其打开后，增加两行：</p>
+<pre><code class="javascript">import Vue from &#39;vue&#39;
+import Router from &#39;vue-router&#39;
+import SayHi from &#39;@/components/SayHi&#39;
+
+//增加这一行，作用是引入&#39;@/component/HelloWorld&#39;
+//@表示当前目录
+Vue.use(Router)
+
+export default new Router({
+  routes: [
+      //增加一下几行，表示定义了  /#/helloword 这个 url
+    {
+      //对应一个url
+      path: &#39;/say_hi&#39;,
+       //vue.js内部使用的名称
+      name: &#39;SayHi&#39;,
+        //对应的.vue页面的名字
+      component: SayHi
+    }
+  ]
+})
+</code></pre>
+<p>当用户浏览器访问<a href="https://localhost:8080/#/HelloWorld" target="_blank" rel="noopener">https://localhost:8080/#/say_hi的时候，就会渲染<code>.components/SayHi.vue</code>文件</a></p>
+<h5 id="创建一个新的组件"><a href="#创建一个新的组件" class="headerlink" title="创建一个新的组件"></a><b style="color:orange;">创建一个新的组件</b></h5><p>在<code>src/components/</code>创建SayHi.vue：</p>
+<pre><code class="html">&lt;template&gt;
+    &lt;div&gt;
+        Hi Vue
+   &lt;/div&gt;
+&lt;/template&gt;
+&lt;script&gt;
+    export default{
+        data (){
+            return{
+
+            }
+        }
+    }
+&lt;/script&gt;
+&lt;style&gt;
+&lt;/style&gt;</code></pre>
+<p>此时输入<a href="http:\\localhost:8080/#/say_hi" target="_blank" rel="noopener">http:\\localhost:8080/#/say_hi</a></p>
+<p><b style="color:crimson;">每次创建一个的新的组件的记得使用<code>import SayHi from &#39;@components/SayHi&#39;</code></b></p>
+<p><b style="color:orange;">为组件创建样式</b></p>
+<p>修改SayHi.vue文件：</p>
+<pre><code class="html">&lt;template&gt;
+    &lt;div class=&quot;hi&quot;&gt;
+        Hi Vue
+   &lt;/div&gt;
+&lt;/template&gt;
+&lt;script&gt;
+    export default{
+        data (){
+            return{
+
+            }
+        }
+    }
+&lt;/script&gt;
+&lt;style&gt;
+    .hi{
+        color:red;
+    }
+&lt;/style&gt;</code></pre>
+<p>刷新浏览器就可以发现样式发生了改变。</p>
+<p><i style="color:slateblue;">由于webpack服务器的便捷操作，每次进行修改的时候都不用重启服务器，直接刷新浏览器就可以看到修改的内容</i></p>
+<h3 id="Vue-js中的ECMAScript"><a href="#Vue-js中的ECMAScript" class="headerlink" title="Vue.js中的ECMAScript"></a><b style="color:red;">Vue.js中的ECMAScript</b></h3><p>在以<code>.vue</code>为后缀的文件中，可以明显的看出来使用的不是JavaScript，而是ECMAScript，严格来说ECMAScript是JavaScript的规范，JavaScript是ECMAScript的实现。ECMAScript的简称是ES，其版本众多，很多时候用ES6来泛指。</p>
+<h4 id="1、ES6的简单入门"><a href="#1、ES6的简单入门" class="headerlink" title="1、ES6的简单入门"></a><b style="color:blue;">1、ES6的简单入门</b></h4><h5 id="let、var"><a href="#let、var" class="headerlink" title="let、var"></a><b style="color:orange;">let、var</b></h5><p>声明本地变量，使用<b style="color:crimson;">var、let</b>:</p>
+<ol>
+<li><b style="color:hotpink;">var</b> :有可能引起变量的提升，或者块级作用域的问题；</li>
+<li><b style="color:hotpink;">let</b> ：就是为了解决上面两个问题而提出的；</li>
+</ol>
+<p><span style="color:maroon;">多用let，少用var，遇到诡异变量的问题，就查一查是不是var的问题。</span></p>
+<pre><code class="javascript">var title=&#39;标题&#39; ;
+let title=&#39;标题&#39;;
+title=&#39;标题&#39;   //此时会报错处理</code></pre>
+<p><b style="color:crimson;">在webpack下面的Vue.js中使用任何的变量，都要使用var和let来声明</b></p>
+<h5 id="常量和全局常量"><a href="#常量和全局常量" class="headerlink" title="常量和全局常量"></a><b style="color:orange;">常量和全局常量</b></h5><p>常量使用<b style="color:crimson;">const</b> 标识符定义：</p>
+<pre><code class="javascript">const title=&#39;标题&#39;;</code></pre>
+<p>全局常量需要在<code>index.html</code>中进行定义即可：</p>
+<pre><code class="javascript">window.title=&quot;我的博客列表&quot;;</code></pre>
+<h5 id="导入代码"><a href="#导入代码" class="headerlink" title="导入代码"></a><b style="color:orange;">导入代码</b></h5><p><b style="color:crimson;">import</b> 用于导入外部的代码：</p>
+<pre><code class="javascript">import Vue from &#39;vue&#39;
+import Router from &#39;vue-router&#39;</code></pre>
+<p>目的是引入vue和vue-router（<i style="color:slateblue;">由于他们是在package.json中定义的，所以可以直接<code>import ... from &lt;包名&gt;</code> ，否则需要加上路径</i>）</p>
+<pre><code class="javascript">import SayHi from &#39;@components/SayHi&#39;</code></pre>
+<ul>
+<li>在from后面添加<b style="color:crimson;">@</b>符号，表示是在本地文件系统中引入文件。@代表源代码目录（一般是src）。</li>
+</ul>
+<h5 id="export-default"><a href="#export-default" class="headerlink" title="export default{}"></a><b style="color:orange;">export default{}</b></h5><p>在每个Vue的<code>&lt;script&gt;</code>标签中都会存在<code>export default{}</code>代码,<span style="color:crimson;">作用是方便其他代码对这个代码进行引用。</span>对于ES6之前，js没有统一的模块定义方式。</p>
+<p>假设有lib/math.js文件：</p>
+<pre><code class="javascript">export function sunm(x,y){
+    return x+y;
+}
+export  var pi=3.1415926;</code></pre>
+<p>lib/math.js可以导出的有两个内容一个是函数<code>sum(x,y)</code>，一个是变量<code>pi</code>。</p>
+<p>导出的方式也有多种：</p>
+<pre><code class="javascript">import  *  as math from &quot;lib/math&quot;
+alert(&quot;2π=&quot;+math.sum(math.pi,math.pi));</code></pre>
+<pre><code class="javascript">import {sum,pi} from &quot;lib/math&quot;
+alert(&quot;2π=&quot;+sum(pi,pi))</code></pre>
+<p><code>export defult{}</code>暴露的是一段没有名字的代码，而<code>export function{}</code>暴露的则是一段有名字的代码。</p>
+<p><b style="color:orange;">ES中的简写</b></p>
+<pre><code class="html">&lt;script&gt;
+    export default {
+        data(){
+            return {}
+        }
+    }
+&lt;/script&gt;</code></pre>
+<p>实际上等同于：</p>
+<pre><code class="html">&lt;script&gt;
+    export default{
+        data:function(){
+            return {}
+        }
+    }
+&lt;/script&gt;</code></pre>
+<h5 id="箭头函数"><a href="#箭头函数" class="headerlink" title="箭头函数"></a><b style="color:orange;">箭头函数</b></h5><p>ES可以通过箭头表示函数：</p>
+<pre><code class="javascript">.then(response=&gt;...);</code></pre>
+<p>等同于：</p>
+<pre><code class="javascript">.then(function(response){});</code></pre>
+<p><span style="color:crimson;">这样写的好处在于，强制定义了作用域，使用<code>=&gt;</code>可以避免很多的作用域的问题。</span></p>
+<h5 id="hash中同名的key-value简写"><a href="#hash中同名的key-value简写" class="headerlink" title="hash中同名的key/value简写"></a><b style="color:orange;">hash中同名的key/value简写</b></h5><pre><code class="javascript">let title=&#39;tripe body&#39;
+
+return {
+title:title
+}</code></pre>
+<p>等同于：</p>
+<pre><code class="javascript">let title=&#39;tripe body&#39;
+
+return {
+    titile
+}</code></pre>
+<h5 id="分号可以省略"><a href="#分号可以省略" class="headerlink" title="分号可以省略"></a><b style="color:orange;">分号可以省略</b></h5><pre><code class="javascript">var a=1
+var b=1;</code></pre>
+<p><b style="color:orange;">解构赋值</b></p>
+<pre><code class="javascript">let person={
+    firstname:&#39;seteve&#39;,
+    lastname:&#39;curry&#39;,
+    age:29,
+    sex:&#39;man&#39;
+};</code></pre>
+<p>然后可以这样定义:</p>
+<pre><code class="javascript">let {firstname,lastname}=person
+//上面的代码等同于
+// let firstname=person.firstname
+//let lastname=perosn.lastname</code></pre>
+<h3 id="Vue-js渲染页面的过程和原理"><a href="#Vue-js渲染页面的过程和原理" class="headerlink" title="Vue.js渲染页面的过程和原理 "></a><b style="color:red;">Vue.js渲染页面的过程和原理 </b></h3><h4 id="1、渲染过程1：js入口文件"><a href="#1、渲染过程1：js入口文件" class="headerlink" title="1、渲染过程1：js入口文件 "></a><b style="color:blue;">1、渲染过程1：js入口文件 </b></h4><p><code>./build/webpack.base.conf.js</code>是webpack打包的配置文件。</p>
+<pre><code class="javascript">&#39;use strict&#39;
+const path = require(&#39;path&#39;)
+const utils = require(&#39;./utils&#39;)
+const config = require(&#39;../config&#39;)
+const vueLoaderConfig = require(&#39;./vue-loader.conf&#39;)
+
+function resolve (dir) {
+  return path.join(__dirname, &#39;..&#39;, dir)
+}
+
+const createLintingRule = () =&gt; ({
+  test: /\.(js|vue)$/,
+  loader: &#39;eslint-loader&#39;,
+  enforce: &#39;pre&#39;,
+  include: [resolve(&#39;src&#39;), resolve(&#39;test&#39;)],
+  options: {
+    formatter: require(&#39;eslint-friendly-formatter&#39;),
+    emitWarning: !config.dev.showEslintErrorsInOverlay
+  }
+})
+
+module.exports = {
+  context: path.resolve(__dirname, &#39;../&#39;),
+    //这里就定义了Vue.js 的入口文件
+  entry: {
+    app: &#39;./src/main.js&#39;
+  },
+  output: {
+    path: config.build.assetsRoot,
+    filename: &#39;[name].js&#39;,
+    publicPath: process.env.NODE_ENV === &#39;production&#39;
+      ? config.build.assetsPublicPath
+      : config.dev.assetsPublicPath
+  },
+  resolve: {
+    extensions: [&#39;.js&#39;, &#39;.vue&#39;, &#39;.json&#39;],
+    alias: {
+      &#39;vue$&#39;: &#39;vue/dist/vue.esm.js&#39;,
+      &#39;@&#39;: resolve(&#39;src&#39;),
+    }
+  },
+  module: {
+    rules: [
+      ...(config.dev.useEslint ? [createLintingRule()] : []),
+      {
+        test: /\.vue$/,
+        loader: &#39;vue-loader&#39;,
+        options: vueLoaderConfig
+      },
+      {
+        test: /\.js$/,
+        loader: &#39;babel-loader&#39;,
+        include: [resolve(&#39;src&#39;), resolve(&#39;test&#39;), resolve(&#39;node_modules/webpack-dev-server/client&#39;)]
+      },
+      {
+        test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
+        loader: &#39;url-loader&#39;,
+        options: {
+          limit: 10000,
+          name: utils.assetsPath(&#39;img/[name].[hash:7].[ext]&#39;)
+        }
+      },
+      {
+        test: /\.(mp4|webm|ogg|mp3|wav|flac|aac)(\?.*)?$/,
+        loader: &#39;url-loader&#39;,
+        options: {
+          limit: 10000,
+          name: utils.assetsPath(&#39;media/[name].[hash:7].[ext]&#39;)
+        }
+      },
+      {
+        test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
+        loader: &#39;url-loader&#39;,
+        options: {
+          limit: 10000,
+          name: utils.assetsPath(&#39;fonts/[name].[hash:7].[ext]&#39;)
+        }
+      }
+    ]
+  },
+  node: {
+    //防止Webpack注入无用的setImmediate polyfill，因为Vue源包含它（尽管仅在其本机时才使用它）。
+    setImmediate: false,
+    // 防止webpack将模拟注入到对客户端没有意义的Node本机模块
+    dgram: &#39;empty&#39;,
+    fs: &#39;empty&#39;,
+    net: &#39;empty&#39;,
+    tls: &#39;empty&#39;,
+    child_process: &#39;empty&#39;
+  }
+}
+</code></pre>
+<pre><code class="javascript">module.exports = {
+  context: path.resolve(__dirname, &#39;../&#39;),
+    //这里就定义了Vue.js 的入口文件
+  entry: {
+    app: &#39;./src/main.js&#39;
+  },
+    ...
+}</code></pre>
+<h4 id="2、渲染过程2：静态的HTML页面（index-html）"><a href="#2、渲染过程2：静态的HTML页面（index-html）" class="headerlink" title="2、渲染过程2：静态的HTML页面（index.html）"></a><b style="color:blue;">2、渲染过程2：静态的HTML页面（index.html）</b></h4><p>每次打开服务器的时候显示的URL是<a href="http:localhost:8080/#/">http:localhost:8080/#/</a> ，实际上打开的文件是<a href="http://localhost:8080/#/index.html" target="_blank" rel="noopener">http://localhost:8080/#/index.html</a> ，所以找到index.html的时候，就可以看其内容：</p>
+<pre><code class="html">&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+  &lt;head&gt;
+    &lt;meta charset=&quot;utf-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width,initial-scale=1.0&quot;&gt;
+    &lt;title&gt;vuetest&lt;/title&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;div id=&quot;app&quot;&gt;&lt;/div&gt;
+
+  &lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+<p>这里的<code>&lt;div id=&quot;app&quot;&gt;&lt;/div&gt;</code>就是将来会动态变化的内容。特别类似于Rails和layout（模板文件）。<b style="color:crimson;">这个index.html文件是最外层的模板</b>。</p>
+<h4 id="3、渲染过程3：main-js中的Vue定义"><a href="#3、渲染过程3：main-js中的Vue定义" class="headerlink" title="3、渲染过程3：main.js中的Vue定义"></a><b style="color:blue;">3、渲染过程3：main.js中的Vue定义</b></h4><pre><code class="javascript">import Vue from &#39;vue&#39;
+import App from &#39;./App&#39;
+import router from &#39;./router&#39;
+
+Vue.config.productionTip = false
+
+new Vue({
+    //app对应着&#39;&lt;div id=&quot;app&quot;&gt;&lt;/div&gt;&#39;&#39;
+  el: &#39;#app&#39;,
+  router,
+  components: { App },
+    //这里，APP就是.src/App.vue
+  template: &#39;&lt;App/&gt;&#39;
+})</code></pre>
+<p>熟悉jquery、css selector的读者可以看到，<code>el:&quot;#app&quot;</code>就是index.html就是<code>&lt;div id=&quot;#app&quot;&gt;&lt;/div&gt;</code></p>
+<p>上面的App.vue会被main.js加载，App.vue的内容如下：</p>
+<pre><code class="html">&lt;template&gt;
+  &lt;div id=&quot;app&quot;&gt;
+    &lt;img src=&quot;./assets/logo.png&quot;&gt;
+    &lt;router-view/&gt;
+  &lt;/div&gt;
+&lt;/template&gt;
+
+&lt;script&gt;
+export default {
+  name: &#39;App&#39;
+}
+&lt;/script&gt;
+
+&lt;style&gt;
+#app {
+  font-family: &#39;Avenir&#39;, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: #2c3e50;
+  margin-top: 60px;
+}
+&lt;/style&gt;
+</code></pre>
+<p>上面的代码就是<code>&lt;template /&gt;</code>的第二层模板，可以认为该页面的内容就是在这个位置被渲染出来。</p>
+<p>上面的代码中还有，<code>&lt;div id=&#39;app&#39;&gt;&lt;/div&gt;</code>，该元素与index.html中的是用一个元素。</p>
+<p>所有<code>&lt;router-view&gt;</code>中的内容都会被自动替换。<code>&lt;script&gt;</code>中代码则是脚本代码。</p>
+<h4 id="4、视图中的渲染"><a href="#4、视图中的渲染" class="headerlink" title="4、视图中的渲染"></a><b style="color:blue;">4、视图中的渲染</b></h4><h5 id="渲染某个变量"><a href="#渲染某个变量" class="headerlink" title="渲染某个变量"></a><b style="color:orange;">渲染某个变量</b></h5><pre><code class="html">&lt;script&gt;
+    export default{
+        data(){
+            return {
+                my_value:&#39;默认值&#39;
+            }
+        }
+    }
+&lt;/script&gt;</code></pre>
+<p>可以这样来显示它：</p>
+<pre><code class="html">&lt;template&gt;
+    &lt;div&gt;
+        {{message}}
+    &lt;/div&gt;
+&lt;/template&gt;</code></pre>
+<h5 id="方法的声明和调用"><a href="#方法的声明和调用" class="headerlink" title="方法的声明和调用"></a><b style="color:orange;">方法的声明和调用</b></h5><pre><code class="html">&lt;script&gt;
+    export default{
+        data(){
+            return{
+                my_value:&#39;默认值&#39;
+            }
+        },
+        methods:{
+            show_my_value:function(){
+                alert(&#39;my_value&#39;+this.message);
+            }
+        }
+    }
+&lt;/script&gt;</code></pre>
+<p>调用上面的方法：</p>
+<pre><code class="html">&lt;template&gt;
+    &lt;div&gt;
+        &lt;input type=&#39;button&#39; @click=&quot;show_my_value()&quot; value=&quot;...&quot; /&gt;
+    &lt;/div&gt;
+&lt;/template&gt;</code></pre>
+<p><b style="color:orange;">事件处理：v-on</b></p>
+<p><code>@click=&#39;show_message()&#39;</code>等同于<code>v-on:click=&quot;show_message()&quot;</code>。</p>
+<h4 id="5、视图中的Directive（指令）"><a href="#5、视图中的Directive（指令）" class="headerlink" title="5、视图中的Directive（指令）"></a><b style="color:blue;">5、视图中的Directive（指令）</b></h4><p>Vue.js是一种javascript框架，所以只能与标签结合使用，叫做Directive（指令）。</p>
+<h5 id="在directive中使用表达式"><a href="#在directive中使用表达式" class="headerlink" title="在directive中使用表达式"></a><b style="color:orange;">在directive中使用表达式</b></h5><ul>
+<li>表达式：a&gt;1（有效）</li>
+<li>普通语句：a=1；（这个是声明，不会生效）</li>
+<li>控制语句：returna；（不会生效）</li>
+</ul>
+<p><b style="color:crimson;">在所有的Directive中，只能使用表达式</b></p>
+<pre><code class="html">&lt;div v-if=&quot;a&gt;100&quot;&gt;&lt;/div&gt;</code></pre>
+<h5 id="循环：v-for"><a href="#循环：v-for" class="headerlink" title="循环：v-for"></a><b style="color:orange;">循环：v-for</b></h5><pre><code class="html">&lt;ul&gt;
+    &lt;li v-for=&quot;tech in technologies&quot;&gt;{{tech}}&lt;/li&gt;
+&lt;/ul&gt;</code></pre>
+<pre><code class="javascript">var vm=new Vue({
+    data:{
+        technologies:[&#39;nvm&#39;,&#39;npm&#39;,&#39;node&#39;,&#39;webpack&#39;,&#39;ecma_script&#39;]
+    }
+})</code></pre>
+<h5 id="判断：v-if"><a href="#判断：v-if" class="headerlink" title="判断：v-if"></a><b style="color:orange;">判断：v-if</b></h5><pre><code class="html">&lt;div v-if=&quot;name===&#39;Vue.js&#39;&quot;&gt;
+    Vue.js
+&lt;/div&gt;
+&lt;div v-else-if=&quot;name===&#39;angular&#39;&quot;&gt;
+    Angular
+&lt;/div&gt;
+&lt;div v-else&gt;
+    React
+&lt;/div&gt;</code></pre>
+<pre><code class="javascript">var app=new Vue({
+    el:&quot;#app&quot;,
+    data:{
+        name:&quot;Vue.js&quot;
+    }
+})</code></pre>
+<p><span style="color:crimson;">v-if后面的引号中的是<code>name===&#39;Vue.js&#39;</code>,===是ECMAScript的语言，表示严格判断。</span></p>
+<h5 id="v-if和v-for的优先级"><a href="#v-if和v-for的优先级" class="headerlink" title="v-if和v-for的优先级"></a><b style="color:orange;">v-if和v-for的优先级</b></h5><p>当v-if与v-for一起使用的时候，v-for有与比v-if更高的优先级。也就是说，Vue.js会先执行v-for，再执行v-if。</p>
+<h5 id="v-bind"><a href="#v-bind" class="headerlink" title="v-bind"></a><b style="color:orange;">v-bind</b></h5><p>v-bind指令用于把某个属性绑定到对应的元素属性。</p>
+<pre><code class="html">&lt;p v-bind:style=&quot;&#39;color:&#39;+my_color&quot;&gt;Vue.js 学起来好开心~ &lt;/p&gt;</code></pre>
+<h5 id="v-on"><a href="#v-on" class="headerlink" title="v-on"></a><b style="color:orange;">v-on</b></h5><pre><code class="html">&lt;input type=&quot;button&quot; v-on:click=&quot;show_message()&quot; value=&quot;点击点击&quot; /&gt;</code></pre>
+<pre><code class="javascript">var app=new Vue({
+    el:&quot;#app&quot;,
+    data:{
+        message:&quot;学习Vue使我快乐&quot;
+    },
+    methods:{
+        show_message:function(){
+            this.message=this.message+&quot;是的，你的工资还会涨的~&quot;
+        }
+    }
+})</code></pre>
+<p>v-on后面可以接HTML的标准事件：</p>
+<ul>
+<li>click</li>
+<li>dbclick</li>
+<li>contextmenu（单击鼠标右键）</li>
+<li>mouseover</li>
+<li>mouseout</li>
+<li>keydown</li>
+<li>keyup</li>
+</ul>
+<h5 id="v-modal与双向绑定"><a href="#v-modal与双向绑定" class="headerlink" title="v-modal与双向绑定"></a><b style="color:orange;">v-modal与双向绑定</b></h5><pre><code class="html">&lt;input type=&quot;text&quot; v-modal=&quot;name&quot; /&gt;</code></pre>
+<pre><code class="javascript">var app=new Vue({
+    el:&quot;#app&quot;,
+    data:{
+        name:&quot;Vue.js(默认)&quot;
+    }
+})</code></pre>
+<h4 id="6、发送Http请求"><a href="#6、发送Http请求" class="headerlink" title="6、发送Http请求"></a><b style="color:blue;">6、发送Http请求</b></h4><p>Vue.js内置了对发送Http请求的支持，主要在对应的页面的script标签内加上对应的代码就可以了。<span style="color:crimson;">但是Vue.js2.0要求使用第三方库—axios。</span></p>
+<p>在使用第三方的库axios的时候，首先需要安装axios。利用命令行的工具，然后<code>cd</code>到项目所在的文件夹，使用：</p>
+<pre><code class="java">npm install axios</code></pre>
+<p>然后在<code>main.js</code>文件中引入axios库：</p>
+<pre><code class="javascript">// The Vue build version to load with the `import` command
+// (runtime-only or standalone) has been set in webpack.base.conf with an alias.
+import Vue from &#39;vue&#39;
+import App from &#39;./App&#39;
+import router from &#39;./router&#39;
+
+
+Vue.config.productionTip = false;
+//将http的引用源头指向axios
+Vue.prototype.$http = require(&#39;axios&#39;);
+/* eslint-disable no-new */
+new Vue({
+  el: &#39;#app&#39;,
+  router,
+  components: { App },
+  template: &#39;&lt;App/&gt;&#39;
+})
+</code></pre>
+<pre><code class="html">&lt;template&gt;
+    &lt;div&gt;
+        &lt;table&gt;
+            &lt;tr v-for=&quot;blog in blogs&quot; &gt;
+                &lt;td&gt;&lt;/td&gt;
+            &lt;/tr&gt;
+        &lt;/table&gt;
+    &lt;/div&gt;
+&lt;/template&gt;
+&lt;script&gt;
+    export default{
+        data(){
+            return {
+                title:&quot;我的博客&quot;,
+                blogs:[]
+            }
+        },
+  mounted() {
+    this.$http.get(&quot;http://39.107.141.202:8086/query?u=yjf&amp;p=123456&quot;,{
+          params:{
+             db: &quot;sensor_statue&quot;,
+             q: &#39;SELECT * FROM &quot;sensor_statue&quot;.&quot;autogen&quot;.&quot;sensorid&quot; order by time desc limit 298 &#39;, 
+         }
+      },)
+      .then(response =&gt; {
+        let data=response.data.results[0].series[0].values;
+        this.msg=data;
+        console.log(response.data.results[0].series[0]);
+      })
+      .catch(reponse=&gt;{
+          console.log(reponse.body);
+      })
+  }
+};
+    }
+&lt;/script&gt;
+&lt;style&gt;
+    td{
+        border-bottom:1px solid gray
+    }
+&lt;/style&gt;</code></pre>
+<ul>
+<li><p><code>mouted</code> 是Vue声明周期的中的钩子函数，表示的是：<span style="color:crimson;">页面加载完毕之后应该干哪些事</span></p>
+</li>
+<li><p><code>this.$http.get(url,{params})</code>表示的发送get请求。其中url的格式为字符串，params的格式为JSON字符串。</p>
+</li>
+<li><p><code>then(response=&gt;{})</code> 表示的是请求成功的时候回调其中的函数；response代表的是返回的http协议中的请求体。</p>
+</li>
+<li><p><code>catch(response=&gt;{})</code>表示的请求失败的时候回调其中的函数；</p>
+</li>
+</ul>
+<h5 id="设置Vue-js开发服务器中的代理"><a href="#设置Vue-js开发服务器中的代理" class="headerlink" title="设置Vue.js开发服务器中的代理"></a><b style="color:orange;">设置Vue.js开发服务器中的代理</b></h5><p>因为http协议的cookie中的限制，导致请求只能在同域中进行访问。正常来讲，JavaScript在浏览器中是无法发送跨域请求的。需要在Vue.js的“开发服务器”上作转发配置。</p>
+<p>修改<code>config/index.js</code>文件，增加下列内容：</p>
+<pre><code class="javascript">module.exports={
+    dev:{
+        proxyTable:{
+             // 1.对所有以&quot;/api&quot;开头的url做处理
+      &#39;/api&#39;:{
+        //3.将请求转发到http://siwei.me上面
+        target:&#39;http://siwei.me&#39;,
+        changeOrigin:true,
+        pathRewirte:{
+          //2.将url中的&quot;/api&quot;替换成&#39;&#39;
+          &#39;^/api&#39; :&#39;&#39;
+        }
+      }
+        }
+    }
+}</code></pre>
+<p>此时请求的变成了：</p>
+<ul>
+<li>原来的请求：<a href="http://localhost:8080/api/interface/blogs/all" target="_blank" rel="noopener">http://localhost:8080/api/interface/blogs/all</a></li>
+<li>新的请求：<a href="http://siwei.me/interface/blogs/all" target="_blank" rel="noopener">http://siwei.me/interface/blogs/all</a></li>
+</ul>
+<h5 id="发送post请求"><a href="#发送post请求" class="headerlink" title="发送post请求"></a><b style="color:orange;">发送post请求</b></h5><p>与get类似，就是第二个参数是请求的body。</p>
+<pre><code class="javascript">axios.post(&#39;/user&#39;, {
+    firstName: &#39;Fred&#39;,        // 参数 firstName
+    lastName: &#39;Flintstone&#39;    // 参数 lastName
+  })
+  .then(function (response) {
+    console.log(response);
+  })
+  .catch(function (error) {
+    console.log(error);
+  });</code></pre>
+<p>如果Web服务器无法处理编码为application/json的请求，你可以启用emulateJSON选项。</p>
+<pre><code class="javascript">axios.post(&#39;/user&#39;, {
+    firstName: &#39;Fred&#39;,        // 参数 firstName
+    lastName: &#39;Flintstone&#39;    // 参数 lastName
+  },{emulateJSON:true})
+  .then(function (response) {
+    console.log(response);
+  })
+  .catch(function (error) {
+    console.log(error);
+  });</code></pre>
+<h4 id="7、不同页面间的参数传递"><a href="#7、不同页面间的参数传递" class="headerlink" title="7、不同页面间的参数传递"></a><b style="color:blue;">7、不同页面间的参数传递</b></h4><p>在普通的web项目开发中，参数的传递有以下的几种形式：</p>
+<ul>
+<li>url：<a href="http://localhost:8080/another_page?id=3" target="_blank" rel="noopener">http://localhost:8080/another_page?id=3</a></li>
+<li>表单：<code>&lt;form&gt;</code></li>
+</ul>
+<p>而在vue.js中，不会产生表单的提交（会引起页面的整体提交），有以下两种:</p>
+<ul>
+<li>url同传统的语言，参数在url中</li>
+<li>Vue.js内部的机制</li>
+</ul>
+<h4 id="8、路由"><a href="#8、路由" class="headerlink" title="8、路由"></a><b style="color:blue;">8、路由</b></h4><h5 id="基本用法"><a href="#基本用法" class="headerlink" title="基本用法"></a><b style="color:orange;">基本用法</b></h5><p>每个vue页面都要对应一个路由的。添加路由的方式：<span style="color:crimson;">在<code>src/router</code>页面中添加路由信息，在<code>src/components/book.vue</code>添加页面</span>。</p>
+<pre><code class="java">import Vue from &#39;vue&#39;
+import Router from &#39;vue-router&#39;
+import HelloWorld from &#39;@/components/HelloWorld&#39;
+import SayHi from &#39;@/components/SayHi&#39;
+
+Vue.use(Router)
+
+export default new Router({
+  routes: [
+    {
+      path: &#39;/HelloWorld&#39;,
+      name: &#39;HelloWorld&#39;,
+      component: HelloWorld
+    },
+    {
+      path: &#39;/say_hi&#39;,
+      name: &#39;SayHi&#39;,
+      component: SayHi
+    }
+  ]
+})
+</code></pre>
+<h5 id="跳转到某个路由时带上参数"><a href="#跳转到某个路由时带上参数" class="headerlink" title="跳转到某个路由时带上参数 "></a><b style="color:orange;">跳转到某个路由时带上参数 </b></h5><p><b style="color:crimson;">普通参数</b></p>
+<pre><code class="javascript">routes:[{
+    path:&#39;/blog&#39;,
+    name:&#39;Blog&#39;
+}]</code></pre>
+<p>在视图中执行：</p>
+<pre><code class="html">&lt;router-link :to=&quot;{name:&#39;Blog&#39;,query:{id:3}&quot; &gt;User&lt;/router-link&gt;</code></pre>
+<p>在<code>&lt;script&gt;</code>中：</p>
+<pre><code class="javascript">this.$router.push({name:&#39;Blog&#39;,query:{id:3}})</code></pre>
+<p>最后都会跳转到<a href="http:/localhost:8080/vuetest/#/blog?id=3">http:/localhost:8080/vuetest/#/blog?id=3</a></p>
+<p><b style="color:crimson;">获取路由中的参数：</b></p>
+<pre><code class="javascript">this.$router.query.id//获取普通的参数
+this.$router.params.id//获取路由信息中定义好的参数</code></pre>
+]]></content>
+      <categories>
+        <category>Vue.js</category>
+      </categories>
+      <tags>
+        <tag>编程语言</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>写给未来的自己</title>
+    <url>/2020/04/14/%E5%86%99%E7%BB%99%E6%9C%AA%E6%9D%A5%E7%9A%84%E8%87%AA%E5%B7%B1/</url>
+    <content><![CDATA[<h2 style="font-weight:lighter;color:crimson;">本是青灯不归客，却因浊酒留风尘</h2>
+
+<a id="more"></a>
+
+<ol>
+<li>嘿！你好，这里是22岁的你，今年的疫情影响非常的大。寒假从去年的年底放到今年的五一。这里是22岁你，在4月19日的晚上八点五十六分，对未来你的说：<span style="color:crimson;">不要假装努力，是对自己最好的安慰！</span></li>
+</ol>
+]]></content>
+      <tags>
+        <tag>杂记</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>基于Python的机器学习</title>
+    <url>/2020/05/24/%E5%9F%BA%E4%BA%8EPython%E7%9A%84%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/</url>
+    <content><![CDATA[<h2 style="color:crimson;font-weight:lighter;">我也有诗和远方，只不过诗很烂，远方也很黑暗</h2>
+<a id="more"></a>
+
+<h3 id="基于python语言的环境配置"><a href="#基于python语言的环境配置" class="headerlink" title="基于python语言的环境配置"></a><b style="color:red;">基于python语言的环境配置</b></h3><h4 id="1、Python的下载和安装"><a href="#1、Python的下载和安装" class="headerlink" title="1、Python的下载和安装"></a><b style="color:blue;">1、Python的下载和安装</b></h4><p>首先在Python官网下载：<a href="http://www.python.org" target="_blank" rel="noopener">http://www.python.org</a> 下载Python安装包，在官网首页找到DownLoads按钮，鼠标悬停在上面时会出现一个下拉菜单，在下拉菜单中根据自己的操作系统选择对应的Python版本。</p>
+<h4 id="2、一些必须库的安装以及功能简介"><a href="#2、一些必须库的安装以及功能简介" class="headerlink" title="2、一些必须库的安装以及功能简介"></a><b style="color:blue;">2、一些必须库的安装以及功能简介</b></h4><p>学习机器学习有一些必须要安装的库作为配置的环境。这些库包括：<b style="color:crimson;">Numpy、Scipy、matplotlib、pandas、IPython以及非常核心的scikit-learn。</b></p>
+<h5 id="Numpy-基础科学计算库"><a href="#Numpy-基础科学计算库" class="headerlink" title="Numpy-基础科学计算库"></a><b style="color:orange;">Numpy-基础科学计算库</b></h5><p>Numpy是一个Python中非常基础的用于进行科学计算的库，它的功能包括高维数组（array）计算、线性代数计算、傅里叶变换以及产生伪随机数等。Numpy对于scikit-learn来说是至关重要，因为scikit-learn使用Numpy数组形式的数据来进行处理，所以需要把数据转化成Numpy数组的形式，而多维数组也是Numpy的核心功能之一。</p>
+<pre><code class="python">pip install numpy</code></pre>
+<p>即可安装Numpy</p>
+<h5 id="Scipy-强大的科学计算工具集"><a href="#Scipy-强大的科学计算工具集" class="headerlink" title="Scipy-强大的科学计算工具集"></a><b style="color:orange;">Scipy-强大的科学计算工具集</b></h5><p>Scipy是一个Python中用于进行科学计算的工具集，它有很多的功能，如计算统计学分布、信号处理、计算线性代数方程等。scikit-learn需要使用Scipy来对算法进行执行，其中用的最多的就是Scipy中的sparse函数。sparse函数用来生成稀疏矩阵，而稀疏矩阵用来存储那些大部分数值为0的np数组，这种类型的数组在scikit-learn的实际应用也非常的常见。</p>
+<pre><code class="python">pip install scipy</code></pre>
+<h5 id="pands-数据分析的利器"><a href="#pands-数据分析的利器" class="headerlink" title="pands-数据分析的利器"></a><b style="color:orange;">pands-数据分析的利器</b></h5><p>pandas是一个Python中用于进行数据分析的库，它可以生成类似Excel表格式的数据表，而且可以对数据表进行修改操作。pandas还有个强大的功能，它可以从很多不同种类的数据库中提取数据，如SQL数据库、Excel表格甚至CSV文件。pandas还支持在不同的列中使用不同类型的数据，如整型数、浮点数，或是字符串。</p>
+<pre><code class="python">pip install pandas</code></pre>
+<h5 id="matplotlib-数据可视化利器"><a href="#matplotlib-数据可视化利器" class="headerlink" title="matplotlib-数据可视化利器"></a><b style="color:orange;">matplotlib-数据可视化利器</b></h5><p>matplotlib是一个Python的绘图库，它以各种硬拷贝格式和跨平台的交互式环境生成出版质量级别的图形，它能够输出的图像包括折线图、散点图、直方图等。</p>
+<pre><code class="python">pip install matplotlib</code></pre>
+<h5 id="scikit-learn-非常流行的Python机器学习库"><a href="#scikit-learn-非常流行的Python机器学习库" class="headerlink" title="scikit-learn-非常流行的Python机器学习库"></a><b style="color:orange;">scikit-learn-非常流行的Python机器学习库</b></h5><p>scikit-learn是一个建立在Scipy基础上的用于机器学习的python模块。scikit-learn包含众多定级机器学期算法，它主要有六大类基本功能，分别是：<b style="color:crimson;">分类、回归、聚类、数据降维、模型选择和数据预处理</b>。</p>
+<pre><code class="python">pip install -U scikit-learn</code></pre>
+<h3 id="K最近邻算法"><a href="#K最近邻算法" class="headerlink" title="K最近邻算法"></a><b style="color:red;">K最近邻算法</b></h3><p>K最近邻算法的原理，就如成语中所说的“近朱者赤，近墨者黑”。</p>
+<h4 id="1、原理"><a href="#1、原理" class="headerlink" title="1、原理"></a><b style="color:blue;">1、原理</b></h4><p>K最近邻算法的原理在<b style="color:crimson;">分类</b>中有很多种的应用场景：</p>
+<ol>
+<li>新的数据点离谁近，就和谁属于同一类。<span style="color:hotpink;">当将K选为1时候表示，就会有很高的错误率，假设与新数据最近邻算法的数据刚好是误判的，就会造成新数据点的判断也是错误的</span>。</li>
+<li>当将K值选为3的时候，表示要选最近的三个数据点进行分类判别。然后判断这三个数据点中的分类情况，如果A类多，表示新数据点分为A类，如果是B类占比多，表示新数据点分为B类。</li>
+</ol>
+<p>在scikit-learn中，K最近邻算法的K值是通过<b style="color:crimson;">n_neighbors</b> 参数来调节的。</p>
+<p><span style="color:slateblue;">K最近邻算法也可以用于回归，原理和其用于分类是相同的。当使用K最近邻回归计算某个数据点的预测值的时，模型会选择离该数据点最近的若干个训练数据集中的点，并且将它们的y值取平均值，并把该平均值作为新数据点的预测值。</span></p>
+<h4 id="2、K最近邻算法的用法"><a href="#2、K最近邻算法的用法" class="headerlink" title="2、K最近邻算法的用法"></a><b style="color:blue;">2、K最近邻算法的用法</b></h4><h5 id="K最近邻算法在分类任务中的应用"><a href="#K最近邻算法在分类任务中的应用" class="headerlink" title="K最近邻算法在分类任务中的应用"></a><b style="color:orange;">K最近邻算法在分类任务中的应用</b></h5><p>scikit-learn中，内置了若干个玩具数据集（Toys Datasets），还有一些API可以自动生成一些数据集。</p>
+<pre><code class="python"># 导入数据集生成器
+from sklearn.datasets import make_blobs
+# 导入KNN分类器
+from sklearn.neighbors import KNeighborsClassifier
+# 导入画图工具
+import matplotlib.pyplot as plt
+# 导入数据集拆分工具
+from sklearn.model_selection import train_test_split
+import numpy as np
+
+# 生成样本数为200，分类为2的数据集
+data = make_blobs(n_samples=200, centers=2, random_state=8)
+x, y = data
+# 将生成的数据集进行可视化
+plt.scatter(x[:, 0], x[:, 1], c=y, cmap=plt.cm.get_cmap(&quot;Paired&quot;), edgecolors=None, alpha=0.8)
+plt.savefig(&quot;F:\\StudyNote\\image\\KNN.jpg&quot;)
+plt.show()</code></pre>
+<p>具体的显示情况如下：</p>
+<p><img src="KNN.jpg"></img></p>
+<ul>
+<li><p><b style="color:crimson;">make_blobs(n_sample=200,centers=2,random_state=8)</b> </p>
+<p>n_sample：表示数据样本点个数，默认值100；</p>
+<p>n_features: 表示数据的维度，默认值是2；</p>
+<p>centers：产生数据的中心店，默认值是3；</p>
+<p>cluster_std：数据集的标准差，浮点数或者浮点数序列，默认1.0；</p>
+<p>center_box：中心确定之后的数据边界，默认值（-10.0，10.0）；</p>
+<p>shuffle：洗乱，默认值是true；</p>
+<p>random_state：随机生成器的种子；</p>
+</li>
+<li><p><b style="color:crimson;">plt.scatter(x=x[0,:],y=x[:,1],c=y,camp=plt.cm.get_cmap(‘spring’),edgecolors=’k’,alpha=0.8)</b> </p>
+<p>x,y表示的输入数据；c表示色彩或者颜色序列，可选默认；</p>
+<p>marker表示点的形状，可选，默认为‘o’；</p>
+<p>cmap表示Colormap，可选，默认为None；</p>
+<p>alpha表示数据的亮度，可选范围是0-1；</p>
+<p>lindwidths表示线条的宽度。</p>
+</li>
+</ul>
+<p><span style="color:crimson;">以上产生的数据可以看做是机器学习的训练数据集，是已知数据。</span>就是基于这些数据用算法进行模型的训练，然后再对新的未知数据进行分类或者回归。</p>
+<p>在上述代码的基础上拟合训练集数据：</p>
+<pre><code class="python">clf = KNeighborsClassifier()
+clf.fit(x, y)
+
+x_min, x_max = x[:, 0].min() - 1, x[:, 0].max() + 1
+y_min, y_max = x[:, 1].min() - 1, x[:, 1].max() + 1
+xx, yy = np.meshgrid(np.arange(x_min, x_max, 0.02), np.arange(y_min, y_max, 0.02))
+z = clf.predict(np.c_[xx.ravel(), yy.ravel()])
+z = z.reshape(xx.shape)
+plt.pcolormesh(xx, yy, z, cmap=plt.cm.get_cmap(&quot;Pastel1&quot;))
+plt.scatter(x[:, 0], x[:, 1], c=y, cmap=plt.cm.get_cmap(&quot;spring&quot;), edgecolors=&#39;k&#39;)
+plt.xlim(xx.min(), xx.max())
+plt.ylim(yy.min(), yy.max())
+plt.title(&quot;Classifier:KNN&quot;)
+
+plt.show()</code></pre>
+<p>产生的结果如下图所示：</p>
+<p><img src="KNNClassify.jpg"></img></p>
+<ul>
+<li><p><b style="color:crimson;">clf = KNeighborsClassifier()</b> </p>
+<p>n_neighbors：指的是K值的大小，就是在做分类时，选取问题点最近的多少个近邻；</p>
+<p>weights：在进行分类判断时给最近邻附上的加权，默认的‘uniform’是等权加权，还有‘distance’选项是按照距离的倒数进行加权，也可以使用用户自己定义的其他加权的方法；</p>
+<p>algorithm：分类时采取的算法，有<b style="color:yellowgreen;">brute、kd_tree、ball_tree</b>；</p>
+<p>leaf_size：是Kd_tree或ball_tree生成的树叶的大小；</p>
+</li>
+<li><p><b style="color:crimson;">xx, yy = np.meshgrid(np.arange(x_min, x_max, 0.02), np.arange(y_min, y_max, 0.02)) </b> 用两个坐标轴上的点在平面上画格</p>
+</li>
+<li><p><b style="color:crimson;">plt.pcolormmesh(xx,yy,z,cmap=plt.cm.get_cmp(‘Pastel1’))</b> 在于能够直观表现出分类边界。</p>
+<p> xx，yy：表示的是分类的区间的边界</p>
+</li>
+</ul>
+<p>此时如果有新的数据输入的话，就会根据自动将数据分到对应的类中。</p>
+<p>在<code>plt.show()</code>前面加上：</p>
+<pre><code class="python">plt.scatter(6.75, 4.82, marker=&#39;*&#39;, c=&#39;red&#39;, s=200)</code></pre>
+<p>就是上图的五角星符号，可以看到被分到了浅色区域。</p>
+<h5 id="K最近邻算法处理多元分类任务"><a href="#K最近邻算法处理多元分类任务" class="headerlink" title="K最近邻算法处理多元分类任务"></a><b style="color:orange;">K最近邻算法处理多元分类任务</b></h5><p>生成多元分类任务所使用的数据集，为了让难度足够大，修改make_blobs的center参数，把数据类型修改为5个，同时修改n_samples参数，将样本数量增加到500个：</p>
+<pre><code class="python"># 导入数据集生成器
+from sklearn.datasets import make_blobs
+# 导入KNN分类器
+from sklearn.neighbors import KNeighborsClassifier
+# 导入画图工具
+import matplotlib.pyplot as plt
+# 导入数据集拆分工具
+from sklearn.model_selection import train_test_split
+import numpy as np
+
+# 生成样本数为500，分类数为5的数据集
+data = make_blobs(n_samples=500, centers=5, random_state=8)
+X, y = data
+# 用散点图将数据集进行可视化
+# plt.scatter(X[:, 0], X[:, 1], c=y, cmap=plt.cm.get_cmap(&#39;spring&#39;), edgecolors=&#39;k&#39;)
+
+clf = KNeighborsClassifier()
+clf.fit(X, y)
+x_min, x_max = X[:, 0].min() - 1, X[:, 0].max() + 1
+y_min, y_max = X[:, 0].min() - 1, X[:, 0].max() + 1
+xx, yy = np.meshgrid(np.arange(x_min, x_max, 0.02), np.arange(y_min, y_max, 0.02))
+Z = clf.predict(np.c_[xx.ravel(), yy.ravel()])
+Z = Z.reshape(xx.shape)
+plt.pcolormesh(xx, yy, Z, cmap=plt.cm.get_cmap(&#39;Pastel1&#39;))
+plt.scatter(X[:, 0], X[:, 1], c=y, cmap=plt.get_cmap(&#39;spring&#39;), edgecolors=&#39;k&#39;)
+plt.xlim(xx.min(), xx.max())
+plt.ylim(yy.min(), yy.max())
+plt.title(&quot;Classifier:KNN&quot;)
+plt.show()</code></pre>
+<p>其结果如下图所示：</p>
+<p><img src="KNNS.jpg"></img></p>
+<p>K最近邻算法仍然可以把大部分的数据点放置于正确的分类中，但是有一小部分还是进入了错误的分类中，这些分类错误的数据点基本都是互相重合的位于图像中心点的位置。</p>
+<p>模型正确率可以通过<b style="color:crimson;">clf.score(X,y)</b> 来得到：</p>
+<pre><code class="python">print(&#39;\n\n\n&#39;)
+print(&#39;代码运行结果：&#39;)
+print(&#39;===================&#39;)
+print(&#39;模型正确率：{:.2f}&#39;.format(clf.score(X, y)))
+print(&#39;===================&#39;)
+print(&#39;\n\n\n&#39;)</code></pre>
+<p>打印出来的结果如下：</p>
+<pre><code class="python">代码运行结果：
+===================
+模型正确率：0.96
+===================</code></pre>
+<h5 id="K最近邻算法用于回归分析"><a href="#K最近邻算法用于回归分析" class="headerlink" title="K最近邻算法用于回归分析"></a><b style="color:orange;">K最近邻算法用于回归分析</b></h5><p>在scikit-learn的数据集生成器中，有一个非常好的用于回归分析的数据集生成器，make_regression函数。</p>
+<pre><code class="python"># 导入数据集生成器
+from sklearn.datasets import make_regression
+# 导入KNN分类器
+from sklearn.neighbors import KNeighborsRegressor
+# 导入画图工具
+import matplotlib.pyplot as plt
+import numpy as np
+
+X, y = make_regression(n_features=1, n_informative=1, noise=50, random_state=8)
+
+reg = KNeighborsRegressor()
+reg.fit(X, y)
+z = np.linspace(-3, 3, 200).reshape(-1, 1)
+plt.scatter(X, y, c=&#39;red&#39;, edgecolors=&#39;k&#39;)
+plt.plot(z, reg.predict(z), c=&#39;k&#39;, linewidth=3)
+plt.title(&#39;KNN Regressor&#39;)
+plt.show()
+
+print(&#39;\n&#39;)
+print(&#39;代码运行结果：&#39;)
+print(&#39;===================&#39;)
+print(&#39;模型正确率：{:.2f}&#39;.format(reg.score(X, y)))
+print(&#39;===================&#39;)
+print(&#39;\n&#39;)</code></pre>
+<p>其结果如下所示：</p>
+<p><img src="Regressor.jpg"></img></p>
+<p>此时模型的准确率只有0.77，有一点差强人意，修改K的数值为1：</p>
+<pre><code class="python">reg = KNeighborsRegressor(n_neighbors=2)</code></pre>
+<p>此时模型的准确率就可以提升到0.86，可以说是显著提升的。</p>
+<h4 id="3、红酒预测实例"><a href="#3、红酒预测实例" class="headerlink" title="3、红酒预测实例"></a><b style="color:blue;">3、红酒预测实例</b></h4><p>红酒预测的实例一般分为四个特定的步骤：</p>
+<ol>
+<li>从Skelearn的dataset模块载入模块</li>
+<li>将数据集分成训练集和测试集</li>
+<li>指定KNeighborsClassifier</li>
+<li>输入新的数据点</li>
+<li>输出预测的种类</li>
+</ol>
+<pre><code class="python">from sklearn.datasets import load_wine
+from sklearn.model_selection import train_test_split
+from sklearn.neighbors import KNeighborsClassifier
+import numpy as np
+
+# 从sklearn的dataset模块载入数据
+wine_dataset = load_wine()
+# print(&quot;红酒数据集中的键：\n{}&quot;.format(wine_dataset.keys()))
+# print(&quot;数据概况：{}&quot;.format(wine_dataset[&#39;data&#39;].shape))
+# print(wine_dataset[&#39;DESCR&#39;])
+# 将数据集拆分为训练数据集和测试数据集
+# 用X表示数据的特征，而用y表示数据对应的标签
+X_train, X_test, y_train, y_test = train_test_split(wine_dataset[&#39;data&#39;], wine_dataset[&#39;target&#39;], random_state=0)
+# print(&#39;X_train shape:{}&#39;.format(X_train.shape))
+# print(&#39;X_test shape:{}&#39;.format(X_test.shape))
+# print(&#39;y_train shape:{}&#39;.format(y_train.shape))
+# print(&#39;y_test shape:{}&#39;.format(y_test.shape))
+# 指定模型n_neighbors参数值为1
+knn = KNeighborsClassifier(n_neighbors=1)
+knn.fit(X_train, y_train)
+# print(knn)
+# print(&quot;测试数据集得分:{:.2f}&quot;.format(knn.score(X_test, y_test)))
+# 输入新的数据点
+X_new = np.array([[13.2, 2.77, 2.51, 18.5, 96.6, 1.04, 2.55, 0.57, 1.47, 6.2, 1.05, 3.33, 820]])
+# 进行预测
+prediction = knn.predict(X_new)
+print(&quot;预测新红酒的分类为：{}&quot;.format(wine_dataset[&#39;target_names&#39;][prediction]))</code></pre>
+<h3 id="广义线性模型"><a href="#广义线性模型" class="headerlink" title="广义线性模型"></a><b style="color:red;">广义线性模型</b></h3><p>线性模型是一类广泛用于机器学习领域的预测模型，线性模型是输入数据集的特征的线性函数建模，并对结果进行预测的方法。</p>
+<h4 id="1、基本概念"><a href="#1、基本概念" class="headerlink" title="1、基本概念"></a><b style="color:blue;">1、基本概念</b></h4><p>常用线性模型包括：<b style="color:crimson;">线性回归、岭回归、套索回归、逻辑回归和线性SVC等</b></p>
+<p><b style="color:orange;">线性回归</b></p>
+<pre><code class="python">import numpy as np
+import matplotlib.pyplot as plt
+# 导入线性回归模型
+from sklearn.linear_model import LinearRegression
+
+# 输入两个点的坐标
+X = [[1], [4]]
+y = [3, 5]
+# 用线性模型拟合这个两个点
+lr = LinearRegression().fit(X, y)
+# 画出两个点和直线图形
+z = np.linspace(0, 5, 20)
+plt.scatter(X, y, s=80, c=&#39;red&#39;)
+plt.plot(z, lr.predict(z.reshape(-1, 1)), c=&#39;blue&#39;)
+plt.title(&#39;Straight Line&#39;)
+plt.show()</code></pre>
+<ul>
+<li>X和y就像是数据集中的数据，然后经过LinearRegression的拟合得到直线<code>lr.predict(z.shape(-1,1))</code>。</li>
+</ul>
+<p>其结果如下所示：</p>
+<p><img src="LinearRegression.jpg"></img></p>
+<p>利用<code>print(&#39;y={:.3f}&#39;.format(lr.coef_[0]), &#39;x&#39;, &#39;+{:.3f}&#39;.format(lr.intercept_))</code> 即可打印出出来拟合出来之后的函数：</p>
+<pre><code class="python">y=0.667 x +2.333</code></pre>
+<p>当输入改为三个点的时候：</p>
+<pre><code class="python">X = [[1], [4], [3]]
+y = [3, 5, 3]</code></pre>
+<p>此时直线的输出和拟合的情况又有了很大的不同：</p>
+<pre><code class="python">y=0.571 x +2.143</code></pre>
+<p><img src="LinearRegression1.jpg"></img></p>
+<p>实际应用中数据量远远大于3或者2，以Scikit-learn生成的make_regression数据集作为例子：</p>
+<pre><code class="python">import numpy as np
+import matplotlib.pyplot as plt
+# 导入线性回归模型
+from sklearn.linear_model import LinearRegression
+from sklearn.datasets import make_regression
+
+# 生成用于回归分析的数据集
+X, y = make_regression(n_samples=50, n_features=1, n_informative=1, noise=50, random_state=1)
+# 使用线性模型对数据进行拟合
+reg = LinearRegression()
+reg.fit(X, y)
+# scikit-learn总是以下划线作为来自训练集的属性的结尾
+print(&#39;y={:.3f}&#39;.format(reg.coef_[0]), &#39;x&#39;, &#39;+{:.3f}&#39;.format(reg.intercept_))
+# z是生成的等差数列，用来画出线性模型的图形
+z = np.linspace(-3, 3, 200).reshape(-1, 1)
+plt.scatter(X, y, c=&#39;blue&#39;, s=60)
+plt.plot(z, reg.predict(z), c=&#39;k&#39;)
+plt.title(&#39;Linear Regression&#39;)
+plt.show()</code></pre>
+<p>它拟合结果为：</p>
+<pre><code class="python">y=79.525 x +10.922</code></pre>
+<p><img src="LinearRegression2.jpg"></img></p>
+<p><b style="color:orange;">线性模型的特点</b></p>
+<p><b style="color:yellowgreen;">用于线性回归分析的线性模型在特征数为1的数据集中，是使用一条直线来进行预测分析的，而当数据的特征数量达到2时，则是一个平面，而对于更多特征数量的数据集来说，则是一个高维度的超平面。</b></p>
+<h4 id="2、最基本的线性模型-线性回归"><a href="#2、最基本的线性模型-线性回归" class="headerlink" title="2、最基本的线性模型-线性回归"></a><b style="color:blue;">2、最基本的线性模型-线性回归</b></h4><p>线性回归是，也称为普通最小二乘法（OLS），是在回归分析中最简单也是最经典的线性模型。</p>
+<p><b style="color:orange;">线性回归的最基本原理</b></p>
+<p>线性回归的原理是，找到当训练集中y的预测值和其真实值的平方差最小的时候，所对应的w值和b值。线性回归没有可供用户调节的参数，这就是它的优势。</p>
+<pre><code class="python">import numpy as np
+import matplotlib.pyplot as plt
+# 导入线性回归模型
+from sklearn.linear_model import LinearRegression
+from sklearn.datasets import make_regression
+from sklearn.model_selection import train_test_split
+
+X, y = make_regression(n_samples=100, n_features=2, n_informative=2, random_state=38)
+X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=8)
+lr = LinearRegression().fit(X_train, y_train)
+print(&quot;lr.coef_:{}&quot;.format(lr.coef_[:]))
+print(&quot;lr.intercept_:{}&quot;.format(lr.intercept_))</code></pre>
+<p>此时它的w值和d的值为：</p>
+<pre><code class="python">lr.coef_:[70.38592453  7.43213621]
+lr.intercept_:-1.4210854715202004e-14</code></pre>
+<p>所以此时拟合的函数为：<b style="color:crimson;">y=70.3859<code>*</code>X1+7.4321<code>*</code>X2-1.42e^-14</b></p>
+<p>此时因为数据集没有添加噪声所以训练集和测试集的得分都是1。</p>
+<h4 id="3、使用L2正则化的线性模型-岭回归"><a href="#3、使用L2正则化的线性模型-岭回归" class="headerlink" title="3、使用L2正则化的线性模型-岭回归"></a><b style="color:blue;">3、使用L2正则化的线性模型-岭回归</b></h4><p>岭回归是一种能够避免过拟合的线性模型。在岭回归中，模型会保留所有的特征变量，但是会减小特征变量的系数值，让特征变量对预测结果的影响变小，在岭回归中是通过改变其alpha参数来控制减小特征变量系数的程度。</p>
+<pre><code class="python">import numpy as np
+import matplotlib.pyplot as plt
+# 导入L2回归模型
+from sklearn.linear_model import Ridge
+from sklearn.linear_model import LinearRegression
+from sklearn.datasets import load_diabetes
+from sklearn.model_selection import train_test_split
+
+X, y = load_diabetes().data, load_diabetes().target
+X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=8)
+lr = LinearRegression().fit(X_train, y_train)
+print(&quot;线性回归训练集得分：{:.3f}&quot;.format(lr.score(X_train, y_train)))
+print(&quot;线性回归测试集得分：{:.3f}&quot;.format(lr.score(X_test, y_test)))
+ridge = Ridge().fit(X_train, y_train)
+ridge10 = Ridge(alpha=10).fit(X_train, y_train)
+ridge01 = Ridge(alpha=0.1).fit(X_train, y_train)
+print(&quot;岭回归训练集得分：{:.3f}&quot;.format(ridge.score(X_train, y_train)))
+print(&quot;岭回归测试集得分：{:.3f}&quot;.format(ridge.score(X_test, y_test)))
+# 绘制alpha=1时的模型系数
+plt.plot(ridge.coef_, &#39;s&#39;, label=&#39;Ridge alpha=1&#39;)
+# 绘制alpha=10时的模型系数
+plt.plot(ridge10.coef_, &#39;s&#39;, label=&#39;Ridge alpha=10&#39;)
+# 绘制alpha=0.1时的模型系数
+plt.plot(ridge01.coef_, &#39;s&#39;, label=&#39;Ridge alpha=0.1&#39;)
+# 绘制线性回归的系数做对比
+plt.plot(lr.coef_, &#39;o&#39;, label=&quot;Linear regression&quot;)
+plt.xlabel(&quot;cofficient index&quot;)
+plt.ylabel(&quot;cofficient magnitude&quot;)
+plt.hlines(0, 0, len(lr.coef_))
+plt.legend()
+plt.show()</code></pre>
+<p>上述包含了alpha函数对岭回归的影响以及与线性回归的对比：</p>
+<p><img src="alpha.jpg"></img></p>
+<ul>
+<li>横轴表示是特征变量的序号：X=0表示的是第一个特征变量，y轴表示的是对应特征变量的数量。</li>
+<li>可以看出来，当alpha=10的时候，橙色的点都在y=0附近；当alpha=1的时候，y值的浮动范围有很大的增加；当alpha=0.1时，可以看到岭回归的系数和线性回归的系数非常接近。</li>
+</ul>
+<h4 id="4、使用L1正则化的线性模型-套索回归"><a href="#4、使用L1正则化的线性模型-套索回归" class="headerlink" title="4、使用L1正则化的线性模型-套索回归"></a><b style="color:blue;">4、使用L1正则化的线性模型-套索回归</b></h4><p>与岭回归不同的是套索回归，有一部分特征的系数会正好等于0，也就是说，有一些特征会彻底被模型忽略掉，也可以看成是模型对于特征    进行自动选择的一种方式。</p>
+<pre><code class="python">import numpy as np
+import matplotlib.pyplot as plt
+# 导入L2回归模型
+from sklearn.linear_model import Ridge
+from sklearn.linear_model import LinearRegression
+from sklearn.linear_model import Lasso
+from sklearn.datasets import load_diabetes
+from sklearn.model_selection import train_test_split
+
+X, y = load_diabetes().data, load_diabetes().target
+X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=8)
+lasso = Lasso().fit(X_train, y_train)
+print(&quot;套索回归在训练集的得分：{:.2f}&quot;.format(lasso.score(X_train, y_train)))
+print(&quot;套索回归在测试集的得分：{:.2f}&quot;.format(lasso.score(X_test, y_test)))
+print(&quot;套索回归使用的特征数量：{}&quot;.format(np.sum(lasso.coef_ != 0)))</code></pre>
+<p>此时输出为：</p>
+<pre><code class="python">套索回归在训练集的得分：0.36
+套索回归在测试集的得分：0.37
+套索回归使用的特征数量：3</code></pre>
+<p>套索回归在训练集和数据集的得分都非常糟糕。在10个特征数量中，也仅仅使用了3个。</p>
+<p>在套索回归中，依旧可以使用alpha参数来调节，将alpha参数设置为0.1时:</p>
+<pre><code class="python">lasso = Lasso(alpha=0.1, max_iter=10000).fit(X_train, y_train)
+==================================================
+套索回归在训练集的得分：0.52
+套索回归在测试集的得分：0.48
+套索回归使用的特征数量：7</code></pre>
+<p>此时套索回归有了更好的表现。</p>
+<h3 id="朴素贝叶斯算法"><a href="#朴素贝叶斯算法" class="headerlink" title="朴素贝叶斯算法"></a><b style="color:red;">朴素贝叶斯算法</b></h3><p>朴素贝叶斯是经典的机器算法之一，也是为数不多的基于概率的算法。</p>
+<h4 id="1、基本概念-1"><a href="#1、基本概念-1" class="headerlink" title="1、基本概念"></a><b style="color:blue;">1、基本概念</b></h4><p>贝叶斯分类是一类算法的总称，这类算法均以贝叶斯定理为基础，所以统称为贝叶斯分类，而朴素贝叶斯是贝叶斯分类中最简单的，也是最常见的一种方法。</p>
+<p>假设在过去的7天当中，有3天下雨，4天没有下雨。用0代表没有下雨，用1代表下雨了，而在这7天当中还有一些，包括刮北风、闷热、多云，以及天气预报给出的信息：</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>刮北风</th>
+<th>闷热</th>
+<th>多云</th>
+<th>天气预报有雨</th>
+<th>实际是否下雨</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>第一天</td>
+<td>否</td>
+<td>是</td>
+<td>否</td>
+<td>是</td>
+<td>否</td>
+</tr>
+<tr>
+<td>第二天</td>
+<td>是</td>
+<td>是</td>
+<td>是</td>
+<td>否</td>
+<td>是</td>
+</tr>
+<tr>
+<td>第三天</td>
+<td>否</td>
+<td>是</td>
+<td>是</td>
+<td>否</td>
+<td>是</td>
+</tr>
+<tr>
+<td>第四天</td>
+<td>否</td>
+<td>否</td>
+<td>否</td>
+<td>是</td>
+<td>否</td>
+</tr>
+<tr>
+<td>第五天</td>
+<td>否</td>
+<td>是</td>
+<td>是</td>
+<td>否</td>
+<td>是</td>
+</tr>
+<tr>
+<td>第六天</td>
+<td>否</td>
+<td>是</td>
+<td>否</td>
+<td>是</td>
+<td>否</td>
+</tr>
+<tr>
+<td>第七天</td>
+<td>是</td>
+<td>否</td>
+<td>否</td>
+<td>是</td>
+<td>否</td>
+</tr>
+</tbody></table>
+<p>用0表示否，用1表示是，可以将实际是否下雨抽象为一个数组：</p>
+<pre><code class="python"># 实际下雨情况
+y=[0,1,1,0,1,0,0]
+# 其他特征情况
+X=[[0, 1, 0, 1],
+      [1, 1, 1, 0],
+      [0, 1, 1, 0],
+      [0, 0, 0, 1],
+      [0, 1, 1, 0],
+      [0, 1, 0, 1],
+      [1, 0, 0, 1]]</code></pre>
+<p>那么对于朴素贝叶斯来说，它会根据上面的情况进行推理。假设现在有一天，没有刮北风，也不闷热，但是多云，天气预报也没有雨，经过贝叶斯预测结果为：</p>
+<pre><code class="python">import numpy as np
+from sklearn.naive_bayes import BernoulliNB
+
+X = np.array([[0, 1, 0, 1],
+              [1, 1, 1, 0],
+              [0, 1, 1, 0],
+              [0, 0, 0, 1],
+              [0, 1, 1, 0],
+              [0, 1, 0, 1],
+              [1, 0, 0, 1]])
+y = np.array([0, 1, 1, 0, 1, 0, 0])
+# 对不同的分类计算每个特征为1的数量
+counts = {}
+for label in np.unique(y):
+    counts[label] = X[y == label].sum(axis=0)
+# print(&quot;feature counts:\n{}&quot;.format(counts))
+# 使用贝努力贝叶斯拟合数据
+clf = BernoulliNB()
+clf.fit(X, y)
+# 要进行预测的这一天，没有刮北风，也不闷热
+# 但是多云，天气预报说没有雨
+Next_Day = [[0, 0, 1, 0]]
+pre = clf.predict(Next_Day)
+if pre == [1]:
+    print(&quot;要下雨了，快收衣服呀！&quot;)
+else:
+    print(&quot;放心，这又是一个艳阳高照的晴天！&quot;)</code></pre>
+<p>此时预测的结果为：</p>
+<pre><code class="python">要下雨了，快收衣服呀！</code></pre>
+<p>通过<code>print(clf.predict_proba(Another_Day))</code>可以得到当天预测下雨和不下雨的概率：</p>
+<pre><code class="python">[[0.13848881 0.86151119]]#第一项是不下雨的概率，第二项是下雨的概率</code></pre>
+<h4 id="2、朴素贝叶斯算法的不同方法"><a href="#2、朴素贝叶斯算法的不同方法" class="headerlink" title="2、朴素贝叶斯算法的不同方法"></a><b style="color:blue;">2、朴素贝叶斯算法的不同方法</b></h4><p>朴素贝叶斯算法包含多种方法，在scikit-learn中，朴素贝叶斯有三种方法：<b style="color:crimson;">贝努力朴素贝叶斯、高斯贝叶斯、多项式朴素贝叶斯</b>。</p>
+<p><b style="color:orange;">贝努力朴素贝叶斯</b></p>
+<p>这种方法比较适用于符合贝努力分布的数据集，贝努力分布也被称之为“二项分布”和“0-1分布”。</p>
+<p>当特征数据增加，数据变得复杂的时候，贝叶斯的处理就显得捉襟见肘：</p>
+<pre><code class="python"># 导入数据集生成工具
+from sklearn.datasets import make_blobs
+# 导入数据集拆分工具
+from sklearn.model_selection import train_test_split
+# 导入贝努力贝叶斯拟合工具
+from sklearn.naive_bayes import BernoulliNB
+# 导入画图工具
+import matplotlib.pyplot as plt
+import numpy as np
+
+# 生成样本数量为500，分类数为5的数据集
+X, y = make_blobs(n_samples=500, centers=5, random_state=8)
+# 将数据拆分为训练集和测试集
+X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=8)
+# 使用贝努力贝叶斯拟合数据
+nb = BernoulliNB()
+nb.fit(X_train, y_train)
+# print(&quot;模型得分：{:.3f}&quot;.format(nb.score(X_test, y_test)))
+
+x_min, x_max = X[:, 0].min() - 0.5, X[:, 0].max() + 0.5
+y_min, y_max = X[:, 1].min() - 0.5, X[:, 0].max() + 0.5
+
+xx, yy = np.meshgrid(np.arange(x_min, x_max, 0.02), np.arange(y_min, y_max, 0.02))
+z = nb.predict(np.c_[(xx.ravel(), yy.ravel())]).reshape(xx.shape)
+plt.pcolormesh(xx, yy, z, cmap=plt.cm.get_cmap(&quot;Pastel1&quot;))
+plt.scatter(X_train[:, 0], X_train[:, 1], c=y_train, cmap=plt.cm.get_cmap(&quot;cool&quot;), edgecolors=&#39;k&#39;)
+plt.scatter(X_test[:, 0], X_test[:, 1], c=y_test, cmap=plt.cm.get_cmap(&quot;cool&quot;), marker=&#39;*&#39;, edgecolors=&#39;k&#39;)
+plt.xlim(xx.min(), xx.max())
+plt.ylim(yy.min(), yy.max())
+plt.title(&quot;Classifier: BernoulliNB&quot;)
+plt.show()</code></pre>
+<p>其结果如下：</p>
+<p><img src="BernoulliNBCounts.jpg"></img></p>
+<p><span style="color:slateblue;">贝努力贝叶斯的模型十分的简单，它分别在纵轴等于0和横轴等于0的位置画两条直线，当使用贝叶斯的默认参数binarize=0.0时，模型对于数据的判断是：如果特征1大于或等于0，且特征2大于或等于0，则将数据归为一类；如果特征1小于且特征2也小于0，则归为另一类，其余的数据则分为第三类。</span></p>
+<p><b style="color:orange;">高斯朴素贝叶斯</b></p>
+<p>假设样本数据符合高斯分布，或者说符合正态分布时所用的算法。</p>
+<pre><code class="python"># 导入数据集生成工具
+from sklearn.datasets import make_blobs
+# 导入数据集拆分工具
+from sklearn.model_selection import train_test_split
+# 导入高斯贝叶斯拟合工具
+from sklearn.naive_bayes import GaussianNB
+# 导入画图工具
+import matplotlib.pyplot as plt
+import numpy as np
+
+# 导入高斯拟合工具
+
+# 生成样本数量为500，分类数为5的数据集
+X, y = make_blobs(n_samples=500, centers=5, random_state=8)
+# 将数据拆分为训练集和测试集
+X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=8)
+gnb = GaussianNB()
+gnb.fit(X_train, y_train)
+print(&quot;模型得分：{:.3f}&quot;.format(gnb.score(X_test, y_test)))</code></pre>
+<p>得到的分数是：<code>模型得分：0.968</code> ，这说明手工数据集的特征基本上符合正态分布的情况。</p>
+<p>此时高斯朴素贝叶斯的工作流程就是：</p>
+<pre><code class="python">x_min, x_max = X[:, 0].min() - 0.5, X[:, 0].max() + 0.5
+y_min, y_max = X[:, 1].min() - 0.5, X[:, 0].max() + 0.5
+
+xx, yy = np.meshgrid(np.arange(x_min, x_max, 0.02), np.arange(y_min, y_max, 0.02))
+z = gnb.predict(np.c_[(xx.ravel(), yy.ravel())]).reshape(xx.shape)
+plt.pcolormesh(xx, yy, z, cmap=plt.cm.get_cmap(&quot;Pastel1&quot;))
+plt.scatter(X_train[:, 0], X_train[:, 1], c=y_train, cmap=plt.cm.get_cmap(&quot;cool&quot;), edgecolors=&#39;k&#39;)
+plt.scatter(X_test[:, 0], X_test[:, 1], c=y_test, cmap=plt.cm.get_cmap(&quot;cool&quot;), marker=&#39;*&#39;)
+plt.xlim(xx.min(), xx.max())
+plt.ylim(yy.min(), yy.max())
+plt.title(&quot;Classifier: GaussianNB&quot;)
+plt.show()</code></pre>
+<p>此时结果如下：</p>
+<p><img src="GaussianNB.jpg"></img></p>
+<p>​    可见高斯贝叶斯的边界比朴素贝叶斯的边界要复杂的多。</p>
+<p><b style="color:orange;">多项式朴素贝叶斯</b></p>
+<p>拟合多项式分布的数据集。</p>
+<pre><code class="python"># 导入数据集生成工具
+from sklearn.datasets import make_blobs
+# 导入数据集拆分工具
+from sklearn.model_selection import train_test_split
+# 导入画图工具
+import matplotlib.pyplot as plt
+import numpy as np
+from sklearn.naive_bayes import MultinomialNB
+from sklearn.preprocessing import MinMaxScaler
+
+# 生成样本数量为500，分类数为5的数据集
+X, y = make_blobs(n_samples=500, centers=5, random_state=8)
+# 将数据拆分为训练集和测试集
+X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=8)
+scaler = MinMaxScaler()
+scaler.fit(X_train)
+X_train_scaled = scaler.transform(X_train)
+X_test_scaled = scaler.transform(X_test)
+
+mnb = MultinomialNB()
+mnb.fit(X_train_scaled, y_train)
+print(&quot;模型得分结果：{:.3f}&quot;.format(mnb.score(X_test_scaled, y_test)))</code></pre>
+<p>利用多项式对该数据集进行拟合的时候会发现拟合的效果并不好，模型的得分只有0.32.</p>
+<pre><code class="python"># 生成样本数量为500，分类数为5的数据集
+X, y = make_blobs(n_samples=500, centers=5, random_state=8)
+# 将数据拆分为训练集和测试集
+X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=8)
+scaler = MinMaxScaler()
+scaler.fit(X_train)
+X_train_scaled = scaler.transform(X_train)
+X_test_scaled = scaler.transform(X_test)
+
+mnb = MultinomialNB()
+mnb.fit(X_train_scaled, y_train)
+print(&quot;模型得分结果：{:.3f}&quot;.format(mnb.score(X_test_scaled, y_test)))
+
+x_min, x_max = X[:, 0].min() - 0.5, X[:, 0].max() + 0.5
+y_min, y_max = X[:, 1].min() - 0.5, X[:, 0].max() + 0.5
+
+xx, yy = np.meshgrid(np.arange(x_min, x_max, 0.02), np.arange(y_min, y_max, 0.02))
+z = mnb.predict(np.c_[(xx.ravel(), yy.ravel())]).reshape(xx.shape)
+plt.pcolormesh(xx, yy, z, cmap=plt.cm.get_cmap(&quot;Pastel1&quot;))
+plt.scatter(X_train[:, 0], X_train[:, 1], c=y_train, cmap=plt.cm.get_cmap(&quot;cool&quot;), edgecolors=&#39;k&#39;)
+plt.scatter(X_test[:, 0], X_test[:, 1], c=y_test, cmap=plt.cm.get_cmap(&quot;cool&quot;), marker=&quot;*&quot;)
+plt.xlim(xx.min(), xx.max())
+plt.ylim(yy.min(), yy.max())
+plt.title(&quot;MultinomiaNB&quot;)
+plt.show()</code></pre>
+<p>绘制出多项式朴素贝叶斯的拟合边界：</p>
+<p><img src="MultinomiaNB.jpg"></img></p>
+<p>可以看到他将大部分的数据都放入了错误的分类中。</p>
+]]></content>
+      <categories>
+        <category>机器学习</category>
+      </categories>
+      <tags>
+        <tag>编程语言</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>菜鸟程序员修炼秘籍</title>
+    <url>/2020/05/29/%E8%8F%9C%E9%B8%9F%E7%A8%8B%E5%BA%8F%E5%91%98%E4%BF%AE%E7%82%BC%E7%A7%98%E7%B1%8D/</url>
+    <content><![CDATA[<h2 style="color:crimson;font-weight:lighter;">如果生活还是很苦，说明你还是不够努力</h2>
+<a id="more"></a>
+
+<p>最近在做项目的时候老是遇到各种各样的问题，所以特此记录一下，希望在闲暇的时间里能够将这些小的问题解决掉。</p>
+<h3 id="HTML-CSS-JavaScript-Jquery"><a href="#HTML-CSS-JavaScript-Jquery" class="headerlink" title="HTML+CSS+JavaScript+Jquery"></a><b style="color:blue;">HTML+CSS+JavaScript+Jquery</b></h3><ol>
+<li><p><b style="color:red;">网页背景铺满：</b></p>
+<pre><code class="css">body{
+    background-image:url(&quot;1.jpg&quot;);
+    background-size:100%;
+    background-repeat:no-repeat;
+}</code></pre>
+</li>
+<li><p><b style="color:red;">背景色透明：</b></p>
+<pre><code class="css">background-color:transparent;</code></pre>
+</li>
+<li><p><b style="color:red;">设置浏览器滚动条样式：</b></p>
+<pre><code class="css">    /*控制整个滚动条*/
+    ::-webkit-scrollbar {
+      background-color: rgba(0, 0, 0,0.1);
+      width: 5px;
+      opacity: 0;
+      /* height: 10px; */
+      /* background-clip: padding-box; */
+    }
+
+    /*滚动条两端方向按钮*/
+    ::-webkit-scrollbar-button {
+      background-color: pink;
+    } 
+
+    /*滚动条中间滑动部分*/
+    ::-webkit-scrollbar-thumb {
+      background-color:rgba(0, 0, 0, 0.5);
+      border-radius: 5px;
+    }
+
+    /*滚动条右下角区域*/
+    ::-webkit-scrollbar-corner {
+      background-color: red;
+    }</code></pre>
+</li>
+<li><p><b style="color:red;">JS将数组的顺序反向：</b></p>
+<pre><code class="javascript">var a=[1,2,3]
+a.reverse()//a=[3,2,1]</code></pre>
+</li>
+<li><p><b style="color:red;">Js转换数字字符串数组与数字数组</b></p>
+<pre><code class="javascript">var a=[1,2,3]
+a.map(String)//a=[&quot;1&quot;,&quot;2&quot;,&quot;3&quot;]
+var b=[&quot;1&quot;,&quot;2&quot;,&quot;3&quot;]
+b.map(Number)//b=[1,2,3]</code></pre>
+</li>
+</ol>
+<h3 id="HighCharts"><a href="#HighCharts" class="headerlink" title="HighCharts"></a><b style="color:blue;">HighCharts</b></h3><ol>
+<li><p><b style="color:red;">HighCharts设置图标背景颜色：</b></p>
+<pre><code class="javascript">$(&quot;#cahrt&quot;).highcharts({
+    chart:{
+        background-color:&#39;rgba(0,0,0,0)&#39;
+    }
+})</code></pre>
+</li>
+</ol>
+<h3 id="Java"><a href="#Java" class="headerlink" title="Java"></a><b style="color:blue;">Java</b></h3><ol>
+<li><p><b style="color:red;">Date类型与字符串类型之间的转换：</b></p>
+<pre><code class="java">String a=new String(&quot;2020-05-28-00:12:10.192&quot;)
+    //SimpleDateFormat将字符串转换成Date类型的数据，其中HH表示二十四小时，hh表示十二小时制
+    //字符串必须和SimpleDateFormat设置的格式一模一样，长度必须是一样的
+SimpleDateFormat simpleDateFormat =new SimpleDateFormat(&quot;yyyy-MM-dd-HH:mm:ss.SSS&quot;);
+        Date dateTime=null;
+        try {
+            dateTime=simpleDateFormat.parse(a);
+        } catch (ParseException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    //将Date类型的转化成Calendar类型，方便操作它的每一个字段的数值
+        Calendar calendar=Calendar.getInstance();
+        calendar.setTime(dateTime);
+    //将小时数加8；第一个参数表示要修改的字段是小时，第二参数表示加8，如果第二个参数为负数就表示减去
+        calendar.add(Calendar.HOUR, 8);
+    //再将Calendar类型转换成Date类型
+        dateTime=calendar.getTime();
+    //将Date类型转换成字符串类型
+        String b=simpleDateFormat.format(dateTime);
+</code></pre>
+</li>
+<li><p><b style="color:red;">Double类型的数值之间的比较</b></p>
+<p>在计算机中数值类型和都是转换成二进制进行存储的。严格意义上float、double类型都无法精确的表示小数，他们是无线趋近于那个小数。所以Double类型是不可以用<code>==</code>来做判断。</p>
+<pre><code class="java">Double a=1.01;
+Double b=1.01;
+Systemout.out.println(a==b); //控制台打印输出的值为false
+System.out.println(String.valueOf(a)==String.valueOf(b)); //控制台打印输出依旧为false
+System.out.println(Double.doubleToLongBits(a)==Double.doubleToLongBits(b)); //控制台打印输出为true</code></pre>
+</li>
+</ol>
+]]></content>
+      <categories>
+        <category>问题杂记</category>
+      </categories>
+      <tags>
+        <tag>编程语言</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>SSM搭建完整教程</title>
+    <url>/2020/11/03/SSM%E6%90%AD%E5%BB%BA%E5%AE%8C%E6%95%B4%E6%95%99%E7%A8%8B/</url>
+    <content><![CDATA[<h2 id="如若今后没有炬火，你便是唯一的光"><a href="#如若今后没有炬火，你便是唯一的光" class="headerlink" title="如若今后没有炬火，你便是唯一的光"></a><span style="color:crimson;font-family: Georgia, serif;">如若今后没有炬火，你便是唯一的光</span></h2><a id="more"></a>
+
+<h3 id="SSM框架搭建"><a href="#SSM框架搭建" class="headerlink" title="SSM框架搭建"></a><b style="color:red;">SSM框架搭建</b></h3><h4 id="1、引入依赖"><a href="#1、引入依赖" class="headerlink" title="1、引入依赖"></a><b style="color:blue;">1、引入依赖</b></h4><pre><code class="xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+
+&lt;project xmlns=&quot;http://maven.apache.org/POM/4.0.0&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+         xsi:schemaLocation=&quot;http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd&quot;&gt;
+    &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+
+    &lt;groupId&gt;org.example&lt;/groupId&gt;
+    &lt;artifactId&gt;SSM&lt;/artifactId&gt;
+    &lt;version&gt;1.0-SNAPSHOT&lt;/version&gt;
+    &lt;packaging&gt;war&lt;/packaging&gt;
+
+    &lt;name&gt;SSM Maven Webapp&lt;/name&gt;
+    &lt;!-- FIXME change it to the project&#39;s website --&gt;
+    &lt;url&gt;http://www.example.com&lt;/url&gt;
+
+    &lt;properties&gt;
+        &lt;project.build.sourceEncoding&gt;UTF-8&lt;/project.build.sourceEncoding&gt;
+        &lt;maven.compiler.source&gt;1.7&lt;/maven.compiler.source&gt;
+        &lt;maven.compiler.target&gt;1.7&lt;/maven.compiler.target&gt;
+        &lt;!-- spring版本号 --&gt;
+        &lt;spring.version&gt;5.1.5.RELEASE&lt;/spring.version&gt;
+        &lt;!-- mybatis版本号 --&gt;
+        &lt;mybatis.version&gt;3.2.6&lt;/mybatis.version&gt;
+        &lt;!-- log4j日志文件管理包版本 --&gt;
+        &lt;slf4j.version&gt;1.7.7&lt;/slf4j.version&gt;
+        &lt;log4j.version&gt;1.2.17&lt;/log4j.version&gt;
+    &lt;/properties&gt;
+
+    &lt;dependencies&gt;
+&lt;!--        Junit单元测试--&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;junit&lt;/groupId&gt;
+            &lt;artifactId&gt;junit&lt;/artifactId&gt;
+            &lt;version&gt;4.12&lt;/version&gt;
+            &lt;scope&gt;test&lt;/scope&gt;
+        &lt;/dependency&gt;
+&lt;!--        lombok插件依赖，需要先安装lombok插件该依赖才能起作用--&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.projectlombok&lt;/groupId&gt;
+            &lt;artifactId&gt;lombok&lt;/artifactId&gt;
+            &lt;version&gt;1.18.12&lt;/version&gt;
+        &lt;/dependency&gt;
+&lt;!--        spring相关依赖包--&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-core&lt;/artifactId&gt;
+            &lt;version&gt;${spring.version}&lt;/version&gt;
+        &lt;/dependency&gt;
+
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-web&lt;/artifactId&gt;
+            &lt;version&gt;${spring.version}&lt;/version&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-oxm&lt;/artifactId&gt;
+            &lt;version&gt;${spring.version}&lt;/version&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-tx&lt;/artifactId&gt;
+            &lt;version&gt;${spring.version}&lt;/version&gt;
+        &lt;/dependency&gt;
+
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-jdbc&lt;/artifactId&gt;
+            &lt;version&gt;${spring.version}&lt;/version&gt;
+        &lt;/dependency&gt;
+
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-webmvc&lt;/artifactId&gt;
+            &lt;version&gt;${spring.version}&lt;/version&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-aop&lt;/artifactId&gt;
+            &lt;version&gt;${spring.version}&lt;/version&gt;
+        &lt;/dependency&gt;
+
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-context-support&lt;/artifactId&gt;
+            &lt;version&gt;${spring.version}&lt;/version&gt;
+        &lt;/dependency&gt;
+
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-test&lt;/artifactId&gt;
+            &lt;version&gt;${spring.version}&lt;/version&gt;
+        &lt;/dependency&gt;
+        &lt;!-- mybatis核心包 --&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.mybatis&lt;/groupId&gt;
+            &lt;artifactId&gt;mybatis&lt;/artifactId&gt;
+            &lt;version&gt;${mybatis.version}&lt;/version&gt;
+        &lt;/dependency&gt;
+        &lt;!-- mybatis/spring包 --&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.mybatis&lt;/groupId&gt;
+            &lt;artifactId&gt;mybatis-spring&lt;/artifactId&gt;
+            &lt;version&gt;1.2.2&lt;/version&gt;
+        &lt;/dependency&gt;
+        &lt;!-- 导入java ee jar 包 --&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;javax&lt;/groupId&gt;
+            &lt;artifactId&gt;javaee-api&lt;/artifactId&gt;
+            &lt;version&gt;7.0&lt;/version&gt;
+        &lt;/dependency&gt;
+        &lt;!-- 导入Mysql数据库链接jar包 --&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;mysql&lt;/groupId&gt;
+            &lt;artifactId&gt;mysql-connector-java&lt;/artifactId&gt;
+            &lt;version&gt;8.0.19&lt;/version&gt;
+        &lt;/dependency&gt;
+        &lt;!-- 导入dbcp的jar包，用来在applicationContext.xml中配置数据库 --&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;commons-dbcp&lt;/groupId&gt;
+            &lt;artifactId&gt;commons-dbcp&lt;/artifactId&gt;
+            &lt;version&gt;1.2.2&lt;/version&gt;
+        &lt;/dependency&gt;
+        &lt;!-- 日志输出规范格式 --&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;log4j&lt;/groupId&gt;
+            &lt;artifactId&gt;log4j&lt;/artifactId&gt;
+            &lt;version&gt;${log4j.version}&lt;/version&gt;
+        &lt;/dependency&gt;
+        &lt;!-- 用于操作JSON对象 --&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;com.alibaba&lt;/groupId&gt;
+            &lt;artifactId&gt;fastjson&lt;/artifactId&gt;
+            &lt;version&gt;1.1.41&lt;/version&gt;
+        &lt;/dependency&gt;
+    &lt;/dependencies&gt;
+
+    &lt;build&gt;
+        &lt;finalName&gt;SSM&lt;/finalName&gt;
+        &lt;pluginManagement&gt;&lt;!-- lock down plugins versions to avoid using Maven defaults (may be moved to parent pom) --&gt;
+            &lt;plugins&gt;
+                &lt;plugin&gt;
+                    &lt;artifactId&gt;maven-clean-plugin&lt;/artifactId&gt;
+                    &lt;version&gt;3.1.0&lt;/version&gt;
+                &lt;/plugin&gt;
+                &lt;!-- see http://maven.apache.org/ref/current/maven-core/default-bindings.html#Plugin_bindings_for_war_packaging --&gt;
+                &lt;plugin&gt;
+                    &lt;artifactId&gt;maven-resources-plugin&lt;/artifactId&gt;
+                    &lt;version&gt;3.0.2&lt;/version&gt;
+                &lt;/plugin&gt;
+                &lt;plugin&gt;
+                    &lt;artifactId&gt;maven-compiler-plugin&lt;/artifactId&gt;
+                    &lt;version&gt;3.8.0&lt;/version&gt;
+                &lt;/plugin&gt;
+                &lt;plugin&gt;
+                    &lt;artifactId&gt;maven-surefire-plugin&lt;/artifactId&gt;
+                    &lt;version&gt;2.22.1&lt;/version&gt;
+                &lt;/plugin&gt;
+                &lt;plugin&gt;
+                    &lt;artifactId&gt;maven-war-plugin&lt;/artifactId&gt;
+                    &lt;version&gt;3.2.2&lt;/version&gt;
+                &lt;/plugin&gt;
+                &lt;plugin&gt;
+                    &lt;artifactId&gt;maven-install-plugin&lt;/artifactId&gt;
+                    &lt;version&gt;2.5.2&lt;/version&gt;
+                &lt;/plugin&gt;
+                &lt;plugin&gt;
+                    &lt;artifactId&gt;maven-deploy-plugin&lt;/artifactId&gt;
+                    &lt;version&gt;2.8.2&lt;/version&gt;
+                &lt;/plugin&gt;
+            &lt;/plugins&gt;
+        &lt;/pluginManagement&gt;
+    &lt;/build&gt;
+&lt;/project&gt;
+</code></pre>
+<h4 id="2、构建Maven项目"><a href="#2、构建Maven项目" class="headerlink" title="2、构建Maven项目"></a><b style="color:blue;">2、构建Maven项目</b></h4><p>构建Maven项目无论是使用Eclipse或者是IDEA工具，都要确保其目录结构的完整性（<span style="color:springgreen;">建议使用<code>org.apache.maven.archetypes:maven-archetype-webapp</code>模板进行创建</span>）。完整的Maven目录结构应该如下图所示：</p>
+<p><img src="SSMMaven结构.png"></img></p>
+<ul>
+<li><code>src/main/java</code> 存放后端代码</li>
+<li><code>src/main/resources</code>存放静态资源文件，包括各种配置文件，以及属性文件、Mapper文件等。</li>
+<li><code>src/main/webapp</code> 用于存放前端的页面，以及相关的图片、JS、CSS文件等静态资源。</li>
+<li><code>src/main/test/java</code>用于存放测试所用到的代码，在编译的时候是不会被编译的。</li>
+</ul>
+<h4 id="3、进行相关的配置"><a href="#3、进行相关的配置" class="headerlink" title="3、进行相关的配置"></a><b style="color:blue;">3、进行相关的配置</b></h4><p>在构建完Maven项目之后，需要对其进行配置，此时虽然已经具备了SSM框架的相关条件，但是相关的功能模块需要我们去进行组装。这里进行配置主要分为五个部分：</p>
+<h5 id="配置spring-mvc-xml"><a href="#配置spring-mvc-xml" class="headerlink" title="配置spring-mvc.xml"></a><b style="color:orange;">配置spring-mvc.xml</b></h5><pre><code class="xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot;
+       xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+       xmlns:context=&quot;http://www.springframework.org/schema/context&quot;
+       xmlns:mvc=&quot;http://www.springframework.org/schema/mvc&quot;
+       xsi:schemaLocation=&quot;
+http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+http://www.springframework.org/schema/context
+http://www.springframework.org/schema/context/spring-context-3.0.xsd
+http://www.springframework.org/schema/mvc
+http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd&quot;&gt;
+
+    &lt;!-- 扫描所有的包 --&gt;
+    &lt;context:component-scan base-package=&quot;com.panhao&quot;&gt;&lt;/context:component-scan&gt;
+
+    &lt;!-- 设置配置方案 --&gt;
+    &lt;!-- 设置配置方案 --&gt;
+    &lt;mvc:annotation-driven&gt;
+        &lt;!-- 不使用默认的消息转换器 --&gt;
+        &lt;mvc:message-converters
+                register-defaults=&quot;false&quot;&gt;
+            &lt;!-- 配置Spring的转换器 --&gt;
+            &lt;bean
+                    class=&quot;org.springframework.http.converter.StringHttpMessageConverter&quot; /&gt;
+            &lt;bean
+                    class=&quot;org.springframework.http.converter.ByteArrayHttpMessageConverter&quot; /&gt;
+            &lt;bean
+                    class=&quot;org.springframework.http.converter.BufferedImageHttpMessageConverter&quot; /&gt;
+            &lt;bean
+                    class=&quot;org.springframework.http.converter.FormHttpMessageConverter&quot; /&gt;
+            &lt;!-- 配置fastjson中实现HttpMessageConverter接口的转换器 --&gt;
+            &lt;bean id=&quot;fastJsonHttpMessageConverter&quot;
+                  class=&quot;com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter&quot;&gt;
+                &lt;!-- 加入支持的媒体类型，返回contentType --&gt;
+                &lt;property name=&quot;supportedMediaTypes&quot;&gt;
+                    &lt;list&gt;
+                        &lt;!--这里顺序不可以反，不然IE浏览器会出现下载提示 --&gt;
+                        &lt;value&gt;application/json;charset=UTF-8 &lt;/value&gt;
+                        &lt;value&gt;text/html;charset=UTF-8&lt;/value&gt;
+                        &lt;value&gt;text/plain;charset=UTF-8&lt;/value&gt;
+                    &lt;/list&gt;
+                &lt;/property&gt;
+            &lt;/bean&gt;
+        &lt;/mvc:message-converters&gt;
+    &lt;/mvc:annotation-driven&gt;
+    &lt;!-- 配置静态资源路径 --&gt;
+    &lt;mvc:resources location=&quot;/pages/&quot; mapping=&quot;/pages/**/*.html&quot; /&gt;
+    &lt;mvc:resources location=&quot;/&quot; mapping=&quot;/**/*.html&quot; /&gt;
+    &lt;mvc:resources location=&quot;/pages/&quot; mapping=&quot;/pages/**/*.js&quot; /&gt;
+    &lt;mvc:resources location=&quot;/pages/&quot; mapping=&quot;/pages/**/*.css&quot; /&gt;
+
+    &lt;!-- 配置视图解析器 --&gt;
+    &lt;bean
+            class=&quot;org.springframework.web.servlet.view.UrlBasedViewResolver&quot;&gt;
+        &lt;property name=&quot;viewClass&quot;
+                  value=&quot;org.springframework.web.servlet.view.InternalResourceView&quot;&gt;&lt;/property&gt;
+        &lt;!-- 前缀（目录） --&gt;
+        &lt;property name=&quot;prefix&quot; value=&quot;/pages/&quot;&gt;&lt;/property&gt;
+        &lt;!-- 后缀文件名 --&gt;
+        &lt;property name=&quot;suffix&quot; value=&quot;.html&quot;&gt;&lt;/property&gt;
+    &lt;/bean&gt;
+
+&lt;/beans&gt;</code></pre>
+<ol>
+<li>配置消息转换器的目的在于<span style="color:aqua;">即使在不是MVC的相关的JSON转换注解，依旧可以将返回给前端的内容转换成JSON字符串</span>。</li>
+<li>配置静态资源文件的目的在于<span style="color:aqua;">完全摒弃掉JSP的技术，通过配置静态资源文件，使得数据在HTML文件中进行传输，同时保证JS文件和CSS文件不会因为拦截的问题而无法使用</span>。配置的时候需要注意的是：<ul>
+<li>配置用到的标签是<code>&lt;mvc:resources /&gt;</code>，每一个标签可以配置一种映射方法。</li>
+<li><code>location</code>的值表示的是静态资源存放的路径，<code>mapping</code>中的值表示的是URL中的路径。</li>
+<li>配置静态资源文件的目的，就是将后端的请求路由与静态资源分开，也就是将<span style="color:violet;"><code>mapping</code>的路径通过映射的方式映射到<code>location</code>中去</span>。</li>
+<li>如上述配置中<code>&lt;mvc:resources location=&quot;/pages/&quot; mapping=&quot;/pages/**/*.html&quot; /&gt;</code>的含义就是：<span style="color:violet;">如果在浏览的路由地址中出现了<code>/pages/**/*.html</code>的路径，就将地址映射到<code>/pages/</code>文件夹下面去寻找对应的位置，而不是送到DispatcherServlet中去进行分发</span>。</li>
+</ul>
+</li>
+<li>配置视图解析器，是在返回<code>String</code> ，可以直接返回视图。</li>
+</ol>
+<h5 id="配置spring-mybtis-xml"><a href="#配置spring-mybtis-xml" class="headerlink" title="配置spring-mybtis.xml"></a><b style="color:orange;">配置spring-mybtis.xml</b></h5><pre><code class="xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot;
+       xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+       xmlns:p=&quot;http://www.springframework.org/schema/p&quot;
+       xmlns:context=&quot;http://www.springframework.org/schema/context&quot;
+       xmlns:mvc=&quot;http://www.springframework.org/schema/mvc&quot;
+       xsi:schemaLocation=&quot;http://www.springframework.org/schema/beans
+                            http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+                            http://www.springframework.org/schema/context
+                            http://www.springframework.org/schema/context/spring-context-3.1.xsd
+                            http://www.springframework.org/schema/mvc
+                            http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd&quot;&gt;
+    &lt;!-- 自动扫描 --&gt;
+    &lt;context:component-scan
+            base-package=&quot;com.panhao&quot; /&gt;
+    &lt;!-- 引入配置文件 --&gt;
+    &lt;bean id=&quot;propertyConfigurer&quot;
+          class=&quot;org.springframework.beans.factory.config.PropertyPlaceholderConfigurer&quot;&gt;
+        &lt;property name=&quot;location&quot; value=&quot;classpath:jdbc.properties&quot; /&gt;
+    &lt;/bean&gt;
+
+    &lt;bean id=&quot;dataSource&quot;
+          class=&quot;org.apache.commons.dbcp.BasicDataSource&quot; destroy-method=&quot;close&quot;&gt;
+        &lt;property name=&quot;driverClassName&quot; value=&quot;${driver}&quot; /&gt;
+        &lt;property name=&quot;url&quot; value=&quot;${url}&quot; /&gt;
+        &lt;property name=&quot;username&quot; value=&quot;${username}&quot; /&gt;
+        &lt;property name=&quot;password&quot; value=&quot;${password}&quot; /&gt;
+        &lt;!-- 初始化连接大小 --&gt;
+        &lt;property name=&quot;initialSize&quot; value=&quot;${initialSize}&quot; /&gt;
+        &lt;!-- 连接池最大数量 --&gt;
+        &lt;property name=&quot;maxActive&quot; value=&quot;${maxActive}&quot; /&gt;
+        &lt;!-- 连接池最大空闲 --&gt;
+        &lt;property name=&quot;maxIdle&quot; value=&quot;${maxIdle}&quot; /&gt;
+        &lt;!-- 连接池最小空闲 --&gt;
+        &lt;property name=&quot;minIdle&quot; value=&quot;${minIdle}&quot; /&gt;
+        &lt;!-- 获取连接最大等待时间 --&gt;
+        &lt;property name=&quot;maxWait&quot; value=&quot;${maxWait}&quot; /&gt;
+    &lt;/bean&gt;
+
+    &lt;!-- spring和MyBatis完美整合，不需要mybatis的配置映射文件 --&gt;
+    &lt;bean id=&quot;sqlSessionFactory&quot;
+          class=&quot;org.mybatis.spring.SqlSessionFactoryBean&quot;&gt;
+        &lt;property name=&quot;dataSource&quot; ref=&quot;dataSource&quot; /&gt;
+        &lt;!-- 自动扫描mapping.xml文件 --&gt;
+        &lt;property name=&quot;mapperLocations&quot;
+                  value=&quot;classpath:mapper/*.xml&quot;&gt;&lt;/property&gt;
+        &lt;!--配置Mybatis别名扫描的包--&gt;
+        &lt;property name=&quot;typeAliasesPackage&quot; value=&quot;com.panhao.pojo&quot; /&gt;
+        &lt;property name=&quot;configLocation&quot; value=&quot;classpath:mybatis.xml&quot; /&gt;
+    &lt;/bean&gt;
+
+    &lt;!-- DAO接口所在包名，Spring会自动查找其下的类 --&gt;
+    &lt;bean class=&quot;org.mybatis.spring.mapper.MapperScannerConfigurer&quot;&gt;
+        &lt;property name=&quot;basePackage&quot; value=&quot;com.panhao.dao&quot; /&gt;
+        &lt;property name=&quot;sqlSessionFactoryBeanName&quot;
+                  value=&quot;sqlSessionFactory&quot;&gt;&lt;/property&gt;
+    &lt;/bean&gt;
+
+    &lt;!-- (事务管理)transaction manager, use JtaTransactionManager for global tx --&gt;
+    &lt;bean id=&quot;transactionManager&quot;
+          class=&quot;org.springframework.jdbc.datasource.DataSourceTransactionManager&quot;&gt;
+        &lt;property name=&quot;dataSource&quot; ref=&quot;dataSource&quot; /&gt;
+    &lt;/bean&gt;
+&lt;/beans&gt;
+</code></pre>
+<ol>
+<li>配置的目的是将Spring与Mybatis整合起来，配置数据源是为连接数据库做准备。利用属性文件的好处，便于修改数据库的连接信息。所以在最开始需要引入属性文件。</li>
+<li>配置<code>sqlSessionFactory</code>和<code>MapperScannerConfigurer</code>是为了实现Mapper文件的自动映射，事务管理是为了数据库中的多条SQL语句可以一起执行完毕，或者是一起执行失败。</li>
+</ol>
+<h5 id="配置web-xml"><a href="#配置web-xml" class="headerlink" title="配置web.xml"></a><b style="color:orange;">配置web.xml</b></h5><pre><code class="xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;web-app xmlns=&quot;http://java.sun.com/xml/ns/javaee&quot;
+         xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+         xsi:schemaLocation=&quot;http://java.sun.com/xml/ns/javaee
+          http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd&quot;
+         version=&quot;3.0&quot;&gt;
+
+    &lt;display-name&gt;web-ssm&lt;/display-name&gt;
+    &lt;!--配置Spring与Mybatis的整合文件，在Tomcat启动的时候，就初始化Spring容器--&gt;
+    &lt;context-param&gt;
+        &lt;param-name&gt;contextConfigLocation&lt;/param-name&gt;
+        &lt;param-value&gt;classpath:spring-mybatis.xml&lt;/param-value&gt;
+    &lt;/context-param&gt;
+    &lt;!--配置Log4J的输出格式，以及输出的内容和形式--&gt;
+    &lt;context-param&gt;
+        &lt;param-name&gt;log4jConfigLocation&lt;/param-name&gt;
+        &lt;param-value&gt;classpath:log4j.properties&lt;/param-value&gt;
+    &lt;/context-param&gt;
+
+    &lt;!-- 编码过滤器，在前后端之间的交互中避免出现中文乱码的现象 --&gt;
+    &lt;filter&gt;
+        &lt;filter-name&gt;encodingFilter&lt;/filter-name&gt;
+        &lt;filter-class&gt;org.springframework.web.filter.CharacterEncodingFilter&lt;/filter-class&gt;
+        &lt;init-param&gt;
+            &lt;param-name&gt;encoding&lt;/param-name&gt;
+            &lt;param-value&gt;UTF-8&lt;/param-value&gt;
+        &lt;/init-param&gt;
+    &lt;/filter&gt;
+    &lt;filter-mapping&gt;
+        &lt;filter-name&gt;encodingFilter&lt;/filter-name&gt;
+        &lt;url-pattern&gt;/*&lt;/url-pattern&gt;
+    &lt;/filter-mapping&gt;
+
+    &lt;!-- spring监听器 --&gt;
+    &lt;listener&gt;
+        &lt;listener-class&gt;org.springframework.web.context.ContextLoaderListener&lt;/listener-class&gt;
+    &lt;/listener&gt;
+
+    &lt;!-- 防止spring内存溢出监听器，比如quartz --&gt;
+    &lt;listener&gt;
+        &lt;listener-class&gt;org.springframework.web.util.IntrospectorCleanupListener&lt;/listener-class&gt;
+    &lt;/listener&gt;
+
+
+    &lt;!-- 配置DispatcherServlet用于拦截请求，进行请求转发--&gt;
+    &lt;servlet&gt;
+        &lt;servlet-name&gt;SpringMVC&lt;/servlet-name&gt;
+        &lt;servlet-class&gt;org.springframework.web.servlet.DispatcherServlet&lt;/servlet-class&gt;
+        &lt;!--配置Spring与Spring Mvc整合文件的位置--&gt;
+        &lt;init-param&gt;
+            &lt;param-name&gt;contextConfigLocation&lt;/param-name&gt;
+            &lt;param-value&gt;classpath:spring-mvc.xml&lt;/param-value&gt;
+        &lt;/init-param&gt;
+        &lt;!--在Tomcat启动的时候就开始加载配置文件--&gt;
+        &lt;load-on-startup&gt;1&lt;/load-on-startup&gt;
+        &lt;async-supported&gt;true&lt;/async-supported&gt;
+    &lt;/servlet&gt;
+    &lt;servlet-mapping&gt;
+        &lt;servlet-name&gt;SpringMVC&lt;/servlet-name&gt;
+        &lt;!-- 配置拦截请求的方法，可以配置成任何的形式，常见为： / *.do--&gt;
+        &lt;url-pattern&gt;/&lt;/url-pattern&gt;
+    &lt;/servlet-mapping&gt;
+    &lt;!--设置欢迎页面，在Tomcat初始化完成之后直接显示该页面--&gt;
+    &lt;welcome-file-list&gt;
+        &lt;welcome-file&gt;/index.html&lt;/welcome-file&gt;
+    &lt;/welcome-file-list&gt;
+
+    &lt;!-- session配置 --&gt;
+    &lt;session-config&gt;
+        &lt;session-timeout&gt;15&lt;/session-timeout&gt;
+    &lt;/session-config&gt;
+
+&lt;/web-app&gt;</code></pre>
+<h5 id="配置Mybatis"><a href="#配置Mybatis" class="headerlink" title="配置Mybatis"></a><b style="color:orange;">配置Mybatis</b></h5><pre><code class="xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;!DOCTYPE configuration PUBLIC &quot;-//mybatis.org//DTD Config 3.0//EN&quot;
+        &quot;http://mybatis.org/dtd/mybatis-3-config.dtd&quot;&gt;
+&lt;configuration&gt;
+    &lt;settings&gt;
+        &lt;!--用于设置Mybatis中数据库列名与Java Bean之间驼峰转下换线的映射关系--&gt;
+        &lt;setting name=&quot;mapUnderscoreToCamelCase&quot; value=&quot;true&quot; /&gt;
+    &lt;/settings&gt;
+&lt;/configuration&gt;</code></pre>
+<h5 id="其他的相关的属性文件"><a href="#其他的相关的属性文件" class="headerlink" title="其他的相关的属性文件"></a><b style="color:orange;">其他的相关的属性文件</b></h5><p>属性文件用于存储常量，具备良好的展现形式，以及Spring对其的加载支持。首先需要一个连接数据库的属性文件：</p>
+<pre><code class="properties">driver=com.mysql.cj.jdbc.Driver
+url=jdbc:mysql://localhost:3306/mydb?useSSL=false&amp;serverTimezone=CTT&amp;characterEncoding=UTF-8
+username=root
+password=panhao
+#定义初始连接数
+initialSize=0  
+#定义最大连接数
+maxActive=20  
+#定义最大空闲
+maxIdle=20  
+#定义最小空闲
+minIdle=1  
+#定义最长等待时间
+maxWait=60000
+</code></pre>
+<p>还需要一个Log4J日志格式化配置属性文件：</p>
+<pre><code class="properties">#定义LOG输出级别
+log4j.rootLogger=INFO,Console,File  
+#定义日志输出目的地为控制台
+log4j.appender.Console=org.apache.log4j.ConsoleAppender  
+log4j.appender.Console.Target=System.out  
+#可以灵活地指定日志输出格式，下面一行是指定具体的格式
+log4j.appender.Console.layout = org.apache.log4j.PatternLayout  
+log4j.appender.Console.layout.ConversionPattern=[%c] - %m%n  
+
+#文件大小到达指定尺寸的时候产生一个新的文件
+log4j.appender.File = org.apache.log4j.RollingFileAppender  
+#指定输出目录
+log4j.appender.File.File = logs/ssm.log  
+#定义文件最大大小
+log4j.appender.File.MaxFileSize = 10MB  
+# 输出所以日志，如果换成DEBUG表示输出DEBUG以上级别日志
+log4j.appender.File.Threshold = ALL  
+log4j.appender.File.layout = org.apache.log4j.PatternLayout  
+log4j.appender.File.layout.ConversionPattern =[%p] [%d{yyyy-MM-dd HH:mm:ss}][%c]%m%n </code></pre>
+<p><b style="color:deeppink;">值得注意的是，所有的Properties文件都尽量放在<code>src/main/resources</code>文件夹的下面</b></p>
+<h4 id="4、SSM应用实例"><a href="#4、SSM应用实例" class="headerlink" title="4、SSM应用实例"></a><b style="color:blue;">4、SSM应用实例</b></h4><p>SSM实际上就是一种用于便捷操作数据的框架设计结构。在JavaEE中的开发结构，在这里依旧是可以使用的。将后端进行分层设计，以达到解耦的效果。可以更好的适应多人协作开发的需求。</p>
+<p>首先需要完善后端的四层结构：<code>controller</code> <code>service</code> <code>dao</code> <code>pojo</code> </p>
+<p>其中数据的流动方向为<code>controller=&gt;service=&gt;dao</code>表示用户请求数据，<code>dao=&gt;service=&gt;controller</code>表示服务器返回数据。<code>pojo</code>作为数据处理的基本单元。</p>
+<p>首先创建一个<code>User</code>类与数据库的表之间做出映射：</p>
+<pre><code class="java">package com.panhao.pojo;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.apache.ibatis.type.Alias;
+
+import java.util.Date;
+
+/**
+ * @program:SSM
+ * @description:cc
+ * @author:Mr.Pan
+ * @create:2020-10-26 22:22:16
+ */
+//该注解属于Lombok依赖中，用于自动生成类的常规方法，例如get/set/toString/equals...
+@Data
+//该注解属于Lombok依赖中，用于创建一个无参数的构造方法
+@NoArgsConstructor
+//该注解属于Lombok依赖中，用于创建一个全参数的构造方法
+@AllArgsConstructor
+//该注解属于Mybatis，用于创建类的别名，需要在配置文件中开启，才可以扫描到，然后在Mapper文件中使用别名来代替类的全限定名
+@Alias(&quot;user&quot;)
+public class User {
+
+    private int id;
+    private String firstName;
+    private String lastName;
+    private Date createAt;
+    private Date updateAt;
+
+}
+</code></pre>
+<p>创建一个<code>UserDao</code>用于操作数据：</p>
+<pre><code class="java">package com.panhao.dao;
+
+import com.panhao.pojo.User;
+import org.springframework.stereotype.Repository;
+
+import java.util.List;
+//该注解属于Spring，用于将该接口映射为持久层方法，便于与Mapper文件中进行自动映射
+@Repository
+public interface UserDao {
+    List&lt;User&gt; getAllUser();
+}
+</code></pre>
+<p>在<code>src/main/resources</code>中创建文件<code>/mapper/UserDao.xml</code>用于与上面的接口做自动映射：</p>
+<pre><code class="xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; ?&gt;
+&lt;!DOCTYPE mapper
+        PUBLIC &quot;-//mybatis.org//DTD Mapper 3.0//EN&quot;
+        &quot;http://mybatis.org/dtd/mybatis-3-mapper.dtd&quot;&gt;
+&lt;!-- nameSpace表示命名空间，要和我们映射的接口的全限定类名必须完全一致--&gt;
+&lt;mapper namespace=&quot;com.panhao.dao.UserDao&quot;&gt;
+    &lt;!-- 表示执行select操作，这里需要与接口中的方法进行映射，id属性表示的方法名，需要与映射的接口中相同逻辑的方法的名称完全一致--&gt;
+    &lt;select id=&quot;getAllUser&quot; resultType=&quot;com.panhao.pojo.User&quot;&gt;
+        select * from users;
+    &lt;/select&gt;
+&lt;/mapper&gt;</code></pre>
+<p>此时就已经有一个完成数据流动的过程，创建一个<code>UserController</code>用于接受用户的请求：</p>
+<pre><code class="java">package com.panhao.controller;
+
+import com.panhao.dao.UserDao;
+import com.panhao.pojo.Book;
+import com.panhao.pojo.User;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.util.List;
+
+/**
+ * @program:SSM
+ * @description:测试
+ * @author:Mr.Pan
+ * @create:2020-10-26 22:22:13
+ */
+@Controller
+public class UserController {
+
+    @Autowired
+    private UserDao userDao;
+
+    @RequestMapping(&quot;/hello.do&quot;)
+    @ResponseBody
+    public String hello(){
+        return &quot;dasdadsa&quot;;
+    }
+
+    @RequestMapping(&quot;/user&quot;)
+    @ResponseBody
+    public List&lt;User&gt; hello1(){
+        return userDao.getAllUser();
+    }
+}
+</code></pre>
+<p>最后在浏览器中输入<code>http://localhost:8080/SSM/user</code>即可得到数据库中的数据。</p>
+]]></content>
+      <categories>
+        <category>Spring学习</category>
+      </categories>
+      <tags>
+        <tag>编程语言</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>缓存神器——Redis初探</title>
+    <url>/2020/11/11/%E7%BC%93%E5%AD%98%E7%A5%9E%E5%99%A8%E2%80%94%E2%80%94Redis%E5%88%9D%E6%8E%A2/</url>
+    <content><![CDATA[<h2 id="走完该走的路，才能走想走的路"><a href="#走完该走的路，才能走想走的路" class="headerlink" title="走完该走的路，才能走想走的路"></a><span style="color:crimson;font-family: Georgia, serif;">走完该走的路，才能走想走的路</span></h2><a id="more"></a>
+
+<h2 id="缓存神器——Redis初探"><a href="#缓存神器——Redis初探" class="headerlink" title="缓存神器——Redis初探"></a><b style="color:red;">缓存神器——Redis初探</b></h2><p>Redis在企业开发中通常充当高速缓存的作用，用于保护接口或者数据库。在高并发的场景、分布式场景下也可以充当分布式锁，避免多个JVM进程在同一时间对同一资源进行修改，从而非线程安全的问题。</p>
+<p><em>以下是在Ubuntu 18.0.1作为Redis服务器，利用远程连接的方式操作Redis，IDE为IDEA</em></p>
+<h3 id="Redis安装与部署"><a href="#Redis安装与部署" class="headerlink" title="Redis安装与部署"></a><b style="color:red;">Redis安装与部署</b></h3><h4 id="1、安装"><a href="#1、安装" class="headerlink" title="1、安装"></a><b style="color:blue;">1、安装</b></h4><p>首先来说说Redis的安装吧，Redis作为最火热的缓存中间件，在很多的系统上面都有广泛的应用，兼容性是非常好的。一般的企业都会使用Linux来作为服务器的系统，一来是因为Linux是开源的，可以自己去修改系统的，其次就是相比Windows，它具有更少的附加服务。值得一提的是，大多数都会选择Centos作为服务器的系统，但是由于我在做项目的时候甲方使用的Ubuntu，所以这篇文章是按照Ubuntu来写的。</p>
+<p>安装Redis也是非常简单的，特别是在Ubuntu上面安装，在Ubuntu上面有两种安装方式，<strong>一种是使用<code>apt-get</code>来安装；一种是使用源码安装</strong>。下面介绍的是使用源码编译的方式来安装。</p>
+<pre><code class="java">//安装编译工具，Redis是基于C语言环境下的。CetenOS是自带C语言环境的，但是Ubuntu是不带，所以需要安装
+sudo apt-get install build-essential
+// 下载Redis
+wget http://download.redis.io/releases/redis-4.0.14.tar.gz
+// 解压Redis
+tar -xvzf redis-4.0.14.tar.gz
+//进入Redis目录进行编译安装
+cd redis-4.0.14
+make</code></pre>
+<p>等待编译完成，Redis的安装就已经完成了。</p>
+<h4 id="2、部署"><a href="#2、部署" class="headerlink" title="2、部署"></a><b style="color:blue;">2、部署</b></h4><p>此时Redis已经安装完成，我们可以开始启动了。<span style="color:navy">但是，Redis是默认不允许后台运行，而且不允许远程连接的</span>，所以需要先修改配置文件。</p>
+<p><strong>修改配置文件，开启后台运行</strong></p>
+<pre><code class="python"># By default Redis does not run as a daemon. Use &#39;yes&#39; if you need it.
+# Note that Redis will write a pid file in /var/run/redis.pid when daemonized.
+daemonize yes
+# 默认值是no，将daemonize的值改为yes，表示允许后台运行</code></pre>
+<p><strong>修改配置文件，开启远程连接</strong></p>
+<pre><code class="python">#  ~~~ WARNING ~~~ If the computer running Redis is directly exposed to the
+# internet, binding to all the interfaces is dangerous and will expose the
+# instance to everybody on the internet. So by default we uncomment the
+# following bind directive, that will force Redis to listen only into
+# the IPv4 loopback interface address (this means Redis will be able to
+# accept connections only from clients running into the same computer it
+# is running).
+#
+# IF YOU ARE SURE YOU WANT YOUR INSTANCE TO LISTEN TO ALL THE INTERFACES
+# JUST COMMENT THE FOLLOWING LINE.
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# bind 127.0.0.1
+# 将上一行代码注释掉，上一行代码的意思就是只允许本地连接，注释掉就所有的IP地址都会被侦测，也可以设置指定的IP地址。</code></pre>
+<p>此时Redis的准备工作就已经全部完成了，剩下来就是启动Redis服务：</p>
+<pre><code class="java">//进入Redis的目录，启动Redis服务
+src/redis-server redis.conf
+//表示按照redis.conf的配置来启动Redis服务
+//通过以下命令查看Redis是否真正启动
+ps -ef|grep redis|grep -v grep</code></pre>
+<p>出现下图即表示Redis的服务启动成功，<em>这里我修改了6379默认端口为6380，是因为6379被其他的服务占用了端口，所以我进行了修改</em></p>
+<img src="验证Redis启动.png" alt="image-20201110203032904" style="zoom: 200%;" />
+
+<p>或者使用安装的Redis客户端进入Redis服务验证Redis服务是否启动：</p>
+<pre><code class="java">//进入Redis的目录，执行下列代码，进入客户端
+src/redis-cli -h 127.0.0.1 -p 6380</code></pre>
+<p>进入下面的界面就表示进入了Redis的服务器，可以执行一些常用的Redis服务了。</p>
+<img src="Redis登陆客户端.png" alt="image-20201110203440328" style="zoom:200%;" />
+
+<p>此时服务器端的配置就基本完成了。剩下来的就是我们该如何使用Spring Boot来对其进行操作。</p>
+<h3 id="Redis的单机模式"><a href="#Redis的单机模式" class="headerlink" title="Redis的单机模式"></a><b style="color:red;">Redis的单机模式</b></h3><p>Redis的单机模式指的是只有一个服务端的Redis，Redis支持多种的拓扑结构，来实现服务的熔断机制。以保证在任何时刻，缓存机制不失效。首先介绍一下Redis的单机模式。单机模式只需要向上面一样开启远程连接即可。</p>
+<h4 id="1、引入依赖"><a href="#1、引入依赖" class="headerlink" title="1、引入依赖"></a><b style="color:blue;">1、引入依赖</b></h4><p>首先Spring Boot对Redis也有很好的支持，首先引入：</p>
+<pre><code class="xml">         &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-boot-starter-redis&lt;/artifactId&gt;
+            &lt;exclusions&gt;
+                &lt;!--不依赖Redis的异步客户端lettuce--&gt;
+                &lt;exclusion&gt;
+                    &lt;groupId&gt;io.lettuce&lt;/groupId&gt;
+                    &lt;artifactId&gt;lettuce-core&lt;/artifactId&gt;
+                &lt;/exclusion&gt;
+            &lt;/exclusions&gt;
+            &lt;version&gt;1.4.6.RELEASE&lt;/version&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;redis.clients&lt;/groupId&gt;
+            &lt;artifactId&gt;jedis&lt;/artifactId&gt;
+        &lt;/dependency&gt;</code></pre>
+<h4 id="2、Redis的连接"><a href="#2、Redis的连接" class="headerlink" title="2、Redis的连接"></a><b style="color:blue;">2、Redis的连接</b></h4><p>Redis有很多的实现方式，其中常用的有<code>Jedis</code>和<code>RedisTemplate</code>，<code>lettuce</code>，在此就介绍前面两种。</p>
+<ul>
+<li><p><b style="color:orange;">Jedis方式</b></p>
+<p><code>Jedis</code>方式的关键就是<code>JedisPool</code>，需要创建一个线程池来做Redis的相关操作。首先在<code>application.properties</code>中配置Redis相关连接参数：</p>
+<pre><code class="properties">#redis配置开始
+# Redis数据库索引（默认为0）
+spring.redis.database=0
+# Redis服务器地址
+spring.redis.host=你服务器的IP地址即可
+# Redis服务器连接端口
+spring.redis.port=你设置的端口即可，默认端口为6379
+# Redis服务器连接密码（默认为空）
+# spring.redis.password=&quot;&quot;
+# 连接池最大连接数（使用负值表示没有限制）
+spring.redis.jedis.pool.max-active=1024
+# 连接池最大阻塞等待时间（使用负值表示没有限制）
+spring.redis.jedis.pool.max-wait=10000
+# 连接池中的最大空闲连接
+spring.redis.jedis.pool.max-idle=2000
+# 连接池中的最小空闲连接
+spring.redis.jedis.pool.min-idle=0
+# 连接超时时间（毫秒）
+spring.redis.timeout=10000
+#redis配置结束</code></pre>
+<p>然后创建一个Redis的配置文件，创建一个Redis线程池：</p>
+<pre><code class="java">@Configuration
+@PropertySource(&quot;classpath:redis.properties&quot;)
+public class RedisConfig {
+
+    @Value(&quot;${spring.redis.host}&quot;)
+    private String host;
+
+    @Value(&quot;${spring.redis.port}&quot;)
+    private int port;
+
+    @Value(&quot;${spring.redis.timeout}&quot;)
+    private int timeout;
+
+    @Value(&quot;${spring.redis.jedis.pool.max-idle}&quot;)
+    private int maxIdle;
+
+    @Value(&quot;${spring.redis.jedis.pool.max-wait}&quot;)
+    private long maxWaitMillis;
+
+    @Value(&quot;${spring.redis.block-when-exhausted}&quot;)
+    private boolean  blockWhenExhausted;
+
+    @Bean
+    public JedisPool redisPoolFactory() throws Exception{
+        JedisPoolConfig  jedisPoolConfig = new JedisPoolConfig();
+        jedisPoolConfig.setMaxIdle(maxIdle);
+        jedisPoolConfig.setMaxWaitMillis(maxWaitMillis);
+        JedisPool  pool = new JedisPool(jedisPoolConfig,host,port,timeout);
+        return pool;
+    }
+
+}</code></pre>
+<p>然后创建有一个Redis的工具类：</p>
+<pre><code class="java">package org.panhao.mqtt.util;
+
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import redis.clients.jedis.Jedis;
+import redis.clients.jedis.JedisPool;
+import redis.clients.jedis.JedisSentinelPool;
+
+/**
+ * @program:MQTTStudy
+ * @description:创建Redis工具类
+ * @author:Mr.Pan
+ * @create:2020-11-10 10:10:35
+ */
+@Component
+@Slf4j
+public class RedisUtil {
+
+    @Autowired
+    private JedisSentinelPool jedisPool;
+
+    /**
+     * @Author: PanHao
+     * @Description: 向Redis中存值，永久有效
+     * @Date: 2020/11/10 11:09
+     * @Param: [key, value]
+     * @Return: java.lang.String
+     **/
+    public String set(String key, String value) {
+        Jedis jedis = null;
+        try {
+            jedis = jedisPool.getResource();
+            return jedis.set(key, value);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return &quot;error&quot;;
+        } finally {
+            jedis.close();
+        }
+    }
+
+    /**
+     * @Author: PanHao
+     * @Description: 向redis中存储键值对，并设置生命时间
+     * @Date: 2020/11/10 14:41
+     * @Param: [key, value, second]
+     * @Return: java.lang.String
+     **/
+    public String setTimeOut(String key, String value, int second) {
+        Jedis jedis = null;
+        try {
+            jedis = jedisPool.getResource();
+            jedis.set(key, value);
+            jedis.expire(key, second);
+            return &quot;success&quot;;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return &quot;error&quot;;
+        } finally {
+            jedis.close();
+        }
+    }
+
+    /**
+     * @Author: PanHao
+     * @Description: 通过key向redis中读取value
+     * @Date: 2020/11/10 14:50
+     * @Param: [key]
+     * @Return: java.lang.String
+     **/
+    public String get(String key) {
+        Jedis jedis = null;
+        String value = null;
+        try {
+            jedis = jedisPool.getResource();
+            value = jedis.get(key);
+            return value;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return &quot;error&quot;;
+        } finally {
+            jedis.close();
+        }
+    }
+
+    /**
+     * @Author: PanHao
+     * @Description: 通过key，判断redis中是否存在这个键值对
+     * @Date: 2020/11/10 14:53
+     * @Param: [key]
+     * @Return: boolean
+     **/
+    public boolean exists(String key) {
+        Jedis jedis = null;
+        try {
+            jedis = jedisPool.getResource();
+            return jedis.exists(key);
+        } catch (Exception e) {
+            return false;
+        } finally {
+            jedis.close();
+        }
+    }
+
+    /**
+     * @Author: PanHao
+     * @Description: 通过key来删除redis里面的键值对
+     * @Date: 2020/11/10 15:00
+     * @Param: [key]
+     * @Return: java.lang.Long
+     **/
+    public Long del(String key) {
+        Jedis jedis = null;
+        try {
+            jedis = jedisPool.getResource();
+            return jedis.del(key);
+        } catch (Exception e) {
+            return 0L;
+        } finally {
+            jedis.close();
+        }
+    }
+
+    /**
+     * @Author: PanHao
+     * @Description: 清空当前数据库中所有key
+     * @Date:  2020/11/10 15:03
+     * @Param: []
+     * @Return: java.lang.String
+     **/
+    public String flushDB() {
+        Jedis jedis = null;
+        try {
+            jedis = jedisPool.getResource();
+            return jedis.flushDB();
+        } catch (Exception e) {
+            log.info(e.getCause().toString());
+        } finally {
+            jedis.close();
+        }
+        return null;
+    }
+}
+</code></pre>
+<p>此时创建测试文件，现在Redis里面存储一个<code>book 亚里士多德</code>的键值对，然后再对其进行取值：</p>
+<pre><code class="java">@RunWith(SpringRunner.class)
+@SpringBootTest
+public class TestRedis {
+
+    @Autowired
+    private RedisUtil redisUtil;
+
+    @Test
+    public void  test(){
+        redisUtil.set(&quot;book&quot;,&quot;亚里士多德&quot;);
+        System.out.println(redisUtil.get(&quot;book&quot;));
+    }
+}</code></pre>
+<p>此时控制台的输出为：</p>
+<pre><code class="java">亚里士多德</code></pre>
+<p>此时与Redis的交互就已经完成了。接下来展示使用<code>RedisTemplate</code>的方式进行Redis的一些操作。</p>
+</li>
+<li><p><b style="color:orange;">RedisTemplate的方式</b></p>
+<p><code>RedisTemplate</code>的方式与<code>Jedis</code>的方式其实差距不大，首先都是需要创建一个与客户端的连接池。在<code>RedisConfig</code>类中加入以下：</p>
+<pre><code class="java">    @Bean
+    public RedisTemplate&lt;String, Object&gt; redisTemplate(RedisConnectionFactory redisConnectionFactory) {
+        StringRedisSerializer serializer = new StringRedisSerializer();
+        RedisTemplate&lt;String, Object&gt; template = new RedisTemplate&lt;&gt;();
+        template.setConnectionFactory(redisConnectionFactory);
+        template.setKeySerializer(serializer);
+        template.setValueSerializer(serializer);
+        return template;
+    }</code></pre>
+<p>然后创建一个新的Redis工具类，使用RedisTemplate来操作Redis里面的键值对：</p>
+<pre><code class="java">/**
+ * @program:MQTTStudy
+ * @description:利用RedisTemplate来编写操作类
+ * @author:Mr.Pan
+ * @create:2020-11-11 08:8:47
+ */
+@Component
+public class RedisUtil2 {
+
+    @Autowired
+    private RedisTemplate&lt;String,Object&gt; redisTemplate;
+
+    /**
+     * @Author: PanHao
+     * @Description: 判断Redis数据库是否存有key的键值对
+     * @Date:  2020/11/11 9:26
+     * @Param: [key]
+     * @Return: boolean
+     **/
+    public boolean hasKey(String key){
+        try {
+            return redisTemplate.hasKey(key);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    /**
+     * @Author: PanHao
+     * @Description: 向Redis中存入(key,value)的键值对,永久有效
+     * @Date:  2020/11/11 9:29
+     * @Param: [key, value, time]
+     * @Return: boolean
+     **/
+    public boolean set(String key,String value){
+        try {
+            redisTemplate.opsForValue().set(key,value);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    /**
+     * @Author: PanHao
+     * @Description: 向Redis中存入（key，value）键值对，并设置缓存失效时间为time
+     * @Date:  2020/11/11 9:36
+     * @Param: [key, value, time]
+     * @Return: boolean
+     **/
+    public boolean setKeyTimeOut(String key,String value,long time){
+        try {
+            redisTemplate.opsForValue().set(key,value,time,TimeUnit.SECONDS);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    /**
+     * @Author: PanHao
+     * @Description: 将Redis中的键设置缓存失效时间，也可以达到删除键的效果
+     * @Date:  2020/11/11 9:32
+     * @Param: [key, time]
+     * @Return: boolean
+     **/
+    public boolean expire(String key,long time){
+        try {
+            redisTemplate.expire(key,time,TimeUnit.SECONDS);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    /**
+     * @Author: PanHao
+     * @Description: 获取Redis中对应的key所在键值对的value值
+     * @Date:  2020/11/11 9:57
+     * @Param: [key]
+     * @Return: java.lang.Object
+     **/
+    public Object get(String key){
+        if(hasKey(key)){
+            return redisTemplate.opsForValue().get(key);
+        }else {
+            return &quot;请输入正确的Key&quot;;
+        }
+    }
+
+}
+</code></pre>
+<p>可以在测试类中测试其中的方法。我在这里就不赘述了，测试的方式也是很简单的，方法也比较容易看懂。</p>
+</li>
+</ul>
+<h3 id="Redis的哨兵模式"><a href="#Redis的哨兵模式" class="headerlink" title="Redis的哨兵模式"></a><b style="color:red;">Redis的哨兵模式</b></h3><p>在单机模式中，假如因为特殊原因导致缓存服务器的宕机，就会导致系统之间出现故障。这意味着Redis的服务是不可以失效的。而且当大量的数据进行读写的时候，一个Redis服务的性能是完全不够的。这时候就需要使用其他的工作方式。例如主从模式，主从模式是利用主机进行写入操作，利用从机做读取操作。主机与从机之间在一定的时间段内进行同步操作。主从模式虽然可以大大的缓解读写的压力，但是一旦主机宕机了，服务依旧会停止，这样系统的缓存机制依旧会失效，这样就会增加数据库的读写压力。</p>
+<p><span style="color:navy;">哨兵模式的出现会大大的增加主从模式的容错率，所谓哨兵模式是指在主从模式，增加哨兵，对主从模式进行侦测，一旦主机宕机，通过哨兵的选举机制可以产生新的主机，这样即使主机宕机，也会有另一个主机出来继续工作。</span></p>
+<p>哨兵模式和单机模式只是运作的方式不同，我们使用Java代码进行操作的时候，无非就是配置不同，但是对于读取，会自动的识别主机的位置，不需要我们指定主机的位置。</p>
+<h4 id="1、部署哨兵模式"><a href="#1、部署哨兵模式" class="headerlink" title="1、部署哨兵模式"></a><b style="color:blue;">1、部署哨兵模式</b></h4><p>部署哨兵模式也是非常简单的。首先来看单机Redis中，我们是通过配置文件来启动的Redis服务。在这里我们需要启动三个Redis服务，其中两个为从机，一个为主机。</p>
+<ul>
+<li><p><strong>创建Redis主从节点配置文件</strong></p>
+<pre><code class="java">//创建Redis 127.0.0.1:6380 配置文件
+cp redis.conf redis6380.conf
+//创建Redis 127.0.0.1:6381 配置文件
+cp redis.conf redis6381.conf
+//创建Redis 127.0.0.1:6382 配置文件
+cp redis.conf redis6382.conf</code></pre>
+</li>
+<li><p><strong>修改各个Redis配置文件</strong></p>
+<p>修改<code>redis6380.conf</code>配置文件，配置启动端口为6380</p>
+<pre><code class="python">port 6380</code></pre>
+<p>修改<code>redis6381.conf</code>配置文件，配置端口为6381，并配置此节点为127.0.0.1 6380的从节点</p>
+<pre><code class="python">port 6381
+slaveof 127.0.0.1 6380</code></pre>
+<p>修改<code>redis6382.conf</code>配置文件，配置端口为6382，并设置此节点为127.0.0.1 6380的从节点</p>
+<pre><code class="java">port 6382
+slave 127.0.0.1 6380</code></pre>
+</li>
+<li><p><strong>分别启动Redis主从节点</strong></p>
+<pre><code class="java">src/redis-server redis6380.conf
+src/redis-server redis6381.conf
+src/redis-server redis6382.conf</code></pre>
+</li>
+<li><p><strong>验证Redis Master节点和Slave节点启动状况：</strong></p>
+<pre><code class="java">ps -ef|grep redis|grep -v grep</code></pre>
+<p>出现下图，即可表示三个服务都启动了，对应端口为6380、6381、6382。</p>
+<img src="验证主从模式的启动.png" alt="image-20201111103645630" style="zoom:200%;" />
+
+</li>
+</ul>
+<blockquote>
+<p>以上的操作就是主从模式，其实哨兵模式就是主从模式的一个升级，核心就是主从模式，最大的区别就是：<span style="color:salmon;">哨兵模式中，在每一个主机和从机节点旁边都会有一个哨兵对其进行检测，一旦发现主机节点宕机，哨兵就通过选举机制，选出新的主机节点。在失效的节点被人为修复之后，再次加进来就会变成从机节点。</span></p>
+</blockquote>
+<ul>
+<li><p><strong>创建哨兵配置文件</strong></p>
+<p>进入Redis目录，将<code>sentinel.conf</code>配置文件复制3份，分别命名为<code>sentinel26380.conf</code> 、<code>sentinel26381.conf</code>、<code>sentinel26382.conf</code>：</p>
+<pre><code class="java">//创建Redis 127.0.0.1 6380配置文件
+cp sentinel.conf sentinel26380.conf
+//创建Redis 127.0.0.1 6381配置文件
+cp sentinel.conf sentinel26381.conf
+//创建Redis 127.0.0.1 6382配置文件
+cp sentinel.conf sentinel26382.conf</code></pre>
+</li>
+<li><p><strong>修改Redis哨兵配置文件</strong></p>
+<p>修改<code>sentinel26380.conf</code>配置文件，配置启动端口为26380，并监听127.0.0.1 6379主节点</p>
+<pre><code class="python"># 配置哨兵端口号为26379
+port 26380
+# 配置监听master节点 127.0.0.1 6380
+# 最后一个参数2表示当集群中有两个Redis哨兵认为master下线，才能真正认为该master已经不可用
+sentinel monitor mymaster 127.0.0.1 6380 2</code></pre>
+<p>修改<code>sentinel26381.conf</code>配置文件，配置启动端口为26381，并监听127.0.0.1 6380主节点</p>
+<pre><code class="python"># 配置哨兵端口号为26381
+port 26381
+# 配置监听master节点 127.0.0.1 6380
+# 最后一个参数2表示当集群中有两个Redis哨兵认为master下线，才能真正认为该master已经不可用
+sentinel monitor mymaster 127.0.0.1 6380 2</code></pre>
+<p>修改<code>sentinel26382.conf</code>配置文件，配置启动端口为26381，并监听127.0.0.1 6380主节点</p>
+<pre><code class="python"># 配置哨兵端口号为26382
+port 26382
+# 配置监听master节点 127.0.0.1 6380
+# 最后一个参数2表示当集群中有两个Redis哨兵认为master下线，才能真正认为该master已经不可用
+sentinel monitor mymaster 127.0.0.1 6380 2</code></pre>
+</li>
+</ul>
+<blockquote>
+<p>假如你是在本地做测试就无所谓，但是如果你是在服务器上面做测试，而且服务器端口有保护的，上面的<code>127.0.0.1</code>应该换成你服务器的IP地址。而且<code>sentinel.conf</code>中也是需要打开后台运行的，一样是在<code>daemonize yes</code>处修改。</p>
+</blockquote>
+<ul>
+<li><p><strong>分别启动Redis哨兵</strong></p>
+<pre><code class="java">src/redis-sentinel sentinel26380.conf
+src/redis-sentinel sentinel26381.conf
+src/redis-sentinel sentinel26382.conf</code></pre>
+<p>验证Redis哨兵启动：</p>
+<pre><code class="java">ps -ef|grep redis|grep -v grep</code></pre>
+<p>出现如图所示即表示哨兵模式已经启动了：</p>
+<img src="验证哨兵模式.png" alt="image-20201111105414999" style="zoom:200%;" />
+
+</li>
+</ul>
+<h4 id="2、连接实现Redis哨兵模式"><a href="#2、连接实现Redis哨兵模式" class="headerlink" title="2、连接实现Redis哨兵模式"></a><b style="color:blue;">2、连接实现Redis哨兵模式</b></h4><p>利用SpringBoot连接Redis哨兵模式的时候，其实和单机没什么不一样，唯一的区别就是在配置方式上面。</p>
+<ul>
+<li><p><strong>在<code>application.properties</code>文件中加入哨兵机制的配置</strong></p>
+<pre><code class="properties">spring.redis.sentinel.master=mymaster
+spring.redis.sentinel.nodes=你的IP地址:26380,你的IP地址:22</code></pre>
+</li>
+<li><p><strong>在<code>RedisConfig.java</code>中修改Jedis的客户端</strong></p>
+<p>将<code>JedisPool</code>修改为<code>JedisSentinelPool</code>，并在配置文件中加入如下代码：</p>
+<pre><code class="java">
+    @Value(&quot;${spring.redis.sentinel.master}&quot;)
+    private String sentinelName;
+
+    @Value(&quot;${spring.redis.sentinel.nodes}&quot;)
+    private String[] sentinels;    
+
+    @Bean
+    public JedisSentinelPool redisPoolFactory()  throws Exception{
+        JedisPoolConfig  jedisPoolConfig = new JedisPoolConfig();
+        jedisPoolConfig.setMaxIdle(maxIdle);
+        jedisPoolConfig.setMaxWaitMillis(maxWaitMillis);
+        Set&lt;String&gt; sentinelSets = new HashSet&lt;String&gt;(Arrays.asList(sentinels));
+        JedisSentinelPool  pool = new JedisSentinelPool(sentinelName,sentinelSets,jedisPoolConfig);
+        return pool;
+    }</code></pre>
+<p>再将<code>RedisUtil.java</code>中的<code>JedisPool</code>修改为<code>JedisSentinelPool</code>即可：</p>
+<pre><code class="java">package org.panhao.mqtt.util;
+
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import redis.clients.jedis.Jedis;
+import redis.clients.jedis.JedisSentinelPool;
+
+/**
+ * @program:MQTTStudy
+ * @description:创建Redis工具类
+ * @author:Mr.Pan
+ * @create:2020-11-10 10:10:35
+ */
+@Component
+@Slf4j
+public class RedisUtil {
+
+    @Autowired
+    private JedisSentinelPool jedisPool;
+    ...
+}
+</code></pre>
+<p>测试和单机模式的测试是完全一样的，此时的读写操作对于开发人员来说和单机模式没有什么不一样的。</p>
+</li>
+</ul>
+]]></content>
+      <categories>
+        <category>Spring学习</category>
+      </categories>
+      <tags>
+        <tag>编程语言</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>多线程基础</title>
+    <url>/2020/12/03/%E5%A4%9A%E7%BA%BF%E7%A8%8B%E5%9F%BA%E7%A1%80/</url>
+    <content><![CDATA[<h2 id="不要因为没有掌声而丢掉自己的梦想"><a href="#不要因为没有掌声而丢掉自己的梦想" class="headerlink" title="不要因为没有掌声而丢掉自己的梦想"></a><h2 style="color:crimson;font-weight:lighter;">不要因为没有掌声而丢掉自己的梦想</h2></h2><a id="more"></a>
+
+<h2 id="线程基础、线程之间的共享和协作"><a href="#线程基础、线程之间的共享和协作" class="headerlink" title="线程基础、线程之间的共享和协作"></a><b style="color:red;">线程基础、线程之间的共享和协作</b></h2><h3 id="1、线程与操作系统之间的关系"><a href="#1、线程与操作系统之间的关系" class="headerlink" title="1、线程与操作系统之间的关系"></a><b style="color:blue;">1、线程与操作系统之间的关系</b></h3><ul>
+<li><p><strong>线程与CPU核心数之间的关系</strong></p>
+<p>CPU核心数和线程数最早是<code>1:1</code>的关系，但是在Intel公司引入超线程技术之后，CPU核心数和线程数之间的关系达到了<code>1:2</code>。</p>
+</li>
+<li><p><strong>CPU的线程调度机制</strong></p>
+<p>CPU调度线程采用的<b style="color:slateblue;">时间片轮转机制（Round-Robin,RR）</b>。为了实现轮转调度，系统把所有就绪进程按先入先出的原则排成一个队列。新来的进程加到就绪队列末尾。每当执行进程调度时，进程调度程序总是选出就绪队列的队首进程，让它在CPU上运行一个时间片的时间。时间片是一个小的时间单位，通常为10~100ms数量级。当进程用完分给它的时间片后，系统的计时器发出时钟中断，调度程序便停止该进程的运行，把它放入就绪队列的末尾；然后，把CPU分给就绪队列的队首进程，同样也让它运行一个时间片，如此往复。</p>
+</li>
+<li><p><strong>进程与线程</strong></p>
+<p><b style="color:slateblue;">进程：</b>程序运行资源分配的最小单位，进程内部有多个线程，多个线程之间共享这个进程的资源。进程与进程之间是相互独立的。</p>
+<p><b style="color:slateblue;">线程：</b>CPU调度的最小单位。</p>
+</li>
+<li><p><strong>并行和并发</strong></p>
+<p><b style="color:slateblue;">并行：</b>在同一时刻，有多条指令在多个处理器上同时执行；</p>
+<p><b style="color:slateblue;">并发：</b>在同一时刻只能有一条指令执行，但多个进程指令被快速的轮换执行。</p>
+</li>
+</ul>
+<h3 id="2、Java中的多线程"><a href="#2、Java中的多线程" class="headerlink" title="2、Java中的多线程"></a><b style="color:blue;">2、Java中的多线程</b></h3><p>在Java里的程序天生就是多线程的。</p>
+<pre><code class="java">package org.example.pojo.threads;
+
+import java.lang.management.ManagementFactory;
+import java.lang.management.ThreadInfo;
+import java.lang.management.ThreadMXBean;
+
+/**
+ * @program:Threads
+ * @description:测试Java程序的多线程性
+ * @author:Mr.Pan
+ * @create:2020-12-01 15:15:48
+ */
+public class OnlyMain &#123;
+    public static void main(String[] args) &#123;
+//        虚拟机线程管理接口
+        ThreadMXBean threadMXBean= ManagementFactory.getThreadMXBean();
+        ThreadInfo[] threadInfos= threadMXBean.dumpAllThreads(false,false);
+        for (ThreadInfo threadInfo:threadInfos)&#123;
+            System.out.println(&quot;[&quot;+threadInfo.getThreadId()+&quot;]&quot;+&quot; &quot;+threadInfo.getThreadName());
+        &#125;
+    &#125;
+&#125;
+</code></pre>
+<p>仅仅是上述的代码，利用虚拟机的线程管理接口<code>TheradMXBean</code>接口来查看，执行上述的<code>main()</code>方法时，虚拟机启动了多少个线程。</p>
+<pre><code class="java">[6] Monitor Ctrl-Break
+[5] Attach Listener
+[4] Signal Dispatcher
+[3] Finalizer
+[2] Reference Handler
+[1] main</code></pre>
+<p>虚拟机一共启动了5个线程（<em>Monitor Ctrl-Break是Intelij IDEA编辑器启动的一个线程</em>），其中<code>main</code>线程是程序的入口，<code>Reference Handler</code>线程是负责清除引用的线程，<code>Finalizer</code>线程就是用来执行对象的finalize方法的线程，<code>Signal Dispatcher</code>线程专门分发处理给虚拟机信号的线程，<code>Attach Listener</code>获取当前程序运行的一些信息。</p>
+<h4 id="创建线程的方式"><a href="#创建线程的方式" class="headerlink" title="创建线程的方式"></a><b style="color:orange;">创建线程的方式</b></h4><p>在Java中创建线程一共有三种方式：</p>
+<ol>
+<li>继承<code>Thread</code>类，重写<code>run()</code>方法。</li>
+<li>实现<code>Runable</code>接口，实现<code>run()</code>方法。</li>
+<li>实现<code>Callable</code>接口，实现<code>call()</code>方法。</li>
+</ol>
+<pre><code class="java">package org.example.pojo.threads;
+
+import org.junit.internal.runners.statements.RunAfters;
+
+import java.lang.management.ManagementFactory;
+import java.lang.management.ThreadInfo;
+import java.lang.management.ThreadMXBean;
+import java.util.concurrent.Callable;
+
+/**
+ * @program:Threads
+ * @description:测试Java程序的多线程性
+ * @author:Mr.Pan
+ * @create:2020-12-01 15:15:48
+ */
+public class OnlyMain &#123;
+
+    private class UserThread implements Runnable&#123;
+        @Override
+        public void run() &#123;
+            System.out.println(&quot;I am implements Runnable&quot;);
+        &#125;
+    &#125;
+
+    private class UserThread1 implements Callable&#123;
+        @Override
+        public Object call() throws Exception &#123;
+            System.out.println(&quot;I am implements Callable&quot;);
+            return &quot;CallResult&quot;;
+        &#125;
+    &#125;
+
+    private class UserThread2 extends Thread&#123;
+        @Override
+        public void run() &#123;
+            System.out.println(&quot;I am extends Thread&quot;);
+        &#125;
+    &#125;
+
+    public static void main(String[] args) &#123;
+        //Runnable接口的使用方式
+        UserThread userThread = new UserThread();
+        new Thread(userThread).start();
+        //Callable接口的使用方式
+        UserThread1 userThread1 = new UserThread1();
+        FutureTask&lt;Object&gt; futureTask = new FutureTask&lt;&gt;(userThread1);
+        new Thread(futureTask).start();
+        //Callable接口获取返回值的方式，会抛出异常ExecutionException，InterruptedException
+        futureTask.get();
+    &#125;
+&#125;
+</code></pre>
+<p>实现<code>Runable</code>和实现<code>Callable</code>接口的区别就在于：<span style="color:magenta;">前者是没有返回值，而后者允许存在返回值</span>。使用<code>Runable</code>接口的时候可以直接将其放入<code>Thread</code>类中，构建成一个线程；而使用<code>Callable</code>接口的时候需要先将接口转为<code>FutureTask</code>类，因为Thread类不支持Callable类型的构造函数。</p>
+<blockquote>
+<p><span style="color:purple;">Java已经提供可以一个Thread类了，还继续提供接口的原因是，Java语言只有单继承，但是可以多实现。</span></p>
+</blockquote>
+<h4 id="线程的停止方式"><a href="#线程的停止方式" class="headerlink" title="线程的停止方式"></a><b style="color:orange;">线程的停止方式</b></h4><p>线程停止方式有自然停止和人为停止两种。第一种自然停止的意思就是线程的<code>run()</code>方法执行完毕或者在执行的过程中抛出异常；第二种就是程序员在使用Thread类中的方法停止线程；</p>
+<p>在Thread类中提供了<code>interrupt()</code> <code>isInterrupted</code> <code>static interrupted()</code>方法。</p>
+<ul>
+<li><code>interrupt()</code> 中断一个线程，并不是强行关闭这个线程，是否终止由该线程自己决定。如果是，就将中断标志位置为<code>true</code>。</li>
+<li><code>isInterrupted()</code> 判断一个线程是否是处于中断状态</li>
+<li><code>static interrupted()</code> 判断当前线程是否处于中断状态。如果是，就将中断标志位置为<code>true</code>。</li>
+</ul>
+<pre><code class="java">package org.example.pojo.threads;
+
+import org.junit.Test;
+import org.junit.internal.runners.statements.RunAfters;
+
+import java.lang.management.ManagementFactory;
+import java.lang.management.ThreadInfo;
+import java.lang.management.ThreadMXBean;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.FutureTask;
+
+/**
+ * @program:Threads
+ * @description:测试Java程序的多线程性
+ * @author:Mr.Pan
+ * @create:2020-12-01 15:15:48
+ */
+public class OnlyMain &#123;
+
+    private static class UserThread extends Thread &#123;
+        @Override
+        public void run() &#123;
+            try &#123;
+                while (true)&#123;
+                    System.out.println(Thread.currentThread().getName()+&quot;线程正在运行&quot;);
+                    if (isInterrupted())&#123;throw new InterruptedException();&#125;
+                &#125;
+            &#125; catch (InterruptedException e) &#123;
+                System.out.println(Thread.currentThread().getName()+&quot;线程已停止，标志位：&quot;+isInterrupted());
+                e.printStackTrace();
+            &#125;
+        &#125;
+    &#125;
+
+    public static void main(String[] args) throws ExecutionException, InterruptedException &#123;
+        UserThread userThread = new UserThread();
+        userThread.setName(&quot;UserThread&quot;);
+        userThread.start();
+        Thread.sleep(1);
+        userThread.interrupt();
+    &#125;
+&#125;
+</code></pre>
+<p>上述代码中通过<code>interrupt()</code>方法为线程<code>thread</code>设置中断状态，通过<code>isInterrupted()</code>方法查看thread线程是否是中止状态。在线程中通过<code>static interrupted()</code>方法判断自己的中断状态是不是为false，如果是为false，就表示被设置了中断状态，然后利用抛出异常的方式中止线程。</p>
+<pre><code class="java">UserThread线程正在运行
+UserThread线程正在运行
+UserThread线程已停止，标志位：true
+java.lang.InterruptedException
+    at org.example.pojo.threads.OnlyMain$UserThread.run(OnlyMain.java:27)</code></pre>
+<p>其实从代码来看，线程并没有中止，只是跳转到了catch代码块中，不再执行业务代码，达到中止的效果。但是线程并没有中止。</p>
+<p>也可以通过<code>while</code>轮询的方式来中止线程：</p>
+<pre><code class="java">private static class UserThread implements Runnable &#123;
+        @Override
+        public void run() &#123;
+            while (!Thread.interrupted()) &#123;
+                System.out.println(&quot;线程正常运行&quot;);
+            &#125;
+            System.out.println(&quot;线程中止了&quot;);
+        &#125;
+    &#125;</code></pre>
+<blockquote>
+<p><span style="color:purple;">如果一个方法会抛出<code>InterruptExeception</code>异常，将会让中断标志位复位。即不可以去中止Sleep状态下的线程。</span></p>
+</blockquote>
+<p><b style="color:seagreen;">线程的常用方法以及线程状态之间的转换：</b></p>
+<img src="线程状态切换图.png" />
+
+<ul>
+<li><strong>新建</strong> 指的是线程被<code>new</code>出来，但是并没有调用<code>start()</code>方法的状态。</li>
+<li><strong>就绪</strong> 指的是线程进入可以执行的状态，具体执行还是未执行需要CPU的时间片调度算法来决定<ol>
+<li>新建状态的线程通过调用<code>start()</code>方法可以使线程进入就绪状态</li>
+<li>阻塞状态的线程在<code>sleep()</code>方法的时间到了的时候会重新进入就绪状态</li>
+<li>处于运行状态的线程因为CPU分配的时间片用完了，由运行状态进入就绪状态，等待CPU的下一次分配</li>
+<li>处于阻塞状态的线程调用了<code>interrupt()</code>（<em>Slepp状态下调用interrupt()方法会重置中断标志位</em>）让阻塞状态的线程唤醒，进入就绪状态</li>
+<li>处于阻塞状态的线程在<code>wait()/notify</code>机制下被<code>notify()</code> <code>notifyAll()</code>唤醒进入就绪状态</li>
+<li>处于运行状态的线程调用<code>yield()</code>方法放弃了CPU分配的时间片，使得线程进入就绪状态</li>
+</ol>
+</li>
+<li><strong>运行</strong> 指的是就绪状态的线程获得了CPU分配的时间片开始执行<ol>
+<li>就绪状态的线程在获得CPU分配的时间片，进入运行状态</li>
+<li>就绪状态的线程调用<code>join()</code>方法，进入运行状态</li>
+</ol>
+</li>
+<li><strong>阻塞</strong> 指的是线程在运行状态的时候，因为某些条件的问题，进入等待唤醒的状态<ol>
+<li>在运行状态的线程调用<code>wait()</code> <code>sleep()</code>会让方法进入阻塞状态，当条件满足重新唤醒的时候，会让线程进入就绪状态等待CPU分配时间片。</li>
+</ol>
+</li>
+<li><strong>死亡</strong> 指的是线程结束被销毁<ol>
+<li>线程的正常执行完<code>run()</code>方法，线程执行完毕被销毁。</li>
+<li>线程被暴力停止调用了<code>stop()</code></li>
+<li>线程抛出异常无法继续执行</li>
+</ol>
+</li>
+</ul>
+<h4 id="run-和start"><a href="#run-和start" class="headerlink" title="run()和start()"></a><b style="color:orange;">run()和start()</b></h4><p>调用线程的<code>run()</code>方法是直接调用，是当做普通方法调用，并没有启动额外的线程；调用<code>start()</code>方法的时候启动线程，让启动的子线程去调用<code>run()</code>方法。</p>
+<h4 id="线程的优先级"><a href="#线程的优先级" class="headerlink" title="线程的优先级"></a><b style="color:orange;">线程的优先级</b></h4><p>通过调用<code>userThread.setPriority(3);</code>来设置线程的优先级，但是并不意味着CPU会按照你的想法来，最后还是需要看CPU的调度算法。优先级的取值范围是1~10，默认是5。</p>
+<h4 id="守护线程"><a href="#守护线程" class="headerlink" title="守护线程"></a><b style="color:orange;">守护线程</b></h4><p>守护线程是与主线程同生共死的，当主线程运行结束的时候，守护线程会直接结束。</p>
+<pre><code class="java">package org.example.pojo.threads;
+
+import org.junit.Test;
+import org.junit.internal.runners.statements.RunAfters;
+
+import java.lang.management.ManagementFactory;
+import java.lang.management.ThreadInfo;
+import java.lang.management.ThreadMXBean;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.FutureTask;
+
+/**
+ * @program:Threads
+ * @description:测试Java程序的多线程性
+ * @author:Mr.Pan
+ * @create:2020-12-01 15:15:48
+ */
+public class OnlyMain &#123;
+    private static class UserAble implements Runnable&#123;
+        @Override
+        public void run() &#123;
+            while (!Thread.currentThread().isInterrupted())&#123;
+                System.out.println(Thread.currentThread().getName());
+            &#125;
+            System.out.println(Thread.currentThread().getName()+&quot;标志位是&quot;+Thread.currentThread().isInterrupted());
+        &#125;
+    &#125;
+
+    public static void main(String[] args) throws ExecutionException, InterruptedException &#123;
+        UserAble userAble=new UserAble();
+        Thread userThread=new Thread(userAble,&quot;UserAble&quot;);
+        //userThread.setDaemon(true);
+        userThread.start();
+        Thread.sleep(1);
+        userThread.interrupt();
+        System.out.println(Thread.currentThread().getName()+&quot;已经执行完毕&quot;);
+    &#125;
+&#125;
+</code></pre>
+<p>上述代码执行完毕的执行结果是：</p>
+<pre><code class="java">UserAble
+UserAble
+UserAble
+UserAble
+UserAble
+main已经执行完毕
+UserAble标志位是true</code></pre>
+<p>是正常的执行，在主线程执行完毕的时候子线程还在继续执行。当把上述代码中<code>userThread.setDaemon(true)</code>表示将userThread线程设置为守护线程取消注释，然后将<code>userThread.interrupt()</code>注释掉，让userThread与main线程一起结束。输出结果如下：</p>
+<pre><code class="java">UserAble
+UserAble
+UserAble
+UserAble
+UserAble
+UserAble
+UserAble
+UserAble
+main已经执行完毕</code></pre>
+<p>可以看到只有main线程执行完毕，守护线程就直接结束了，这就意味着线程在守护线程中的<code>finally</code>语句块也是不一定能够得到执行的。</p>
+<h3 id="3、线程间的共享"><a href="#3、线程间的共享" class="headerlink" title="3、线程间的共享"></a><b style="color:blue;">3、线程间的共享</b></h3><p>在多线程编程中，线程之间并不是独立的，需要多个线程一起协作一起完成一项任务。这是就会出现多个线程访问内存中的同一个区域，如何保证数据的正确性，这就是多线程编程的核心。而实现同步的方式主要有<code>Synchronized</code>关键字、<code>volatile关键字</code>、<code>ThreadLocal</code>的使用三种。</p>
+<h4 id="synchronized关键字"><a href="#synchronized关键字" class="headerlink" title="synchronized关键字"></a><b style="color:orange;">synchronized关键字</b></h4><p><code>synchronized</code>可以修饰方法，当它修饰普通方法的时候称之为<b style="color:slateblue;">对象锁</b>；当它修饰静态方法的时候称之为<b style="color:slateblue;">类锁</b>。</p>
+<p>创建一个测试类：</p>
+<pre><code class="java">package org.example.pojo.threads;
+/**
+ * @program:Threads
+ * @description:测试Synchronized关键字
+ * @author:Mr.Pan
+ * @create:2020-12-01 20:20:28
+ */
+public class SynClassAndInst &#123;
+    //创建了一持有类锁的线程
+    private static class SynClass extends Thread &#123;
+        @Override
+        public void run() &#123;
+            System.out.println(&quot;TestClass is running...&quot;);
+            synClass();
+        &#125;
+    &#125;
+    //创建一个能拥有对象锁的线程
+    private static class InstanceSyn implements Runnable &#123;
+
+        private SynClassAndInst synClassAndInst;
+
+        public InstanceSyn(SynClassAndInst synClassAndInst) &#123;
+            this.synClassAndInst = synClassAndInst;
+        &#125;
+
+        @Override
+        public void run() &#123;
+            System.out.println(&quot;TestInstance is running...&quot; + synClassAndInst);
+            synClassAndInst.instance();
+        &#125;
+    &#125;
+    //    创建一个能够拥有对象锁的线程
+    private static class Instance2Syn implements Runnable &#123;
+        private SynClassAndInst synClassAndInst;
+
+        public Instance2Syn(SynClassAndInst synClassAndInst) &#123;
+            this.synClassAndInst = synClassAndInst;
+
+        &#125;
+
+        @Override
+        public void run() &#123;
+            System.out.println(&quot;TestInstance2 is running...&quot; + synClassAndInst);
+            synClassAndInst.instance2();
+
+        &#125;
+    &#125;
+
+    //    创建两个同步方法，对像锁
+    private synchronized void instance() &#123;
+        try &#123;
+            System.out.println(&quot;synInstance is going ...&quot; + this.toString());
+            Thread.sleep(1000);
+            System.out.println(&quot;synInstance is ended ...&quot; + this.toString());
+        &#125; catch (InterruptedException e) &#123;
+            e.printStackTrace();
+        &#125;
+    &#125;
+
+    private synchronized void instance2() &#123;
+        try &#123;
+            System.out.println(&quot;synInstance2 is going ...&quot; + this.toString());
+            Thread.sleep(1000);
+            System.out.println(&quot;synInstance2 is ended ...&quot; + this.toString());
+        &#125; catch (InterruptedException e) &#123;
+            e.printStackTrace();
+        &#125;
+    &#125;
+
+    //创建一个类锁
+    private static synchronized void synClass() &#123;
+        try &#123;
+            System.out.println(&quot;synInstance3 is going ...&quot;);
+            Thread.sleep(1000);
+            System.out.println(&quot;synInstance3 is ended ...&quot;);
+        &#125; catch (InterruptedException e) &#123;
+            e.printStackTrace();
+        &#125;
+    &#125;
+&#125;
+</code></pre>
+<p>上述代码中创建了两个线程<code>InstanceSyn</code>和<code>Instance2Syn</code>，两个线程分别调用类中的两个<code>synchronized</code>的普通方法（<em>对象锁</em>），还创建一个类锁和一个普通的静态方法。</p>
+<p><span style="color:magenta;">测试：持有不同对象锁的两个线程之间的工作情况</span></p>
+<pre><code class="java">public static void main(String[] args) throws InterruptedException &#123;
+   //创建两个对象
+    SynClassAndInst synClassAndInst = new SynClassAndInst();
+    SynClassAndInst synClassAndInst2 = new SynClassAndInst();
+    //分别让两个线程持有不同的对象锁
+    Thread t1 = new Thread(new InstanceSyn(synClassAndInst));
+    Thread t2 = new Thread(new Instance2Syn(synClassAndInst2));
+
+    t1.start();
+    t2.start();
+
+    Thread.sleep(1000);
+
+&#125;</code></pre>
+<p>输出结果为：</p>
+<pre><code class="java">TestInstance is running...org.example.pojo.threads.SynClassAndInst@1c3d736f
+synInstance is going ...org.example.pojo.threads.SynClassAndInst@1c3d736f
+TestInstance2 is running...org.example.pojo.threads.SynClassAndInst@36bdb2aa
+synInstance2 is going ...org.example.pojo.threads.SynClassAndInst@36bdb2aa
+synInstance is ended ...org.example.pojo.threads.SynClassAndInst@1c3d736f
+synInstance2 is ended ...org.example.pojo.threads.SynClassAndInst@36bdb2aa</code></pre>
+<p><b style="color:tomato;">结论：当持有不同对象锁的两个线程之间是不会阻塞情况的，是可以同时进行的。</b></p>
+<p><span style="color:magenta;">测试：持有相同对象锁的两个线程之间的工作情况</span></p>
+<pre><code class="java">public static void main(String[] args) throws InterruptedException &#123;
+       //创建一个对象
+    SynClassAndInst synClassAndInst = new SynClassAndInst();
+    //分别让两个线程持有相同的对象锁
+    Thread t1 = new Thread(new InstanceSyn(synClassAndInst));
+    Thread t2 = new Thread(new Instance2Syn(synClassAndInst));
+
+    t1.start();
+    t2.start();
+
+    Thread.sleep(1000);
+
+&#125;&#125;</code></pre>
+<p>输出结果：</p>
+<pre><code class="java">TestInstance is running...org.example.pojo.threads.SynClassAndInst@3c81615
+TestInstance2 is running...org.example.pojo.threads.SynClassAndInst@3c81615
+synInstance is going ...org.example.pojo.threads.SynClassAndInst@3c81615
+synInstance is ended ...org.example.pojo.threads.SynClassAndInst@3c81615
+synInstance2 is going ...org.example.pojo.threads.SynClassAndInst@3c81615
+synInstance2 is ended ...org.example.pojo.threads.SynClassAndInst@3c81615</code></pre>
+<p>上述输出结果中，在执行到被<code>synchronized</code>的修饰两个普通方法的时候，线程<code>t1</code>先获得了这个对象锁，所以必须等到<code>t1</code>完成了<code>instance()</code>方法的调用，线程<code>t2</code>才可以去调用<code>instance2()</code>方法。</p>
+<p><b style="color:tomato;">结论：持有相同对象锁的两个线程，必须等待先获得对象锁的线程执行完毕，下一个线程才能执行。</b></p>
+<p><span style="color:magenta;">测试：分别持有对象锁和类锁的两个线程之间的工作情况</span></p>
+<pre><code class="java"> public static void main(String[] args) throws InterruptedException &#123;
+         //创建两个线程分别持有类锁和对象锁
+        SynClassAndInst synClassAndInst = new SynClassAndInst();
+        Thread t1 = new Thread(new InstanceSyn(synClassAndInst));
+
+        SynClass synClass=new SynClass();
+
+        t1.start();
+        synClass.start();
+
+        Thread.sleep(1000);
+    &#125;</code></pre>
+<p>输出结果：</p>
+<pre><code class="java">TestInstance is running...org.example.pojo.threads.SynClassAndInst@11cfa6bb
+TestClass is running...
+synInstance is going ...org.example.pojo.threads.SynClassAndInst@11cfa6bb
+synInstance3 is going ...
+synInstance3 is ended ...
+synInstance is ended ...org.example.pojo.threads.SynClassAndInst@11cfa6bb</code></pre>
+<p>从输出结果中可以看到，线程<code>t1</code>和<code>synClass</code>线程之间是同时进行的，没有出现阻塞线程。</p>
+<p><b style="color:tomato;">结论：持有类锁的线程和持有对象锁的两个线程之间可以同时进行</b></p>
+<p><span style="color:magenta;">测试：持有同一个类锁的两个线程之间的运行情况</span></p>
+<pre><code class="java">   public static void main(String[] args) throws InterruptedException &#123;
+
+        SynClass synClass = new SynClass();
+        SynClass synClass1 = new SynClass();
+
+        synClass.start();
+        synClass1.start();
+
+        Thread.sleep(1000);
+
+    &#125;</code></pre>
+<p>输出结果为：</p>
+<pre><code class="java">TestClass is running...
+TestClass is running...
+synInstance3 is going ...
+synInstance3 is ended ...
+synInstance3 is going ...
+synInstance3 is ended ...</code></pre>
+<p>线程<code>synClass</code>和线程<code>synClass1</code>之间存在竞争关系，必须等到先获得类锁的线程执行完毕，下一个线程才可以获得类锁继续执行。</p>
+<p><b style="color:tomato;">结论：持有同一个类的类锁的两个线程之间，必须等到先获得类锁的线程执行完毕，下一条线程在可以获得类锁继续执行。</b></p>
+<blockquote>
+<p><span style="color:purple;">其实<code>synchronized</code>关键字锁的都是对象，只是在对象锁中它锁的是<code>new</code>出来的对象实例，而类锁中它锁的是虚拟机中Class对象，而虚拟机保证Class对象在虚拟机唯一，所以只要是同一个类的类锁其实都是同一把锁。</span></p>
+</blockquote>
+<h4 id="volatile关键字"><a href="#volatile关键字" class="headerlink" title="volatile关键字"></a><b style="color:orange;">volatile关键字</b></h4><p><code>volatile</code>是最轻量的同步机制，它由虚拟机提供，要求每次对这个变量的读写都需要同步到主内存中，所有访问它的Java线程都会在主内存中获取这个变量。<span style="color:magenta;">但是volatile只能保证可见性，无法保证原子性。</span></p>
+<p>当只有一个线程写，多个线程读的时候，是volatile关键字最常用的场景。</p>
+<h4 id="ThreadLocal类"><a href="#ThreadLocal类" class="headerlink" title="ThreadLocal类"></a><b style="color:orange;">ThreadLocal类</b></h4><p>ThreadLocal提供了线程的局部变量，每个线程都可以通过<code>set()</code>和<code>get()</code>来对这个局部变量进行操作，但不会和其他线程的局部变量进行冲突。</p>
+<pre><code class="java">package org.example.pojo.threads;
+
+/**
+ * @program:Threads
+ * @description:测试ThreadLocal
+ * @author:Mr.Pan
+ * @create:2020-12-02 10:10:29
+ */
+public class UseThreadLocal &#123;
+
+    //创建一个ThreadLocal对象，在里面存储一个初始值为1的变量
+    static ThreadLocal&lt;Integer&gt; threadLocal=new ThreadLocal&lt;Integer&gt;()&#123;
+        @Override
+        protected Integer initialValue() &#123;
+            return 1;
+        &#125;
+    &#125;;
+
+    public void startThreadArray()&#123;
+        Thread[] threads=new Thread[3];
+        for (int i = 0; i &lt;3 ; i++) &#123;
+                threads[i]=new Thread(new TestThread(i));
+        &#125;
+        for (int i = 0; i &lt;3 ; i++) &#123;
+            threads[i].start();
+        &#125;
+    &#125;
+
+    //创建三个线程，分别对ThreadLocal中存入的对象进行操作，观察结果之间是否存在互相影响
+    private static class TestThread implements Runnable&#123;
+
+        int id;
+        public TestThread(Integer id)&#123;
+            this.id=id;
+        &#125;
+
+        @Override
+        public void run() &#123;
+            System.out.println(Thread.currentThread().getName()+&quot;:start&quot;);
+            Integer s=threadLocal.get();
+            s=s+id;
+            threadLocal.set(s);
+            System.out.println(Thread.currentThread().getName()+&quot;:&quot;+threadLocal.get());
+        &#125;
+    &#125;
+
+    public static void main(String[] args) &#123;
+        UseThreadLocal useThreadLocal=new UseThreadLocal();
+        useThreadLocal.startThreadArray();
+    &#125;
+&#125;
+</code></pre>
+<p>输出结果为：</p>
+<pre><code class="java">Thread-0:start
+Thread-2:start
+Thread-1:start
+Thread-1:2
+Thread-2:3
+Thread-0:1</code></pre>
+<p>三个线程之间的操作ThreadLocal之间是互不影响的，其实观察ThreadLocal的实现，可以简单的理解为ThreadLocal就是一个<code>Map&lt;Thread,Object&gt;</code>的对象，每次get或者是set都是需要Thread作为key，去操作对应的Thread在ThreadLocal里面的副本值。</p>
+<p>ThreadLocal最常用的场景就是连接池，在连接池中，让每一个连接都保持独立。但是由于为每一个线程维护一个副本，当副本是一个复杂的、庞大的类的时候，就会容易造成内存的消耗。</p>
+<h3 id="4、线程间的协作"><a href="#4、线程间的协作" class="headerlink" title="4、线程间的协作"></a><b style="color:blue;">4、线程间的协作</b></h3><p>在大多时候我们需要多个线程之间进行相互协作，来完成某一项工作。例如，需要线程A去做某一件事，但是线程B必须等待线程A将这个事情做完，才能继续做自己的事情。最常规的就是采用轮询的机制，线程B每隔一段时间就去查询线程A是不是将这个事情做完了，这样导致线程B一直在运行在消耗系统资源的同时，有时候也会对线程A的执行效率产生影响。假如有一种更好的机制，在线程A没有运行完的时候，线程B一致处于等待状态，这样就可以减少系统资源的消耗。这就是常说的<b style="color:slateblue;">等待/通知机制</b>。</p>
+<h4 id="wait-notify机制"><a href="#wait-notify机制" class="headerlink" title="wait/notify机制"></a><b style="color:orange;">wait/notify机制</b></h4><p>调用<code>wait()</code>方法称之为等待方，调用<code>notify()</code>称之为通知方。</p>
+<p><strong>等待和通知的标准范式</strong></p>
+<p><b style="color:seagreen;">等待方：</b></p>
+<ol>
+<li>获取对象的锁</li>
+<li>循环判断条件是否满足，不满足调用wait方法</li>
+<li>条件满足执行业务逻辑</li>
+</ol>
+<p><b style="color:seagreen;">通知方：</b></p>
+<ol>
+<li>获取对象的锁</li>
+<li>改变条件</li>
+<li>通知所有等待在对象的线程</li>
+</ol>
+<p>创建一个快递实体类，当快递的地点发生变化的时候，就想用户发送消息；当快递的公里数发生变化的时候，就像用户发送消息。</p>
+<pre><code class="java">package org.example.pojo;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+/**
+ * @program:Threads
+ * @description:创建一个快递实体类
+ * @author:Mr.Pan
+ * @create:2020-12-03 09:9:43
+ */
+@NoArgsConstructor
+@AllArgsConstructor
+public class Express &#123;
+    public final static String CITY = &quot;ShangHai&quot;;
+    private int km;//快递运输的里程数
+    private String site;//快递到达的地点
+
+    /*变化公里数，然后通知处于wait状态并需要处理公里数的线程进行业务处理*/
+    public synchronized void changeKm() &#123;
+        this.km = 101;
+        notifyAll();
+    &#125;
+
+    /*变化地点，然后通知处于wait状态并需要处理地点的线程进行业务处理*/
+    public synchronized void changeSite() &#123;
+        this.site = &quot;BeiJin&quot;;
+        notifyAll();
+    &#125;
+
+    public synchronized void waitKm() &#123;
+        try &#123;
+            while (this.km &lt;= 100) &#123;
+                wait();
+                System.out.println(&quot;检测公里数线程[&quot; + Thread.currentThread().getName() + &quot;] 被唤醒&quot;);
+            &#125;
+            System.out.println(&quot;您的快递已经运输了&quot; + this.km + &quot;千米，请您注意查收！&quot;);
+        &#125; catch (InterruptedException e) &#123;
+            e.printStackTrace();
+        &#125;
+    &#125;
+
+    public synchronized void waitSite() &#123;
+        try &#123;
+            while (CITY.equals(this.site)) &#123;
+                wait();
+                System.out.println(&quot;检查地点线程[&quot; + Thread.currentThread().getName() + &quot;] 被唤醒&quot;);
+            &#125;
+            System.out.println(&quot;您的快递已到达&quot; + this.site + &quot;, 请您注意查收！&quot;);
+        &#125; catch (InterruptedException e) &#123;
+            e.printStackTrace();
+        &#125;
+    &#125;
+
+&#125;
+</code></pre>
+<p>然后创建线程，利用多线程完成这个任务：</p>
+<pre><code class="java">package org.example.threads;
+
+import org.example.pojo.Express;
+
+/**
+ * @program:Threads
+ * @description:wait/notify机制
+ * @author:Mr.Pan
+ * @create:2020-12-03 09:9:42
+ */
+public class WaitNotify &#123;
+
+    private static Express express=new Express(0,Express.CITY);
+
+    private static class CheckKm extends Thread&#123;
+        @Override
+        public void run() &#123;
+            express.waitKm();
+        &#125;
+    &#125;
+
+    private static class CheckSite extends Thread&#123;
+        @Override
+        public void run() &#123;
+            express.waitSite();
+        &#125;
+    &#125;
+
+    public static void main(String[] args) throws InterruptedException &#123;
+        for (int i = 0; i &lt;3 ; i++) &#123;
+           Thread t= new CheckKm();
+           t.setName(&quot;CheckKmThread&quot;+i);
+           t.start();
+        &#125;
+        for (int i = 0; i &lt; 3; i++) &#123;
+            Thread t= new CheckSite();
+            t.setName(&quot;CheckSiteThread&quot;+i);
+            t.start();
+        &#125;
+
+        Thread.sleep(1000);
+        express.changeKm();
+    &#125;
+
+&#125;
+</code></pre>
+<p>上述代码的输出结果为：</p>
+<pre><code class="java">检查地点线程[CheckSiteThread2] 被唤醒
+检查地点线程[CheckSiteThread0] 被唤醒
+检查地点线程[CheckSiteThread1] 被唤醒
+检测公里数线程[CheckKmThread2] 被唤醒
+您的快递已经运输了101千米，请您注意查收！
+检测公里数线程[CheckKmThread1] 被唤醒
+您的快递已经运输了101千米，请您注意查收！
+检测公里数线程[CheckKmThread0] 被唤醒
+您的快递已经运输了101千米，请您注意查收！</code></pre>
+<p>从输出结果可以很容易看到，<code>wait()/notifyAll()</code>机制会唤醒所有的线程，无论这线程是监测地点的还是监测公里数的，都会被唤醒执行一次。因为只是改变了公里数，所以监测地点的线程发现地点并没有发生变化所以再次进入休眠状态，而监测公里数的线程发现公里数发生变化之后就提醒用户，公里数发生了变化。</p>
+<p>利用线程管理类<code>ThreadMXBean</code>查看存活的线程：</p>
+<pre><code class="java">ThreadMXBean threadMXBean= ManagementFactory.getThreadMXBean();
+        ThreadInfo[] threadInfos= threadMXBean.dumpAllThreads(false,false);
+        for (ThreadInfo threadInfo:threadInfos)&#123;
+            System.out.println(&quot;[&quot;+threadInfo.getThreadId()+&quot;]&quot;+&quot; &quot;+threadInfo.getThreadName());
+        &#125;</code></pre>
+<p>输出为：</p>
+<pre><code class="java">[17] CheckSiteThread2
+[16] CheckSiteThread1
+[15] CheckSiteThread0
+[6] Monitor Ctrl-Break
+[5] Attach Listener
+[4] Signal Dispatcher
+[3] Finalizer
+[2] Reference Handler
+[1] main</code></pre>
+<p>可以看到监测公里数的线程已经不存在，已经执行完毕，被销毁掉了。但是因为地点仍然没有发生变化，所以监测地点的线程仍然存在。</p>
+<p><b style="color:seagreen;">wait()/notifyAll()执行机制图：</b></p>
+<img src="waitnotifyAll机制.jpg" />
+
+<p><span style="color:magenta;">在实际的应用开发中其实是<code>notifyAll()</code>用的更多的，<code>notify()</code>有可能使得所有的线程都进入休眠。</span>在上述例子中，假如将<code>notifyAll()</code>改为<code>notify()</code>会出现所有线程都休眠的状态，即使公里数发生了变化，检测公里数的线程也无法获得这个信息导致一直在休眠，而检测地点的线程因为地点没有发生变化将继续休眠，最终所有的线程都在休眠。</p>
+<p><b style="color:seagreen;">wait()/notify()机制</b></p>
+<img src="waitnotify机制.jpg" />
+
+<p><span style="color:magenta;"><code>notify()</code>会唤醒一个线程，具体唤醒哪个线程是由操作系统来决定的。</span>公里数发生变化的时候，假如唤醒的是检测公里数的线程，那么线程将正常执行<code>wait/notify</code>机制；但是假如唤醒的是检测地点的线程，此时公里数发生变化的信息就无法传到检测公里数的线程中，此时检测公里数的线程就依旧处于休眠状态，而此时唤醒的检测地点的线程，在执行一遍发现地点没有改变的时候，再次进入休眠。此时所有的线程都进入了休眠。这就是<code>notify()</code>机制存在的问题。</p>
+<p><b style="color:slateblue;">在实际编程中应该尽量使用notifyAll机制。</b></p>
+<h4 id="等待超时模式"><a href="#等待超时模式" class="headerlink" title="等待超时模式"></a><b style="color:orange;">等待超时模式</b></h4><p>在上述代码中，假如条件始终没有满足，所有的线程会无限期的等待下去。在实际应用过程中，其实并不是这样，我们更喜欢它不光是等待了能处理相应的逻辑，没有等待到信息也可以进行相应的处理逻辑。</p>
+<p><b style="color:seagreen;">等待超时模式的范式：</b></p>
+<pre><code class="java">long overtime=now +T;
+long remain=T;
+while(result 不满足条件&amp;&amp;remain&gt;0)&#123;
+    wait(remain);
+    reamain=overtime-now;
+&#125;
+return result;</code></pre>
+<p>假设现在时间为<code>now</code>，等待时间为<code>T</code>，就以为这到了<code>overtime</code>时，还没有唤醒，这线程就需要自动唤醒然后执行下面的逻辑完成所有的任务。</p>
+<p>上述代码中假设检测公里数的线程等待3s，超过3s之后就报超时：</p>
+<pre><code class="java">public synchronized void waitKm() &#123;
+        try &#123;
+            long overtime=new Date().getTime()+3000;
+            long remain=3000;
+            while (this.km &lt;= 100 &amp;&amp;remain&gt;0) &#123;
+                wait(remain);
+                System.out.println(&quot;线程[&quot;+Thread.currentThread().getName()+&quot;]超时&quot;);
+                System.out.println(&quot;检测公里数线程[&quot; + Thread.currentThread().getName() + &quot;] 被唤醒&quot;);
+                remain=overtime-new Date().getTime();
+            &#125;
+            System.out.println(&quot;您的快递已经运输了&quot; + this.km + &quot;千米，请您注意查收！&quot;);
+        &#125; catch (InterruptedException e) &#123;
+            e.printStackTrace();
+        &#125;
+    &#125;</code></pre>
+<p>然后执行主方法中的代码，输出结果为：</p>
+<pre><code class="java"> public static void main(String[] args) throws InterruptedException &#123;
+        for (int i = 0; i &lt;3 ; i++) &#123;
+           Thread t= new CheckKm();
+           t.setName(&quot;CheckKmThread&quot;+i);
+           t.start();
+        &#125;
+
+        Thread.sleep(1000);
+        express.changeKm(85);
+        Thread.sleep(1000);
+        express.changeKm(85);
+        Thread.sleep(3000);
+
+
+        ThreadMXBean threadMXBean= ManagementFactory.getThreadMXBean();
+        ThreadInfo[] threadInfos= threadMXBean.dumpAllThreads(false,false);
+        for (ThreadInfo threadInfo:threadInfos)&#123;
+            System.out.println(&quot;[&quot;+threadInfo.getThreadId()+&quot;]&quot;+&quot; &quot;+threadInfo.getThreadName());
+        &#125;
+    &#125;</code></pre>
+<pre><code class="java">检测公里数线程[CheckKmThread1] 被唤醒,剩余等待时间为：3000
+检测公里数线程[CheckKmThread2] 被唤醒,剩余等待时间为：3000
+检测公里数线程[CheckKmThread0] 被唤醒,剩余等待时间为：3000
+检测公里数线程[CheckKmThread0] 被唤醒,剩余等待时间为：1995
+检测公里数线程[CheckKmThread2] 被唤醒,剩余等待时间为：1995
+检测公里数线程[CheckKmThread1] 被唤醒,剩余等待时间为：1995
+检测公里数线程[CheckKmThread1] 被唤醒,剩余等待时间为：986
+线程[CheckKmThread1]超时
+检测公里数线程[CheckKmThread2] 被唤醒,剩余等待时间为：986
+线程[CheckKmThread2]超时
+检测公里数线程[CheckKmThread0] 被唤醒,剩余等待时间为：986
+线程[CheckKmThread0]超时
+[6] Monitor Ctrl-Break
+[5] Attach Listener
+[4] Signal Dispatcher
+[3] Finalizer
+[2] Reference Handler
+[1] main</code></pre>
+<p>从上述结果可以看到，虽然每次检测公里数的线程被唤醒，但是发现公里数并没有达到要求，然后将继续等待下一次唤醒。当超过时间之后，从<code>ThreadMXBean</code>可以看出，线程会自动销毁。</p>
+<p><b style="color:seagreen;">等待超时机制流程图：</b></p>
+<img src="等待超时机制.png" />
+
+<h3 id="5、join-方法"><a href="#5、join-方法" class="headerlink" title="5、join()方法"></a><b style="color:blue;">5、join()方法</b></h3><p><b style="color:slateblue;"><code>join()</code>方法是指，线程A调用了线程B的该方法时，只有当线程B执行完毕了，线程A才可以继续执行。</b></p>
+<pre><code class="java">package org.example.threads;
+
+/**
+ * @program:Threads
+ * @description:测试join()方法
+ * @author:Mr.Pan
+ * @create:2020-12-03 15:15:17
+ */
+public class UseJoin &#123;
+
+    static class JumpQueue implements Runnable&#123;
+        private Thread thread;
+
+        public JumpQueue(Thread thread)&#123;
+            this.thread=thread;
+        &#125;
+
+        @Override
+        public void run() &#123;
+            try &#123;
+                thread.join();
+            &#125; catch (InterruptedException e) &#123;
+                e.printStackTrace();
+            &#125;
+            System.out.println(Thread.currentThread().getName()+&quot; terminated.&quot;);
+        &#125;
+    &#125;
+
+    public static void main(String[] args) throws InterruptedException &#123;
+        Thread previous=Thread.currentThread();
+        for (int i = 0; i &lt;3 ; i++) &#123;
+            Thread thread=new Thread(new JumpQueue(previous),String.valueOf(i));
+            System.out.println(previous.getName()+&quot; jump a queue the thread:&quot;+thread.getName());
+            thread.start();
+            previous=thread;
+        &#125;
+        Thread.sleep(2000);
+        System.out.println(Thread.currentThread().getName()+&quot; terminated.&quot;);
+    &#125;
+
+
+&#125;
+</code></pre>
+<p>上述代码输出结果为：</p>
+<pre><code class="java">main jump a queue the thread:0
+0 jump a queue the thread:1
+1 jump a queue the thread:2
+main terminated.
+0 terminated.
+1 terminated.
+2 terminated.</code></pre>
+<p>可以看到是创建了三个线程，每个线程调用前面一个线程的<code>join()</code>方法，这就意味着第三个线程必须等到所有的线程执行完毕，第三个线程才能继续执行自己的事情。从后半段的输出可以看到前面两个线程结束之后，第三个线程才会结束。</p>
+<h3 id="6、常用方法对锁的影响"><a href="#6、常用方法对锁的影响" class="headerlink" title="6、常用方法对锁的影响"></a><b style="color:blue;">6、常用方法对锁的影响</b></h3><p>一般涉及到与锁有关系的方法有<code>sleep()</code> <code>yield()</code> <code>notify()/notifyAll()</code> <code>wait()</code></p>
+<ul>
+<li><code>sleep()</code> 执行之后锁是不会释放的</li>
+<li><code>wait()</code>调用之前是必须持有锁的，调用之后，锁会被释放，当wait方法返回的时候，当前线程会重新持有锁</li>
+<li><code>yield()</code>执行之后锁是不会释放的</li>
+<li><code>notify()/notifyAll()</code>调用之前必须持有锁，调用该方法是本身不会释放锁的</li>
+</ul>
+]]></content>
+      <categories>
+        <category>并发编程</category>
+      </categories>
+      <tags>
+        <tag>编程语言</tag>
+      </tags>
+  </entry>
+</search>
