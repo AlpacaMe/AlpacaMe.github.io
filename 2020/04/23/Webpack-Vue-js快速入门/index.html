@@ -186,12 +186,12 @@
     
     
         <span class="article-wordcount article-meta-item">
-            <i class="fas fa-file-word"></i> <span>4.1k Words</span>
+            <i class="fas fa-file-word"></i> <span>4.3k Words</span>
         </span>
     
     
         <span class="article-min2read article-meta-item">
-            <i class="fas fa-clock"></i> <span>19 Mins</span>
+            <i class="fas fa-clock"></i> <span>20 Mins</span>
         </span>
     
     
@@ -206,7 +206,7 @@
             <h2 style="color:crimson;font-weight:lighter;">总有一些孤独需要一个人承受</h2>
 <a id="more"></a>
 
-<h3 id="webpack-Vue-js开发准备"><a href="#webpack-Vue-js开发准备" class="headerlink" title="webpack+Vue.js开发准备"></a><b style="color:red;">webpack+Vue.js开发准备</b></h3><h4 id="1、webpack简介"><a href="#1、webpack简介" class="headerlink" title="1、webpack简介"></a><b style="color:blue;">1、webpack简介</b></h4><p>官方网站为：<a href="https://github.com/webpack/webpack" target="_blank" rel="noopener">https://github.com/webpack/webpack</a></p>
+<h3 id="webpack-Vue-js开发准备"><a href="#webpack-Vue-js开发准备" class="headerlink" title="webpack+Vue.js开发准备"></a><b style="color:red;">webpack+Vue.js开发准备</b></h3><h4 id="1、webpack简介"><a href="#1、webpack简介" class="headerlink" title="1、webpack简介"></a><b style="color:blue;">1、webpack简介</b></h4><p>官方网站为：<a class="link"   target="_blank" rel="noopener" href="https://github.com/webpack/webpack" >https://github.com/webpack/webpack<i class="fas fa-external-link-alt"></i></a></p>
 <p>webpack是一个打包工具，可以把js、css、node、module、coffeescrip、scss/less、图片等都打包在一起。</p>
 <h5 id="webpack的安装与使用"><a href="#webpack的安装与使用" class="headerlink" title="webpack的安装与使用"></a><b style="color:orange;">webpack的安装与使用</b></h5><p>通过node.js以及npm包管理工具完成安装：</p>
 <pre><code class="java">$  npm install -g webpack</code></pre>
@@ -266,21 +266,21 @@ import SayHi from &#39;@/components/SayHi&#39;
 //@表示当前目录
 Vue.use(Router)
 
-export default new Router({
+export default new Router(&#123;
   routes: [
       //增加一下几行，表示定义了  /#/helloword 这个 url
-    {
+    &#123;
       //对应一个url
       path: &#39;/say_hi&#39;,
        //vue.js内部使用的名称
       name: &#39;SayHi&#39;,
         //对应的.vue页面的名字
       component: SayHi
-    }
+    &#125;
   ]
-})
+&#125;)
 </code></pre>
-<p>当用户浏览器访问<a href="https://localhost:8080/#/HelloWorld" target="_blank" rel="noopener">https://localhost:8080/#/say_hi的时候，就会渲染<code>.components/SayHi.vue</code>文件</a></p>
+<p>当用户浏览器访问<a target="_blank" rel="noopener" href="https://localhost:8080/#/HelloWorld">https://localhost:8080/#/say_hi的时候，就会渲染<code>.components/SayHi.vue</code>文件</a></p>
 <h5 id="创建一个新的组件"><a href="#创建一个新的组件" class="headerlink" title="创建一个新的组件"></a><b style="color:orange;">创建一个新的组件</b></h5><p>在<code>src/components/</code>创建SayHi.vue：</p>
 <pre><code class="html">&lt;template&gt;
     &lt;div&gt;
@@ -288,17 +288,17 @@ export default new Router({
    &lt;/div&gt;
 &lt;/template&gt;
 &lt;script&gt;
-    export default{
-        data (){
-            return{
+    export default&#123;
+        data ()&#123;
+            return&#123;
 
-            }
-        }
-    }
+            &#125;
+        &#125;
+    &#125;
 &lt;/script&gt;
 &lt;style&gt;
 &lt;/style&gt;</code></pre>
-<p>此时输入<a href="http:\\localhost:8080/#/say_hi" target="_blank" rel="noopener">http:\\localhost:8080/#/say_hi</a></p>
+<p>此时输入<a class="link"   target="_blank" rel="noopener" href="http:\\localhost:8080/#/say_hi" >http:\\localhost:8080/#/say_hi<i class="fas fa-external-link-alt"></i></a></p>
 <p><b style="color:crimson;">每次创建一个的新的组件的记得使用<code>import SayHi from &#39;@components/SayHi&#39;</code></b></p>
 <p><b style="color:orange;">为组件创建样式</b></p>
 <p>修改SayHi.vue文件：</p>
@@ -308,18 +308,18 @@ export default new Router({
    &lt;/div&gt;
 &lt;/template&gt;
 &lt;script&gt;
-    export default{
-        data (){
-            return{
+    export default&#123;
+        data ()&#123;
+            return&#123;
 
-            }
-        }
-    }
+            &#125;
+        &#125;
+    &#125;
 &lt;/script&gt;
 &lt;style&gt;
-    .hi{
+    .hi&#123;
         color:red;
-    }
+    &#125;
 &lt;/style&gt;</code></pre>
 <p>刷新浏览器就可以发现样式发生了改变。</p>
 <p><i style="color:slateblue;">由于webpack服务器的便捷操作，每次进行修改的时候都不用重启服务器，直接刷新浏览器就可以看到修改的内容</i></p>
@@ -346,62 +346,62 @@ import Router from &#39;vue-router&#39;</code></pre>
 <ul>
 <li>在from后面添加<b style="color:crimson;">@</b>符号，表示是在本地文件系统中引入文件。@代表源代码目录（一般是src）。</li>
 </ul>
-<h5 id="export-default"><a href="#export-default" class="headerlink" title="export default{}"></a><b style="color:orange;">export default{}</b></h5><p>在每个Vue的<code>&lt;script&gt;</code>标签中都会存在<code>export default{}</code>代码,<span style="color:crimson;">作用是方便其他代码对这个代码进行引用。</span>对于ES6之前，js没有统一的模块定义方式。</p>
+<h5 id="export-default"><a href="#export-default" class="headerlink" title="export default{}"></a><b style="color:orange;">export default{}</b></h5><p>在每个Vue的<code>&lt;script&gt;</code>标签中都会存在<code>export default&#123;&#125;</code>代码,<span style="color:crimson;">作用是方便其他代码对这个代码进行引用。</span>对于ES6之前，js没有统一的模块定义方式。</p>
 <p>假设有lib/math.js文件：</p>
-<pre><code class="javascript">export function sunm(x,y){
+<pre><code class="javascript">export function sunm(x,y)&#123;
     return x+y;
-}
+&#125;
 export  var pi=3.1415926;</code></pre>
 <p>lib/math.js可以导出的有两个内容一个是函数<code>sum(x,y)</code>，一个是变量<code>pi</code>。</p>
 <p>导出的方式也有多种：</p>
 <pre><code class="javascript">import  *  as math from &quot;lib/math&quot;
 alert(&quot;2π=&quot;+math.sum(math.pi,math.pi));</code></pre>
-<pre><code class="javascript">import {sum,pi} from &quot;lib/math&quot;
+<pre><code class="javascript">import &#123;sum,pi&#125; from &quot;lib/math&quot;
 alert(&quot;2π=&quot;+sum(pi,pi))</code></pre>
-<p><code>export defult{}</code>暴露的是一段没有名字的代码，而<code>export function{}</code>暴露的则是一段有名字的代码。</p>
+<p><code>export defult&#123;&#125;</code>暴露的是一段没有名字的代码，而<code>export function&#123;&#125;</code>暴露的则是一段有名字的代码。</p>
 <p><b style="color:orange;">ES中的简写</b></p>
 <pre><code class="html">&lt;script&gt;
-    export default {
-        data(){
-            return {}
-        }
-    }
+    export default &#123;
+        data()&#123;
+            return &#123;&#125;
+        &#125;
+    &#125;
 &lt;/script&gt;</code></pre>
 <p>实际上等同于：</p>
 <pre><code class="html">&lt;script&gt;
-    export default{
-        data:function(){
-            return {}
-        }
-    }
+    export default&#123;
+        data:function()&#123;
+            return &#123;&#125;
+        &#125;
+    &#125;
 &lt;/script&gt;</code></pre>
 <h5 id="箭头函数"><a href="#箭头函数" class="headerlink" title="箭头函数"></a><b style="color:orange;">箭头函数</b></h5><p>ES可以通过箭头表示函数：</p>
 <pre><code class="javascript">.then(response=&gt;...);</code></pre>
 <p>等同于：</p>
-<pre><code class="javascript">.then(function(response){});</code></pre>
+<pre><code class="javascript">.then(function(response)&#123;&#125;);</code></pre>
 <p><span style="color:crimson;">这样写的好处在于，强制定义了作用域，使用<code>=&gt;</code>可以避免很多的作用域的问题。</span></p>
 <h5 id="hash中同名的key-value简写"><a href="#hash中同名的key-value简写" class="headerlink" title="hash中同名的key/value简写"></a><b style="color:orange;">hash中同名的key/value简写</b></h5><pre><code class="javascript">let title=&#39;tripe body&#39;
 
-return {
+return &#123;
 title:title
-}</code></pre>
+&#125;</code></pre>
 <p>等同于：</p>
 <pre><code class="javascript">let title=&#39;tripe body&#39;
 
-return {
+return &#123;
     titile
-}</code></pre>
+&#125;</code></pre>
 <h5 id="分号可以省略"><a href="#分号可以省略" class="headerlink" title="分号可以省略"></a><b style="color:orange;">分号可以省略</b></h5><pre><code class="javascript">var a=1
 var b=1;</code></pre>
 <p><b style="color:orange;">解构赋值</b></p>
-<pre><code class="javascript">let person={
+<pre><code class="javascript">let person=&#123;
     firstname:&#39;seteve&#39;,
     lastname:&#39;curry&#39;,
     age:29,
     sex:&#39;man&#39;
-};</code></pre>
+&#125;;</code></pre>
 <p>然后可以这样定义:</p>
-<pre><code class="javascript">let {firstname,lastname}=person
+<pre><code class="javascript">let &#123;firstname,lastname&#125;=person
 //上面的代码等同于
 // let firstname=person.firstname
 //let lastname=perosn.lastname</code></pre>
@@ -412,81 +412,81 @@ const utils = require(&#39;./utils&#39;)
 const config = require(&#39;../config&#39;)
 const vueLoaderConfig = require(&#39;./vue-loader.conf&#39;)
 
-function resolve (dir) {
+function resolve (dir) &#123;
   return path.join(__dirname, &#39;..&#39;, dir)
-}
+&#125;
 
-const createLintingRule = () =&gt; ({
+const createLintingRule = () =&gt; (&#123;
   test: /\.(js|vue)$/,
   loader: &#39;eslint-loader&#39;,
   enforce: &#39;pre&#39;,
   include: [resolve(&#39;src&#39;), resolve(&#39;test&#39;)],
-  options: {
+  options: &#123;
     formatter: require(&#39;eslint-friendly-formatter&#39;),
     emitWarning: !config.dev.showEslintErrorsInOverlay
-  }
-})
+  &#125;
+&#125;)
 
-module.exports = {
+module.exports = &#123;
   context: path.resolve(__dirname, &#39;../&#39;),
     //这里就定义了Vue.js 的入口文件
-  entry: {
+  entry: &#123;
     app: &#39;./src/main.js&#39;
-  },
-  output: {
+  &#125;,
+  output: &#123;
     path: config.build.assetsRoot,
     filename: &#39;[name].js&#39;,
     publicPath: process.env.NODE_ENV === &#39;production&#39;
       ? config.build.assetsPublicPath
       : config.dev.assetsPublicPath
-  },
-  resolve: {
+  &#125;,
+  resolve: &#123;
     extensions: [&#39;.js&#39;, &#39;.vue&#39;, &#39;.json&#39;],
-    alias: {
+    alias: &#123;
       &#39;vue$&#39;: &#39;vue/dist/vue.esm.js&#39;,
       &#39;@&#39;: resolve(&#39;src&#39;),
-    }
-  },
-  module: {
+    &#125;
+  &#125;,
+  module: &#123;
     rules: [
       ...(config.dev.useEslint ? [createLintingRule()] : []),
-      {
+      &#123;
         test: /\.vue$/,
         loader: &#39;vue-loader&#39;,
         options: vueLoaderConfig
-      },
-      {
+      &#125;,
+      &#123;
         test: /\.js$/,
         loader: &#39;babel-loader&#39;,
         include: [resolve(&#39;src&#39;), resolve(&#39;test&#39;), resolve(&#39;node_modules/webpack-dev-server/client&#39;)]
-      },
-      {
+      &#125;,
+      &#123;
         test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
         loader: &#39;url-loader&#39;,
-        options: {
+        options: &#123;
           limit: 10000,
           name: utils.assetsPath(&#39;img/[name].[hash:7].[ext]&#39;)
-        }
-      },
-      {
+        &#125;
+      &#125;,
+      &#123;
         test: /\.(mp4|webm|ogg|mp3|wav|flac|aac)(\?.*)?$/,
         loader: &#39;url-loader&#39;,
-        options: {
+        options: &#123;
           limit: 10000,
           name: utils.assetsPath(&#39;media/[name].[hash:7].[ext]&#39;)
-        }
-      },
-      {
+        &#125;
+      &#125;,
+      &#123;
         test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
         loader: &#39;url-loader&#39;,
-        options: {
+        options: &#123;
           limit: 10000,
           name: utils.assetsPath(&#39;fonts/[name].[hash:7].[ext]&#39;)
-        }
-      }
+        &#125;
+      &#125;
     ]
-  },
-  node: {
+  &#125;,
+  node: &#123;
     //防止Webpack注入无用的setImmediate polyfill，因为Vue源包含它（尽管仅在其本机时才使用它）。
     setImmediate: false,
     // 防止webpack将模拟注入到对客户端没有意义的Node本机模块
@@ -495,18 +495,18 @@ module.exports = {
     net: &#39;empty&#39;,
     tls: &#39;empty&#39;,
     child_process: &#39;empty&#39;
-  }
-}
+  &#125;
+&#125;
 </code></pre>
-<pre><code class="javascript">module.exports = {
+<pre><code class="javascript">module.exports = &#123;
   context: path.resolve(__dirname, &#39;../&#39;),
     //这里就定义了Vue.js 的入口文件
-  entry: {
+  entry: &#123;
     app: &#39;./src/main.js&#39;
-  },
+  &#125;,
     ...
-}</code></pre>
-<h4 id="2、渲染过程2：静态的HTML页面（index-html）"><a href="#2、渲染过程2：静态的HTML页面（index-html）" class="headerlink" title="2、渲染过程2：静态的HTML页面（index.html）"></a><b style="color:blue;">2、渲染过程2：静态的HTML页面（index.html）</b></h4><p>每次打开服务器的时候显示的URL是<a href="http:localhost:8080/#/">http:localhost:8080/#/</a> ，实际上打开的文件是<a href="http://localhost:8080/#/index.html" target="_blank" rel="noopener">http://localhost:8080/#/index.html</a> ，所以找到index.html的时候，就可以看其内容：</p>
+&#125;</code></pre>
+<h4 id="2、渲染过程2：静态的HTML页面（index-html）"><a href="#2、渲染过程2：静态的HTML页面（index-html）" class="headerlink" title="2、渲染过程2：静态的HTML页面（index.html）"></a><b style="color:blue;">2、渲染过程2：静态的HTML页面（index.html）</b></h4><p>每次打开服务器的时候显示的URL是<a class="link"   href="http:localhost:8080/#/" >http:localhost:8080/#/<i class="fas fa-external-link-alt"></i></a> ，实际上打开的文件是<a class="link"   target="_blank" rel="noopener" href="http://localhost:8080/#/index.html" >http://localhost:8080/#/index.html<i class="fas fa-external-link-alt"></i></a> ，所以找到index.html的时候，就可以看其内容：</p>
 <pre><code class="html">&lt;!DOCTYPE html&gt;
 &lt;html&gt;
   &lt;head&gt;
@@ -527,14 +527,14 @@ import router from &#39;./router&#39;
 
 Vue.config.productionTip = false
 
-new Vue({
+new Vue(&#123;
     //app对应着&#39;&lt;div id=&quot;app&quot;&gt;&lt;/div&gt;&#39;&#39;
   el: &#39;#app&#39;,
   router,
-  components: { App },
+  components: &#123; App &#125;,
     //这里，APP就是.src/App.vue
   template: &#39;&lt;App/&gt;&#39;
-})</code></pre>
+&#125;)</code></pre>
 <p>熟悉jquery、css selector的读者可以看到，<code>el:&quot;#app&quot;</code>就是index.html就是<code>&lt;div id=&quot;#app&quot;&gt;&lt;/div&gt;</code></p>
 <p>上面的App.vue会被main.js加载，App.vue的内容如下：</p>
 <pre><code class="html">&lt;template&gt;
@@ -545,53 +545,53 @@ new Vue({
 &lt;/template&gt;
 
 &lt;script&gt;
-export default {
+export default &#123;
   name: &#39;App&#39;
-}
+&#125;
 &lt;/script&gt;
 
 &lt;style&gt;
-#app {
+#app &#123;
   font-family: &#39;Avenir&#39;, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
-}
+&#125;
 &lt;/style&gt;
 </code></pre>
 <p>上面的代码就是<code>&lt;template /&gt;</code>的第二层模板，可以认为该页面的内容就是在这个位置被渲染出来。</p>
 <p>上面的代码中还有，<code>&lt;div id=&#39;app&#39;&gt;&lt;/div&gt;</code>，该元素与index.html中的是用一个元素。</p>
 <p>所有<code>&lt;router-view&gt;</code>中的内容都会被自动替换。<code>&lt;script&gt;</code>中代码则是脚本代码。</p>
 <h4 id="4、视图中的渲染"><a href="#4、视图中的渲染" class="headerlink" title="4、视图中的渲染"></a><b style="color:blue;">4、视图中的渲染</b></h4><h5 id="渲染某个变量"><a href="#渲染某个变量" class="headerlink" title="渲染某个变量"></a><b style="color:orange;">渲染某个变量</b></h5><pre><code class="html">&lt;script&gt;
-    export default{
-        data(){
-            return {
+    export default&#123;
+        data()&#123;
+            return &#123;
                 my_value:&#39;默认值&#39;
-            }
-        }
-    }
+            &#125;
+        &#125;
+    &#125;
 &lt;/script&gt;</code></pre>
 <p>可以这样来显示它：</p>
 <pre><code class="html">&lt;template&gt;
     &lt;div&gt;
-        {{message}}
+        &#123;&#123;message&#125;&#125;
     &lt;/div&gt;
 &lt;/template&gt;</code></pre>
 <h5 id="方法的声明和调用"><a href="#方法的声明和调用" class="headerlink" title="方法的声明和调用"></a><b style="color:orange;">方法的声明和调用</b></h5><pre><code class="html">&lt;script&gt;
-    export default{
-        data(){
-            return{
+    export default&#123;
+        data()&#123;
+            return&#123;
                 my_value:&#39;默认值&#39;
-            }
-        },
-        methods:{
-            show_my_value:function(){
+            &#125;
+        &#125;,
+        methods:&#123;
+            show_my_value:function()&#123;
                 alert(&#39;my_value&#39;+this.message);
-            }
-        }
-    }
+            &#125;
+        &#125;
+    &#125;
 &lt;/script&gt;</code></pre>
 <p>调用上面的方法：</p>
 <pre><code class="html">&lt;template&gt;
@@ -610,13 +610,13 @@ export default {
 <p><b style="color:crimson;">在所有的Directive中，只能使用表达式</b></p>
 <pre><code class="html">&lt;div v-if=&quot;a&gt;100&quot;&gt;&lt;/div&gt;</code></pre>
 <h5 id="循环：v-for"><a href="#循环：v-for" class="headerlink" title="循环：v-for"></a><b style="color:orange;">循环：v-for</b></h5><pre><code class="html">&lt;ul&gt;
-    &lt;li v-for=&quot;tech in technologies&quot;&gt;{{tech}}&lt;/li&gt;
+    &lt;li v-for=&quot;tech in technologies&quot;&gt;&#123;&#123;tech&#125;&#125;&lt;/li&gt;
 &lt;/ul&gt;</code></pre>
-<pre><code class="javascript">var vm=new Vue({
-    data:{
+<pre><code class="javascript">var vm=new Vue(&#123;
+    data:&#123;
         technologies:[&#39;nvm&#39;,&#39;npm&#39;,&#39;node&#39;,&#39;webpack&#39;,&#39;ecma_script&#39;]
-    }
-})</code></pre>
+    &#125;
+&#125;)</code></pre>
 <h5 id="判断：v-if"><a href="#判断：v-if" class="headerlink" title="判断：v-if"></a><b style="color:orange;">判断：v-if</b></h5><pre><code class="html">&lt;div v-if=&quot;name===&#39;Vue.js&#39;&quot;&gt;
     Vue.js
 &lt;/div&gt;
@@ -626,28 +626,28 @@ export default {
 &lt;div v-else&gt;
     React
 &lt;/div&gt;</code></pre>
-<pre><code class="javascript">var app=new Vue({
+<pre><code class="javascript">var app=new Vue(&#123;
     el:&quot;#app&quot;,
-    data:{
+    data:&#123;
         name:&quot;Vue.js&quot;
-    }
-})</code></pre>
+    &#125;
+&#125;)</code></pre>
 <p><span style="color:crimson;">v-if后面的引号中的是<code>name===&#39;Vue.js&#39;</code>,===是ECMAScript的语言，表示严格判断。</span></p>
 <h5 id="v-if和v-for的优先级"><a href="#v-if和v-for的优先级" class="headerlink" title="v-if和v-for的优先级"></a><b style="color:orange;">v-if和v-for的优先级</b></h5><p>当v-if与v-for一起使用的时候，v-for有与比v-if更高的优先级。也就是说，Vue.js会先执行v-for，再执行v-if。</p>
 <h5 id="v-bind"><a href="#v-bind" class="headerlink" title="v-bind"></a><b style="color:orange;">v-bind</b></h5><p>v-bind指令用于把某个属性绑定到对应的元素属性。</p>
 <pre><code class="html">&lt;p v-bind:style=&quot;&#39;color:&#39;+my_color&quot;&gt;Vue.js 学起来好开心~ &lt;/p&gt;</code></pre>
 <h5 id="v-on"><a href="#v-on" class="headerlink" title="v-on"></a><b style="color:orange;">v-on</b></h5><pre><code class="html">&lt;input type=&quot;button&quot; v-on:click=&quot;show_message()&quot; value=&quot;点击点击&quot; /&gt;</code></pre>
-<pre><code class="javascript">var app=new Vue({
+<pre><code class="javascript">var app=new Vue(&#123;
     el:&quot;#app&quot;,
-    data:{
+    data:&#123;
         message:&quot;学习Vue使我快乐&quot;
-    },
-    methods:{
-        show_message:function(){
+    &#125;,
+    methods:&#123;
+        show_message:function()&#123;
             this.message=this.message+&quot;是的，你的工资还会涨的~&quot;
-        }
-    }
-})</code></pre>
+        &#125;
+    &#125;
+&#125;)</code></pre>
 <p>v-on后面可以接HTML的标准事件：</p>
 <ul>
 <li>click</li>
@@ -659,12 +659,12 @@ export default {
 <li>keyup</li>
 </ul>
 <h5 id="v-modal与双向绑定"><a href="#v-modal与双向绑定" class="headerlink" title="v-modal与双向绑定"></a><b style="color:orange;">v-modal与双向绑定</b></h5><pre><code class="html">&lt;input type=&quot;text&quot; v-modal=&quot;name&quot; /&gt;</code></pre>
-<pre><code class="javascript">var app=new Vue({
+<pre><code class="javascript">var app=new Vue(&#123;
     el:&quot;#app&quot;,
-    data:{
+    data:&#123;
         name:&quot;Vue.js(默认)&quot;
-    }
-})</code></pre>
+    &#125;
+&#125;)</code></pre>
 <h4 id="6、发送Http请求"><a href="#6、发送Http请求" class="headerlink" title="6、发送Http请求"></a><b style="color:blue;">6、发送Http请求</b></h4><p>Vue.js内置了对发送Http请求的支持，主要在对应的页面的script标签内加上对应的代码就可以了。<span style="color:crimson;">但是Vue.js2.0要求使用第三方库—axios。</span></p>
 <p>在使用第三方的库axios的时候，首先需要安装axios。利用命令行的工具，然后<code>cd</code>到项目所在的文件夹，使用：</p>
 <pre><code class="java">npm install axios</code></pre>
@@ -680,12 +680,12 @@ Vue.config.productionTip = false;
 //将http的引用源头指向axios
 Vue.prototype.$http = require(&#39;axios&#39;);
 /* eslint-disable no-new */
-new Vue({
+new Vue(&#123;
   el: &#39;#app&#39;,
   router,
-  components: { App },
+  components: &#123; App &#125;,
   template: &#39;&lt;App/&gt;&#39;
-})
+&#125;)
 </code></pre>
 <pre><code class="html">&lt;template&gt;
     &lt;div&gt;
@@ -697,95 +697,95 @@ new Vue({
     &lt;/div&gt;
 &lt;/template&gt;
 &lt;script&gt;
-    export default{
-        data(){
-            return {
+    export default&#123;
+        data()&#123;
+            return &#123;
                 title:&quot;我的博客&quot;,
                 blogs:[]
-            }
-        },
-  mounted() {
-    this.$http.get(&quot;http://39.107.141.202:8086/query?u=yjf&amp;p=123456&quot;,{
-          params:{
+            &#125;
+        &#125;,
+  mounted() &#123;
+    this.$http.get(&quot;http://39.107.141.202:8086/query?u=yjf&amp;p=123456&quot;,&#123;
+          params:&#123;
              db: &quot;sensor_statue&quot;,
              q: &#39;SELECT * FROM &quot;sensor_statue&quot;.&quot;autogen&quot;.&quot;sensorid&quot; order by time desc limit 298 &#39;, 
-         }
-      },)
-      .then(response =&gt; {
+         &#125;
+      &#125;,)
+      .then(response =&gt; &#123;
         let data=response.data.results[0].series[0].values;
         this.msg=data;
         console.log(response.data.results[0].series[0]);
-      })
-      .catch(reponse=&gt;{
+      &#125;)
+      .catch(reponse=&gt;&#123;
           console.log(reponse.body);
-      })
-  }
-};
-    }
+      &#125;)
+  &#125;
+&#125;;
+    &#125;
 &lt;/script&gt;
 &lt;style&gt;
-    td{
+    td&#123;
         border-bottom:1px solid gray
-    }
+    &#125;
 &lt;/style&gt;</code></pre>
 <ul>
 <li><p><code>mouted</code> 是Vue声明周期的中的钩子函数，表示的是：<span style="color:crimson;">页面加载完毕之后应该干哪些事</span></p>
 </li>
-<li><p><code>this.$http.get(url,{params})</code>表示的发送get请求。其中url的格式为字符串，params的格式为JSON字符串。</p>
+<li><p><code>this.$http.get(url,&#123;params&#125;)</code>表示的发送get请求。其中url的格式为字符串，params的格式为JSON字符串。</p>
 </li>
-<li><p><code>then(response=&gt;{})</code> 表示的是请求成功的时候回调其中的函数；response代表的是返回的http协议中的请求体。</p>
+<li><p><code>then(response=&gt;&#123;&#125;)</code> 表示的是请求成功的时候回调其中的函数；response代表的是返回的http协议中的请求体。</p>
 </li>
-<li><p><code>catch(response=&gt;{})</code>表示的请求失败的时候回调其中的函数；</p>
+<li><p><code>catch(response=&gt;&#123;&#125;)</code>表示的请求失败的时候回调其中的函数；</p>
 </li>
 </ul>
 <h5 id="设置Vue-js开发服务器中的代理"><a href="#设置Vue-js开发服务器中的代理" class="headerlink" title="设置Vue.js开发服务器中的代理"></a><b style="color:orange;">设置Vue.js开发服务器中的代理</b></h5><p>因为http协议的cookie中的限制，导致请求只能在同域中进行访问。正常来讲，JavaScript在浏览器中是无法发送跨域请求的。需要在Vue.js的“开发服务器”上作转发配置。</p>
 <p>修改<code>config/index.js</code>文件，增加下列内容：</p>
-<pre><code class="javascript">module.exports={
-    dev:{
-        proxyTable:{
+<pre><code class="javascript">module.exports=&#123;
+    dev:&#123;
+        proxyTable:&#123;
              // 1.对所有以&quot;/api&quot;开头的url做处理
-      &#39;/api&#39;:{
+      &#39;/api&#39;:&#123;
         //3.将请求转发到http://siwei.me上面
         target:&#39;http://siwei.me&#39;,
         changeOrigin:true,
-        pathRewirte:{
+        pathRewirte:&#123;
           //2.将url中的&quot;/api&quot;替换成&#39;&#39;
           &#39;^/api&#39; :&#39;&#39;
-        }
-      }
-        }
-    }
-}</code></pre>
+        &#125;
+      &#125;
+        &#125;
+    &#125;
+&#125;</code></pre>
 <p>此时请求的变成了：</p>
 <ul>
-<li>原来的请求：<a href="http://localhost:8080/api/interface/blogs/all" target="_blank" rel="noopener">http://localhost:8080/api/interface/blogs/all</a></li>
-<li>新的请求：<a href="http://siwei.me/interface/blogs/all" target="_blank" rel="noopener">http://siwei.me/interface/blogs/all</a></li>
+<li>原来的请求：<a class="link"   target="_blank" rel="noopener" href="http://localhost:8080/api/interface/blogs/all" >http://localhost:8080/api/interface/blogs/all<i class="fas fa-external-link-alt"></i></a></li>
+<li>新的请求：<a class="link"   target="_blank" rel="noopener" href="http://siwei.me/interface/blogs/all" >http://siwei.me/interface/blogs/all<i class="fas fa-external-link-alt"></i></a></li>
 </ul>
 <h5 id="发送post请求"><a href="#发送post请求" class="headerlink" title="发送post请求"></a><b style="color:orange;">发送post请求</b></h5><p>与get类似，就是第二个参数是请求的body。</p>
-<pre><code class="javascript">axios.post(&#39;/user&#39;, {
+<pre><code class="javascript">axios.post(&#39;/user&#39;, &#123;
     firstName: &#39;Fred&#39;,        // 参数 firstName
     lastName: &#39;Flintstone&#39;    // 参数 lastName
-  })
-  .then(function (response) {
+  &#125;)
+  .then(function (response) &#123;
     console.log(response);
-  })
-  .catch(function (error) {
+  &#125;)
+  .catch(function (error) &#123;
     console.log(error);
-  });</code></pre>
+  &#125;);</code></pre>
 <p>如果Web服务器无法处理编码为application/json的请求，你可以启用emulateJSON选项。</p>
-<pre><code class="javascript">axios.post(&#39;/user&#39;, {
+<pre><code class="javascript">axios.post(&#39;/user&#39;, &#123;
     firstName: &#39;Fred&#39;,        // 参数 firstName
     lastName: &#39;Flintstone&#39;    // 参数 lastName
-  },{emulateJSON:true})
-  .then(function (response) {
+  &#125;,&#123;emulateJSON:true&#125;)
+  .then(function (response) &#123;
     console.log(response);
-  })
-  .catch(function (error) {
+  &#125;)
+  .catch(function (error) &#123;
     console.log(error);
-  });</code></pre>
+  &#125;);</code></pre>
 <h4 id="7、不同页面间的参数传递"><a href="#7、不同页面间的参数传递" class="headerlink" title="7、不同页面间的参数传递"></a><b style="color:blue;">7、不同页面间的参数传递</b></h4><p>在普通的web项目开发中，参数的传递有以下的几种形式：</p>
 <ul>
-<li>url：<a href="http://localhost:8080/another_page?id=3" target="_blank" rel="noopener">http://localhost:8080/another_page?id=3</a></li>
+<li>url：<a class="link"   target="_blank" rel="noopener" href="http://localhost:8080/another_page?id=3" >http://localhost:8080/another_page?id=3<i class="fas fa-external-link-alt"></i></a></li>
 <li>表单：<code>&lt;form&gt;</code></li>
 </ul>
 <p>而在vue.js中，不会产生表单的提交（会引起页面的整体提交），有以下两种:</p>
@@ -801,31 +801,31 @@ import SayHi from &#39;@/components/SayHi&#39;
 
 Vue.use(Router)
 
-export default new Router({
+export default new Router(&#123;
   routes: [
-    {
+    &#123;
       path: &#39;/HelloWorld&#39;,
       name: &#39;HelloWorld&#39;,
       component: HelloWorld
-    },
-    {
+    &#125;,
+    &#123;
       path: &#39;/say_hi&#39;,
       name: &#39;SayHi&#39;,
       component: SayHi
-    }
+    &#125;
   ]
-})
+&#125;)
 </code></pre>
 <h5 id="跳转到某个路由时带上参数"><a href="#跳转到某个路由时带上参数" class="headerlink" title="跳转到某个路由时带上参数 "></a><b style="color:orange;">跳转到某个路由时带上参数 </b></h5><p><b style="color:crimson;">普通参数</b></p>
-<pre><code class="javascript">routes:[{
+<pre><code class="javascript">routes:[&#123;
     path:&#39;/blog&#39;,
     name:&#39;Blog&#39;
-}]</code></pre>
+&#125;]</code></pre>
 <p>在视图中执行：</p>
-<pre><code class="html">&lt;router-link :to=&quot;{name:&#39;Blog&#39;,query:{id:3}&quot; &gt;User&lt;/router-link&gt;</code></pre>
+<pre><code class="html">&lt;router-link :to=&quot;&#123;name:&#39;Blog&#39;,query:&#123;id:3&#125;&quot; &gt;User&lt;/router-link&gt;</code></pre>
 <p>在<code>&lt;script&gt;</code>中：</p>
-<pre><code class="javascript">this.$router.push({name:&#39;Blog&#39;,query:{id:3}})</code></pre>
-<p>最后都会跳转到<a href="http:/localhost:8080/vuetest/#/blog?id=3">http:/localhost:8080/vuetest/#/blog?id=3</a></p>
+<pre><code class="javascript">this.$router.push(&#123;name:&#39;Blog&#39;,query:&#123;id:3&#125;&#125;)</code></pre>
+<p>最后都会跳转到<a class="link"   href="http:/localhost:8080/vuetest/#/blog?id=3" >http:/localhost:8080/vuetest/#/blog?id=3<i class="fas fa-external-link-alt"></i></a></p>
 <p><b style="color:crimson;">获取路由中的参数：</b></p>
 <pre><code class="javascript">this.$router.query.id//获取普通的参数
 this.$router.params.id//获取路由信息中定义好的参数</code></pre>

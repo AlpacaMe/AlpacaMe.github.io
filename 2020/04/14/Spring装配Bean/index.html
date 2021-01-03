@@ -218,19 +218,19 @@
 <li><span style="color:tomato;">组件扫描</span> ：Spring会自动发现应用上下文中所创建的Bean;</li>
 <li><span style="color:tomato;">自动装配：</span> Spring自动满足bean之间的依赖；</li>
 </ul>
-<h5 id="创建可被发现的bean"><a href="#创建可被发现的bean" class="headerlink" title="创建可被发现的bean"></a><b style="color:orange;">创建可被发现的bean</b></h5><pre><code class="java">public interface CompactDisc{
+<h5 id="创建可被发现的bean"><a href="#创建可被发现的bean" class="headerlink" title="创建可被发现的bean"></a><b style="color:orange;">创建可被发现的bean</b></h5><pre><code class="java">public interface CompactDisc&#123;
     void play();
-}</code></pre>
+&#125;</code></pre>
 <p>需要一个CompactDisc的实现，实际上，<span style="color:maroon;">CompactDisc接口可以有很多的实现。</span></p>
 <pre><code class="java">@Component
-public class sgtPeppers implements CompactDisc{
+public class sgtPeppers implements CompactDisc&#123;
     private String title=&quot;Sgt.Perpper`s Lonly Heart Club Band&quot;;
     private String artist=&quot;The Beatles&quot;;
 
-    public void play(){
+    public void play()&#123;
         System.out.println(&quot;Playing&quot;+title+&quot;by&quot;+&quot;artist&quot;);
-    }
-}</code></pre>
+    &#125;
+&#125;</code></pre>
 <ul>
 <li><code>@Component</code>注解：表明该类会作为组件类，并告知Spring要为这个类创建bean，没必要再去显示配置SgtPepeer的bean。</li>
 </ul>
@@ -242,9 +242,9 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 @ComponentScan
-public class CompactDiscConfiguration {
+public class CompactDiscConfiguration &#123;
 
-}</code></pre>
+&#125;</code></pre>
 <p>此时已经可以实现Bean的自动装配，添加测试类进行测试：</p>
 <pre><code class="java">package com.panhao.Automatic_assembly;
 
@@ -258,30 +258,30 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = CompactDiscConfiguration.class)
-public class TestAutomatic {
+public class TestAutomatic &#123;
 
     @Autowired
     private CompactDisc cd;
 
     @Test
-    public  void cdShouldNotBeNull() {
+    public  void cdShouldNotBeNull() &#123;
         assertnotNull(cd);
-    }
-}</code></pre>
+    &#125;
+&#125;</code></pre>
 <ul>
 <li><code>@ContextConfiguration</code>告诉Spring在CompactDiscConfiguration.class中加载配置；</li>
 <li><code>@ComponentScan</code>表示开启自动扫描；</li>
 </ul>
 <h5 id="为组件扫描的bean命名"><a href="#为组件扫描的bean命名" class="headerlink" title="为组件扫描的bean命名"></a><b style="color:orange;">为组件扫描的bean命名</b></h5><p>Spring上下文中所有的Bean的都会给定一个ID，如果明确的给定bean的ID，Spring会根据类名为其指定一个ID：<span style="color:maroon;">将类名的第一个字母变成小写</span>。如果想要为这个Bean设置不同的name，可以在<code>@Component</code>注解中进行设置：</p>
 <pre><code class="java">@Component(&quot;lonlyHeartClub&quot;)
-public class sgtPeppers implements CompactDisc{
+public class sgtPeppers implements CompactDisc&#123;
     private String title=&quot;Sgt.Perpper`s Lonly Heart Club Band&quot;;
     private String artist=&quot;The Beatles&quot;;
 
-    public void play(){
+    public void play()&#123;
         System.out.println(&quot;Playing&quot;+title+&quot;by&quot;+&quot;artist&quot;);
-    }
-}</code></pre>
+    &#125;
+&#125;</code></pre>
 <p>还要另外一种给Bean命名的方式，<span style="Color:maroon;">使用<code>@Named</code>注解</span>(<i style="color:slateblue;">Java 依赖注入规范（Java Dependency Injection）</i>)。</p>
 <pre><code class="java">package com.panhao.Automatic_assembly;
 
@@ -290,16 +290,16 @@ import javax.inject.Named;
 
 
 @Named(&quot;lonlyHeartClub&quot;)
-public class SgtPepper implements CompactDisc {
+public class SgtPepper implements CompactDisc &#123;
     private String title=&quot;SgtPepper&quot;;
     private String artist=&quot;panhao&quot;;
 
-    public void play() {
+    public void play() &#123;
         // TODO Auto-generated method stub
         System.out.println(&quot;Playing&quot; +title+&quot;By&quot; +artist);
-    }
+    &#125;
 
-}
+&#125;
 </code></pre>
 <p>Spring支持将<code>@Name</code>作为<code>@Component</code>注解代替方案。两者之间有细微的差别，但是在大多数的情况下都可以互相替换。</p>
 <h5 id="设置组件扫描的包"><a href="#设置组件扫描的包" class="headerlink" title="设置组件扫描的包"></a><b style="color:orange;">设置组件扫描的包</b></h5><p><code>@ComponentScan</code>没有设置任何属性的时候，Spring会按照默认规则，它会<span style="color:maroon;">以配置类所在的包作为基础包来扫描组件</span>。<code>@componentScan</code>中的value属性是用来设置basepackage的值：</p>
@@ -311,54 +311,54 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 //扫描com.panhao包下所有的文件
 @ComponentScan(basepackages=&quot;com.panhao&quot;)
-public class CompactDiscConfiguration {
+public class CompactDiscConfiguration &#123;
 
-}</code></pre>
-<p><i style="color:slateblue;">basepackage可以配置多个包，形式为：<code>@ComponentScan(basepackage={&quot;com.panhao.Service&quot;,&quot;com.panhao.DI})</code></i></p>
+&#125;</code></pre>
+<p><i style="color:slateblue;">basepackage可以配置多个包，形式为：<code>@ComponentScan(basepackage=&#123;&quot;com.panhao.Service&quot;,&quot;com.panhao.DI&#125;)</code></i></p>
 <p>basepackages的值的类型是String，在代码重构的时候会带来错误的风险。<code>@ComponentScan</code>提供了basePackageClasses的属性，用来设置扫描类的，形式和basepackages一样的。</p>
-<pre><code class="java">@ComponentScan(basePackageClass={CDPlayer.class,DVDPlayer.class})</code></pre>
+<pre><code class="java">@ComponentScan(basePackageClass=&#123;CDPlayer.class,DVDPlayer.class&#125;)</code></pre>
 <h5 id="通过bean添加注解实现自动装配"><a href="#通过bean添加注解实现自动装配" class="headerlink" title="通过bean添加注解实现自动装配"></a><b style="color:orange;">通过bean添加注解实现自动装配</b></h5><p>自动装配就是让Spring自动满足bean依赖的一种方法，在满足依赖的过程中，会在Spring应用上下文中寻找匹配某个bean需求的其他bean。</p>
 <pre><code class="java">@Component
-public class CDPlayer implements MediaPlayer{
+public class CDPlayer implements MediaPlayer&#123;
 
     @Autowired
-    public CDPlayer(CompactDisc cd){
+    public CDPlayer(CompactDisc cd)&#123;
         this.cd=cd;
-    }
+    &#125;
 
-    public void play(){
+    public void play()&#123;
         cd.play();
-    }
-}</code></pre>
+    &#125;
+&#125;</code></pre>
 <ul>
 <li>在构造器上添加<code>@Autowired</code>注解，这表明在<span style="color:maroon;">创建CDPlayer的bean的时候，会通过这个构造器进行实例化并且会传入一个可设置给CompactDisc类型的bean</span>。</li>
 </ul>
 <p><span style="color:crimson;"><code>@Autowired</code>注解不仅能够用在构造器上，还能用在setter属性上</span>。如果CDPlayer有一个CompactDisc()方法，那么可以采用以下的方式配置：</p>
 <pre><code class="java">@Autowired
-public void setCompactDisc(CompactDisc cd){
+public void setCompactDisc(CompactDisc cd)&#123;
     this.cd=cd;
-}</code></pre>
+&#125;</code></pre>
 <p>在Spring初始化bean之后，它会尽可能去满足bean的依赖。实际上<code>setter()</code>方法并没有什么不同，<code>@Autowired</code>注解可以用在类的任何方法上。</p>
 <p><span style="color:olive;">不管是构造器还、setter方法还是其他的方法，Spring就会尝试满足方法参数上所声明的依赖。假如有且只有一个bean匹配依赖的需求的话，那么这个bean不会被装配进来。如果没有匹配的bean，那么应用在上下文的时候，Spring会抛出一个异常。</span>（<i style="color:slateblue;">为了避免异常的出现，可以将<code>@Autowired</code>的required属性设置为false</i>）<span style="color:olive;">如果有多个bean都能满足依赖，Spring将会抛出一个异常，表明没有明确的指定要选择哪个bean进行自动装配。</span></p>
 <p>与<code>@Name</code>注解与<code>@Component</code>注解可以互换一样，<code>@Inject</code>（<i style="color:slateblue;">Java依赖注入所提供的注解</i>）也可以与<code>@Autowired</code>互换，虽有细微的不一样，但是多数的场景可以互换。</p>
 <h4 id="2、通过Java代码装配Bean"><a href="#2、通过Java代码装配Bean" class="headerlink" title="2、通过Java代码装配Bean"></a><b style="color:blue;">2、通过Java代码装配Bean</b></h4><h5 id="创建配置类"><a href="#创建配置类" class="headerlink" title="创建配置类"></a><b style="color:orange;">创建配置类</b></h5><pre><code class="java">@Configuration
-public class CDPlayerConfig{
+public class CDPlayerConfig&#123;
 
-}</code></pre>
+&#125;</code></pre>
 <ul>
 <li>创建JavaConfig类的关键在于为其添加<code>@Configuration</code>注解。<code>@Configuration</code>注解表明这是一个配置类，该类该包含在Spring应用上下文中如何创建Bean的细节。</li>
 </ul>
 <h5 id="声明简单的bean"><a href="#声明简单的bean" class="headerlink" title="声明简单的bean"></a><b style="color:orange;">声明简单的bean</b></h5><pre><code class="java">@Bean
-public CompactDisc sgtPeppers(){
+public CompactDisc sgtPeppers()&#123;
     return new CompactDisc
-}</code></pre>
+&#125;</code></pre>
 <ul>
 <li><code>@Bean</code>注解会告诉Spring这个方法返回一个对象，该对象要注册为Spring应用上下文中的bean。<code>@Bean</code>拥有属性<code>name</code>用来设置bean的名称。</li>
 </ul>
 <h5 id="在JavaConfig中实现注入"><a href="#在JavaConfig中实现注入" class="headerlink" title="在JavaConfig中实现注入"></a><b style="color:orange;">在JavaConfig中实现注入</b></h5><pre><code class="java">@Bean
-public CDPlayer cdPlayed(){
+public CDPlayer cdPlayed()&#123;
     return new CDPlayer(sgtPeppers())
-}</code></pre>
+&#125;</code></pre>
 <h4 id="3、使用XML装配Bean"><a href="#3、使用XML装配Bean" class="headerlink" title="3、使用XML装配Bean"></a><b style="color:blue;">3、使用XML装配Bean</b></h4><h5 id="最简单的XML配置文件"><a href="#最简单的XML配置文件" class="headerlink" title="最简单的XML配置文件"></a><b style="color:orange;">最简单的XML配置文件</b></h5><pre><code class="xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
 &lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot;
     xmlns:context=&quot;http://www.springframework.org/schema/context&quot;
@@ -423,19 +423,19 @@ public CDPlayer cdPlayed(){
 </li>
 </ul>
 <h5 id="将字面量将配进bean中"><a href="#将字面量将配进bean中" class="headerlink" title="将字面量将配进bean中"></a><b style="color:orange;">将字面量将配进bean中</b></h5><p>假设CompactDisc拥有实现类：</p>
-<pre><code class="java">public BlankDisc implements CompactDisc{
+<pre><code class="java">public BlankDisc implements CompactDisc&#123;
 
     private String title;
     private String artist;
 
-    public BlankDisc(String title,String artist){
+    public BlankDisc(String title,String artist)&#123;
         this.titile=title;
         this.artist=artist;
-    }
-    public void play(){
+    &#125;
+    public void play()&#123;
         System.out.println(&quot;Playing &quot;+title+&quot; By &quot;+artist);
-    }
-}</code></pre>
+    &#125;
+&#125;</code></pre>
 <p>此时使用<code>&lt;constructor-arg/&gt;</code>装配的时候：</p>
 <pre><code class="xml">&lt;bean id=&quot;blankDisc&quot; class=&quot;soundsystem.BlankDisc&quot;&gt;
     &lt;constructor-arg value=&quot;Sgt Pepper Lonly Hearts Clubs Band&quot; /&gt;

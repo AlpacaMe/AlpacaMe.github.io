@@ -186,7 +186,7 @@
     
     
         <span class="article-wordcount article-meta-item">
-            <i class="fas fa-file-word"></i> <span>4.2k Words</span>
+            <i class="fas fa-file-word"></i> <span>4.3k Words</span>
         </span>
     
     
@@ -300,36 +300,36 @@ spring.redis.timeout=10000
 <p>然后创建一个Redis的配置文件，创建一个Redis线程池：</p>
 <pre><code class="java">@Configuration
 @PropertySource(&quot;classpath:redis.properties&quot;)
-public class RedisConfig {
+public class RedisConfig &#123;
 
-    @Value(&quot;${spring.redis.host}&quot;)
+    @Value(&quot;$&#123;spring.redis.host&#125;&quot;)
     private String host;
 
-    @Value(&quot;${spring.redis.port}&quot;)
+    @Value(&quot;$&#123;spring.redis.port&#125;&quot;)
     private int port;
 
-    @Value(&quot;${spring.redis.timeout}&quot;)
+    @Value(&quot;$&#123;spring.redis.timeout&#125;&quot;)
     private int timeout;
 
-    @Value(&quot;${spring.redis.jedis.pool.max-idle}&quot;)
+    @Value(&quot;$&#123;spring.redis.jedis.pool.max-idle&#125;&quot;)
     private int maxIdle;
 
-    @Value(&quot;${spring.redis.jedis.pool.max-wait}&quot;)
+    @Value(&quot;$&#123;spring.redis.jedis.pool.max-wait&#125;&quot;)
     private long maxWaitMillis;
 
-    @Value(&quot;${spring.redis.block-when-exhausted}&quot;)
+    @Value(&quot;$&#123;spring.redis.block-when-exhausted&#125;&quot;)
     private boolean  blockWhenExhausted;
 
     @Bean
-    public JedisPool redisPoolFactory() throws Exception{
+    public JedisPool redisPoolFactory() throws Exception&#123;
         JedisPoolConfig  jedisPoolConfig = new JedisPoolConfig();
         jedisPoolConfig.setMaxIdle(maxIdle);
         jedisPoolConfig.setMaxWaitMillis(maxWaitMillis);
         JedisPool  pool = new JedisPool(jedisPoolConfig,host,port,timeout);
         return pool;
-    }
+    &#125;
 
-}</code></pre>
+&#125;</code></pre>
 <p>然后创建有一个Redis的工具类：</p>
 <pre><code class="java">package org.panhao.mqtt.util;
 
@@ -348,7 +348,7 @@ import redis.clients.jedis.JedisSentinelPool;
  */
 @Component
 @Slf4j
-public class RedisUtil {
+public class RedisUtil &#123;
 
     @Autowired
     private JedisSentinelPool jedisPool;
@@ -360,18 +360,18 @@ public class RedisUtil {
      * @Param: [key, value]
      * @Return: java.lang.String
      **/
-    public String set(String key, String value) {
+    public String set(String key, String value) &#123;
         Jedis jedis = null;
-        try {
+        try &#123;
             jedis = jedisPool.getResource();
             return jedis.set(key, value);
-        } catch (Exception e) {
+        &#125; catch (Exception e) &#123;
             e.printStackTrace();
             return &quot;error&quot;;
-        } finally {
+        &#125; finally &#123;
             jedis.close();
-        }
-    }
+        &#125;
+    &#125;
 
     /**
      * @Author: PanHao
@@ -380,20 +380,20 @@ public class RedisUtil {
      * @Param: [key, value, second]
      * @Return: java.lang.String
      **/
-    public String setTimeOut(String key, String value, int second) {
+    public String setTimeOut(String key, String value, int second) &#123;
         Jedis jedis = null;
-        try {
+        try &#123;
             jedis = jedisPool.getResource();
             jedis.set(key, value);
             jedis.expire(key, second);
             return &quot;success&quot;;
-        } catch (Exception e) {
+        &#125; catch (Exception e) &#123;
             e.printStackTrace();
             return &quot;error&quot;;
-        } finally {
+        &#125; finally &#123;
             jedis.close();
-        }
-    }
+        &#125;
+    &#125;
 
     /**
      * @Author: PanHao
@@ -402,20 +402,20 @@ public class RedisUtil {
      * @Param: [key]
      * @Return: java.lang.String
      **/
-    public String get(String key) {
+    public String get(String key) &#123;
         Jedis jedis = null;
         String value = null;
-        try {
+        try &#123;
             jedis = jedisPool.getResource();
             value = jedis.get(key);
             return value;
-        } catch (Exception e) {
+        &#125; catch (Exception e) &#123;
             e.printStackTrace();
             return &quot;error&quot;;
-        } finally {
+        &#125; finally &#123;
             jedis.close();
-        }
-    }
+        &#125;
+    &#125;
 
     /**
      * @Author: PanHao
@@ -424,17 +424,17 @@ public class RedisUtil {
      * @Param: [key]
      * @Return: boolean
      **/
-    public boolean exists(String key) {
+    public boolean exists(String key) &#123;
         Jedis jedis = null;
-        try {
+        try &#123;
             jedis = jedisPool.getResource();
             return jedis.exists(key);
-        } catch (Exception e) {
+        &#125; catch (Exception e) &#123;
             return false;
-        } finally {
+        &#125; finally &#123;
             jedis.close();
-        }
-    }
+        &#125;
+    &#125;
 
     /**
      * @Author: PanHao
@@ -443,17 +443,17 @@ public class RedisUtil {
      * @Param: [key]
      * @Return: java.lang.Long
      **/
-    public Long del(String key) {
+    public Long del(String key) &#123;
         Jedis jedis = null;
-        try {
+        try &#123;
             jedis = jedisPool.getResource();
             return jedis.del(key);
-        } catch (Exception e) {
+        &#125; catch (Exception e) &#123;
             return 0L;
-        } finally {
+        &#125; finally &#123;
             jedis.close();
-        }
-    }
+        &#125;
+    &#125;
 
     /**
      * @Author: PanHao
@@ -462,34 +462,34 @@ public class RedisUtil {
      * @Param: []
      * @Return: java.lang.String
      **/
-    public String flushDB() {
+    public String flushDB() &#123;
         Jedis jedis = null;
-        try {
+        try &#123;
             jedis = jedisPool.getResource();
             return jedis.flushDB();
-        } catch (Exception e) {
+        &#125; catch (Exception e) &#123;
             log.info(e.getCause().toString());
-        } finally {
+        &#125; finally &#123;
             jedis.close();
-        }
+        &#125;
         return null;
-    }
-}
+    &#125;
+&#125;
 </code></pre>
 <p>此时创建测试文件，现在Redis里面存储一个<code>book 亚里士多德</code>的键值对，然后再对其进行取值：</p>
 <pre><code class="java">@RunWith(SpringRunner.class)
 @SpringBootTest
-public class TestRedis {
+public class TestRedis &#123;
 
     @Autowired
     private RedisUtil redisUtil;
 
     @Test
-    public void  test(){
+    public void  test()&#123;
         redisUtil.set(&quot;book&quot;,&quot;亚里士多德&quot;);
         System.out.println(redisUtil.get(&quot;book&quot;));
-    }
-}</code></pre>
+    &#125;
+&#125;</code></pre>
 <p>此时控制台的输出为：</p>
 <pre><code class="java">亚里士多德</code></pre>
 <p>此时与Redis的交互就已经完成了。接下来展示使用<code>RedisTemplate</code>的方式进行Redis的一些操作。</p>
@@ -497,14 +497,14 @@ public class TestRedis {
 <li><p><b style="color:orange;">RedisTemplate的方式</b></p>
 <p><code>RedisTemplate</code>的方式与<code>Jedis</code>的方式其实差距不大，首先都是需要创建一个与客户端的连接池。在<code>RedisConfig</code>类中加入以下：</p>
 <pre><code class="java">    @Bean
-    public RedisTemplate&lt;String, Object&gt; redisTemplate(RedisConnectionFactory redisConnectionFactory) {
+    public RedisTemplate&lt;String, Object&gt; redisTemplate(RedisConnectionFactory redisConnectionFactory) &#123;
         StringRedisSerializer serializer = new StringRedisSerializer();
         RedisTemplate&lt;String, Object&gt; template = new RedisTemplate&lt;&gt;();
         template.setConnectionFactory(redisConnectionFactory);
         template.setKeySerializer(serializer);
         template.setValueSerializer(serializer);
         return template;
-    }</code></pre>
+    &#125;</code></pre>
 <p>然后创建一个新的Redis工具类，使用RedisTemplate来操作Redis里面的键值对：</p>
 <pre><code class="java">/**
  * @program:MQTTStudy
@@ -513,7 +513,7 @@ public class TestRedis {
  * @create:2020-11-11 08:8:47
  */
 @Component
-public class RedisUtil2 {
+public class RedisUtil2 &#123;
 
     @Autowired
     private RedisTemplate&lt;String,Object&gt; redisTemplate;
@@ -525,14 +525,14 @@ public class RedisUtil2 {
      * @Param: [key]
      * @Return: boolean
      **/
-    public boolean hasKey(String key){
-        try {
+    public boolean hasKey(String key)&#123;
+        try &#123;
             return redisTemplate.hasKey(key);
-        } catch (Exception e) {
+        &#125; catch (Exception e) &#123;
             e.printStackTrace();
             return false;
-        }
-    }
+        &#125;
+    &#125;
 
     /**
      * @Author: PanHao
@@ -541,15 +541,15 @@ public class RedisUtil2 {
      * @Param: [key, value, time]
      * @Return: boolean
      **/
-    public boolean set(String key,String value){
-        try {
+    public boolean set(String key,String value)&#123;
+        try &#123;
             redisTemplate.opsForValue().set(key,value);
             return true;
-        } catch (Exception e) {
+        &#125; catch (Exception e) &#123;
             e.printStackTrace();
             return false;
-        }
-    }
+        &#125;
+    &#125;
 
     /**
      * @Author: PanHao
@@ -558,15 +558,15 @@ public class RedisUtil2 {
      * @Param: [key, value, time]
      * @Return: boolean
      **/
-    public boolean setKeyTimeOut(String key,String value,long time){
-        try {
+    public boolean setKeyTimeOut(String key,String value,long time)&#123;
+        try &#123;
             redisTemplate.opsForValue().set(key,value,time,TimeUnit.SECONDS);
             return true;
-        } catch (Exception e) {
+        &#125; catch (Exception e) &#123;
             e.printStackTrace();
             return false;
-        }
-    }
+        &#125;
+    &#125;
 
     /**
      * @Author: PanHao
@@ -575,15 +575,15 @@ public class RedisUtil2 {
      * @Param: [key, time]
      * @Return: boolean
      **/
-    public boolean expire(String key,long time){
-        try {
+    public boolean expire(String key,long time)&#123;
+        try &#123;
             redisTemplate.expire(key,time,TimeUnit.SECONDS);
             return true;
-        } catch (Exception e) {
+        &#125; catch (Exception e) &#123;
             e.printStackTrace();
             return false;
-        }
-    }
+        &#125;
+    &#125;
 
     /**
      * @Author: PanHao
@@ -592,15 +592,15 @@ public class RedisUtil2 {
      * @Param: [key]
      * @Return: java.lang.Object
      **/
-    public Object get(String key){
-        if(hasKey(key)){
+    public Object get(String key)&#123;
+        if(hasKey(key))&#123;
             return redisTemplate.opsForValue().get(key);
-        }else {
+        &#125;else &#123;
             return &quot;请输入正确的Key&quot;;
-        }
-    }
+        &#125;
+    &#125;
 
-}
+&#125;
 </code></pre>
 <p>可以在测试类中测试其中的方法。我在这里就不赘述了，测试的方式也是很简单的，方法也比较容易看懂。</p>
 </li>
@@ -698,21 +698,21 @@ spring.redis.sentinel.nodes=你的IP地址:26380,你的IP地址:22</code></pre>
 <li><p><strong>在<code>RedisConfig.java</code>中修改Jedis的客户端</strong></p>
 <p>将<code>JedisPool</code>修改为<code>JedisSentinelPool</code>，并在配置文件中加入如下代码：</p>
 <pre><code class="java">
-    @Value(&quot;${spring.redis.sentinel.master}&quot;)
+    @Value(&quot;$&#123;spring.redis.sentinel.master&#125;&quot;)
     private String sentinelName;
 
-    @Value(&quot;${spring.redis.sentinel.nodes}&quot;)
+    @Value(&quot;$&#123;spring.redis.sentinel.nodes&#125;&quot;)
     private String[] sentinels;    
 
     @Bean
-    public JedisSentinelPool redisPoolFactory()  throws Exception{
+    public JedisSentinelPool redisPoolFactory()  throws Exception&#123;
         JedisPoolConfig  jedisPoolConfig = new JedisPoolConfig();
         jedisPoolConfig.setMaxIdle(maxIdle);
         jedisPoolConfig.setMaxWaitMillis(maxWaitMillis);
         Set&lt;String&gt; sentinelSets = new HashSet&lt;String&gt;(Arrays.asList(sentinels));
         JedisSentinelPool  pool = new JedisSentinelPool(sentinelName,sentinelSets,jedisPoolConfig);
         return pool;
-    }</code></pre>
+    &#125;</code></pre>
 <p>再将<code>RedisUtil.java</code>中的<code>JedisPool</code>修改为<code>JedisSentinelPool</code>即可：</p>
 <pre><code class="java">package org.panhao.mqtt.util;
 
@@ -730,12 +730,12 @@ import redis.clients.jedis.JedisSentinelPool;
  */
 @Component
 @Slf4j
-public class RedisUtil {
+public class RedisUtil &#123;
 
     @Autowired
     private JedisSentinelPool jedisPool;
     ...
-}
+&#125;
 </code></pre>
 <p>测试和单机模式的测试是完全一样的，此时的读写操作对于开发人员来说和单机模式没有什么不一样的。</p>
 </li>

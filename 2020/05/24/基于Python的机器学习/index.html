@@ -206,7 +206,7 @@
             <h2 style="color:crimson;font-weight:lighter;">我也有诗和远方，只不过诗很烂，远方也很黑暗</h2>
 <a id="more"></a>
 
-<h3 id="基于python语言的环境配置"><a href="#基于python语言的环境配置" class="headerlink" title="基于python语言的环境配置"></a><b style="color:red;">基于python语言的环境配置</b></h3><h4 id="1、Python的下载和安装"><a href="#1、Python的下载和安装" class="headerlink" title="1、Python的下载和安装"></a><b style="color:blue;">1、Python的下载和安装</b></h4><p>首先在Python官网下载：<a href="http://www.python.org" target="_blank" rel="noopener">http://www.python.org</a> 下载Python安装包，在官网首页找到DownLoads按钮，鼠标悬停在上面时会出现一个下拉菜单，在下拉菜单中根据自己的操作系统选择对应的Python版本。</p>
+<h3 id="基于python语言的环境配置"><a href="#基于python语言的环境配置" class="headerlink" title="基于python语言的环境配置"></a><b style="color:red;">基于python语言的环境配置</b></h3><h4 id="1、Python的下载和安装"><a href="#1、Python的下载和安装" class="headerlink" title="1、Python的下载和安装"></a><b style="color:blue;">1、Python的下载和安装</b></h4><p>首先在Python官网下载：<a class="link"   target="_blank" rel="noopener" href="http://www.python.org" >http://www.python.org<i class="fas fa-external-link-alt"></i></a> 下载Python安装包，在官网首页找到DownLoads按钮，鼠标悬停在上面时会出现一个下拉菜单，在下拉菜单中根据自己的操作系统选择对应的Python版本。</p>
 <h4 id="2、一些必须库的安装以及功能简介"><a href="#2、一些必须库的安装以及功能简介" class="headerlink" title="2、一些必须库的安装以及功能简介"></a><b style="color:blue;">2、一些必须库的安装以及功能简介</b></h4><p>学习机器学习有一些必须要安装的库作为配置的环境。这些库包括：<b style="color:crimson;">Numpy、Scipy、matplotlib、pandas、IPython以及非常核心的scikit-learn。</b></p>
 <h5 id="Numpy-基础科学计算库"><a href="#Numpy-基础科学计算库" class="headerlink" title="Numpy-基础科学计算库"></a><b style="color:orange;">Numpy-基础科学计算库</b></h5><p>Numpy是一个Python中非常基础的用于进行科学计算的库，它的功能包括高维数组（array）计算、线性代数计算、傅里叶变换以及产生伪随机数等。Numpy对于scikit-learn来说是至关重要，因为scikit-learn使用Numpy数组形式的数据来进行处理，所以需要把数据转化成Numpy数组的形式，而多维数组也是Numpy的核心功能之一。</p>
 <pre><code class="python">pip install numpy</code></pre>
@@ -338,7 +338,7 @@ plt.show()</code></pre>
 <pre><code class="python">print(&#39;\n\n\n&#39;)
 print(&#39;代码运行结果：&#39;)
 print(&#39;===================&#39;)
-print(&#39;模型正确率：{:.2f}&#39;.format(clf.score(X, y)))
+print(&#39;模型正确率：&#123;:.2f&#125;&#39;.format(clf.score(X, y)))
 print(&#39;===================&#39;)
 print(&#39;\n\n\n&#39;)</code></pre>
 <p>打印出来的结果如下：</p>
@@ -368,7 +368,7 @@ plt.show()
 print(&#39;\n&#39;)
 print(&#39;代码运行结果：&#39;)
 print(&#39;===================&#39;)
-print(&#39;模型正确率：{:.2f}&#39;.format(reg.score(X, y)))
+print(&#39;模型正确率：&#123;:.2f&#125;&#39;.format(reg.score(X, y)))
 print(&#39;===================&#39;)
 print(&#39;\n&#39;)</code></pre>
 <p>其结果如下所示：</p>
@@ -391,26 +391,26 @@ import numpy as np
 
 # 从sklearn的dataset模块载入数据
 wine_dataset = load_wine()
-# print(&quot;红酒数据集中的键：\n{}&quot;.format(wine_dataset.keys()))
-# print(&quot;数据概况：{}&quot;.format(wine_dataset[&#39;data&#39;].shape))
+# print(&quot;红酒数据集中的键：\n&#123;&#125;&quot;.format(wine_dataset.keys()))
+# print(&quot;数据概况：&#123;&#125;&quot;.format(wine_dataset[&#39;data&#39;].shape))
 # print(wine_dataset[&#39;DESCR&#39;])
 # 将数据集拆分为训练数据集和测试数据集
 # 用X表示数据的特征，而用y表示数据对应的标签
 X_train, X_test, y_train, y_test = train_test_split(wine_dataset[&#39;data&#39;], wine_dataset[&#39;target&#39;], random_state=0)
-# print(&#39;X_train shape:{}&#39;.format(X_train.shape))
-# print(&#39;X_test shape:{}&#39;.format(X_test.shape))
-# print(&#39;y_train shape:{}&#39;.format(y_train.shape))
-# print(&#39;y_test shape:{}&#39;.format(y_test.shape))
+# print(&#39;X_train shape:&#123;&#125;&#39;.format(X_train.shape))
+# print(&#39;X_test shape:&#123;&#125;&#39;.format(X_test.shape))
+# print(&#39;y_train shape:&#123;&#125;&#39;.format(y_train.shape))
+# print(&#39;y_test shape:&#123;&#125;&#39;.format(y_test.shape))
 # 指定模型n_neighbors参数值为1
 knn = KNeighborsClassifier(n_neighbors=1)
 knn.fit(X_train, y_train)
 # print(knn)
-# print(&quot;测试数据集得分:{:.2f}&quot;.format(knn.score(X_test, y_test)))
+# print(&quot;测试数据集得分:&#123;:.2f&#125;&quot;.format(knn.score(X_test, y_test)))
 # 输入新的数据点
 X_new = np.array([[13.2, 2.77, 2.51, 18.5, 96.6, 1.04, 2.55, 0.57, 1.47, 6.2, 1.05, 3.33, 820]])
 # 进行预测
 prediction = knn.predict(X_new)
-print(&quot;预测新红酒的分类为：{}&quot;.format(wine_dataset[&#39;target_names&#39;][prediction]))</code></pre>
+print(&quot;预测新红酒的分类为：&#123;&#125;&quot;.format(wine_dataset[&#39;target_names&#39;][prediction]))</code></pre>
 <h3 id="广义线性模型"><a href="#广义线性模型" class="headerlink" title="广义线性模型"></a><b style="color:red;">广义线性模型</b></h3><p>线性模型是一类广泛用于机器学习领域的预测模型，线性模型是输入数据集的特征的线性函数建模，并对结果进行预测的方法。</p>
 <h4 id="1、基本概念"><a href="#1、基本概念" class="headerlink" title="1、基本概念"></a><b style="color:blue;">1、基本概念</b></h4><p>常用线性模型包括：<b style="color:crimson;">线性回归、岭回归、套索回归、逻辑回归和线性SVC等</b></p>
 <p><b style="color:orange;">线性回归</b></p>
@@ -435,7 +435,7 @@ plt.show()</code></pre>
 </ul>
 <p>其结果如下所示：</p>
 <p><img src="LinearRegression.jpg"></img></p>
-<p>利用<code>print(&#39;y={:.3f}&#39;.format(lr.coef_[0]), &#39;x&#39;, &#39;+{:.3f}&#39;.format(lr.intercept_))</code> 即可打印出出来拟合出来之后的函数：</p>
+<p>利用<code>print(&#39;y=&#123;:.3f&#125;&#39;.format(lr.coef_[0]), &#39;x&#39;, &#39;+&#123;:.3f&#125;&#39;.format(lr.intercept_))</code> 即可打印出出来拟合出来之后的函数：</p>
 <pre><code class="python">y=0.667 x +2.333</code></pre>
 <p>当输入改为三个点的时候：</p>
 <pre><code class="python">X = [[1], [4], [3]]
@@ -456,7 +456,7 @@ X, y = make_regression(n_samples=50, n_features=1, n_informative=1, noise=50, ra
 reg = LinearRegression()
 reg.fit(X, y)
 # scikit-learn总是以下划线作为来自训练集的属性的结尾
-print(&#39;y={:.3f}&#39;.format(reg.coef_[0]), &#39;x&#39;, &#39;+{:.3f}&#39;.format(reg.intercept_))
+print(&#39;y=&#123;:.3f&#125;&#39;.format(reg.coef_[0]), &#39;x&#39;, &#39;+&#123;:.3f&#125;&#39;.format(reg.intercept_))
 # z是生成的等差数列，用来画出线性模型的图形
 z = np.linspace(-3, 3, 200).reshape(-1, 1)
 plt.scatter(X, y, c=&#39;blue&#39;, s=60)
@@ -481,8 +481,8 @@ from sklearn.model_selection import train_test_split
 X, y = make_regression(n_samples=100, n_features=2, n_informative=2, random_state=38)
 X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=8)
 lr = LinearRegression().fit(X_train, y_train)
-print(&quot;lr.coef_:{}&quot;.format(lr.coef_[:]))
-print(&quot;lr.intercept_:{}&quot;.format(lr.intercept_))</code></pre>
+print(&quot;lr.coef_:&#123;&#125;&quot;.format(lr.coef_[:]))
+print(&quot;lr.intercept_:&#123;&#125;&quot;.format(lr.intercept_))</code></pre>
 <p>此时它的w值和d的值为：</p>
 <pre><code class="python">lr.coef_:[70.38592453  7.43213621]
 lr.intercept_:-1.4210854715202004e-14</code></pre>
@@ -500,13 +500,13 @@ from sklearn.model_selection import train_test_split
 X, y = load_diabetes().data, load_diabetes().target
 X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=8)
 lr = LinearRegression().fit(X_train, y_train)
-print(&quot;线性回归训练集得分：{:.3f}&quot;.format(lr.score(X_train, y_train)))
-print(&quot;线性回归测试集得分：{:.3f}&quot;.format(lr.score(X_test, y_test)))
+print(&quot;线性回归训练集得分：&#123;:.3f&#125;&quot;.format(lr.score(X_train, y_train)))
+print(&quot;线性回归测试集得分：&#123;:.3f&#125;&quot;.format(lr.score(X_test, y_test)))
 ridge = Ridge().fit(X_train, y_train)
 ridge10 = Ridge(alpha=10).fit(X_train, y_train)
 ridge01 = Ridge(alpha=0.1).fit(X_train, y_train)
-print(&quot;岭回归训练集得分：{:.3f}&quot;.format(ridge.score(X_train, y_train)))
-print(&quot;岭回归测试集得分：{:.3f}&quot;.format(ridge.score(X_test, y_test)))
+print(&quot;岭回归训练集得分：&#123;:.3f&#125;&quot;.format(ridge.score(X_train, y_train)))
+print(&quot;岭回归测试集得分：&#123;:.3f&#125;&quot;.format(ridge.score(X_test, y_test)))
 # 绘制alpha=1时的模型系数
 plt.plot(ridge.coef_, &#39;s&#39;, label=&#39;Ridge alpha=1&#39;)
 # 绘制alpha=10时的模型系数
@@ -539,9 +539,9 @@ from sklearn.model_selection import train_test_split
 X, y = load_diabetes().data, load_diabetes().target
 X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=8)
 lasso = Lasso().fit(X_train, y_train)
-print(&quot;套索回归在训练集的得分：{:.2f}&quot;.format(lasso.score(X_train, y_train)))
-print(&quot;套索回归在测试集的得分：{:.2f}&quot;.format(lasso.score(X_test, y_test)))
-print(&quot;套索回归使用的特征数量：{}&quot;.format(np.sum(lasso.coef_ != 0)))</code></pre>
+print(&quot;套索回归在训练集的得分：&#123;:.2f&#125;&quot;.format(lasso.score(X_train, y_train)))
+print(&quot;套索回归在测试集的得分：&#123;:.2f&#125;&quot;.format(lasso.score(X_test, y_test)))
+print(&quot;套索回归使用的特征数量：&#123;&#125;&quot;.format(np.sum(lasso.coef_ != 0)))</code></pre>
 <p>此时输出为：</p>
 <pre><code class="python">套索回归在训练集的得分：0.36
 套索回归在测试集的得分：0.37
@@ -649,10 +649,10 @@ X = np.array([[0, 1, 0, 1],
               [1, 0, 0, 1]])
 y = np.array([0, 1, 1, 0, 1, 0, 0])
 # 对不同的分类计算每个特征为1的数量
-counts = {}
+counts = &#123;&#125;
 for label in np.unique(y):
     counts[label] = X[y == label].sum(axis=0)
-# print(&quot;feature counts:\n{}&quot;.format(counts))
+# print(&quot;feature counts:\n&#123;&#125;&quot;.format(counts))
 # 使用贝努力贝叶斯拟合数据
 clf = BernoulliNB()
 clf.fit(X, y)
@@ -689,7 +689,7 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=8)
 # 使用贝努力贝叶斯拟合数据
 nb = BernoulliNB()
 nb.fit(X_train, y_train)
-# print(&quot;模型得分：{:.3f}&quot;.format(nb.score(X_test, y_test)))
+# print(&quot;模型得分：&#123;:.3f&#125;&quot;.format(nb.score(X_test, y_test)))
 
 x_min, x_max = X[:, 0].min() - 0.5, X[:, 0].max() + 0.5
 y_min, y_max = X[:, 1].min() - 0.5, X[:, 0].max() + 0.5
@@ -726,7 +726,7 @@ X, y = make_blobs(n_samples=500, centers=5, random_state=8)
 X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=8)
 gnb = GaussianNB()
 gnb.fit(X_train, y_train)
-print(&quot;模型得分：{:.3f}&quot;.format(gnb.score(X_test, y_test)))</code></pre>
+print(&quot;模型得分：&#123;:.3f&#125;&quot;.format(gnb.score(X_test, y_test)))</code></pre>
 <p>得到的分数是：<code>模型得分：0.968</code> ，这说明手工数据集的特征基本上符合正态分布的情况。</p>
 <p>此时高斯朴素贝叶斯的工作流程就是：</p>
 <pre><code class="python">x_min, x_max = X[:, 0].min() - 0.5, X[:, 0].max() + 0.5
@@ -767,7 +767,7 @@ X_test_scaled = scaler.transform(X_test)
 
 mnb = MultinomialNB()
 mnb.fit(X_train_scaled, y_train)
-print(&quot;模型得分结果：{:.3f}&quot;.format(mnb.score(X_test_scaled, y_test)))</code></pre>
+print(&quot;模型得分结果：&#123;:.3f&#125;&quot;.format(mnb.score(X_test_scaled, y_test)))</code></pre>
 <p>利用多项式对该数据集进行拟合的时候会发现拟合的效果并不好，模型的得分只有0.32.</p>
 <pre><code class="python"># 生成样本数量为500，分类数为5的数据集
 X, y = make_blobs(n_samples=500, centers=5, random_state=8)
@@ -780,7 +780,7 @@ X_test_scaled = scaler.transform(X_test)
 
 mnb = MultinomialNB()
 mnb.fit(X_train_scaled, y_train)
-print(&quot;模型得分结果：{:.3f}&quot;.format(mnb.score(X_test_scaled, y_test)))
+print(&quot;模型得分结果：&#123;:.3f&#125;&quot;.format(mnb.score(X_test_scaled, y_test)))
 
 x_min, x_max = X[:, 0].min() - 0.5, X[:, 0].max() + 0.5
 y_min, y_max = X[:, 1].min() - 0.5, X[:, 0].max() + 0.5

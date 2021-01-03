@@ -251,58 +251,58 @@
         &lt;dependency&gt;
             &lt;groupId&gt;org.springframework&lt;/groupId&gt;
             &lt;artifactId&gt;spring-core&lt;/artifactId&gt;
-            &lt;version&gt;${spring.version}&lt;/version&gt;
+            &lt;version&gt;$&#123;spring.version&#125;&lt;/version&gt;
         &lt;/dependency&gt;
 
         &lt;dependency&gt;
             &lt;groupId&gt;org.springframework&lt;/groupId&gt;
             &lt;artifactId&gt;spring-web&lt;/artifactId&gt;
-            &lt;version&gt;${spring.version}&lt;/version&gt;
+            &lt;version&gt;$&#123;spring.version&#125;&lt;/version&gt;
         &lt;/dependency&gt;
         &lt;dependency&gt;
             &lt;groupId&gt;org.springframework&lt;/groupId&gt;
             &lt;artifactId&gt;spring-oxm&lt;/artifactId&gt;
-            &lt;version&gt;${spring.version}&lt;/version&gt;
+            &lt;version&gt;$&#123;spring.version&#125;&lt;/version&gt;
         &lt;/dependency&gt;
         &lt;dependency&gt;
             &lt;groupId&gt;org.springframework&lt;/groupId&gt;
             &lt;artifactId&gt;spring-tx&lt;/artifactId&gt;
-            &lt;version&gt;${spring.version}&lt;/version&gt;
+            &lt;version&gt;$&#123;spring.version&#125;&lt;/version&gt;
         &lt;/dependency&gt;
 
         &lt;dependency&gt;
             &lt;groupId&gt;org.springframework&lt;/groupId&gt;
             &lt;artifactId&gt;spring-jdbc&lt;/artifactId&gt;
-            &lt;version&gt;${spring.version}&lt;/version&gt;
+            &lt;version&gt;$&#123;spring.version&#125;&lt;/version&gt;
         &lt;/dependency&gt;
 
         &lt;dependency&gt;
             &lt;groupId&gt;org.springframework&lt;/groupId&gt;
             &lt;artifactId&gt;spring-webmvc&lt;/artifactId&gt;
-            &lt;version&gt;${spring.version}&lt;/version&gt;
+            &lt;version&gt;$&#123;spring.version&#125;&lt;/version&gt;
         &lt;/dependency&gt;
         &lt;dependency&gt;
             &lt;groupId&gt;org.springframework&lt;/groupId&gt;
             &lt;artifactId&gt;spring-aop&lt;/artifactId&gt;
-            &lt;version&gt;${spring.version}&lt;/version&gt;
+            &lt;version&gt;$&#123;spring.version&#125;&lt;/version&gt;
         &lt;/dependency&gt;
 
         &lt;dependency&gt;
             &lt;groupId&gt;org.springframework&lt;/groupId&gt;
             &lt;artifactId&gt;spring-context-support&lt;/artifactId&gt;
-            &lt;version&gt;${spring.version}&lt;/version&gt;
+            &lt;version&gt;$&#123;spring.version&#125;&lt;/version&gt;
         &lt;/dependency&gt;
 
         &lt;dependency&gt;
             &lt;groupId&gt;org.springframework&lt;/groupId&gt;
             &lt;artifactId&gt;spring-test&lt;/artifactId&gt;
-            &lt;version&gt;${spring.version}&lt;/version&gt;
+            &lt;version&gt;$&#123;spring.version&#125;&lt;/version&gt;
         &lt;/dependency&gt;
         &lt;!-- mybatis核心包 --&gt;
         &lt;dependency&gt;
             &lt;groupId&gt;org.mybatis&lt;/groupId&gt;
             &lt;artifactId&gt;mybatis&lt;/artifactId&gt;
-            &lt;version&gt;${mybatis.version}&lt;/version&gt;
+            &lt;version&gt;$&#123;mybatis.version&#125;&lt;/version&gt;
         &lt;/dependency&gt;
         &lt;!-- mybatis/spring包 --&gt;
         &lt;dependency&gt;
@@ -332,7 +332,7 @@
         &lt;dependency&gt;
             &lt;groupId&gt;log4j&lt;/groupId&gt;
             &lt;artifactId&gt;log4j&lt;/artifactId&gt;
-            &lt;version&gt;${log4j.version}&lt;/version&gt;
+            &lt;version&gt;$&#123;log4j.version&#125;&lt;/version&gt;
         &lt;/dependency&gt;
         &lt;!-- 用于操作JSON对象 --&gt;
         &lt;dependency&gt;
@@ -487,20 +487,20 @@ http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd&quot;&gt;
 
     &lt;bean id=&quot;dataSource&quot;
           class=&quot;org.apache.commons.dbcp.BasicDataSource&quot; destroy-method=&quot;close&quot;&gt;
-        &lt;property name=&quot;driverClassName&quot; value=&quot;${driver}&quot; /&gt;
-        &lt;property name=&quot;url&quot; value=&quot;${url}&quot; /&gt;
-        &lt;property name=&quot;username&quot; value=&quot;${username}&quot; /&gt;
-        &lt;property name=&quot;password&quot; value=&quot;${password}&quot; /&gt;
+        &lt;property name=&quot;driverClassName&quot; value=&quot;$&#123;driver&#125;&quot; /&gt;
+        &lt;property name=&quot;url&quot; value=&quot;$&#123;url&#125;&quot; /&gt;
+        &lt;property name=&quot;username&quot; value=&quot;$&#123;username&#125;&quot; /&gt;
+        &lt;property name=&quot;password&quot; value=&quot;$&#123;password&#125;&quot; /&gt;
         &lt;!-- 初始化连接大小 --&gt;
-        &lt;property name=&quot;initialSize&quot; value=&quot;${initialSize}&quot; /&gt;
+        &lt;property name=&quot;initialSize&quot; value=&quot;$&#123;initialSize&#125;&quot; /&gt;
         &lt;!-- 连接池最大数量 --&gt;
-        &lt;property name=&quot;maxActive&quot; value=&quot;${maxActive}&quot; /&gt;
+        &lt;property name=&quot;maxActive&quot; value=&quot;$&#123;maxActive&#125;&quot; /&gt;
         &lt;!-- 连接池最大空闲 --&gt;
-        &lt;property name=&quot;maxIdle&quot; value=&quot;${maxIdle}&quot; /&gt;
+        &lt;property name=&quot;maxIdle&quot; value=&quot;$&#123;maxIdle&#125;&quot; /&gt;
         &lt;!-- 连接池最小空闲 --&gt;
-        &lt;property name=&quot;minIdle&quot; value=&quot;${minIdle}&quot; /&gt;
+        &lt;property name=&quot;minIdle&quot; value=&quot;$&#123;minIdle&#125;&quot; /&gt;
         &lt;!-- 获取连接最大等待时间 --&gt;
-        &lt;property name=&quot;maxWait&quot; value=&quot;${maxWait}&quot; /&gt;
+        &lt;property name=&quot;maxWait&quot; value=&quot;$&#123;maxWait&#125;&quot; /&gt;
     &lt;/bean&gt;
 
     &lt;!-- spring和MyBatis完美整合，不需要mybatis的配置映射文件 --&gt;
@@ -650,7 +650,7 @@ log4j.appender.File.MaxFileSize = 10MB
 # 输出所以日志，如果换成DEBUG表示输出DEBUG以上级别日志
 log4j.appender.File.Threshold = ALL  
 log4j.appender.File.layout = org.apache.log4j.PatternLayout  
-log4j.appender.File.layout.ConversionPattern =[%p] [%d{yyyy-MM-dd HH:mm:ss}][%c]%m%n </code></pre>
+log4j.appender.File.layout.ConversionPattern =[%p] [%d&#123;yyyy-MM-dd HH:mm:ss&#125;][%c]%m%n </code></pre>
 <p><b style="color:deeppink;">值得注意的是，所有的Properties文件都尽量放在<code>src/main/resources</code>文件夹的下面</b></p>
 <h4 id="4、SSM应用实例"><a href="#4、SSM应用实例" class="headerlink" title="4、SSM应用实例"></a><b style="color:blue;">4、SSM应用实例</b></h4><p>SSM实际上就是一种用于便捷操作数据的框架设计结构。在JavaEE中的开发结构，在这里依旧是可以使用的。将后端进行分层设计，以达到解耦的效果。可以更好的适应多人协作开发的需求。</p>
 <p>首先需要完善后端的四层结构：<code>controller</code> <code>service</code> <code>dao</code> <code>pojo</code> </p>
@@ -679,7 +679,7 @@ import java.util.Date;
 @AllArgsConstructor
 //该注解属于Mybatis，用于创建类的别名，需要在配置文件中开启，才可以扫描到，然后在Mapper文件中使用别名来代替类的全限定名
 @Alias(&quot;user&quot;)
-public class User {
+public class User &#123;
 
     private int id;
     private String firstName;
@@ -687,7 +687,7 @@ public class User {
     private Date createAt;
     private Date updateAt;
 
-}
+&#125;
 </code></pre>
 <p>创建一个<code>UserDao</code>用于操作数据：</p>
 <pre><code class="java">package com.panhao.dao;
@@ -698,9 +698,9 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 //该注解属于Spring，用于将该接口映射为持久层方法，便于与Mapper文件中进行自动映射
 @Repository
-public interface UserDao {
+public interface UserDao &#123;
     List&lt;User&gt; getAllUser();
-}
+&#125;
 </code></pre>
 <p>在<code>src/main/resources</code>中创建文件<code>/mapper/UserDao.xml</code>用于与上面的接口做自动映射：</p>
 <pre><code class="xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; ?&gt;
@@ -734,23 +734,23 @@ import java.util.List;
  * @create:2020-10-26 22:22:13
  */
 @Controller
-public class UserController {
+public class UserController &#123;
 
     @Autowired
     private UserDao userDao;
 
     @RequestMapping(&quot;/hello.do&quot;)
     @ResponseBody
-    public String hello(){
+    public String hello()&#123;
         return &quot;dasdadsa&quot;;
-    }
+    &#125;
 
     @RequestMapping(&quot;/user&quot;)
     @ResponseBody
-    public List&lt;User&gt; hello1(){
+    public List&lt;User&gt; hello1()&#123;
         return userDao.getAllUser();
-    }
-}
+    &#125;
+&#125;
 </code></pre>
 <p>最后在浏览器中输入<code>http://localhost:8080/SSM/user</code>即可得到数据库中的数据。</p>
 
