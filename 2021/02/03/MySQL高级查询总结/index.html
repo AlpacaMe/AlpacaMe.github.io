@@ -1,0 +1,802 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <title>
+        MySQL高级查询总结 |
+        
+        ダモクレスの剣
+    </title>
+    <link rel="shortcut icon" href="/images/1.svg">
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.0.4/source/css/font-awesome.min.css">
+    <script id="hexo-configurations">
+    let KEEP = window.KEEP || {};
+    KEEP.hexo_config = {"hostname":"alpacame.github.io","root":"/","path":"search.xml"};
+    KEEP.theme_config = {"toc":{"enable":true,"number":true,"expand_all":true},"style":{"primary_color":"#ff0000","avatar":"/images/avatar.jpg","favicon":"/images/1.svg","img_position":"left","left_side_width":"260px","content_max_width":"900px","hover":{"shadow":true,"scale":false},"first_screen":{"enable":true,"background_img":"/images/bg.svg","description":"但愿众生皆得饱，不辞羸病卧残阳"}},"local_search":{"enable":true,"trigger":"auto","unescape":true,"preload":true},"version":"3.0.4"};
+    KEEP.language = {"search":"Search...","prev":"Prev","next":"Next","prev_posts":"Prev posts","next_posts":"Next posts","page":"Page %d","recent_posts":"Recent Posts","share":"Share","powered_by":"Powered by %s","theme":"Theme","rss_feed":"RSS Feed","category":"Category","categories":"Categories","tag":"Tag","tags":"Tags","tagcloud":"Tag Cloud","comment":"Comment","home":"Home","archive":"Archive","archives":"Archives","about":"About","site_uv":"Visitor Count","site_pv":"Totalview","links":"Links","link":"Link","top":"TOP","read_more":"Read more","wordcount":"Words","min2read":"Mins","changelog":"Changelog","copyright":{"author":"Post author","title":"Post title","link":"Post link","create_time":"Create time","license_title":"Copyright Notice","license_content":"All articles in this blog are licensed under %s unless stating additionally."},"ago":{"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days age","week":"%s weeks age","month":"%s months age","year":"%s years age"}};
+  </script>
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+
+<body>
+<div class="page-container">
+
+    
+
+    <header class="page-header">
+        <div class="header-progress"></div>
+    </header>
+
+    <main class="page-main">
+
+        <div class="page-main-content">
+
+            <div class="page-main-content-top">
+                <header class="header-wrapper">
+
+    <div class="header-content">
+        <a class="logo-title" href="/">
+            ダモクレスの剣
+        </a>
+
+        <ul class="menu-list">
+            
+                <li class="menu-item">
+                    <a class=""
+                       href="/"
+                    >
+                        首页
+                    </a>
+                </li>
+            
+                <li class="menu-item">
+                    <a class=""
+                       href="/archives"
+                    >
+                        文章
+                    </a>
+                </li>
+            
+                <li class="menu-item">
+                    <a class=""
+                       href="/live"
+                    >
+                        生活
+                    </a>
+                </li>
+            
+                <li class="menu-item">
+                    <a class=""
+                       href="/links"
+                    >
+                        友链
+                    </a>
+                </li>
+            
+                <li class="menu-item">
+                    <a class=""
+                       href="/about"
+                    >
+                        关于
+                    </a>
+                </li>
+            
+        </ul>
+
+        <div class="menu-bar">
+            <div class="menu-bar-middle"></div>
+        </div>
+    </div>
+
+    <div class="header-drawer">
+        <ul class="drawer-menu-list">
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/">首页</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/archives">文章</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/live">生活</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/links">友链</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/about">关于</a>
+                </li>
+            
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+            </div>
+
+            <div class="page-main-content-middle">
+
+                <main class="main-content normal-code-theme">
+
+                    
+                        <div class="fade-in-down-animation">
+    <div class="article-content-container">
+
+        <div class="article-title">
+            <span class="title-hover-animation">MySQL高级查询总结</span>
+        </div>
+
+        
+            <div class="article-header">
+                <div class="avatar">
+                    <img src="/images/avatar.jpg">
+                </div>
+                <div class="info">
+                    <div class="author">
+                        <span>Pawn</span>
+                        <span class="level">Lv1</span>
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fas fa-calendar"></i> 2021-02-03 18:49:14
+    </span>
+    
+    
+
+    
+    
+        <span class="article-wordcount article-meta-item">
+            <i class="fas fa-file-word"></i> <span>4.1k Words</span>
+        </span>
+    
+    
+        <span class="article-min2read article-meta-item">
+            <i class="fas fa-clock"></i> <span>17 Mins</span>
+        </span>
+    
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        <div class="article-content markdown-body">
+            <h2 style="font-weight:lighter;color:crimson;">从此烟雨落金陵，一人撑伞两人行</h2>
+
+<h2 id="MySQL高级查询"><a href="#MySQL高级查询" class="headerlink" title="MySQL高级查询"></a>MySQL高级查询</h2><p>在实际的业务需求中，简单查询往往解决问题的能力有限。所以需要功能更为强大的查询语句，而MySQL对业务需求也提供更高级的查询方式，共分为：<var>连接查询、联合查询、子查询</var>三种，基本可以囊括所有的业务需求。</p>
+<h3 id="1、数据库环境准备"><a href="#1、数据库环境准备" class="headerlink" title="1、数据库环境准备"></a>1、数据库环境准备</h3><p>在进行实现之前，需要我们拥有一个关系型数据库的模型。建立三张表user、book、orders分别表示用户表，书籍表，以及用户与书籍之间的关系表。</p>
+<p><font>user表的建表语句：</font></p>
+<pre><code class="sql">CREATE TABLE user (
+  id int(10) UNSIGNED  NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  name varchar(20) NOT NULL,
+  adress varchar(20) NOT NULL,
+  balance decimal(10,2) DEFAULT NULL,
+  phone bigint DEFAULT NULL,
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8</code></pre>
+<p>为该表添加四条记录：</p>
+<pre><code class="sql">+----+--------+--------------+---------+-------------+
+| id | name   | adress       | balance | phone       |
++----+--------+--------------+---------+-------------+
+|  1 | 唐僧   | 湖北省黄冈市 |  346.89 | 13297964701 |
+|  2 | 猪八戒 | 湖北省武汉市 |  345.67 | 13728429899 |
+|  3 | 孙悟空 | 湖北省黄冈市 |  345.67 | 13737829449 |
+|  4 | 沙悟净 | 湖北省随州市 |  345.67 | 18739829449 |
++----+--------+--------------+---------+-------------+</code></pre>
+<p><font>book表的键表语句：</font></p>
+<pre><code class="sql"> CREATE TABLE book(
+  id int NOT NULL AUTO_INCREMENT,
+  name varchar(20) NOT NULL,
+  price decimal(10,2) NOT NULL,
+  author varchar(20) NOT NULL,
+  words int DEFAULT NULL,
+  PRIMARY KEY (id),
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8</code></pre>
+<p>为book表中插入四条记录：</p>
+<pre><code class="sql">+----+----------+--------+--------+--------+
+| id | name     | price  | author | words  |
++----+----------+--------+--------+--------+
+|  1 | 三国演义 |  89.50 | 罗贯中 | 800000 |
+|  2 | 水浒传   | 103.50 | 施耐庵 | 960000 |
+|  3 | 西游记   | 163.50 | 吴承恩 | 860000 |
+|  4 | 红楼梦   |  73.50 | 曹雪芹 | 730000 |
++----+----------+--------+--------+--------+</code></pre>
+<p><font>orders表建表语句：</font></p>
+<pre><code class="sql"> CREATE TABLE orders (
+  id int unsigned NOT NULL AUTO_INCREMENT,
+  user_id int NOT NULL,
+  book_id int NOT NULL,
+  PRIMARY KEY (id),
+  KEY user_id (user_id),
+  KEY book_id (book_id),
+  CONSTRAINT `FK_BOOK_ID` FOREIGN KEY (`book_id`) REFERENCES `book` (`id`),
+  CONSTRAINT `FK_USER_ID` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8</code></pre>
+<p>向orders表中插入数据：</p>
+<pre><code class="sql">+----+---------+---------+
+| id | user_id | book_id |
++----+---------+---------+
+|  1 |       1 |       3 |
+|  2 |       1 |       2 |
+|  3 |       2 |       1 |
+|  4 |       3 |       2 |
+|  5 |       4 |       1 |
+|  6 |       4 |       4 |
++----+---------+---------+</code></pre>
+<h3 id="2、连接查询"><a href="#2、连接查询" class="headerlink" title="2、连接查询"></a>2、连接查询</h3><p><var>连接查询是将多张表按照某个指定的条件进行记录的连接</var>，通常用在用户需要查看的数据来自多张表</p>
+<p><font>连接查询的使用方式：</font></p>
+<pre><code class="sql">/*连接查询使用join关键字，on关键字用来表示表连接的顺序 */
+select * from user 
+join orders
+on orders.user_id=user.id</code></pre>
+<h4 id="连接查询的分类"><a href="#连接查询的分类" class="headerlink" title="连接查询的分类"></a>连接查询的分类</h4><p>上述SQL语句的就是基础的连接查询的使用方法，除此之外MySQL还提供更高级的连接查询的用法，分为：<var>内连接、外连接、自然连接和交叉连接</var>。</p>
+<ul>
+<li><p><strong>内连接</strong></p>
+<p>从左表中取出每一条记录去右表中与所有记录进行匹配，匹配必须是某个条件在左表中与右表中相同最终才会保留结果，否则不会保留。</p>
+<p><font>基本语法：</font></p>
+<pre><code class="sql">--将orders表中数据与user表中的数据根据user_id=id连接在一起
+select * from user 
+inner join orders
+on orders.user_id=user.id;
+</code></pre>
+<p>查询的结果为：</p>
+<pre><code class="sql">+----+--------+--------------+---------+-------------+----+---------+---------+
+| id | name   | adress       | balance | phone       | id | user_id | book_id |
++----+--------+--------------+---------+-------------+----+---------+---------+
+|  1 | 唐僧   | 湖北省黄冈市 |  346.89 | 13297994701 |  1 |       1 |       3 |
+|  1 | 唐僧   | 湖北省黄冈市 |  346.89 | 13297994701 |  2 |       1 |       2 |
+|  2 | 猪八戒 | 湖北省武汉市 |  345.67 | 13728429899 |  3 |       2 |       1 |
+|  3 | 孙悟空 | 湖北省黄冈市 |  345.67 | 13737829449 |  4 |       3 |       2 |
+|  4 | 沙悟净 | 湖北省随州市 |  345.67 | 18739829449 |  5 |       4 |       1 |
+|  4 | 沙悟净 | 湖北省随州市 |  345.67 | 18739829449 |  6 |       4 |       4 |
++----+--------+--------------+---------+-------------+----+---------+---------+</code></pre>
+<p><var>内连接可以没有连接条件，即关键字ON之后的内容，这个时候系统会保留所有的结果，称之为笛卡尔积。</var></p>
+</li>
+<li><p><strong>外连接</strong></p>
+<p>以某张表为主，取出里面所有的记录，然后与另外一种表进行连接，不管能不能匹配上条件，最终都会保留；能匹配，正确保留；不能匹配，其他表的字段都置为空NULL。</p>
+<p><font>基本用法：</font></p>
+<pre><code class="sql">--外连接分为两种，一种是以左表为主表，用关键字left join表示
+select * from user
+left join orders
+on orders.user_id=user.id;
+--另一种以右表为主表，用关键字right join表示select
+select * from user
+right join orders
+on user.id=orders.user_id</code></pre>
+<p>查询结果为：</p>
+<pre><code class="sql">+----+--------+--------------+---------+-------------+------+---------+---------+
+| id | name   | adress       | balance | phone       | id   | user_id | book_id |
++----+--------+--------------+---------+-------------+------+---------+---------+
+|  1 | 唐僧   | 湖北省黄冈市 |  346.89 | 13297994701 |    1 |       1 |       3 |
+|  1 | 唐僧   | 湖北省黄冈市 |  346.89 | 13297994701 |    2 |       1 |       2 |
+|  2 | 猪八戒 | 湖北省武汉市 |  345.67 | 13728429899 |    3 |       2 |       1 |
+|  3 | 孙悟空 | 湖北省黄冈市 |  345.67 | 13737829449 |    4 |       3 |       2 |
+|  4 | 沙悟净 | 湖北省随州市 |  345.67 | 18739829449 |    5 |       4 |       1 |
+|  4 | 沙悟净 | 湖北省随州市 |  345.67 | 18739829449 |    6 |       4 |       4 |
++----+--------+--------------+---------+-------------+------+---------+---------+</code></pre>
+<p><font>内连接与外连接的区别：</font></p>
+<p><var>在连接条件不匹配的情况下，内连接将返回空表，而外连接则不会，则会将主表的数据填充，副表的字段全部置为空。</var></p>
+<p><cite>1、演示内连接条件匹配失败</cite></p>
+<pre><code class="sql">select * from user 
+inner join orders 
+on orders.user_id=user.id and user.id=5;</code></pre>
+<p>查询结果为：</p>
+<pre><code class="sql">Empty set (0.00 sec)</code></pre>
+<p><cite>2、演示外连接条件匹配失败</cite></p>
+<p>左连接匹配失败时，左表作为主表数据将会被填充，右表作为副表所有字段将置为空NULL。</p>
+<pre><code class="sql">select * from user
+left join orders
+on orders.user_id=user.id and user.id=5;</code></pre>
+<p>查询结果为：</p>
+<pre><code class="sql">+----+--------+--------------+---------+-------------+------+---------+---------+
+| id | name   | adress       | balance | phone       | id   | user_id | book_id |
++----+--------+--------------+---------+-------------+------+---------+---------+
+|  1 | 唐僧   | 湖北省黄冈市 |  346.89 | 13297994701 | NULL |    NULL |    NULL |
+|  2 | 猪八戒 | 湖北省武汉市 |  345.67 | 13728429899 | NULL |    NULL |    NULL |
+|  3 | 孙悟空 | 湖北省黄冈市 |  345.67 | 13737829449 | NULL |    NULL |    NULL |
+|  4 | 沙悟净 | 湖北省随州市 |  345.67 | 18739829449 | NULL |    NULL |    NULL |
++----+--------+--------------+---------+-------------+------+---------+---------+</code></pre>
+<p>右连接匹配失败时，右表作为主表数据将会被填充，左表作为副表所有字段将置为空NULL。</p>
+<pre><code class="sql">select * from user
+right join orders
+on orders.user_id=user.id and user.id=5;</code></pre>
+<p>查询结果为：</p>
+<pre><code class="sql">+------+------+--------+---------+-------+----+---------+---------+
+| id   | name | adress | balance | phone | id | user_id | book_id |
++------+------+--------+---------+-------+----+---------+---------+
+| NULL | NULL | NULL   |    NULL |  NULL |  1 |       1 |       3 |
+| NULL | NULL | NULL   |    NULL |  NULL |  2 |       1 |       2 |
+| NULL | NULL | NULL   |    NULL |  NULL |  3 |       2 |       1 |
+| NULL | NULL | NULL   |    NULL |  NULL |  4 |       3 |       2 |
+| NULL | NULL | NULL   |    NULL |  NULL |  5 |       4 |       1 |
+| NULL | NULL | NULL   |    NULL |  NULL |  6 |       4 |       4 |
++------+------+--------+---------+-------+----+---------+---------+</code></pre>
+</li>
+<li><p><strong>交叉连接</strong></p>
+<p>从一张表中循环取出每一条记录，每条记录都去另外一张表进行匹配，没有条件匹配。</p>
+<p><font>基本用法：</font></p>
+<pre><code class="sql">--corss join关键字表示交叉连接，没有连接条件
+select  * from user corss join orders</code></pre>
+<p>查询结果为：</p>
+<pre><code class="sql">+----+--------+--------------+---------+-------------+----+----------+--------+--------+--------+
+| id | name   | adress       | balance | phone       | id | name     | price  | author | words  |
++----+--------+--------------+---------+-------------+----+----------+--------+--------+--------+
+|  1 | 唐僧   | 湖北省黄冈市 |  346.89 | 13297994701 |  1 | 三国演义 |  89.50 | 罗贯中 | 800000 |
+|  2 | 猪八戒 | 湖北省武汉市 |  345.67 | 13728429899 |  1 | 三国演义 |  89.50 | 罗贯中 | 800000 |
+|  3 | 孙悟空 | 湖北省黄冈市 |  345.67 | 13737829449 |  1 | 三国演义 |  89.50 | 罗贯中 | 800000 |
+|  4 | 沙悟净 | 湖北省随州市 |  345.67 | 18739829449 |  1 | 三国演义 |  89.50 | 罗贯中 | 800000 |
+|  1 | 唐僧   | 湖北省黄冈市 |  346.89 | 13297994701 |  2 | 水浒传   | 103.50 | 施耐庵 | 960000 |
+|  2 | 猪八戒 | 湖北省武汉市 |  345.67 | 13728429899 |  2 | 水浒传   | 103.50 | 施耐庵 | 960000 |
+|  3 | 孙悟空 | 湖北省黄冈市 |  345.67 | 13737829449 |  2 | 水浒传   | 103.50 | 施耐庵 | 960000 |
+|  4 | 沙悟净 | 湖北省随州市 |  345.67 | 18739829449 |  2 | 水浒传   | 103.50 | 施耐庵 | 960000 |
+|  1 | 唐僧   | 湖北省黄冈市 |  346.89 | 13297994701 |  3 | 西游记   | 163.50 | 吴承恩 | 860000 |
+|  2 | 猪八戒 | 湖北省武汉市 |  345.67 | 13728429899 |  3 | 西游记   | 163.50 | 吴承恩 | 860000 |
+|  3 | 孙悟空 | 湖北省黄冈市 |  345.67 | 13737829449 |  3 | 西游记   | 163.50 | 吴承恩 | 860000 |
+|  4 | 沙悟净 | 湖北省随州市 |  345.67 | 18739829449 |  3 | 西游记   | 163.50 | 吴承恩 | 860000 |
+|  1 | 唐僧   | 湖北省黄冈市 |  346.89 | 13297994701 |  4 | 红楼梦   |  73.50 | 曹雪芹 | 730000 |
+|  2 | 猪八戒 | 湖北省武汉市 |  345.67 | 13728429899 |  4 | 红楼梦   |  73.50 | 曹雪芹 | 730000 |
+|  3 | 孙悟空 | 湖北省黄冈市 |  345.67 | 13737829449 |  4 | 红楼梦   |  73.50 | 曹雪芹 | 730000 |
+|  4 | 沙悟净 | 湖北省随州市 |  345.67 | 18739829449 |  4 | 红楼梦   |  73.50 | 曹雪芹 | 730000 |
++----+--------+--------------+---------+-------------+----+----------+--------+--------+--------+</code></pre>
+<p>book表中有4条数据，user表中也有4条数据，所以查询的结果就是16条数据。</p>
+</li>
+<li><p><strong>自然连接</strong></p>
+<p>通过MySQL自己的判断完成连接过程，不需要指定连接条件。MySQL会使用表内的相同字段作为连接条件。能匹配上就正常匹配，匹配不上的就将其字段填充为NULL</p>
+<p><font>基本用法：</font></p>
+<pre><code class="sql">--自然连接分为内连接和外连接，外连接分为左外连接和右外连接
+-- 自然连接内连接使用natural join表示
+select * from users natural join book;</code></pre>
+<p>查询结果为：</p>
+<pre><code class="sql">+----+--------+--------------+---------+-------------+---------+---------+
+| id | name   | adress       | balance | phone       | user_id | book_id |
++----+--------+--------------+---------+-------------+---------+---------+
+|  1 | 唐僧   | 湖北省黄冈市 |  346.89 | 13297994701 |       1 |       3 |
+|  2 | 猪八戒 | 湖北省武汉市 |  345.67 | 13728429899 |       1 |       2 |
+|  3 | 孙悟空 | 湖北省黄冈市 |  345.67 | 13737829449 |       2 |       1 |
+|  4 | 沙悟净 | 湖北省随州市 |  345.67 | 18739829449 |       3 |       2 |
++----+--------+--------------+---------+-------------+---------+---------+</code></pre>
+<p>因为在user表与orders表中只有id字段名称是相同，所以自然连接会以id字段为条件进行匹配。</p>
+<pre><code class="sql">--自然连接左外连接，使用natural left join关键字表示
+select * from user natural left join orders;</code></pre>
+<p>查询结果：</p>
+<pre><code class="sql">+----+--------+--------------+---------+-------------+---------+---------+
+| id | name   | adress       | balance | phone       | user_id | book_id |
++----+--------+--------------+---------+-------------+---------+---------+
+|  1 | 唐僧   | 湖北省黄冈市 |  346.89 | 13297994701 |       1 |       3 |
+|  2 | 猪八戒 | 湖北省武汉市 |  345.67 | 13728429899 |       1 |       2 |
+|  3 | 孙悟空 | 湖北省黄冈市 |  345.67 | 13737829449 |       2 |       1 |
+|  4 | 沙悟净 | 湖北省随州市 |  345.67 | 18739829449 |       3 |       2 |
++----+--------+--------------+---------+-------------+---------+---------+</code></pre>
+<pre><code class="sql">--自然连接右外连接，使用natural right join关键字表示
+select * from user natural right join orders</code></pre>
+<p>查询结果：</p>
+<pre><code class="sql">+----+---------+---------+--------+--------------+---------+-------------+
+| id | user_id | book_id | name   | adress       | balance | phone       |
++----+---------+---------+--------+--------------+---------+-------------+
+|  1 |       1 |       3 | 唐僧   | 湖北省黄冈市 |  346.89 | 13297994701 |
+|  2 |       1 |       2 | 猪八戒 | 湖北省武汉市 |  345.67 | 13728429899 |
+|  3 |       2 |       1 | 孙悟空 | 湖北省黄冈市 |  345.67 | 13737829449 |
+|  4 |       3 |       2 | 沙悟净 | 湖北省随州市 |  345.67 | 18739829449 |
+|  5 |       4 |       1 | NULL   | NULL         |    NULL |        NULL |
+|  6 |       4 |       4 | NULL   | NULL         |    NULL |        NULL |
++----+---------+---------+--------+--------------+---------+-------------+</code></pre>
+</li>
+</ul>
+<p><q>总结：一般内连接和外连接用的比较多，而自然连接和交叉连接用的比较少。</q></p>
+<h3 id="3、联合查询"><a href="#3、联合查询" class="headerlink" title="3、联合查询"></a>3、联合查询</h3><p><var>联合查询是将多次查询的结果进行拼接，并不会增加字段的数量</var>。例如，在某一个张表中记录了男生和女生的信息，然后第一次查询需要男生的身高按照从高到低排列，第二次查询需要女生身高按高到底排列。</p>
+<p><font>基本用法：</font></p>
+<pre><code class="sql">--联合查询使用关键字UNION对其进行表示
+--实际上就是第一查询id为偶数的book，第二次查询id为奇数的book，将两次查询的结果拼接起来
+select * from book where id%2=0 
+union 
+select * from book where id%2=1;</code></pre>
+<p>查询结果为：</p>
+<pre><code class="sql">+----+----------+--------+--------+--------+
+| id | name     | price  | author | words  |
++----+----------+--------+--------+--------+
+|  2 | 水浒传   | 103.50 | 施耐庵 | 960000 |
+|  4 | 红楼梦   |  73.50 | 曹雪芹 | 730000 |
+|  1 | 三国演义 |  89.50 | 罗贯中 | 800000 |
+|  3 | 西游记   | 163.50 | 吴承恩 | 860000 |
++----+----------+--------+--------+--------+</code></pre>
+<p>关于UNION中有两种用法：一种如上述sql一样的用法，直接使用UNION关键字；另外一种用法是使用UNION ALL关键字；这两种用法的区别在于UNION关键字会压缩多个结果集中重复的内容，而UNION ALL会将所有的记录都显示出来。</p>
+<p><cite>演示UNION与UNION ALL的区别：</cite></p>
+<ol>
+<li><p>使用UNION</p>
+<pre><code class="sql">select * from book
+union 
+select * from book</code></pre>
+<p>查询结果为：</p>
+<pre><code class="sql">+----+----------+--------+--------+--------+
+| id | name     | price  | author | words  |
++----+----------+--------+--------+--------+
+|  1 | 三国演义 |  89.50 | 罗贯中 | 800000 |
+|  2 | 水浒传   | 103.50 | 施耐庵 | 960000 |
+|  3 | 西游记   | 163.50 | 吴承恩 | 860000 |
+|  4 | 红楼梦   |  73.50 | 曹雪芹 | 730000 |
++----+----------+--------+--------+--------+</code></pre>
+<p>因为第一次查询与第二次查询的结果是重复的，所以重复的记录只会显示一次。</p>
+</li>
+<li><p>使用UNION ALL</p>
+<pre><code class="sql">select * from book
+union all
+select * from book</code></pre>
+<p>查询结果为：</p>
+<pre><code class="sql">+----+----------+--------+--------+--------+
+| id | name     | price  | author | words  |
++----+----------+--------+--------+--------+
+|  1 | 三国演义 |  89.50 | 罗贯中 | 800000 |
+|  2 | 水浒传   | 103.50 | 施耐庵 | 960000 |
+|  3 | 西游记   | 163.50 | 吴承恩 | 860000 |
+|  4 | 红楼梦   |  73.50 | 曹雪芹 | 730000 |
+|  1 | 三国演义 |  89.50 | 罗贯中 | 800000 |
+|  2 | 水浒传   | 103.50 | 施耐庵 | 960000 |
+|  3 | 西游记   | 163.50 | 吴承恩 | 860000 |
+|  4 | 红楼梦   |  73.50 | 曹雪芹 | 730000 |
++----+----------+--------+--------+--------+</code></pre>
+</li>
+</ol>
+<p>联合查询最常用的方式就是与Order By关键字联合使用，在于Order By关键字联合使用的时候需要注意的是：<var>每一次查询需要用括号括起来；其次必须加上limit关键字，否则order by将不会生效</var>。</p>
+<pre><code class="sql">--查询id为奇数的book，按照price进行降序排列
+--查询id为偶数的book，按照id进行升序排列
+(select * from book where id%2=0 order by price  desc limit 999)
+union 
+(select * from book where id%2=1 order by id asc limit 999);</code></pre>
+<p>查询结果为：</p>
+<pre><code class="sql">+----+----------+--------+--------+--------+
+| id | name     | price  | author | words  |
++----+----------+--------+--------+--------+
+|  2 | 水浒传   | 103.50 | 施耐庵 | 960000 |
+|  4 | 红楼梦   |  73.50 | 曹雪芹 | 730000 |
+|  1 | 三国演义 |  89.50 | 罗贯中 | 800000 |
+|  3 | 西游记   | 163.50 | 吴承恩 | 860000 |
++----+----------+--------+--------+--------+</code></pre>
+<p>从查询结果可以看到，前面两条是第一次查询的结果，其id为偶数，按照price字段进行降序排列；后面两条是第二次查询的结果，其id为奇数，按照id的升序排列（<em>默认就是按照id属性升序排列</em>）。</p>
+<h3 id="4、子查询"><a href="#4、子查询" class="headerlink" title="4、子查询"></a>4、子查询</h3><p>子查询是在某个查询的结果之上进行的，即一条select语句中包含另一select语句。</p>
+<p>子查询有两种分类的方式，一种是按照位置进行分类；另外一种是按照结果进行分类。</p>
+<ul>
+<li><strong>按照位置进行分类</strong><ol>
+<li>From子查询：子查询跟在FROM之后</li>
+<li>Where子查询：子查询跟在Where之后</li>
+<li>Exists字查询：子查询出现在Exists之后</li>
+</ol>
+</li>
+<li><strong>按照结果进行分类</strong><ol>
+<li>标量子查询：子查询得到的结果是一行一列</li>
+<li>列子查询：子查询得到的结果是一列多行</li>
+<li>行子查询：子查询得到的记过是一行多列</li>
+<li>表子查询：子查询得到的结果是多行多列</li>
+</ol>
+</li>
+</ul>
+<h4 id="标量子查询"><a href="#标量子查询" class="headerlink" title="标量子查询"></a>标量子查询</h4><pre><code class="sql">--标量子查询，用（）表示子查询
+--查询id为2的用户所订购的书籍，先在orders表中查询user_id为2所关联的book_id，然后再去按照子查询出来book_id去book中查询具体的book
+select * from book where book.id=(select book_id from orders where orders.user_id=2);</code></pre>
+<p>查询结果为：</p>
+<pre><code class="sql">--其中子查询的结果为1
++----+----------+-------+--------+--------+
+| id | name     | price | author | words  |
++----+----------+-------+--------+--------+
+|  1 | 三国演义 | 89.50 | 罗贯中 | 800000 |
++----+----------+-------+--------+--------+</code></pre>
+<h4 id="列子查询"><a href="#列子查询" class="headerlink" title="列子查询"></a>列子查询</h4><pre><code class="sql">--列子查询
+--查询id为1的用户所订购的书籍，子查询的结果为book_id=2、3
+select * from book where book.id in (select book_id from orders where orders.user_id=1);</code></pre>
+<p>查询结果为：</p>
+<pre><code class="sql">+----+--------+--------+--------+--------+
+| id | name   | price  | author | words  |
++----+--------+--------+--------+--------+
+|  2 | 水浒传 | 103.50 | 施耐庵 | 960000 |
+|  3 | 西游记 | 163.50 | 吴承恩 | 860000 |
++----+--------+--------+--------+--------+</code></pre>
+<h4 id="行子查询"><a href="#行子查询" class="headerlink" title="行子查询"></a>行子查询</h4><pre><code class="sql">--行子查询，查询id为2的用户的姓名以及它所订购的书籍
+select book.*,user.name as username from book,user where (user.id,book.id)=(select user_id,book_id  from orders where user_id=2);</code></pre>
+<p>查询结果为：</p>
+<pre><code class="sql">+----+----------+-------+--------+--------+----------+
+| id | name     | price | author | words  | username |
++----+----------+-------+--------+--------+----------+
+|  1 | 三国演义 | 89.50 | 罗贯中 | 800000 | 猪八戒   |
++----+----------+-------+--------+--------+----------+</code></pre>
+<h4 id="表子查询"><a href="#表子查询" class="headerlink" title="表子查询"></a>表子查询</h4><pre><code class="sql">--表子查询，将子查询得出的结果作为一张临时的表
+select * from book,(select * from orders where orders.book_id=1) s where book.id=s.book_id;</code></pre>
+<p>查询结果为：</p>
+<pre><code class="sql">+----+----------+-------+--------+--------+----+---------+---------+
+| id | name     | price | author | words  | id | user_id | book_id |
++----+----------+-------+--------+--------+----+---------+---------+
+|  1 | 三国演义 | 89.50 | 罗贯中 | 800000 |  3 |       2 |       1 |
+|  1 | 三国演义 | 89.50 | 罗贯中 | 800000 |  5 |       4 |       1 |
++----+----------+-------+--------+--------+----+---------+---------+</code></pre>
+<h3 id="5、模糊查询"><a href="#5、模糊查询" class="headerlink" title="5、模糊查询"></a>5、模糊查询</h3><p>模糊查询在MySQL中的用法也非常常见的，模糊查询其实就是使用占位符来实现MySQL的模糊查询。</p>
+<ul>
+<li>关于模糊查询SQL提供了四种匹配模式：<code>%</code>，<code>_</code>，<code>[]</code>，<code>[^]</code>。</li>
+</ul>
+<h4 id=""><a href="#" class="headerlink" title="%"></a>%</h4><ul>
+<li>表示任意0个或多个字符。可匹配任意类型和长度的字符，有些情况下若是中文，请使用两个百分号（%%）表示；</li>
+</ul>
+<pre><code class="sql">SELECT * FROM [user] WHERE u_name LIKE &#39;%三%&#39;;/*查询user表中的u_name为“张三”，“张猫三”，“唐三藏”等包含“三”的记录*/
+SELECT * FROM [user] WHERE u_name LIKE &#39;%三%&#39; AND u_name LIKE &#39;%猫%&#39;;/*查询user表中u_name中包含“三”和“猫”的所有的记录*/
+SELECT * FROM [user] WHERE u_name LIKE &#39;%三%猫&#39;; /*可以搜出“三脚猫”，但是搜不出“张三猫”*/</code></pre>
+<h4 id="-1"><a href="#-1" class="headerlink" title="_"></a>_</h4><ul>
+<li>表示任意单个字符。匹配单个任意字符，它常用来限制表达式的字符长度语句：</li>
+</ul>
+<pre><code class="sql">SELECT * FROM [user] WHERE u_name LIKE &quot;_三_&quot;;/*查询名字是三个字的，且中间是三的记录，例如“唐三藏”*/
+SELECT * FROM [user] WHERE u_name LIKE &quot;三__&quot;;/*查询名字是三个字的,且第一个字是三的记录，例如“三脚猫”*/</code></pre>
+<h4 id="-2"><a href="#-2" class="headerlink" title="[]"></a>[]</h4><ul>
+<li>表示括号内所列字符中的一个（类似正则表达式）。指定一个字符、字符串或范围，要求所匹配对象为它们中的任一个。</li>
+</ul>
+<pre><code class="sql">SELECT * FROM [user] WHERE u_name LIKE &#39;[张李王]三&#39;;/*查询出“张三”，“李三”，“王三”*/
+SELECT * FROM [user] WHERE u_name LIKE &#39;老[1-9]&#39;;/*查询出“老1”，“老2”，“老3”，......,“老9”*/</code></pre>
+<h4 id="-3"><a href="#-3" class="headerlink" title="[^]"></a>[^]</h4><ul>
+<li>表示不再括号所列之内的单个字符。其取值和<code>[]</code>相同，但它要求所匹配对象为指定字符外任一个字符。</li>
+</ul>
+<pre><code class="sql">SELECT * FROM [user] WHERE u_name LIKE &#39;[^张李王]&#39;;/*查询出不姓“张”，“李”，“王”的叫“玩”的人，例如“赵三”*/
+SELECT * FROM [user] WHERE u_name LIKE &#39;老[^1-4]&#39;;/*查询出“老5”到“老9”*/</code></pre>
+
+        </div>
+
+        
+            <div class="post-copyright-info">
+                <div class="article-copyright-info-container">
+    <ul>
+        <li>Post title：MySQL高级查询总结</li>
+        <li>Post author：Pawn</li>
+        <li>Create time：2021-02-03 18:49:14</li>
+        <li>
+            Post link：https://panhao.work/2021/02/03/MySQL高级查询总结/
+        </li>
+        <li>
+            Copyright Notice：All articles in this blog are licensed under <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">BY-NC-SA</a> unless stating additionally.
+        </li>
+    </ul>
+</div>
+
+            </div>
+        
+
+        
+            <div class="article-nav">
+                
+                
+                    <div class="article-next">
+                        <a class="next"
+                           rel="next"
+                           href="/2020/12/03/%E5%A4%9A%E7%BA%BF%E7%A8%8B%E5%9F%BA%E7%A1%80/"
+                        >
+                            <span class="title flex-center">
+                                <span class="post-nav-title-item">多线程基础</span>
+                                <span class="post-nav-item">Next posts</span>
+                            </span>
+                            <span class="right arrow-icon flex-center" >
+                              <i class="fas fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+        
+            <div class="comment-container">
+                <div class="comments-container">
+    <div id="comment-anchor"></div>
+    
+        
+    <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+    <div id="gitalk-container"></div>
+    <script>
+        let __gitalk__pathname = decodeURI(location.pathname);
+        const __gitalk__pathnameLength = __gitalk__pathname.length;
+        const __gitalk__pathnameMaxLength = 50;
+        if (__gitalk__pathnameLength > __gitalk__pathnameMaxLength) {
+            __gitalk__pathname = __gitalk__pathname.substring(0, __gitalk__pathnameMaxLength - 3) + '...';
+        }
+        const gitalk = new Gitalk({
+            clientID: '1b9120324a3474ac4059',
+            clientSecret: '7a2ba06a601ff45989a71b52de9c3abae66cf370',
+            repo: 'Comments',
+            owner: 'AlpacaMe',
+            admin: ['AlpacaMe'],
+            id: __gitalk__pathname,
+            language: 'en'
+        })
+        gitalk.render('gitalk-container')
+    </script>
+
+
+    
+</div>
+
+            </div>
+        
+    </div>
+</div>
+
+
+                    
+                </main>
+
+            </div>
+
+            <div class="page-main-content-bottom">
+                <footer class="footer">
+    <div class="info-container">
+        <div class="copyright-info info-item">
+            &copy;
+            
+              <span>2020</span> -
+            
+            2021 <i class="fas fa-heart icon-animate"></i> <a href="/">Pawn</a>
+        </div>
+        
+        <div class="theme-info info-item">
+            Powered by <a target="_blank" href="https://hexo.io">Hexo</a> | Theme <a class="theme-version" target="_blank"></a>
+        </div>
+    </div>
+</footer>
+
+            </div>
+        </div>
+    </main>
+
+    <div class="sidebar-tools">
+        <div class="tools-container">
+    <ul class="tools-list">
+        
+            <li class="search popup-trigger">
+                <i class="fas fa-search"></i>
+            </li>
+        
+
+        
+            <li class="go-comment">
+                <i class="fas fa-comment"></i>
+            </li>
+        
+
+        <!-- TOC aside toggle -->
+        
+            <li class="tools-item page-aside-toggle">
+                <i class="fas fa-outdent"></i>
+            </li>
+        
+
+    </ul>
+</div>
+
+    </div>
+
+    <div class="right-bottom-side-tools">
+        <div class="side-tools-container">
+
+    <ul class="side-tools-list">
+        <li class="tools-item tool-font-adjust-plus flex-center">
+            <i class="fas fa-search-plus"></i>
+        </li>
+
+        <li class="tools-item tool-font-adjust-minus flex-center">
+            <i class="fas fa-search-minus"></i>
+        </li>
+
+        <li class="tools-item tool-expand-width flex-center">
+            <i class="fas fa-arrows-alt-h"></i>
+        </li>
+
+        <li class="tools-item tool-dark-light-toggle flex-center">
+            <i class="fas fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        <li class="tools-item tool-scroll-to-top flex-center">
+            <i class="fas fa-arrow-up"></i>
+        </li>
+
+        <li class="tools-item tool-scroll-to-bottom flex-center">
+            <i class="fas fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="tools-ul-1">
+        <li class="tools-item tool-toggle-show flex-center">
+            <i class="fas fa-cog fa-spin"></i>
+        </li>
+
+    </ul>
+</div>
+
+    </div>
+
+    <!-- page aside -->
+    <aside class="page-aside">
+        
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-number">1.</span> <span class="nav-text">从此烟雨落金陵，一人撑伞两人行</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MySQL%E9%AB%98%E7%BA%A7%E6%9F%A5%E8%AF%A2"><span class="nav-number">2.</span> <span class="nav-text">MySQL高级查询</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1%E3%80%81%E6%95%B0%E6%8D%AE%E5%BA%93%E7%8E%AF%E5%A2%83%E5%87%86%E5%A4%87"><span class="nav-number">2.1.</span> <span class="nav-text">1、数据库环境准备</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2%E3%80%81%E8%BF%9E%E6%8E%A5%E6%9F%A5%E8%AF%A2"><span class="nav-number">2.2.</span> <span class="nav-text">2、连接查询</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%BF%9E%E6%8E%A5%E6%9F%A5%E8%AF%A2%E7%9A%84%E5%88%86%E7%B1%BB"><span class="nav-number">2.2.1.</span> <span class="nav-text">连接查询的分类</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3%E3%80%81%E8%81%94%E5%90%88%E6%9F%A5%E8%AF%A2"><span class="nav-number">2.3.</span> <span class="nav-text">3、联合查询</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4%E3%80%81%E5%AD%90%E6%9F%A5%E8%AF%A2"><span class="nav-number">2.4.</span> <span class="nav-text">4、子查询</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%A0%87%E9%87%8F%E5%AD%90%E6%9F%A5%E8%AF%A2"><span class="nav-number">2.4.1.</span> <span class="nav-text">标量子查询</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%88%97%E5%AD%90%E6%9F%A5%E8%AF%A2"><span class="nav-number">2.4.2.</span> <span class="nav-text">列子查询</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%A1%8C%E5%AD%90%E6%9F%A5%E8%AF%A2"><span class="nav-number">2.4.3.</span> <span class="nav-text">行子查询</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%A1%A8%E5%AD%90%E6%9F%A5%E8%AF%A2"><span class="nav-number">2.4.4.</span> <span class="nav-text">表子查询</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5%E3%80%81%E6%A8%A1%E7%B3%8A%E6%9F%A5%E8%AF%A2"><span class="nav-number">2.5.</span> <span class="nav-text">5、模糊查询</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-number">2.5.1.</span> <span class="nav-text">%</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#-1"><span class="nav-number">2.5.2.</span> <span class="nav-text">_</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#-2"><span class="nav-number">2.5.3.</span> <span class="nav-text">[]</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#-3"><span class="nav-number">2.5.4.</span> <span class="nav-text">[^]</span></a></li></ol></li></ol></li></ol>
+    </div>
+</div>
+        
+    </aside>
+
+    <!-- image viewer -->
+    <div class="image-viewer-container">
+    <div class="img-box">
+        <img src="">
+    </div>
+</div>
+
+
+</div>
+
+
+
+    <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+          <span class="search-icon">
+            <i class="fas fa-search"></i>
+          </span>
+            <div class="search-input-container">
+                <input autocomplete="off"
+                       autocorrect="off"
+                       autocapitalize="off"
+                       placeholder="Search..."
+                       spellcheck="false"
+                       type="search"
+                       class="search-input"
+                >
+            </div>
+            <span class="popup-btn-close">
+                <i class="fas fa-times"></i>
+            </span>
+        </div>
+        <div id="search-result">
+            <div id="no-result">
+                <i class="fas fa-spinner fa-pulse fa-5x fa-fw"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.0.4/source/js/utils.js"></script><script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.0.4/source/js/main.js"></script><script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.0.4/source/js/header-shrink.js"></script><script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.0.4/source/js/back2top.js"></script><script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.0.4/source/js/dark-light-toggle.js"></script>
+
+
+    <script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.0.4/source/js/local-search.js"></script>
+
+
+
+
+    <script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.0.4/source/js/left-side-toggle.js"></script>
+
+    
+        <script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.0.4/source/js/code-copy.js"></script>
+    
+
+    
+        <script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.0.4/source/js/libs/anime.min.js"></script><script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.0.4/source/js/toc.js"></script>
+    
+
+
+</body>
+</html>
