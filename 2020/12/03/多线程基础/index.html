@@ -1,0 +1,1272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <title>
+        多线程基础 |
+        
+        ダモクレスの剣
+    </title>
+    <link rel="shortcut icon" href="/images/1.svg">
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.0.4/source/css/font-awesome.min.css">
+    <script id="hexo-configurations">
+    let KEEP = window.KEEP || {};
+    KEEP.hexo_config = {"hostname":"alpacame.github.io","root":"/","path":"search.xml"};
+    KEEP.theme_config = {"toc":{"enable":true,"number":true,"expand_all":true},"style":{"primary_color":"#ff0000","avatar":"/images/avatar.jpg","favicon":"/images/1.svg","img_position":"left","left_side_width":"260px","content_max_width":"900px","hover":{"shadow":true,"scale":false},"first_screen":{"enable":true,"background_img":"/images/bg.svg","description":"但愿众生皆得饱，不辞羸病卧残阳"}},"local_search":{"enable":true,"trigger":"auto","unescape":true,"preload":true},"version":"3.0.4"};
+    KEEP.language = {"search":"Search...","prev":"Prev","next":"Next","prev_posts":"Prev posts","next_posts":"Next posts","page":"Page %d","recent_posts":"Recent Posts","share":"Share","powered_by":"Powered by %s","theme":"Theme","rss_feed":"RSS Feed","category":"Category","categories":"Categories","tag":"Tag","tags":"Tags","tagcloud":"Tag Cloud","comment":"Comment","home":"Home","archive":"Archive","archives":"Archives","about":"About","site_uv":"Visitor Count","site_pv":"Totalview","links":"Links","link":"Link","top":"TOP","read_more":"Read more","wordcount":"Words","min2read":"Mins","changelog":"Changelog","copyright":{"author":"Post author","title":"Post title","link":"Post link","create_time":"Create time","license_title":"Copyright Notice","license_content":"All articles in this blog are licensed under %s unless stating additionally."},"ago":{"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days age","week":"%s weeks age","month":"%s months age","year":"%s years age"}};
+  </script>
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+
+<body>
+<div class="page-container">
+
+    
+
+    <header class="page-header">
+        <div class="header-progress"></div>
+    </header>
+
+    <main class="page-main">
+
+        <div class="page-main-content">
+
+            <div class="page-main-content-top">
+                <header class="header-wrapper">
+
+    <div class="header-content">
+        <a class="logo-title" href="/">
+            ダモクレスの剣
+        </a>
+
+        <ul class="menu-list">
+            
+                <li class="menu-item">
+                    <a class=""
+                       href="/"
+                    >
+                        首页
+                    </a>
+                </li>
+            
+                <li class="menu-item">
+                    <a class=""
+                       href="/archives"
+                    >
+                        文章
+                    </a>
+                </li>
+            
+                <li class="menu-item">
+                    <a class=""
+                       href="/live"
+                    >
+                        生活
+                    </a>
+                </li>
+            
+                <li class="menu-item">
+                    <a class=""
+                       href="/links"
+                    >
+                        友链
+                    </a>
+                </li>
+            
+                <li class="menu-item">
+                    <a class=""
+                       href="/about"
+                    >
+                        关于
+                    </a>
+                </li>
+            
+        </ul>
+
+        <div class="menu-bar">
+            <div class="menu-bar-middle"></div>
+        </div>
+    </div>
+
+    <div class="header-drawer">
+        <ul class="drawer-menu-list">
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/">首页</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/archives">文章</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/live">生活</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/links">友链</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/about">关于</a>
+                </li>
+            
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+            </div>
+
+            <div class="page-main-content-middle">
+
+                <main class="main-content normal-code-theme">
+
+                    
+                        <div class="fade-in-down-animation">
+    <div class="article-content-container">
+
+        <div class="article-title">
+            <span class="title-hover-animation">多线程基础</span>
+        </div>
+
+        
+            <div class="article-header">
+                <div class="avatar">
+                    <img src="/images/avatar.jpg">
+                </div>
+                <div class="info">
+                    <div class="author">
+                        <span>Pawn</span>
+                        <span class="level">Lv1</span>
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fas fa-calendar"></i> 2020-12-03 15:51:56
+    </span>
+    
+        <span class="article-categories article-meta-item">
+            <i class="fas fa-folder"></i>
+            <ul>
+                
+                    <li>
+                        <a href="/categories/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/">并发编程</a>
+                    </li>
+                
+            </ul>
+        </span>
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fas fa-tags"></i>
+            <ul>
+                
+                    <li>
+                        <a href="/tags/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/">编程语言</a>
+                    </li>
+                
+            </ul>
+        </span>
+    
+
+    
+    
+        <span class="article-wordcount article-meta-item">
+            <i class="fas fa-file-word"></i> <span>7.2k Words</span>
+        </span>
+    
+    
+        <span class="article-min2read article-meta-item">
+            <i class="fas fa-clock"></i> <span>30 Mins</span>
+        </span>
+    
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        <div class="article-content markdown-body">
+            <h2 id="不要因为没有掌声而丢掉自己的梦想"><a href="#不要因为没有掌声而丢掉自己的梦想" class="headerlink" title="不要因为没有掌声而丢掉自己的梦想"></a><h2 style="color:crimson;font-weight:lighter;">不要因为没有掌声而丢掉自己的梦想</h2></h2><a id="more"></a>
+
+<h2 id="线程基础、线程之间的共享和协作"><a href="#线程基础、线程之间的共享和协作" class="headerlink" title="线程基础、线程之间的共享和协作"></a><b style="color:red;">线程基础、线程之间的共享和协作</b></h2><h3 id="1、线程与操作系统之间的关系"><a href="#1、线程与操作系统之间的关系" class="headerlink" title="1、线程与操作系统之间的关系"></a><b style="color:blue;">1、线程与操作系统之间的关系</b></h3><ul>
+<li><p><strong>线程与CPU核心数之间的关系</strong></p>
+<p>CPU核心数和线程数最早是<code>1:1</code>的关系，但是在Intel公司引入超线程技术之后，CPU核心数和线程数之间的关系达到了<code>1:2</code>。</p>
+</li>
+<li><p><strong>CPU的线程调度机制</strong></p>
+<p>CPU调度线程采用的<b style="color:slateblue;">时间片轮转机制（Round-Robin,RR）</b>。为了实现轮转调度，系统把所有就绪进程按先入先出的原则排成一个队列。新来的进程加到就绪队列末尾。每当执行进程调度时，进程调度程序总是选出就绪队列的队首进程，让它在CPU上运行一个时间片的时间。时间片是一个小的时间单位，通常为10~100ms数量级。当进程用完分给它的时间片后，系统的计时器发出时钟中断，调度程序便停止该进程的运行，把它放入就绪队列的末尾；然后，把CPU分给就绪队列的队首进程，同样也让它运行一个时间片，如此往复。</p>
+</li>
+<li><p><strong>进程与线程</strong></p>
+<p><b style="color:slateblue;">进程：</b>程序运行资源分配的最小单位，进程内部有多个线程，多个线程之间共享这个进程的资源。进程与进程之间是相互独立的。</p>
+<p><b style="color:slateblue;">线程：</b>CPU调度的最小单位。</p>
+</li>
+<li><p><strong>并行和并发</strong></p>
+<p><b style="color:slateblue;">并行：</b>在同一时刻，有多条指令在多个处理器上同时执行；</p>
+<p><b style="color:slateblue;">并发：</b>在同一时刻只能有一条指令执行，但多个进程指令被快速的轮换执行。</p>
+</li>
+</ul>
+<h3 id="2、Java中的多线程"><a href="#2、Java中的多线程" class="headerlink" title="2、Java中的多线程"></a><b style="color:blue;">2、Java中的多线程</b></h3><p>在Java里的程序天生就是多线程的。</p>
+<pre><code class="java">package org.example.pojo.threads;
+
+import java.lang.management.ManagementFactory;
+import java.lang.management.ThreadInfo;
+import java.lang.management.ThreadMXBean;
+
+/**
+ * @program:Threads
+ * @description:测试Java程序的多线程性
+ * @author:Mr.Pan
+ * @create:2020-12-01 15:15:48
+ */
+public class OnlyMain &#123;
+    public static void main(String[] args) &#123;
+//        虚拟机线程管理接口
+        ThreadMXBean threadMXBean= ManagementFactory.getThreadMXBean();
+        ThreadInfo[] threadInfos= threadMXBean.dumpAllThreads(false,false);
+        for (ThreadInfo threadInfo:threadInfos)&#123;
+            System.out.println(&quot;[&quot;+threadInfo.getThreadId()+&quot;]&quot;+&quot; &quot;+threadInfo.getThreadName());
+        &#125;
+    &#125;
+&#125;
+</code></pre>
+<p>仅仅是上述的代码，利用虚拟机的线程管理接口<code>TheradMXBean</code>接口来查看，执行上述的<code>main()</code>方法时，虚拟机启动了多少个线程。</p>
+<pre><code class="java">[6] Monitor Ctrl-Break
+[5] Attach Listener
+[4] Signal Dispatcher
+[3] Finalizer
+[2] Reference Handler
+[1] main</code></pre>
+<p>虚拟机一共启动了5个线程（<em>Monitor Ctrl-Break是Intelij IDEA编辑器启动的一个线程</em>），其中<code>main</code>线程是程序的入口，<code>Reference Handler</code>线程是负责清除引用的线程，<code>Finalizer</code>线程就是用来执行对象的finalize方法的线程，<code>Signal Dispatcher</code>线程专门分发处理给虚拟机信号的线程，<code>Attach Listener</code>获取当前程序运行的一些信息。</p>
+<h4 id="创建线程的方式"><a href="#创建线程的方式" class="headerlink" title="创建线程的方式"></a><b style="color:orange;">创建线程的方式</b></h4><p>在Java中创建线程一共有三种方式：</p>
+<ol>
+<li>继承<code>Thread</code>类，重写<code>run()</code>方法。</li>
+<li>实现<code>Runable</code>接口，实现<code>run()</code>方法。</li>
+<li>实现<code>Callable</code>接口，实现<code>call()</code>方法。</li>
+</ol>
+<pre><code class="java">package org.example.pojo.threads;
+
+import org.junit.internal.runners.statements.RunAfters;
+
+import java.lang.management.ManagementFactory;
+import java.lang.management.ThreadInfo;
+import java.lang.management.ThreadMXBean;
+import java.util.concurrent.Callable;
+
+/**
+ * @program:Threads
+ * @description:测试Java程序的多线程性
+ * @author:Mr.Pan
+ * @create:2020-12-01 15:15:48
+ */
+public class OnlyMain &#123;
+
+    private class UserThread implements Runnable&#123;
+        @Override
+        public void run() &#123;
+            System.out.println(&quot;I am implements Runnable&quot;);
+        &#125;
+    &#125;
+
+    private class UserThread1 implements Callable&#123;
+        @Override
+        public Object call() throws Exception &#123;
+            System.out.println(&quot;I am implements Callable&quot;);
+            return &quot;CallResult&quot;;
+        &#125;
+    &#125;
+
+    private class UserThread2 extends Thread&#123;
+        @Override
+        public void run() &#123;
+            System.out.println(&quot;I am extends Thread&quot;);
+        &#125;
+    &#125;
+
+    public static void main(String[] args) &#123;
+        //Runnable接口的使用方式
+        UserThread userThread = new UserThread();
+        new Thread(userThread).start();
+        //Callable接口的使用方式
+        UserThread1 userThread1 = new UserThread1();
+        FutureTask&lt;Object&gt; futureTask = new FutureTask&lt;&gt;(userThread1);
+        new Thread(futureTask).start();
+        //Callable接口获取返回值的方式，会抛出异常ExecutionException，InterruptedException
+        futureTask.get();
+    &#125;
+&#125;
+</code></pre>
+<p>实现<code>Runable</code>和实现<code>Callable</code>接口的区别就在于：<span style="color:magenta;">前者是没有返回值，而后者允许存在返回值</span>。使用<code>Runable</code>接口的时候可以直接将其放入<code>Thread</code>类中，构建成一个线程；而使用<code>Callable</code>接口的时候需要先将接口转为<code>FutureTask</code>类，因为Thread类不支持Callable类型的构造函数。</p>
+<blockquote>
+<p><span style="color:purple;">Java已经提供可以一个Thread类了，还继续提供接口的原因是，Java语言只有单继承，但是可以多实现。</span></p>
+</blockquote>
+<h4 id="线程的停止方式"><a href="#线程的停止方式" class="headerlink" title="线程的停止方式"></a><b style="color:orange;">线程的停止方式</b></h4><p>线程停止方式有自然停止和人为停止两种。第一种自然停止的意思就是线程的<code>run()</code>方法执行完毕或者在执行的过程中抛出异常；第二种就是程序员在使用Thread类中的方法停止线程；</p>
+<p>在Thread类中提供了<code>interrupt()</code> <code>isInterrupted</code> <code>static interrupted()</code>方法。</p>
+<ul>
+<li><code>interrupt()</code> 中断一个线程，并不是强行关闭这个线程，是否终止由该线程自己决定。如果是，就将中断标志位置为<code>true</code>。</li>
+<li><code>isInterrupted()</code> 判断一个线程是否是处于中断状态</li>
+<li><code>static interrupted()</code> 判断当前线程是否处于中断状态。如果是，就将中断标志位置为<code>true</code>。</li>
+</ul>
+<pre><code class="java">package org.example.pojo.threads;
+
+import org.junit.Test;
+import org.junit.internal.runners.statements.RunAfters;
+
+import java.lang.management.ManagementFactory;
+import java.lang.management.ThreadInfo;
+import java.lang.management.ThreadMXBean;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.FutureTask;
+
+/**
+ * @program:Threads
+ * @description:测试Java程序的多线程性
+ * @author:Mr.Pan
+ * @create:2020-12-01 15:15:48
+ */
+public class OnlyMain &#123;
+
+    private static class UserThread extends Thread &#123;
+        @Override
+        public void run() &#123;
+            try &#123;
+                while (true)&#123;
+                    System.out.println(Thread.currentThread().getName()+&quot;线程正在运行&quot;);
+                    if (isInterrupted())&#123;throw new InterruptedException();&#125;
+                &#125;
+            &#125; catch (InterruptedException e) &#123;
+                System.out.println(Thread.currentThread().getName()+&quot;线程已停止，标志位：&quot;+isInterrupted());
+                e.printStackTrace();
+            &#125;
+        &#125;
+    &#125;
+
+    public static void main(String[] args) throws ExecutionException, InterruptedException &#123;
+        UserThread userThread = new UserThread();
+        userThread.setName(&quot;UserThread&quot;);
+        userThread.start();
+        Thread.sleep(1);
+        userThread.interrupt();
+    &#125;
+&#125;
+</code></pre>
+<p>上述代码中通过<code>interrupt()</code>方法为线程<code>thread</code>设置中断状态，通过<code>isInterrupted()</code>方法查看thread线程是否是中止状态。在线程中通过<code>static interrupted()</code>方法判断自己的中断状态是不是为false，如果是为false，就表示被设置了中断状态，然后利用抛出异常的方式中止线程。</p>
+<pre><code class="java">UserThread线程正在运行
+UserThread线程正在运行
+UserThread线程已停止，标志位：true
+java.lang.InterruptedException
+    at org.example.pojo.threads.OnlyMain$UserThread.run(OnlyMain.java:27)</code></pre>
+<p>其实从代码来看，线程并没有中止，只是跳转到了catch代码块中，不再执行业务代码，达到中止的效果。但是线程并没有中止。</p>
+<p>也可以通过<code>while</code>轮询的方式来中止线程：</p>
+<pre><code class="java">private static class UserThread implements Runnable &#123;
+        @Override
+        public void run() &#123;
+            while (!Thread.interrupted()) &#123;
+                System.out.println(&quot;线程正常运行&quot;);
+            &#125;
+            System.out.println(&quot;线程中止了&quot;);
+        &#125;
+    &#125;</code></pre>
+<blockquote>
+<p><span style="color:purple;">如果一个方法会抛出<code>InterruptExeception</code>异常，将会让中断标志位复位。即不可以去中止Sleep状态下的线程。</span></p>
+</blockquote>
+<p><b style="color:seagreen;">线程的常用方法以及线程状态之间的转换：</b></p>
+<img src="线程状态切换图.png" />
+
+<ul>
+<li><strong>新建</strong> 指的是线程被<code>new</code>出来，但是并没有调用<code>start()</code>方法的状态。</li>
+<li><strong>就绪</strong> 指的是线程进入可以执行的状态，具体执行还是未执行需要CPU的时间片调度算法来决定<ol>
+<li>新建状态的线程通过调用<code>start()</code>方法可以使线程进入就绪状态</li>
+<li>阻塞状态的线程在<code>sleep()</code>方法的时间到了的时候会重新进入就绪状态</li>
+<li>处于运行状态的线程因为CPU分配的时间片用完了，由运行状态进入就绪状态，等待CPU的下一次分配</li>
+<li>处于阻塞状态的线程调用了<code>interrupt()</code>（<em>Slepp状态下调用interrupt()方法会重置中断标志位</em>）让阻塞状态的线程唤醒，进入就绪状态</li>
+<li>处于阻塞状态的线程在<code>wait()/notify</code>机制下被<code>notify()</code> <code>notifyAll()</code>唤醒进入就绪状态</li>
+<li>处于运行状态的线程调用<code>yield()</code>方法放弃了CPU分配的时间片，使得线程进入就绪状态</li>
+</ol>
+</li>
+<li><strong>运行</strong> 指的是就绪状态的线程获得了CPU分配的时间片开始执行<ol>
+<li>就绪状态的线程在获得CPU分配的时间片，进入运行状态</li>
+<li>就绪状态的线程调用<code>join()</code>方法，进入运行状态</li>
+</ol>
+</li>
+<li><strong>阻塞</strong> 指的是线程在运行状态的时候，因为某些条件的问题，进入等待唤醒的状态<ol>
+<li>在运行状态的线程调用<code>wait()</code> <code>sleep()</code>会让方法进入阻塞状态，当条件满足重新唤醒的时候，会让线程进入就绪状态等待CPU分配时间片。</li>
+</ol>
+</li>
+<li><strong>死亡</strong> 指的是线程结束被销毁<ol>
+<li>线程的正常执行完<code>run()</code>方法，线程执行完毕被销毁。</li>
+<li>线程被暴力停止调用了<code>stop()</code></li>
+<li>线程抛出异常无法继续执行</li>
+</ol>
+</li>
+</ul>
+<h4 id="run-和start"><a href="#run-和start" class="headerlink" title="run()和start()"></a><b style="color:orange;">run()和start()</b></h4><p>调用线程的<code>run()</code>方法是直接调用，是当做普通方法调用，并没有启动额外的线程；调用<code>start()</code>方法的时候启动线程，让启动的子线程去调用<code>run()</code>方法。</p>
+<h4 id="线程的优先级"><a href="#线程的优先级" class="headerlink" title="线程的优先级"></a><b style="color:orange;">线程的优先级</b></h4><p>通过调用<code>userThread.setPriority(3);</code>来设置线程的优先级，但是并不意味着CPU会按照你的想法来，最后还是需要看CPU的调度算法。优先级的取值范围是1~10，默认是5。</p>
+<h4 id="守护线程"><a href="#守护线程" class="headerlink" title="守护线程"></a><b style="color:orange;">守护线程</b></h4><p>守护线程是与主线程同生共死的，当主线程运行结束的时候，守护线程会直接结束。</p>
+<pre><code class="java">package org.example.pojo.threads;
+
+import org.junit.Test;
+import org.junit.internal.runners.statements.RunAfters;
+
+import java.lang.management.ManagementFactory;
+import java.lang.management.ThreadInfo;
+import java.lang.management.ThreadMXBean;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.FutureTask;
+
+/**
+ * @program:Threads
+ * @description:测试Java程序的多线程性
+ * @author:Mr.Pan
+ * @create:2020-12-01 15:15:48
+ */
+public class OnlyMain &#123;
+    private static class UserAble implements Runnable&#123;
+        @Override
+        public void run() &#123;
+            while (!Thread.currentThread().isInterrupted())&#123;
+                System.out.println(Thread.currentThread().getName());
+            &#125;
+            System.out.println(Thread.currentThread().getName()+&quot;标志位是&quot;+Thread.currentThread().isInterrupted());
+        &#125;
+    &#125;
+
+    public static void main(String[] args) throws ExecutionException, InterruptedException &#123;
+        UserAble userAble=new UserAble();
+        Thread userThread=new Thread(userAble,&quot;UserAble&quot;);
+        //userThread.setDaemon(true);
+        userThread.start();
+        Thread.sleep(1);
+        userThread.interrupt();
+        System.out.println(Thread.currentThread().getName()+&quot;已经执行完毕&quot;);
+    &#125;
+&#125;
+</code></pre>
+<p>上述代码执行完毕的执行结果是：</p>
+<pre><code class="java">UserAble
+UserAble
+UserAble
+UserAble
+UserAble
+main已经执行完毕
+UserAble标志位是true</code></pre>
+<p>是正常的执行，在主线程执行完毕的时候子线程还在继续执行。当把上述代码中<code>userThread.setDaemon(true)</code>表示将userThread线程设置为守护线程取消注释，然后将<code>userThread.interrupt()</code>注释掉，让userThread与main线程一起结束。输出结果如下：</p>
+<pre><code class="java">UserAble
+UserAble
+UserAble
+UserAble
+UserAble
+UserAble
+UserAble
+UserAble
+main已经执行完毕</code></pre>
+<p>可以看到只有main线程执行完毕，守护线程就直接结束了，这就意味着线程在守护线程中的<code>finally</code>语句块也是不一定能够得到执行的。</p>
+<h3 id="3、线程间的共享"><a href="#3、线程间的共享" class="headerlink" title="3、线程间的共享"></a><b style="color:blue;">3、线程间的共享</b></h3><p>在多线程编程中，线程之间并不是独立的，需要多个线程一起协作一起完成一项任务。这是就会出现多个线程访问内存中的同一个区域，如何保证数据的正确性，这就是多线程编程的核心。而实现同步的方式主要有<code>Synchronized</code>关键字、<code>volatile关键字</code>、<code>ThreadLocal</code>的使用三种。</p>
+<h4 id="synchronized关键字"><a href="#synchronized关键字" class="headerlink" title="synchronized关键字"></a><b style="color:orange;">synchronized关键字</b></h4><p><code>synchronized</code>可以修饰方法，当它修饰普通方法的时候称之为<b style="color:slateblue;">对象锁</b>；当它修饰静态方法的时候称之为<b style="color:slateblue;">类锁</b>。</p>
+<p>创建一个测试类：</p>
+<pre><code class="java">package org.example.pojo.threads;
+/**
+ * @program:Threads
+ * @description:测试Synchronized关键字
+ * @author:Mr.Pan
+ * @create:2020-12-01 20:20:28
+ */
+public class SynClassAndInst &#123;
+    //创建了一持有类锁的线程
+    private static class SynClass extends Thread &#123;
+        @Override
+        public void run() &#123;
+            System.out.println(&quot;TestClass is running...&quot;);
+            synClass();
+        &#125;
+    &#125;
+    //创建一个能拥有对象锁的线程
+    private static class InstanceSyn implements Runnable &#123;
+
+        private SynClassAndInst synClassAndInst;
+
+        public InstanceSyn(SynClassAndInst synClassAndInst) &#123;
+            this.synClassAndInst = synClassAndInst;
+        &#125;
+
+        @Override
+        public void run() &#123;
+            System.out.println(&quot;TestInstance is running...&quot; + synClassAndInst);
+            synClassAndInst.instance();
+        &#125;
+    &#125;
+    //    创建一个能够拥有对象锁的线程
+    private static class Instance2Syn implements Runnable &#123;
+        private SynClassAndInst synClassAndInst;
+
+        public Instance2Syn(SynClassAndInst synClassAndInst) &#123;
+            this.synClassAndInst = synClassAndInst;
+
+        &#125;
+
+        @Override
+        public void run() &#123;
+            System.out.println(&quot;TestInstance2 is running...&quot; + synClassAndInst);
+            synClassAndInst.instance2();
+
+        &#125;
+    &#125;
+
+    //    创建两个同步方法，对像锁
+    private synchronized void instance() &#123;
+        try &#123;
+            System.out.println(&quot;synInstance is going ...&quot; + this.toString());
+            Thread.sleep(1000);
+            System.out.println(&quot;synInstance is ended ...&quot; + this.toString());
+        &#125; catch (InterruptedException e) &#123;
+            e.printStackTrace();
+        &#125;
+    &#125;
+
+    private synchronized void instance2() &#123;
+        try &#123;
+            System.out.println(&quot;synInstance2 is going ...&quot; + this.toString());
+            Thread.sleep(1000);
+            System.out.println(&quot;synInstance2 is ended ...&quot; + this.toString());
+        &#125; catch (InterruptedException e) &#123;
+            e.printStackTrace();
+        &#125;
+    &#125;
+
+    //创建一个类锁
+    private static synchronized void synClass() &#123;
+        try &#123;
+            System.out.println(&quot;synInstance3 is going ...&quot;);
+            Thread.sleep(1000);
+            System.out.println(&quot;synInstance3 is ended ...&quot;);
+        &#125; catch (InterruptedException e) &#123;
+            e.printStackTrace();
+        &#125;
+    &#125;
+&#125;
+</code></pre>
+<p>上述代码中创建了两个线程<code>InstanceSyn</code>和<code>Instance2Syn</code>，两个线程分别调用类中的两个<code>synchronized</code>的普通方法（<em>对象锁</em>），还创建一个类锁和一个普通的静态方法。</p>
+<p><span style="color:magenta;">测试：持有不同对象锁的两个线程之间的工作情况</span></p>
+<pre><code class="java">public static void main(String[] args) throws InterruptedException &#123;
+   //创建两个对象
+    SynClassAndInst synClassAndInst = new SynClassAndInst();
+    SynClassAndInst synClassAndInst2 = new SynClassAndInst();
+    //分别让两个线程持有不同的对象锁
+    Thread t1 = new Thread(new InstanceSyn(synClassAndInst));
+    Thread t2 = new Thread(new Instance2Syn(synClassAndInst2));
+
+    t1.start();
+    t2.start();
+
+    Thread.sleep(1000);
+
+&#125;</code></pre>
+<p>输出结果为：</p>
+<pre><code class="java">TestInstance is running...org.example.pojo.threads.SynClassAndInst@1c3d736f
+synInstance is going ...org.example.pojo.threads.SynClassAndInst@1c3d736f
+TestInstance2 is running...org.example.pojo.threads.SynClassAndInst@36bdb2aa
+synInstance2 is going ...org.example.pojo.threads.SynClassAndInst@36bdb2aa
+synInstance is ended ...org.example.pojo.threads.SynClassAndInst@1c3d736f
+synInstance2 is ended ...org.example.pojo.threads.SynClassAndInst@36bdb2aa</code></pre>
+<p><b style="color:tomato;">结论：当持有不同对象锁的两个线程之间是不会阻塞情况的，是可以同时进行的。</b></p>
+<p><span style="color:magenta;">测试：持有相同对象锁的两个线程之间的工作情况</span></p>
+<pre><code class="java">public static void main(String[] args) throws InterruptedException &#123;
+       //创建一个对象
+    SynClassAndInst synClassAndInst = new SynClassAndInst();
+    //分别让两个线程持有相同的对象锁
+    Thread t1 = new Thread(new InstanceSyn(synClassAndInst));
+    Thread t2 = new Thread(new Instance2Syn(synClassAndInst));
+
+    t1.start();
+    t2.start();
+
+    Thread.sleep(1000);
+
+&#125;&#125;</code></pre>
+<p>输出结果：</p>
+<pre><code class="java">TestInstance is running...org.example.pojo.threads.SynClassAndInst@3c81615
+TestInstance2 is running...org.example.pojo.threads.SynClassAndInst@3c81615
+synInstance is going ...org.example.pojo.threads.SynClassAndInst@3c81615
+synInstance is ended ...org.example.pojo.threads.SynClassAndInst@3c81615
+synInstance2 is going ...org.example.pojo.threads.SynClassAndInst@3c81615
+synInstance2 is ended ...org.example.pojo.threads.SynClassAndInst@3c81615</code></pre>
+<p>上述输出结果中，在执行到被<code>synchronized</code>的修饰两个普通方法的时候，线程<code>t1</code>先获得了这个对象锁，所以必须等到<code>t1</code>完成了<code>instance()</code>方法的调用，线程<code>t2</code>才可以去调用<code>instance2()</code>方法。</p>
+<p><b style="color:tomato;">结论：持有相同对象锁的两个线程，必须等待先获得对象锁的线程执行完毕，下一个线程才能执行。</b></p>
+<p><span style="color:magenta;">测试：分别持有对象锁和类锁的两个线程之间的工作情况</span></p>
+<pre><code class="java"> public static void main(String[] args) throws InterruptedException &#123;
+         //创建两个线程分别持有类锁和对象锁
+        SynClassAndInst synClassAndInst = new SynClassAndInst();
+        Thread t1 = new Thread(new InstanceSyn(synClassAndInst));
+
+        SynClass synClass=new SynClass();
+
+        t1.start();
+        synClass.start();
+
+        Thread.sleep(1000);
+    &#125;</code></pre>
+<p>输出结果：</p>
+<pre><code class="java">TestInstance is running...org.example.pojo.threads.SynClassAndInst@11cfa6bb
+TestClass is running...
+synInstance is going ...org.example.pojo.threads.SynClassAndInst@11cfa6bb
+synInstance3 is going ...
+synInstance3 is ended ...
+synInstance is ended ...org.example.pojo.threads.SynClassAndInst@11cfa6bb</code></pre>
+<p>从输出结果中可以看到，线程<code>t1</code>和<code>synClass</code>线程之间是同时进行的，没有出现阻塞线程。</p>
+<p><b style="color:tomato;">结论：持有类锁的线程和持有对象锁的两个线程之间可以同时进行</b></p>
+<p><span style="color:magenta;">测试：持有同一个类锁的两个线程之间的运行情况</span></p>
+<pre><code class="java">   public static void main(String[] args) throws InterruptedException &#123;
+
+        SynClass synClass = new SynClass();
+        SynClass synClass1 = new SynClass();
+
+        synClass.start();
+        synClass1.start();
+
+        Thread.sleep(1000);
+
+    &#125;</code></pre>
+<p>输出结果为：</p>
+<pre><code class="java">TestClass is running...
+TestClass is running...
+synInstance3 is going ...
+synInstance3 is ended ...
+synInstance3 is going ...
+synInstance3 is ended ...</code></pre>
+<p>线程<code>synClass</code>和线程<code>synClass1</code>之间存在竞争关系，必须等到先获得类锁的线程执行完毕，下一个线程才可以获得类锁继续执行。</p>
+<p><b style="color:tomato;">结论：持有同一个类的类锁的两个线程之间，必须等到先获得类锁的线程执行完毕，下一条线程在可以获得类锁继续执行。</b></p>
+<blockquote>
+<p><span style="color:purple;">其实<code>synchronized</code>关键字锁的都是对象，只是在对象锁中它锁的是<code>new</code>出来的对象实例，而类锁中它锁的是虚拟机中Class对象，而虚拟机保证Class对象在虚拟机唯一，所以只要是同一个类的类锁其实都是同一把锁。</span></p>
+</blockquote>
+<h4 id="volatile关键字"><a href="#volatile关键字" class="headerlink" title="volatile关键字"></a><b style="color:orange;">volatile关键字</b></h4><p><code>volatile</code>是最轻量的同步机制，它由虚拟机提供，要求每次对这个变量的读写都需要同步到主内存中，所有访问它的Java线程都会在主内存中获取这个变量。<span style="color:magenta;">但是volatile只能保证可见性，无法保证原子性。</span></p>
+<p>当只有一个线程写，多个线程读的时候，是volatile关键字最常用的场景。</p>
+<h4 id="ThreadLocal类"><a href="#ThreadLocal类" class="headerlink" title="ThreadLocal类"></a><b style="color:orange;">ThreadLocal类</b></h4><p>ThreadLocal提供了线程的局部变量，每个线程都可以通过<code>set()</code>和<code>get()</code>来对这个局部变量进行操作，但不会和其他线程的局部变量进行冲突。</p>
+<pre><code class="java">package org.example.pojo.threads;
+
+/**
+ * @program:Threads
+ * @description:测试ThreadLocal
+ * @author:Mr.Pan
+ * @create:2020-12-02 10:10:29
+ */
+public class UseThreadLocal &#123;
+
+    //创建一个ThreadLocal对象，在里面存储一个初始值为1的变量
+    static ThreadLocal&lt;Integer&gt; threadLocal=new ThreadLocal&lt;Integer&gt;()&#123;
+        @Override
+        protected Integer initialValue() &#123;
+            return 1;
+        &#125;
+    &#125;;
+
+    public void startThreadArray()&#123;
+        Thread[] threads=new Thread[3];
+        for (int i = 0; i &lt;3 ; i++) &#123;
+                threads[i]=new Thread(new TestThread(i));
+        &#125;
+        for (int i = 0; i &lt;3 ; i++) &#123;
+            threads[i].start();
+        &#125;
+    &#125;
+
+    //创建三个线程，分别对ThreadLocal中存入的对象进行操作，观察结果之间是否存在互相影响
+    private static class TestThread implements Runnable&#123;
+
+        int id;
+        public TestThread(Integer id)&#123;
+            this.id=id;
+        &#125;
+
+        @Override
+        public void run() &#123;
+            System.out.println(Thread.currentThread().getName()+&quot;:start&quot;);
+            Integer s=threadLocal.get();
+            s=s+id;
+            threadLocal.set(s);
+            System.out.println(Thread.currentThread().getName()+&quot;:&quot;+threadLocal.get());
+        &#125;
+    &#125;
+
+    public static void main(String[] args) &#123;
+        UseThreadLocal useThreadLocal=new UseThreadLocal();
+        useThreadLocal.startThreadArray();
+    &#125;
+&#125;
+</code></pre>
+<p>输出结果为：</p>
+<pre><code class="java">Thread-0:start
+Thread-2:start
+Thread-1:start
+Thread-1:2
+Thread-2:3
+Thread-0:1</code></pre>
+<p>三个线程之间的操作ThreadLocal之间是互不影响的，其实观察ThreadLocal的实现，可以简单的理解为ThreadLocal就是一个<code>Map&lt;Thread,Object&gt;</code>的对象，每次get或者是set都是需要Thread作为key，去操作对应的Thread在ThreadLocal里面的副本值。</p>
+<p>ThreadLocal最常用的场景就是连接池，在连接池中，让每一个连接都保持独立。但是由于为每一个线程维护一个副本，当副本是一个复杂的、庞大的类的时候，就会容易造成内存的消耗。</p>
+<h3 id="4、线程间的协作"><a href="#4、线程间的协作" class="headerlink" title="4、线程间的协作"></a><b style="color:blue;">4、线程间的协作</b></h3><p>在大多时候我们需要多个线程之间进行相互协作，来完成某一项工作。例如，需要线程A去做某一件事，但是线程B必须等待线程A将这个事情做完，才能继续做自己的事情。最常规的就是采用轮询的机制，线程B每隔一段时间就去查询线程A是不是将这个事情做完了，这样导致线程B一直在运行在消耗系统资源的同时，有时候也会对线程A的执行效率产生影响。假如有一种更好的机制，在线程A没有运行完的时候，线程B一致处于等待状态，这样就可以减少系统资源的消耗。这就是常说的<b style="color:slateblue;">等待/通知机制</b>。</p>
+<h4 id="wait-notify机制"><a href="#wait-notify机制" class="headerlink" title="wait/notify机制"></a><b style="color:orange;">wait/notify机制</b></h4><p>调用<code>wait()</code>方法称之为等待方，调用<code>notify()</code>称之为通知方。</p>
+<p><strong>等待和通知的标准范式</strong></p>
+<p><b style="color:seagreen;">等待方：</b></p>
+<ol>
+<li>获取对象的锁</li>
+<li>循环判断条件是否满足，不满足调用wait方法</li>
+<li>条件满足执行业务逻辑</li>
+</ol>
+<p><b style="color:seagreen;">通知方：</b></p>
+<ol>
+<li>获取对象的锁</li>
+<li>改变条件</li>
+<li>通知所有等待在对象的线程</li>
+</ol>
+<p>创建一个快递实体类，当快递的地点发生变化的时候，就想用户发送消息；当快递的公里数发生变化的时候，就像用户发送消息。</p>
+<pre><code class="java">package org.example.pojo;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+/**
+ * @program:Threads
+ * @description:创建一个快递实体类
+ * @author:Mr.Pan
+ * @create:2020-12-03 09:9:43
+ */
+@NoArgsConstructor
+@AllArgsConstructor
+public class Express &#123;
+    public final static String CITY = &quot;ShangHai&quot;;
+    private int km;//快递运输的里程数
+    private String site;//快递到达的地点
+
+    /*变化公里数，然后通知处于wait状态并需要处理公里数的线程进行业务处理*/
+    public synchronized void changeKm() &#123;
+        this.km = 101;
+        notifyAll();
+    &#125;
+
+    /*变化地点，然后通知处于wait状态并需要处理地点的线程进行业务处理*/
+    public synchronized void changeSite() &#123;
+        this.site = &quot;BeiJin&quot;;
+        notifyAll();
+    &#125;
+
+    public synchronized void waitKm() &#123;
+        try &#123;
+            while (this.km &lt;= 100) &#123;
+                wait();
+                System.out.println(&quot;检测公里数线程[&quot; + Thread.currentThread().getName() + &quot;] 被唤醒&quot;);
+            &#125;
+            System.out.println(&quot;您的快递已经运输了&quot; + this.km + &quot;千米，请您注意查收！&quot;);
+        &#125; catch (InterruptedException e) &#123;
+            e.printStackTrace();
+        &#125;
+    &#125;
+
+    public synchronized void waitSite() &#123;
+        try &#123;
+            while (CITY.equals(this.site)) &#123;
+                wait();
+                System.out.println(&quot;检查地点线程[&quot; + Thread.currentThread().getName() + &quot;] 被唤醒&quot;);
+            &#125;
+            System.out.println(&quot;您的快递已到达&quot; + this.site + &quot;, 请您注意查收！&quot;);
+        &#125; catch (InterruptedException e) &#123;
+            e.printStackTrace();
+        &#125;
+    &#125;
+
+&#125;
+</code></pre>
+<p>然后创建线程，利用多线程完成这个任务：</p>
+<pre><code class="java">package org.example.threads;
+
+import org.example.pojo.Express;
+
+/**
+ * @program:Threads
+ * @description:wait/notify机制
+ * @author:Mr.Pan
+ * @create:2020-12-03 09:9:42
+ */
+public class WaitNotify &#123;
+
+    private static Express express=new Express(0,Express.CITY);
+
+    private static class CheckKm extends Thread&#123;
+        @Override
+        public void run() &#123;
+            express.waitKm();
+        &#125;
+    &#125;
+
+    private static class CheckSite extends Thread&#123;
+        @Override
+        public void run() &#123;
+            express.waitSite();
+        &#125;
+    &#125;
+
+    public static void main(String[] args) throws InterruptedException &#123;
+        for (int i = 0; i &lt;3 ; i++) &#123;
+           Thread t= new CheckKm();
+           t.setName(&quot;CheckKmThread&quot;+i);
+           t.start();
+        &#125;
+        for (int i = 0; i &lt; 3; i++) &#123;
+            Thread t= new CheckSite();
+            t.setName(&quot;CheckSiteThread&quot;+i);
+            t.start();
+        &#125;
+
+        Thread.sleep(1000);
+        express.changeKm();
+    &#125;
+
+&#125;
+</code></pre>
+<p>上述代码的输出结果为：</p>
+<pre><code class="java">检查地点线程[CheckSiteThread2] 被唤醒
+检查地点线程[CheckSiteThread0] 被唤醒
+检查地点线程[CheckSiteThread1] 被唤醒
+检测公里数线程[CheckKmThread2] 被唤醒
+您的快递已经运输了101千米，请您注意查收！
+检测公里数线程[CheckKmThread1] 被唤醒
+您的快递已经运输了101千米，请您注意查收！
+检测公里数线程[CheckKmThread0] 被唤醒
+您的快递已经运输了101千米，请您注意查收！</code></pre>
+<p>从输出结果可以很容易看到，<code>wait()/notifyAll()</code>机制会唤醒所有的线程，无论这线程是监测地点的还是监测公里数的，都会被唤醒执行一次。因为只是改变了公里数，所以监测地点的线程发现地点并没有发生变化所以再次进入休眠状态，而监测公里数的线程发现公里数发生变化之后就提醒用户，公里数发生了变化。</p>
+<p>利用线程管理类<code>ThreadMXBean</code>查看存活的线程：</p>
+<pre><code class="java">ThreadMXBean threadMXBean= ManagementFactory.getThreadMXBean();
+        ThreadInfo[] threadInfos= threadMXBean.dumpAllThreads(false,false);
+        for (ThreadInfo threadInfo:threadInfos)&#123;
+            System.out.println(&quot;[&quot;+threadInfo.getThreadId()+&quot;]&quot;+&quot; &quot;+threadInfo.getThreadName());
+        &#125;</code></pre>
+<p>输出为：</p>
+<pre><code class="java">[17] CheckSiteThread2
+[16] CheckSiteThread1
+[15] CheckSiteThread0
+[6] Monitor Ctrl-Break
+[5] Attach Listener
+[4] Signal Dispatcher
+[3] Finalizer
+[2] Reference Handler
+[1] main</code></pre>
+<p>可以看到监测公里数的线程已经不存在，已经执行完毕，被销毁掉了。但是因为地点仍然没有发生变化，所以监测地点的线程仍然存在。</p>
+<p><b style="color:seagreen;">wait()/notifyAll()执行机制图：</b></p>
+<img src="waitnotifyAll机制.jpg" />
+
+<p><span style="color:magenta;">在实际的应用开发中其实是<code>notifyAll()</code>用的更多的，<code>notify()</code>有可能使得所有的线程都进入休眠。</span>在上述例子中，假如将<code>notifyAll()</code>改为<code>notify()</code>会出现所有线程都休眠的状态，即使公里数发生了变化，检测公里数的线程也无法获得这个信息导致一直在休眠，而检测地点的线程因为地点没有发生变化将继续休眠，最终所有的线程都在休眠。</p>
+<p><b style="color:seagreen;">wait()/notify()机制</b></p>
+<img src="waitnotify机制.jpg" />
+
+<p><span style="color:magenta;"><code>notify()</code>会唤醒一个线程，具体唤醒哪个线程是由操作系统来决定的。</span>公里数发生变化的时候，假如唤醒的是检测公里数的线程，那么线程将正常执行<code>wait/notify</code>机制；但是假如唤醒的是检测地点的线程，此时公里数发生变化的信息就无法传到检测公里数的线程中，此时检测公里数的线程就依旧处于休眠状态，而此时唤醒的检测地点的线程，在执行一遍发现地点没有改变的时候，再次进入休眠。此时所有的线程都进入了休眠。这就是<code>notify()</code>机制存在的问题。</p>
+<p><b style="color:slateblue;">在实际编程中应该尽量使用notifyAll机制。</b></p>
+<h4 id="等待超时模式"><a href="#等待超时模式" class="headerlink" title="等待超时模式"></a><b style="color:orange;">等待超时模式</b></h4><p>在上述代码中，假如条件始终没有满足，所有的线程会无限期的等待下去。在实际应用过程中，其实并不是这样，我们更喜欢它不光是等待了能处理相应的逻辑，没有等待到信息也可以进行相应的处理逻辑。</p>
+<p><b style="color:seagreen;">等待超时模式的范式：</b></p>
+<pre><code class="java">long overtime=now +T;
+long remain=T;
+while(result 不满足条件&amp;&amp;remain&gt;0)&#123;
+    wait(remain);
+    reamain=overtime-now;
+&#125;
+return result;</code></pre>
+<p>假设现在时间为<code>now</code>，等待时间为<code>T</code>，就以为这到了<code>overtime</code>时，还没有唤醒，这线程就需要自动唤醒然后执行下面的逻辑完成所有的任务。</p>
+<p>上述代码中假设检测公里数的线程等待3s，超过3s之后就报超时：</p>
+<pre><code class="java">public synchronized void waitKm() &#123;
+        try &#123;
+            long overtime=new Date().getTime()+3000;
+            long remain=3000;
+            while (this.km &lt;= 100 &amp;&amp;remain&gt;0) &#123;
+                wait(remain);
+                System.out.println(&quot;线程[&quot;+Thread.currentThread().getName()+&quot;]超时&quot;);
+                System.out.println(&quot;检测公里数线程[&quot; + Thread.currentThread().getName() + &quot;] 被唤醒&quot;);
+                remain=overtime-new Date().getTime();
+            &#125;
+            System.out.println(&quot;您的快递已经运输了&quot; + this.km + &quot;千米，请您注意查收！&quot;);
+        &#125; catch (InterruptedException e) &#123;
+            e.printStackTrace();
+        &#125;
+    &#125;</code></pre>
+<p>然后执行主方法中的代码，输出结果为：</p>
+<pre><code class="java"> public static void main(String[] args) throws InterruptedException &#123;
+        for (int i = 0; i &lt;3 ; i++) &#123;
+           Thread t= new CheckKm();
+           t.setName(&quot;CheckKmThread&quot;+i);
+           t.start();
+        &#125;
+
+        Thread.sleep(1000);
+        express.changeKm(85);
+        Thread.sleep(1000);
+        express.changeKm(85);
+        Thread.sleep(3000);
+
+
+        ThreadMXBean threadMXBean= ManagementFactory.getThreadMXBean();
+        ThreadInfo[] threadInfos= threadMXBean.dumpAllThreads(false,false);
+        for (ThreadInfo threadInfo:threadInfos)&#123;
+            System.out.println(&quot;[&quot;+threadInfo.getThreadId()+&quot;]&quot;+&quot; &quot;+threadInfo.getThreadName());
+        &#125;
+    &#125;</code></pre>
+<pre><code class="java">检测公里数线程[CheckKmThread1] 被唤醒,剩余等待时间为：3000
+检测公里数线程[CheckKmThread2] 被唤醒,剩余等待时间为：3000
+检测公里数线程[CheckKmThread0] 被唤醒,剩余等待时间为：3000
+检测公里数线程[CheckKmThread0] 被唤醒,剩余等待时间为：1995
+检测公里数线程[CheckKmThread2] 被唤醒,剩余等待时间为：1995
+检测公里数线程[CheckKmThread1] 被唤醒,剩余等待时间为：1995
+检测公里数线程[CheckKmThread1] 被唤醒,剩余等待时间为：986
+线程[CheckKmThread1]超时
+检测公里数线程[CheckKmThread2] 被唤醒,剩余等待时间为：986
+线程[CheckKmThread2]超时
+检测公里数线程[CheckKmThread0] 被唤醒,剩余等待时间为：986
+线程[CheckKmThread0]超时
+[6] Monitor Ctrl-Break
+[5] Attach Listener
+[4] Signal Dispatcher
+[3] Finalizer
+[2] Reference Handler
+[1] main</code></pre>
+<p>从上述结果可以看到，虽然每次检测公里数的线程被唤醒，但是发现公里数并没有达到要求，然后将继续等待下一次唤醒。当超过时间之后，从<code>ThreadMXBean</code>可以看出，线程会自动销毁。</p>
+<p><b style="color:seagreen;">等待超时机制流程图：</b></p>
+<img src="等待超时机制.png" />
+
+<h3 id="5、join-方法"><a href="#5、join-方法" class="headerlink" title="5、join()方法"></a><b style="color:blue;">5、join()方法</b></h3><p><b style="color:slateblue;"><code>join()</code>方法是指，线程A调用了线程B的该方法时，只有当线程B执行完毕了，线程A才可以继续执行。</b></p>
+<pre><code class="java">package org.example.threads;
+
+/**
+ * @program:Threads
+ * @description:测试join()方法
+ * @author:Mr.Pan
+ * @create:2020-12-03 15:15:17
+ */
+public class UseJoin &#123;
+
+    static class JumpQueue implements Runnable&#123;
+        private Thread thread;
+
+        public JumpQueue(Thread thread)&#123;
+            this.thread=thread;
+        &#125;
+
+        @Override
+        public void run() &#123;
+            try &#123;
+                thread.join();
+            &#125; catch (InterruptedException e) &#123;
+                e.printStackTrace();
+            &#125;
+            System.out.println(Thread.currentThread().getName()+&quot; terminated.&quot;);
+        &#125;
+    &#125;
+
+    public static void main(String[] args) throws InterruptedException &#123;
+        Thread previous=Thread.currentThread();
+        for (int i = 0; i &lt;3 ; i++) &#123;
+            Thread thread=new Thread(new JumpQueue(previous),String.valueOf(i));
+            System.out.println(previous.getName()+&quot; jump a queue the thread:&quot;+thread.getName());
+            thread.start();
+            previous=thread;
+        &#125;
+        Thread.sleep(2000);
+        System.out.println(Thread.currentThread().getName()+&quot; terminated.&quot;);
+    &#125;
+
+
+&#125;
+</code></pre>
+<p>上述代码输出结果为：</p>
+<pre><code class="java">main jump a queue the thread:0
+0 jump a queue the thread:1
+1 jump a queue the thread:2
+main terminated.
+0 terminated.
+1 terminated.
+2 terminated.</code></pre>
+<p>可以看到是创建了三个线程，每个线程调用前面一个线程的<code>join()</code>方法，这就意味着第三个线程必须等到所有的线程执行完毕，第三个线程才能继续执行自己的事情。从后半段的输出可以看到前面两个线程结束之后，第三个线程才会结束。</p>
+<h3 id="6、常用方法对锁的影响"><a href="#6、常用方法对锁的影响" class="headerlink" title="6、常用方法对锁的影响"></a><b style="color:blue;">6、常用方法对锁的影响</b></h3><p>一般涉及到与锁有关系的方法有<code>sleep()</code> <code>yield()</code> <code>notify()/notifyAll()</code> <code>wait()</code></p>
+<ul>
+<li><code>sleep()</code> 执行之后锁是不会释放的</li>
+<li><code>wait()</code>调用之前是必须持有锁的，调用之后，锁会被释放，当wait方法返回的时候，当前线程会重新持有锁</li>
+<li><code>yield()</code>执行之后锁是不会释放的</li>
+<li><code>notify()/notifyAll()</code>调用之前必须持有锁，调用该方法是本身不会释放锁的</li>
+</ul>
+
+        </div>
+
+        
+            <div class="post-copyright-info">
+                <div class="article-copyright-info-container">
+    <ul>
+        <li>Post title：多线程基础</li>
+        <li>Post author：Pawn</li>
+        <li>Create time：2020-12-03 15:51:56</li>
+        <li>
+            Post link：https://panhao.work/2020/12/03/多线程基础/
+        </li>
+        <li>
+            Copyright Notice：All articles in this blog are licensed under <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">BY-NC-SA</a> unless stating additionally.
+        </li>
+    </ul>
+</div>
+
+            </div>
+        
+
+        
+            <div class="article-nav">
+                
+                    <div class="article-prev">
+                        <a class="prev"
+                           rel="prev"
+                           href="/2021/02/03/MySQL%E9%AB%98%E7%BA%A7%E6%9F%A5%E8%AF%A2%E6%80%BB%E7%BB%93/"
+                        >
+                            <span class="left arrow-icon flex-center" >
+                              <i class="fas fa-chevron-left"></i>
+                            </span>
+                            <span class="title flex-center">
+                                <span class="post-nav-title-item">MySQL高级查询总结</span>
+                                <span class="post-nav-item">Prev posts</span>
+                            </span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="article-next">
+                        <a class="next"
+                           rel="next"
+                           href="/2020/11/11/%E7%BC%93%E5%AD%98%E7%A5%9E%E5%99%A8%E2%80%94%E2%80%94Redis%E5%88%9D%E6%8E%A2/"
+                        >
+                            <span class="title flex-center">
+                                <span class="post-nav-title-item">缓存神器——Redis初探</span>
+                                <span class="post-nav-item">Next posts</span>
+                            </span>
+                            <span class="right arrow-icon flex-center" >
+                              <i class="fas fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+        
+            <div class="comment-container">
+                <div class="comments-container">
+    <div id="comment-anchor"></div>
+    
+        
+    <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+    <div id="gitalk-container"></div>
+    <script>
+        let __gitalk__pathname = decodeURI(location.pathname);
+        const __gitalk__pathnameLength = __gitalk__pathname.length;
+        const __gitalk__pathnameMaxLength = 50;
+        if (__gitalk__pathnameLength > __gitalk__pathnameMaxLength) {
+            __gitalk__pathname = __gitalk__pathname.substring(0, __gitalk__pathnameMaxLength - 3) + '...';
+        }
+        const gitalk = new Gitalk({
+            clientID: '1b9120324a3474ac4059',
+            clientSecret: '7a2ba06a601ff45989a71b52de9c3abae66cf370',
+            repo: 'Comments',
+            owner: 'AlpacaMe',
+            admin: ['AlpacaMe'],
+            id: __gitalk__pathname,
+            language: 'en'
+        })
+        gitalk.render('gitalk-container')
+    </script>
+
+
+    
+</div>
+
+            </div>
+        
+    </div>
+</div>
+
+
+                    
+                </main>
+
+            </div>
+
+            <div class="page-main-content-bottom">
+                <footer class="footer">
+    <div class="info-container">
+        <div class="copyright-info info-item">
+            &copy;
+            
+              <span>2020</span> -
+            
+            2021 <i class="fas fa-heart icon-animate"></i> <a href="/">Pawn</a>
+        </div>
+        
+        <div class="theme-info info-item">
+            Powered by <a target="_blank" href="https://hexo.io">Hexo</a> | Theme <a class="theme-version" target="_blank"></a>
+        </div>
+    </div>
+</footer>
+
+            </div>
+        </div>
+    </main>
+
+    <div class="sidebar-tools">
+        <div class="tools-container">
+    <ul class="tools-list">
+        
+            <li class="search popup-trigger">
+                <i class="fas fa-search"></i>
+            </li>
+        
+
+        
+            <li class="go-comment">
+                <i class="fas fa-comment"></i>
+            </li>
+        
+
+        <!-- TOC aside toggle -->
+        
+            <li class="tools-item page-aside-toggle">
+                <i class="fas fa-outdent"></i>
+            </li>
+        
+
+    </ul>
+</div>
+
+    </div>
+
+    <div class="right-bottom-side-tools">
+        <div class="side-tools-container">
+
+    <ul class="side-tools-list">
+        <li class="tools-item tool-font-adjust-plus flex-center">
+            <i class="fas fa-search-plus"></i>
+        </li>
+
+        <li class="tools-item tool-font-adjust-minus flex-center">
+            <i class="fas fa-search-minus"></i>
+        </li>
+
+        <li class="tools-item tool-expand-width flex-center">
+            <i class="fas fa-arrows-alt-h"></i>
+        </li>
+
+        <li class="tools-item tool-dark-light-toggle flex-center">
+            <i class="fas fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        <li class="tools-item tool-scroll-to-top flex-center">
+            <i class="fas fa-arrow-up"></i>
+        </li>
+
+        <li class="tools-item tool-scroll-to-bottom flex-center">
+            <i class="fas fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="tools-ul-1">
+        <li class="tools-item tool-toggle-show flex-center">
+            <i class="fas fa-cog fa-spin"></i>
+        </li>
+
+    </ul>
+</div>
+
+    </div>
+
+    <!-- page aside -->
+    <aside class="page-aside">
+        
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%8D%E8%A6%81%E5%9B%A0%E4%B8%BA%E6%B2%A1%E6%9C%89%E6%8E%8C%E5%A3%B0%E8%80%8C%E4%B8%A2%E6%8E%89%E8%87%AA%E5%B7%B1%E7%9A%84%E6%A2%A6%E6%83%B3"><span class="nav-number">1.</span> <span class="nav-text">不要因为没有掌声而丢掉自己的梦想</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%8D%E8%A6%81%E5%9B%A0%E4%B8%BA%E6%B2%A1%E6%9C%89%E6%8E%8C%E5%A3%B0%E8%80%8C%E4%B8%A2%E6%8E%89%E8%87%AA%E5%B7%B1%E7%9A%84%E6%A2%A6%E6%83%B3"><span class="nav-number">2.</span> <span class="nav-text">不要因为没有掌声而丢掉自己的梦想</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BA%BF%E7%A8%8B%E5%9F%BA%E7%A1%80%E3%80%81%E7%BA%BF%E7%A8%8B%E4%B9%8B%E9%97%B4%E7%9A%84%E5%85%B1%E4%BA%AB%E5%92%8C%E5%8D%8F%E4%BD%9C"><span class="nav-number">3.</span> <span class="nav-text">线程基础、线程之间的共享和协作</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1%E3%80%81%E7%BA%BF%E7%A8%8B%E4%B8%8E%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E4%B9%8B%E9%97%B4%E7%9A%84%E5%85%B3%E7%B3%BB"><span class="nav-number">3.1.</span> <span class="nav-text">1、线程与操作系统之间的关系</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2%E3%80%81Java%E4%B8%AD%E7%9A%84%E5%A4%9A%E7%BA%BF%E7%A8%8B"><span class="nav-number">3.2.</span> <span class="nav-text">2、Java中的多线程</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%88%9B%E5%BB%BA%E7%BA%BF%E7%A8%8B%E7%9A%84%E6%96%B9%E5%BC%8F"><span class="nav-number">3.2.1.</span> <span class="nav-text">创建线程的方式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BA%BF%E7%A8%8B%E7%9A%84%E5%81%9C%E6%AD%A2%E6%96%B9%E5%BC%8F"><span class="nav-number">3.2.2.</span> <span class="nav-text">线程的停止方式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#run-%E5%92%8Cstart"><span class="nav-number">3.2.3.</span> <span class="nav-text">run()和start()</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BA%BF%E7%A8%8B%E7%9A%84%E4%BC%98%E5%85%88%E7%BA%A7"><span class="nav-number">3.2.4.</span> <span class="nav-text">线程的优先级</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%88%E6%8A%A4%E7%BA%BF%E7%A8%8B"><span class="nav-number">3.2.5.</span> <span class="nav-text">守护线程</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3%E3%80%81%E7%BA%BF%E7%A8%8B%E9%97%B4%E7%9A%84%E5%85%B1%E4%BA%AB"><span class="nav-number">3.3.</span> <span class="nav-text">3、线程间的共享</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#synchronized%E5%85%B3%E9%94%AE%E5%AD%97"><span class="nav-number">3.3.1.</span> <span class="nav-text">synchronized关键字</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#volatile%E5%85%B3%E9%94%AE%E5%AD%97"><span class="nav-number">3.3.2.</span> <span class="nav-text">volatile关键字</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ThreadLocal%E7%B1%BB"><span class="nav-number">3.3.3.</span> <span class="nav-text">ThreadLocal类</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4%E3%80%81%E7%BA%BF%E7%A8%8B%E9%97%B4%E7%9A%84%E5%8D%8F%E4%BD%9C"><span class="nav-number">3.4.</span> <span class="nav-text">4、线程间的协作</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#wait-notify%E6%9C%BA%E5%88%B6"><span class="nav-number">3.4.1.</span> <span class="nav-text">wait&#x2F;notify机制</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AD%89%E5%BE%85%E8%B6%85%E6%97%B6%E6%A8%A1%E5%BC%8F"><span class="nav-number">3.4.2.</span> <span class="nav-text">等待超时模式</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5%E3%80%81join-%E6%96%B9%E6%B3%95"><span class="nav-number">3.5.</span> <span class="nav-text">5、join()方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6%E3%80%81%E5%B8%B8%E7%94%A8%E6%96%B9%E6%B3%95%E5%AF%B9%E9%94%81%E7%9A%84%E5%BD%B1%E5%93%8D"><span class="nav-number">3.6.</span> <span class="nav-text">6、常用方法对锁的影响</span></a></li></ol></li></ol>
+    </div>
+</div>
+        
+    </aside>
+
+    <!-- image viewer -->
+    <div class="image-viewer-container">
+    <div class="img-box">
+        <img src="">
+    </div>
+</div>
+
+
+</div>
+
+
+
+    <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+          <span class="search-icon">
+            <i class="fas fa-search"></i>
+          </span>
+            <div class="search-input-container">
+                <input autocomplete="off"
+                       autocorrect="off"
+                       autocapitalize="off"
+                       placeholder="Search..."
+                       spellcheck="false"
+                       type="search"
+                       class="search-input"
+                >
+            </div>
+            <span class="popup-btn-close">
+                <i class="fas fa-times"></i>
+            </span>
+        </div>
+        <div id="search-result">
+            <div id="no-result">
+                <i class="fas fa-spinner fa-pulse fa-5x fa-fw"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.0.4/source/js/utils.js"></script><script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.0.4/source/js/main.js"></script><script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.0.4/source/js/header-shrink.js"></script><script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.0.4/source/js/back2top.js"></script><script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.0.4/source/js/dark-light-toggle.js"></script>
+
+
+    <script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.0.4/source/js/local-search.js"></script>
+
+
+
+
+    <script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.0.4/source/js/left-side-toggle.js"></script>
+
+    
+        <script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.0.4/source/js/code-copy.js"></script>
+    
+
+    
+        <script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.0.4/source/js/libs/anime.min.js"></script><script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.0.4/source/js/toc.js"></script>
+    
+
+
+</body>
+</html>

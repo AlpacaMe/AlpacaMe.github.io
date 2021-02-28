@@ -1,0 +1,1020 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <title>
+        SSM搭建完整教程 |
+        
+        ダモクレスの剣
+    </title>
+    <link rel="shortcut icon" href="/images/1.svg">
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.0.4/source/css/font-awesome.min.css">
+    <script id="hexo-configurations">
+    let KEEP = window.KEEP || {};
+    KEEP.hexo_config = {"hostname":"alpacame.github.io","root":"/","path":"search.xml"};
+    KEEP.theme_config = {"toc":{"enable":true,"number":true,"expand_all":true},"style":{"primary_color":"#ff0000","avatar":"/images/avatar.jpg","favicon":"/images/1.svg","img_position":"left","left_side_width":"260px","content_max_width":"900px","hover":{"shadow":true,"scale":false},"first_screen":{"enable":true,"background_img":"/images/bg.svg","description":"但愿众生皆得饱，不辞羸病卧残阳"}},"local_search":{"enable":true,"trigger":"auto","unescape":true,"preload":true},"version":"3.0.4"};
+    KEEP.language = {"search":"Search...","prev":"Prev","next":"Next","prev_posts":"Prev posts","next_posts":"Next posts","page":"Page %d","recent_posts":"Recent Posts","share":"Share","powered_by":"Powered by %s","theme":"Theme","rss_feed":"RSS Feed","category":"Category","categories":"Categories","tag":"Tag","tags":"Tags","tagcloud":"Tag Cloud","comment":"Comment","home":"Home","archive":"Archive","archives":"Archives","about":"About","site_uv":"Visitor Count","site_pv":"Totalview","links":"Links","link":"Link","top":"TOP","read_more":"Read more","wordcount":"Words","min2read":"Mins","changelog":"Changelog","copyright":{"author":"Post author","title":"Post title","link":"Post link","create_time":"Create time","license_title":"Copyright Notice","license_content":"All articles in this blog are licensed under %s unless stating additionally."},"ago":{"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days age","week":"%s weeks age","month":"%s months age","year":"%s years age"}};
+  </script>
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+
+<body>
+<div class="page-container">
+
+    
+
+    <header class="page-header">
+        <div class="header-progress"></div>
+    </header>
+
+    <main class="page-main">
+
+        <div class="page-main-content">
+
+            <div class="page-main-content-top">
+                <header class="header-wrapper">
+
+    <div class="header-content">
+        <a class="logo-title" href="/">
+            ダモクレスの剣
+        </a>
+
+        <ul class="menu-list">
+            
+                <li class="menu-item">
+                    <a class=""
+                       href="/"
+                    >
+                        首页
+                    </a>
+                </li>
+            
+                <li class="menu-item">
+                    <a class=""
+                       href="/archives"
+                    >
+                        文章
+                    </a>
+                </li>
+            
+                <li class="menu-item">
+                    <a class=""
+                       href="/live"
+                    >
+                        生活
+                    </a>
+                </li>
+            
+                <li class="menu-item">
+                    <a class=""
+                       href="/links"
+                    >
+                        友链
+                    </a>
+                </li>
+            
+                <li class="menu-item">
+                    <a class=""
+                       href="/about"
+                    >
+                        关于
+                    </a>
+                </li>
+            
+        </ul>
+
+        <div class="menu-bar">
+            <div class="menu-bar-middle"></div>
+        </div>
+    </div>
+
+    <div class="header-drawer">
+        <ul class="drawer-menu-list">
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/">首页</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/archives">文章</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/live">生活</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/links">友链</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/about">关于</a>
+                </li>
+            
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+            </div>
+
+            <div class="page-main-content-middle">
+
+                <main class="main-content normal-code-theme">
+
+                    
+                        <div class="fade-in-down-animation">
+    <div class="article-content-container">
+
+        <div class="article-title">
+            <span class="title-hover-animation">SSM搭建完整教程</span>
+        </div>
+
+        
+            <div class="article-header">
+                <div class="avatar">
+                    <img src="/images/avatar.jpg">
+                </div>
+                <div class="info">
+                    <div class="author">
+                        <span>Pawn</span>
+                        <span class="level">Lv1</span>
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fas fa-calendar"></i> 2020-11-03 14:41:46
+    </span>
+    
+        <span class="article-categories article-meta-item">
+            <i class="fas fa-folder"></i>
+            <ul>
+                
+                    <li>
+                        <a href="/categories/Spring%E5%AD%A6%E4%B9%A0/">Spring学习</a>
+                    </li>
+                
+            </ul>
+        </span>
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fas fa-tags"></i>
+            <ul>
+                
+                    <li>
+                        <a href="/tags/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/">编程语言</a>
+                    </li>
+                
+            </ul>
+        </span>
+    
+
+    
+    
+        <span class="article-wordcount article-meta-item">
+            <i class="fas fa-file-word"></i> <span>4.7k Words</span>
+        </span>
+    
+    
+        <span class="article-min2read article-meta-item">
+            <i class="fas fa-clock"></i> <span>24 Mins</span>
+        </span>
+    
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        <div class="article-content markdown-body">
+            <h2 id="如若今后没有炬火，你便是唯一的光"><a href="#如若今后没有炬火，你便是唯一的光" class="headerlink" title="如若今后没有炬火，你便是唯一的光"></a><span style="color:crimson;font-family: Georgia, serif;">如若今后没有炬火，你便是唯一的光</span></h2><a id="more"></a>
+
+<h3 id="SSM框架搭建"><a href="#SSM框架搭建" class="headerlink" title="SSM框架搭建"></a><b style="color:red;">SSM框架搭建</b></h3><h4 id="1、引入依赖"><a href="#1、引入依赖" class="headerlink" title="1、引入依赖"></a><b style="color:blue;">1、引入依赖</b></h4><pre><code class="xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+
+&lt;project xmlns=&quot;http://maven.apache.org/POM/4.0.0&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+         xsi:schemaLocation=&quot;http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd&quot;&gt;
+    &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+
+    &lt;groupId&gt;org.example&lt;/groupId&gt;
+    &lt;artifactId&gt;SSM&lt;/artifactId&gt;
+    &lt;version&gt;1.0-SNAPSHOT&lt;/version&gt;
+    &lt;packaging&gt;war&lt;/packaging&gt;
+
+    &lt;name&gt;SSM Maven Webapp&lt;/name&gt;
+    &lt;!-- FIXME change it to the project&#39;s website --&gt;
+    &lt;url&gt;http://www.example.com&lt;/url&gt;
+
+    &lt;properties&gt;
+        &lt;project.build.sourceEncoding&gt;UTF-8&lt;/project.build.sourceEncoding&gt;
+        &lt;maven.compiler.source&gt;1.7&lt;/maven.compiler.source&gt;
+        &lt;maven.compiler.target&gt;1.7&lt;/maven.compiler.target&gt;
+        &lt;!-- spring版本号 --&gt;
+        &lt;spring.version&gt;5.1.5.RELEASE&lt;/spring.version&gt;
+        &lt;!-- mybatis版本号 --&gt;
+        &lt;mybatis.version&gt;3.2.6&lt;/mybatis.version&gt;
+        &lt;!-- log4j日志文件管理包版本 --&gt;
+        &lt;slf4j.version&gt;1.7.7&lt;/slf4j.version&gt;
+        &lt;log4j.version&gt;1.2.17&lt;/log4j.version&gt;
+    &lt;/properties&gt;
+
+    &lt;dependencies&gt;
+&lt;!--        Junit单元测试--&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;junit&lt;/groupId&gt;
+            &lt;artifactId&gt;junit&lt;/artifactId&gt;
+            &lt;version&gt;4.12&lt;/version&gt;
+            &lt;scope&gt;test&lt;/scope&gt;
+        &lt;/dependency&gt;
+&lt;!--        lombok插件依赖，需要先安装lombok插件该依赖才能起作用--&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.projectlombok&lt;/groupId&gt;
+            &lt;artifactId&gt;lombok&lt;/artifactId&gt;
+            &lt;version&gt;1.18.12&lt;/version&gt;
+        &lt;/dependency&gt;
+&lt;!--        spring相关依赖包--&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-core&lt;/artifactId&gt;
+            &lt;version&gt;$&#123;spring.version&#125;&lt;/version&gt;
+        &lt;/dependency&gt;
+
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-web&lt;/artifactId&gt;
+            &lt;version&gt;$&#123;spring.version&#125;&lt;/version&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-oxm&lt;/artifactId&gt;
+            &lt;version&gt;$&#123;spring.version&#125;&lt;/version&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-tx&lt;/artifactId&gt;
+            &lt;version&gt;$&#123;spring.version&#125;&lt;/version&gt;
+        &lt;/dependency&gt;
+
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-jdbc&lt;/artifactId&gt;
+            &lt;version&gt;$&#123;spring.version&#125;&lt;/version&gt;
+        &lt;/dependency&gt;
+
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-webmvc&lt;/artifactId&gt;
+            &lt;version&gt;$&#123;spring.version&#125;&lt;/version&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-aop&lt;/artifactId&gt;
+            &lt;version&gt;$&#123;spring.version&#125;&lt;/version&gt;
+        &lt;/dependency&gt;
+
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-context-support&lt;/artifactId&gt;
+            &lt;version&gt;$&#123;spring.version&#125;&lt;/version&gt;
+        &lt;/dependency&gt;
+
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-test&lt;/artifactId&gt;
+            &lt;version&gt;$&#123;spring.version&#125;&lt;/version&gt;
+        &lt;/dependency&gt;
+        &lt;!-- mybatis核心包 --&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.mybatis&lt;/groupId&gt;
+            &lt;artifactId&gt;mybatis&lt;/artifactId&gt;
+            &lt;version&gt;$&#123;mybatis.version&#125;&lt;/version&gt;
+        &lt;/dependency&gt;
+        &lt;!-- mybatis/spring包 --&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.mybatis&lt;/groupId&gt;
+            &lt;artifactId&gt;mybatis-spring&lt;/artifactId&gt;
+            &lt;version&gt;1.2.2&lt;/version&gt;
+        &lt;/dependency&gt;
+        &lt;!-- 导入java ee jar 包 --&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;javax&lt;/groupId&gt;
+            &lt;artifactId&gt;javaee-api&lt;/artifactId&gt;
+            &lt;version&gt;7.0&lt;/version&gt;
+        &lt;/dependency&gt;
+        &lt;!-- 导入Mysql数据库链接jar包 --&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;mysql&lt;/groupId&gt;
+            &lt;artifactId&gt;mysql-connector-java&lt;/artifactId&gt;
+            &lt;version&gt;8.0.19&lt;/version&gt;
+        &lt;/dependency&gt;
+        &lt;!-- 导入dbcp的jar包，用来在applicationContext.xml中配置数据库 --&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;commons-dbcp&lt;/groupId&gt;
+            &lt;artifactId&gt;commons-dbcp&lt;/artifactId&gt;
+            &lt;version&gt;1.2.2&lt;/version&gt;
+        &lt;/dependency&gt;
+        &lt;!-- 日志输出规范格式 --&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;log4j&lt;/groupId&gt;
+            &lt;artifactId&gt;log4j&lt;/artifactId&gt;
+            &lt;version&gt;$&#123;log4j.version&#125;&lt;/version&gt;
+        &lt;/dependency&gt;
+        &lt;!-- 用于操作JSON对象 --&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;com.alibaba&lt;/groupId&gt;
+            &lt;artifactId&gt;fastjson&lt;/artifactId&gt;
+            &lt;version&gt;1.1.41&lt;/version&gt;
+        &lt;/dependency&gt;
+    &lt;/dependencies&gt;
+
+    &lt;build&gt;
+        &lt;finalName&gt;SSM&lt;/finalName&gt;
+        &lt;pluginManagement&gt;&lt;!-- lock down plugins versions to avoid using Maven defaults (may be moved to parent pom) --&gt;
+            &lt;plugins&gt;
+                &lt;plugin&gt;
+                    &lt;artifactId&gt;maven-clean-plugin&lt;/artifactId&gt;
+                    &lt;version&gt;3.1.0&lt;/version&gt;
+                &lt;/plugin&gt;
+                &lt;!-- see http://maven.apache.org/ref/current/maven-core/default-bindings.html#Plugin_bindings_for_war_packaging --&gt;
+                &lt;plugin&gt;
+                    &lt;artifactId&gt;maven-resources-plugin&lt;/artifactId&gt;
+                    &lt;version&gt;3.0.2&lt;/version&gt;
+                &lt;/plugin&gt;
+                &lt;plugin&gt;
+                    &lt;artifactId&gt;maven-compiler-plugin&lt;/artifactId&gt;
+                    &lt;version&gt;3.8.0&lt;/version&gt;
+                &lt;/plugin&gt;
+                &lt;plugin&gt;
+                    &lt;artifactId&gt;maven-surefire-plugin&lt;/artifactId&gt;
+                    &lt;version&gt;2.22.1&lt;/version&gt;
+                &lt;/plugin&gt;
+                &lt;plugin&gt;
+                    &lt;artifactId&gt;maven-war-plugin&lt;/artifactId&gt;
+                    &lt;version&gt;3.2.2&lt;/version&gt;
+                &lt;/plugin&gt;
+                &lt;plugin&gt;
+                    &lt;artifactId&gt;maven-install-plugin&lt;/artifactId&gt;
+                    &lt;version&gt;2.5.2&lt;/version&gt;
+                &lt;/plugin&gt;
+                &lt;plugin&gt;
+                    &lt;artifactId&gt;maven-deploy-plugin&lt;/artifactId&gt;
+                    &lt;version&gt;2.8.2&lt;/version&gt;
+                &lt;/plugin&gt;
+            &lt;/plugins&gt;
+        &lt;/pluginManagement&gt;
+    &lt;/build&gt;
+&lt;/project&gt;
+</code></pre>
+<h4 id="2、构建Maven项目"><a href="#2、构建Maven项目" class="headerlink" title="2、构建Maven项目"></a><b style="color:blue;">2、构建Maven项目</b></h4><p>构建Maven项目无论是使用Eclipse或者是IDEA工具，都要确保其目录结构的完整性（<span style="color:springgreen;">建议使用<code>org.apache.maven.archetypes:maven-archetype-webapp</code>模板进行创建</span>）。完整的Maven目录结构应该如下图所示：</p>
+<p><img src="SSMMaven结构.png"></img></p>
+<ul>
+<li><code>src/main/java</code> 存放后端代码</li>
+<li><code>src/main/resources</code>存放静态资源文件，包括各种配置文件，以及属性文件、Mapper文件等。</li>
+<li><code>src/main/webapp</code> 用于存放前端的页面，以及相关的图片、JS、CSS文件等静态资源。</li>
+<li><code>src/main/test/java</code>用于存放测试所用到的代码，在编译的时候是不会被编译的。</li>
+</ul>
+<h4 id="3、进行相关的配置"><a href="#3、进行相关的配置" class="headerlink" title="3、进行相关的配置"></a><b style="color:blue;">3、进行相关的配置</b></h4><p>在构建完Maven项目之后，需要对其进行配置，此时虽然已经具备了SSM框架的相关条件，但是相关的功能模块需要我们去进行组装。这里进行配置主要分为五个部分：</p>
+<h5 id="配置spring-mvc-xml"><a href="#配置spring-mvc-xml" class="headerlink" title="配置spring-mvc.xml"></a><b style="color:orange;">配置spring-mvc.xml</b></h5><pre><code class="xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot;
+       xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+       xmlns:context=&quot;http://www.springframework.org/schema/context&quot;
+       xmlns:mvc=&quot;http://www.springframework.org/schema/mvc&quot;
+       xsi:schemaLocation=&quot;
+http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+http://www.springframework.org/schema/context
+http://www.springframework.org/schema/context/spring-context-3.0.xsd
+http://www.springframework.org/schema/mvc
+http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd&quot;&gt;
+
+    &lt;!-- 扫描所有的包 --&gt;
+    &lt;context:component-scan base-package=&quot;com.panhao&quot;&gt;&lt;/context:component-scan&gt;
+
+    &lt;!-- 设置配置方案 --&gt;
+    &lt;!-- 设置配置方案 --&gt;
+    &lt;mvc:annotation-driven&gt;
+        &lt;!-- 不使用默认的消息转换器 --&gt;
+        &lt;mvc:message-converters
+                register-defaults=&quot;false&quot;&gt;
+            &lt;!-- 配置Spring的转换器 --&gt;
+            &lt;bean
+                    class=&quot;org.springframework.http.converter.StringHttpMessageConverter&quot; /&gt;
+            &lt;bean
+                    class=&quot;org.springframework.http.converter.ByteArrayHttpMessageConverter&quot; /&gt;
+            &lt;bean
+                    class=&quot;org.springframework.http.converter.BufferedImageHttpMessageConverter&quot; /&gt;
+            &lt;bean
+                    class=&quot;org.springframework.http.converter.FormHttpMessageConverter&quot; /&gt;
+            &lt;!-- 配置fastjson中实现HttpMessageConverter接口的转换器 --&gt;
+            &lt;bean id=&quot;fastJsonHttpMessageConverter&quot;
+                  class=&quot;com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter&quot;&gt;
+                &lt;!-- 加入支持的媒体类型，返回contentType --&gt;
+                &lt;property name=&quot;supportedMediaTypes&quot;&gt;
+                    &lt;list&gt;
+                        &lt;!--这里顺序不可以反，不然IE浏览器会出现下载提示 --&gt;
+                        &lt;value&gt;application/json;charset=UTF-8 &lt;/value&gt;
+                        &lt;value&gt;text/html;charset=UTF-8&lt;/value&gt;
+                        &lt;value&gt;text/plain;charset=UTF-8&lt;/value&gt;
+                    &lt;/list&gt;
+                &lt;/property&gt;
+            &lt;/bean&gt;
+        &lt;/mvc:message-converters&gt;
+    &lt;/mvc:annotation-driven&gt;
+    &lt;!-- 配置静态资源路径 --&gt;
+    &lt;mvc:resources location=&quot;/pages/&quot; mapping=&quot;/pages/**/*.html&quot; /&gt;
+    &lt;mvc:resources location=&quot;/&quot; mapping=&quot;/**/*.html&quot; /&gt;
+    &lt;mvc:resources location=&quot;/pages/&quot; mapping=&quot;/pages/**/*.js&quot; /&gt;
+    &lt;mvc:resources location=&quot;/pages/&quot; mapping=&quot;/pages/**/*.css&quot; /&gt;
+
+    &lt;!-- 配置视图解析器 --&gt;
+    &lt;bean
+            class=&quot;org.springframework.web.servlet.view.UrlBasedViewResolver&quot;&gt;
+        &lt;property name=&quot;viewClass&quot;
+                  value=&quot;org.springframework.web.servlet.view.InternalResourceView&quot;&gt;&lt;/property&gt;
+        &lt;!-- 前缀（目录） --&gt;
+        &lt;property name=&quot;prefix&quot; value=&quot;/pages/&quot;&gt;&lt;/property&gt;
+        &lt;!-- 后缀文件名 --&gt;
+        &lt;property name=&quot;suffix&quot; value=&quot;.html&quot;&gt;&lt;/property&gt;
+    &lt;/bean&gt;
+
+&lt;/beans&gt;</code></pre>
+<ol>
+<li>配置消息转换器的目的在于<span style="color:aqua;">即使在不是MVC的相关的JSON转换注解，依旧可以将返回给前端的内容转换成JSON字符串</span>。</li>
+<li>配置静态资源文件的目的在于<span style="color:aqua;">完全摒弃掉JSP的技术，通过配置静态资源文件，使得数据在HTML文件中进行传输，同时保证JS文件和CSS文件不会因为拦截的问题而无法使用</span>。配置的时候需要注意的是：<ul>
+<li>配置用到的标签是<code>&lt;mvc:resources /&gt;</code>，每一个标签可以配置一种映射方法。</li>
+<li><code>location</code>的值表示的是静态资源存放的路径，<code>mapping</code>中的值表示的是URL中的路径。</li>
+<li>配置静态资源文件的目的，就是将后端的请求路由与静态资源分开，也就是将<span style="color:violet;"><code>mapping</code>的路径通过映射的方式映射到<code>location</code>中去</span>。</li>
+<li>如上述配置中<code>&lt;mvc:resources location=&quot;/pages/&quot; mapping=&quot;/pages/**/*.html&quot; /&gt;</code>的含义就是：<span style="color:violet;">如果在浏览的路由地址中出现了<code>/pages/**/*.html</code>的路径，就将地址映射到<code>/pages/</code>文件夹下面去寻找对应的位置，而不是送到DispatcherServlet中去进行分发</span>。</li>
+</ul>
+</li>
+<li>配置视图解析器，是在返回<code>String</code> ，可以直接返回视图。</li>
+</ol>
+<h5 id="配置spring-mybtis-xml"><a href="#配置spring-mybtis-xml" class="headerlink" title="配置spring-mybtis.xml"></a><b style="color:orange;">配置spring-mybtis.xml</b></h5><pre><code class="xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot;
+       xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+       xmlns:p=&quot;http://www.springframework.org/schema/p&quot;
+       xmlns:context=&quot;http://www.springframework.org/schema/context&quot;
+       xmlns:mvc=&quot;http://www.springframework.org/schema/mvc&quot;
+       xsi:schemaLocation=&quot;http://www.springframework.org/schema/beans
+                            http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+                            http://www.springframework.org/schema/context
+                            http://www.springframework.org/schema/context/spring-context-3.1.xsd
+                            http://www.springframework.org/schema/mvc
+                            http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd&quot;&gt;
+    &lt;!-- 自动扫描 --&gt;
+    &lt;context:component-scan
+            base-package=&quot;com.panhao&quot; /&gt;
+    &lt;!-- 引入配置文件 --&gt;
+    &lt;bean id=&quot;propertyConfigurer&quot;
+          class=&quot;org.springframework.beans.factory.config.PropertyPlaceholderConfigurer&quot;&gt;
+        &lt;property name=&quot;location&quot; value=&quot;classpath:jdbc.properties&quot; /&gt;
+    &lt;/bean&gt;
+
+    &lt;bean id=&quot;dataSource&quot;
+          class=&quot;org.apache.commons.dbcp.BasicDataSource&quot; destroy-method=&quot;close&quot;&gt;
+        &lt;property name=&quot;driverClassName&quot; value=&quot;$&#123;driver&#125;&quot; /&gt;
+        &lt;property name=&quot;url&quot; value=&quot;$&#123;url&#125;&quot; /&gt;
+        &lt;property name=&quot;username&quot; value=&quot;$&#123;username&#125;&quot; /&gt;
+        &lt;property name=&quot;password&quot; value=&quot;$&#123;password&#125;&quot; /&gt;
+        &lt;!-- 初始化连接大小 --&gt;
+        &lt;property name=&quot;initialSize&quot; value=&quot;$&#123;initialSize&#125;&quot; /&gt;
+        &lt;!-- 连接池最大数量 --&gt;
+        &lt;property name=&quot;maxActive&quot; value=&quot;$&#123;maxActive&#125;&quot; /&gt;
+        &lt;!-- 连接池最大空闲 --&gt;
+        &lt;property name=&quot;maxIdle&quot; value=&quot;$&#123;maxIdle&#125;&quot; /&gt;
+        &lt;!-- 连接池最小空闲 --&gt;
+        &lt;property name=&quot;minIdle&quot; value=&quot;$&#123;minIdle&#125;&quot; /&gt;
+        &lt;!-- 获取连接最大等待时间 --&gt;
+        &lt;property name=&quot;maxWait&quot; value=&quot;$&#123;maxWait&#125;&quot; /&gt;
+    &lt;/bean&gt;
+
+    &lt;!-- spring和MyBatis完美整合，不需要mybatis的配置映射文件 --&gt;
+    &lt;bean id=&quot;sqlSessionFactory&quot;
+          class=&quot;org.mybatis.spring.SqlSessionFactoryBean&quot;&gt;
+        &lt;property name=&quot;dataSource&quot; ref=&quot;dataSource&quot; /&gt;
+        &lt;!-- 自动扫描mapping.xml文件 --&gt;
+        &lt;property name=&quot;mapperLocations&quot;
+                  value=&quot;classpath:mapper/*.xml&quot;&gt;&lt;/property&gt;
+        &lt;!--配置Mybatis别名扫描的包--&gt;
+        &lt;property name=&quot;typeAliasesPackage&quot; value=&quot;com.panhao.pojo&quot; /&gt;
+        &lt;property name=&quot;configLocation&quot; value=&quot;classpath:mybatis.xml&quot; /&gt;
+    &lt;/bean&gt;
+
+    &lt;!-- DAO接口所在包名，Spring会自动查找其下的类 --&gt;
+    &lt;bean class=&quot;org.mybatis.spring.mapper.MapperScannerConfigurer&quot;&gt;
+        &lt;property name=&quot;basePackage&quot; value=&quot;com.panhao.dao&quot; /&gt;
+        &lt;property name=&quot;sqlSessionFactoryBeanName&quot;
+                  value=&quot;sqlSessionFactory&quot;&gt;&lt;/property&gt;
+    &lt;/bean&gt;
+
+    &lt;!-- (事务管理)transaction manager, use JtaTransactionManager for global tx --&gt;
+    &lt;bean id=&quot;transactionManager&quot;
+          class=&quot;org.springframework.jdbc.datasource.DataSourceTransactionManager&quot;&gt;
+        &lt;property name=&quot;dataSource&quot; ref=&quot;dataSource&quot; /&gt;
+    &lt;/bean&gt;
+&lt;/beans&gt;
+</code></pre>
+<ol>
+<li>配置的目的是将Spring与Mybatis整合起来，配置数据源是为连接数据库做准备。利用属性文件的好处，便于修改数据库的连接信息。所以在最开始需要引入属性文件。</li>
+<li>配置<code>sqlSessionFactory</code>和<code>MapperScannerConfigurer</code>是为了实现Mapper文件的自动映射，事务管理是为了数据库中的多条SQL语句可以一起执行完毕，或者是一起执行失败。</li>
+</ol>
+<h5 id="配置web-xml"><a href="#配置web-xml" class="headerlink" title="配置web.xml"></a><b style="color:orange;">配置web.xml</b></h5><pre><code class="xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;web-app xmlns=&quot;http://java.sun.com/xml/ns/javaee&quot;
+         xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+         xsi:schemaLocation=&quot;http://java.sun.com/xml/ns/javaee
+          http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd&quot;
+         version=&quot;3.0&quot;&gt;
+
+    &lt;display-name&gt;web-ssm&lt;/display-name&gt;
+    &lt;!--配置Spring与Mybatis的整合文件，在Tomcat启动的时候，就初始化Spring容器--&gt;
+    &lt;context-param&gt;
+        &lt;param-name&gt;contextConfigLocation&lt;/param-name&gt;
+        &lt;param-value&gt;classpath:spring-mybatis.xml&lt;/param-value&gt;
+    &lt;/context-param&gt;
+    &lt;!--配置Log4J的输出格式，以及输出的内容和形式--&gt;
+    &lt;context-param&gt;
+        &lt;param-name&gt;log4jConfigLocation&lt;/param-name&gt;
+        &lt;param-value&gt;classpath:log4j.properties&lt;/param-value&gt;
+    &lt;/context-param&gt;
+
+    &lt;!-- 编码过滤器，在前后端之间的交互中避免出现中文乱码的现象 --&gt;
+    &lt;filter&gt;
+        &lt;filter-name&gt;encodingFilter&lt;/filter-name&gt;
+        &lt;filter-class&gt;org.springframework.web.filter.CharacterEncodingFilter&lt;/filter-class&gt;
+        &lt;init-param&gt;
+            &lt;param-name&gt;encoding&lt;/param-name&gt;
+            &lt;param-value&gt;UTF-8&lt;/param-value&gt;
+        &lt;/init-param&gt;
+    &lt;/filter&gt;
+    &lt;filter-mapping&gt;
+        &lt;filter-name&gt;encodingFilter&lt;/filter-name&gt;
+        &lt;url-pattern&gt;/*&lt;/url-pattern&gt;
+    &lt;/filter-mapping&gt;
+
+    &lt;!-- spring监听器 --&gt;
+    &lt;listener&gt;
+        &lt;listener-class&gt;org.springframework.web.context.ContextLoaderListener&lt;/listener-class&gt;
+    &lt;/listener&gt;
+
+    &lt;!-- 防止spring内存溢出监听器，比如quartz --&gt;
+    &lt;listener&gt;
+        &lt;listener-class&gt;org.springframework.web.util.IntrospectorCleanupListener&lt;/listener-class&gt;
+    &lt;/listener&gt;
+
+
+    &lt;!-- 配置DispatcherServlet用于拦截请求，进行请求转发--&gt;
+    &lt;servlet&gt;
+        &lt;servlet-name&gt;SpringMVC&lt;/servlet-name&gt;
+        &lt;servlet-class&gt;org.springframework.web.servlet.DispatcherServlet&lt;/servlet-class&gt;
+        &lt;!--配置Spring与Spring Mvc整合文件的位置--&gt;
+        &lt;init-param&gt;
+            &lt;param-name&gt;contextConfigLocation&lt;/param-name&gt;
+            &lt;param-value&gt;classpath:spring-mvc.xml&lt;/param-value&gt;
+        &lt;/init-param&gt;
+        &lt;!--在Tomcat启动的时候就开始加载配置文件--&gt;
+        &lt;load-on-startup&gt;1&lt;/load-on-startup&gt;
+        &lt;async-supported&gt;true&lt;/async-supported&gt;
+    &lt;/servlet&gt;
+    &lt;servlet-mapping&gt;
+        &lt;servlet-name&gt;SpringMVC&lt;/servlet-name&gt;
+        &lt;!-- 配置拦截请求的方法，可以配置成任何的形式，常见为： / *.do--&gt;
+        &lt;url-pattern&gt;/&lt;/url-pattern&gt;
+    &lt;/servlet-mapping&gt;
+    &lt;!--设置欢迎页面，在Tomcat初始化完成之后直接显示该页面--&gt;
+    &lt;welcome-file-list&gt;
+        &lt;welcome-file&gt;/index.html&lt;/welcome-file&gt;
+    &lt;/welcome-file-list&gt;
+
+    &lt;!-- session配置 --&gt;
+    &lt;session-config&gt;
+        &lt;session-timeout&gt;15&lt;/session-timeout&gt;
+    &lt;/session-config&gt;
+
+&lt;/web-app&gt;</code></pre>
+<h5 id="配置Mybatis"><a href="#配置Mybatis" class="headerlink" title="配置Mybatis"></a><b style="color:orange;">配置Mybatis</b></h5><pre><code class="xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;!DOCTYPE configuration PUBLIC &quot;-//mybatis.org//DTD Config 3.0//EN&quot;
+        &quot;http://mybatis.org/dtd/mybatis-3-config.dtd&quot;&gt;
+&lt;configuration&gt;
+    &lt;settings&gt;
+        &lt;!--用于设置Mybatis中数据库列名与Java Bean之间驼峰转下换线的映射关系--&gt;
+        &lt;setting name=&quot;mapUnderscoreToCamelCase&quot; value=&quot;true&quot; /&gt;
+    &lt;/settings&gt;
+&lt;/configuration&gt;</code></pre>
+<h5 id="其他的相关的属性文件"><a href="#其他的相关的属性文件" class="headerlink" title="其他的相关的属性文件"></a><b style="color:orange;">其他的相关的属性文件</b></h5><p>属性文件用于存储常量，具备良好的展现形式，以及Spring对其的加载支持。首先需要一个连接数据库的属性文件：</p>
+<pre><code class="properties">driver=com.mysql.cj.jdbc.Driver
+url=jdbc:mysql://localhost:3306/mydb?useSSL=false&amp;serverTimezone=CTT&amp;characterEncoding=UTF-8
+username=root
+password=panhao
+#定义初始连接数
+initialSize=0  
+#定义最大连接数
+maxActive=20  
+#定义最大空闲
+maxIdle=20  
+#定义最小空闲
+minIdle=1  
+#定义最长等待时间
+maxWait=60000
+</code></pre>
+<p>还需要一个Log4J日志格式化配置属性文件：</p>
+<pre><code class="properties">#定义LOG输出级别
+log4j.rootLogger=INFO,Console,File  
+#定义日志输出目的地为控制台
+log4j.appender.Console=org.apache.log4j.ConsoleAppender  
+log4j.appender.Console.Target=System.out  
+#可以灵活地指定日志输出格式，下面一行是指定具体的格式
+log4j.appender.Console.layout = org.apache.log4j.PatternLayout  
+log4j.appender.Console.layout.ConversionPattern=[%c] - %m%n  
+
+#文件大小到达指定尺寸的时候产生一个新的文件
+log4j.appender.File = org.apache.log4j.RollingFileAppender  
+#指定输出目录
+log4j.appender.File.File = logs/ssm.log  
+#定义文件最大大小
+log4j.appender.File.MaxFileSize = 10MB  
+# 输出所以日志，如果换成DEBUG表示输出DEBUG以上级别日志
+log4j.appender.File.Threshold = ALL  
+log4j.appender.File.layout = org.apache.log4j.PatternLayout  
+log4j.appender.File.layout.ConversionPattern =[%p] [%d&#123;yyyy-MM-dd HH:mm:ss&#125;][%c]%m%n </code></pre>
+<p><b style="color:deeppink;">值得注意的是，所有的Properties文件都尽量放在<code>src/main/resources</code>文件夹的下面</b></p>
+<h4 id="4、SSM应用实例"><a href="#4、SSM应用实例" class="headerlink" title="4、SSM应用实例"></a><b style="color:blue;">4、SSM应用实例</b></h4><p>SSM实际上就是一种用于便捷操作数据的框架设计结构。在JavaEE中的开发结构，在这里依旧是可以使用的。将后端进行分层设计，以达到解耦的效果。可以更好的适应多人协作开发的需求。</p>
+<p>首先需要完善后端的四层结构：<code>controller</code> <code>service</code> <code>dao</code> <code>pojo</code> </p>
+<p>其中数据的流动方向为<code>controller=&gt;service=&gt;dao</code>表示用户请求数据，<code>dao=&gt;service=&gt;controller</code>表示服务器返回数据。<code>pojo</code>作为数据处理的基本单元。</p>
+<p>首先创建一个<code>User</code>类与数据库的表之间做出映射：</p>
+<pre><code class="java">package com.panhao.pojo;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.apache.ibatis.type.Alias;
+
+import java.util.Date;
+
+/**
+ * @program:SSM
+ * @description:cc
+ * @author:Mr.Pan
+ * @create:2020-10-26 22:22:16
+ */
+//该注解属于Lombok依赖中，用于自动生成类的常规方法，例如get/set/toString/equals...
+@Data
+//该注解属于Lombok依赖中，用于创建一个无参数的构造方法
+@NoArgsConstructor
+//该注解属于Lombok依赖中，用于创建一个全参数的构造方法
+@AllArgsConstructor
+//该注解属于Mybatis，用于创建类的别名，需要在配置文件中开启，才可以扫描到，然后在Mapper文件中使用别名来代替类的全限定名
+@Alias(&quot;user&quot;)
+public class User &#123;
+
+    private int id;
+    private String firstName;
+    private String lastName;
+    private Date createAt;
+    private Date updateAt;
+
+&#125;
+</code></pre>
+<p>创建一个<code>UserDao</code>用于操作数据：</p>
+<pre><code class="java">package com.panhao.dao;
+
+import com.panhao.pojo.User;
+import org.springframework.stereotype.Repository;
+
+import java.util.List;
+//该注解属于Spring，用于将该接口映射为持久层方法，便于与Mapper文件中进行自动映射
+@Repository
+public interface UserDao &#123;
+    List&lt;User&gt; getAllUser();
+&#125;
+</code></pre>
+<p>在<code>src/main/resources</code>中创建文件<code>/mapper/UserDao.xml</code>用于与上面的接口做自动映射：</p>
+<pre><code class="xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; ?&gt;
+&lt;!DOCTYPE mapper
+        PUBLIC &quot;-//mybatis.org//DTD Mapper 3.0//EN&quot;
+        &quot;http://mybatis.org/dtd/mybatis-3-mapper.dtd&quot;&gt;
+&lt;!-- nameSpace表示命名空间，要和我们映射的接口的全限定类名必须完全一致--&gt;
+&lt;mapper namespace=&quot;com.panhao.dao.UserDao&quot;&gt;
+    &lt;!-- 表示执行select操作，这里需要与接口中的方法进行映射，id属性表示的方法名，需要与映射的接口中相同逻辑的方法的名称完全一致--&gt;
+    &lt;select id=&quot;getAllUser&quot; resultType=&quot;com.panhao.pojo.User&quot;&gt;
+        select * from users;
+    &lt;/select&gt;
+&lt;/mapper&gt;</code></pre>
+<p>此时就已经有一个完成数据流动的过程，创建一个<code>UserController</code>用于接受用户的请求：</p>
+<pre><code class="java">package com.panhao.controller;
+
+import com.panhao.dao.UserDao;
+import com.panhao.pojo.Book;
+import com.panhao.pojo.User;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.util.List;
+
+/**
+ * @program:SSM
+ * @description:测试
+ * @author:Mr.Pan
+ * @create:2020-10-26 22:22:13
+ */
+@Controller
+public class UserController &#123;
+
+    @Autowired
+    private UserDao userDao;
+
+    @RequestMapping(&quot;/hello.do&quot;)
+    @ResponseBody
+    public String hello()&#123;
+        return &quot;dasdadsa&quot;;
+    &#125;
+
+    @RequestMapping(&quot;/user&quot;)
+    @ResponseBody
+    public List&lt;User&gt; hello1()&#123;
+        return userDao.getAllUser();
+    &#125;
+&#125;
+</code></pre>
+<p>最后在浏览器中输入<code>http://localhost:8080/SSM/user</code>即可得到数据库中的数据。</p>
+
+        </div>
+
+        
+            <div class="post-copyright-info">
+                <div class="article-copyright-info-container">
+    <ul>
+        <li>Post title：SSM搭建完整教程</li>
+        <li>Post author：Pawn</li>
+        <li>Create time：2020-11-03 14:41:46</li>
+        <li>
+            Post link：https://panhao.work/2020/11/03/SSM搭建完整教程/
+        </li>
+        <li>
+            Copyright Notice：All articles in this blog are licensed under <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">BY-NC-SA</a> unless stating additionally.
+        </li>
+    </ul>
+</div>
+
+            </div>
+        
+
+        
+            <div class="article-nav">
+                
+                    <div class="article-prev">
+                        <a class="prev"
+                           rel="prev"
+                           href="/2020/11/11/%E7%BC%93%E5%AD%98%E7%A5%9E%E5%99%A8%E2%80%94%E2%80%94Redis%E5%88%9D%E6%8E%A2/"
+                        >
+                            <span class="left arrow-icon flex-center" >
+                              <i class="fas fa-chevron-left"></i>
+                            </span>
+                            <span class="title flex-center">
+                                <span class="post-nav-title-item">缓存神器——Redis初探</span>
+                                <span class="post-nav-item">Prev posts</span>
+                            </span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="article-next">
+                        <a class="next"
+                           rel="next"
+                           href="/2020/05/29/%E8%8F%9C%E9%B8%9F%E7%A8%8B%E5%BA%8F%E5%91%98%E4%BF%AE%E7%82%BC%E7%A7%98%E7%B1%8D/"
+                        >
+                            <span class="title flex-center">
+                                <span class="post-nav-title-item">菜鸟程序员修炼秘籍</span>
+                                <span class="post-nav-item">Next posts</span>
+                            </span>
+                            <span class="right arrow-icon flex-center" >
+                              <i class="fas fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+        
+            <div class="comment-container">
+                <div class="comments-container">
+    <div id="comment-anchor"></div>
+    
+        
+    <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+    <div id="gitalk-container"></div>
+    <script>
+        let __gitalk__pathname = decodeURI(location.pathname);
+        const __gitalk__pathnameLength = __gitalk__pathname.length;
+        const __gitalk__pathnameMaxLength = 50;
+        if (__gitalk__pathnameLength > __gitalk__pathnameMaxLength) {
+            __gitalk__pathname = __gitalk__pathname.substring(0, __gitalk__pathnameMaxLength - 3) + '...';
+        }
+        const gitalk = new Gitalk({
+            clientID: '1b9120324a3474ac4059',
+            clientSecret: '7a2ba06a601ff45989a71b52de9c3abae66cf370',
+            repo: 'Comments',
+            owner: 'AlpacaMe',
+            admin: ['AlpacaMe'],
+            id: __gitalk__pathname,
+            language: 'en'
+        })
+        gitalk.render('gitalk-container')
+    </script>
+
+
+    
+</div>
+
+            </div>
+        
+    </div>
+</div>
+
+
+                    
+                </main>
+
+            </div>
+
+            <div class="page-main-content-bottom">
+                <footer class="footer">
+    <div class="info-container">
+        <div class="copyright-info info-item">
+            &copy;
+            
+              <span>2020</span> -
+            
+            2021 <i class="fas fa-heart icon-animate"></i> <a href="/">Pawn</a>
+        </div>
+        
+        <div class="theme-info info-item">
+            Powered by <a target="_blank" href="https://hexo.io">Hexo</a> | Theme <a class="theme-version" target="_blank"></a>
+        </div>
+    </div>
+</footer>
+
+            </div>
+        </div>
+    </main>
+
+    <div class="sidebar-tools">
+        <div class="tools-container">
+    <ul class="tools-list">
+        
+            <li class="search popup-trigger">
+                <i class="fas fa-search"></i>
+            </li>
+        
+
+        
+            <li class="go-comment">
+                <i class="fas fa-comment"></i>
+            </li>
+        
+
+        <!-- TOC aside toggle -->
+        
+            <li class="tools-item page-aside-toggle">
+                <i class="fas fa-outdent"></i>
+            </li>
+        
+
+    </ul>
+</div>
+
+    </div>
+
+    <div class="right-bottom-side-tools">
+        <div class="side-tools-container">
+
+    <ul class="side-tools-list">
+        <li class="tools-item tool-font-adjust-plus flex-center">
+            <i class="fas fa-search-plus"></i>
+        </li>
+
+        <li class="tools-item tool-font-adjust-minus flex-center">
+            <i class="fas fa-search-minus"></i>
+        </li>
+
+        <li class="tools-item tool-expand-width flex-center">
+            <i class="fas fa-arrows-alt-h"></i>
+        </li>
+
+        <li class="tools-item tool-dark-light-toggle flex-center">
+            <i class="fas fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        <li class="tools-item tool-scroll-to-top flex-center">
+            <i class="fas fa-arrow-up"></i>
+        </li>
+
+        <li class="tools-item tool-scroll-to-bottom flex-center">
+            <i class="fas fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="tools-ul-1">
+        <li class="tools-item tool-toggle-show flex-center">
+            <i class="fas fa-cog fa-spin"></i>
+        </li>
+
+    </ul>
+</div>
+
+    </div>
+
+    <!-- page aside -->
+    <aside class="page-aside">
+        
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A6%82%E8%8B%A5%E4%BB%8A%E5%90%8E%E6%B2%A1%E6%9C%89%E7%82%AC%E7%81%AB%EF%BC%8C%E4%BD%A0%E4%BE%BF%E6%98%AF%E5%94%AF%E4%B8%80%E7%9A%84%E5%85%89"><span class="nav-number">1.</span> <span class="nav-text">如若今后没有炬火，你便是唯一的光</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#SSM%E6%A1%86%E6%9E%B6%E6%90%AD%E5%BB%BA"><span class="nav-number">1.1.</span> <span class="nav-text">SSM框架搭建</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1%E3%80%81%E5%BC%95%E5%85%A5%E4%BE%9D%E8%B5%96"><span class="nav-number">1.1.1.</span> <span class="nav-text">1、引入依赖</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2%E3%80%81%E6%9E%84%E5%BB%BAMaven%E9%A1%B9%E7%9B%AE"><span class="nav-number">1.1.2.</span> <span class="nav-text">2、构建Maven项目</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3%E3%80%81%E8%BF%9B%E8%A1%8C%E7%9B%B8%E5%85%B3%E7%9A%84%E9%85%8D%E7%BD%AE"><span class="nav-number">1.1.3.</span> <span class="nav-text">3、进行相关的配置</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E9%85%8D%E7%BD%AEspring-mvc-xml"><span class="nav-number">1.1.3.1.</span> <span class="nav-text">配置spring-mvc.xml</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E9%85%8D%E7%BD%AEspring-mybtis-xml"><span class="nav-number">1.1.3.2.</span> <span class="nav-text">配置spring-mybtis.xml</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E9%85%8D%E7%BD%AEweb-xml"><span class="nav-number">1.1.3.3.</span> <span class="nav-text">配置web.xml</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E9%85%8D%E7%BD%AEMybatis"><span class="nav-number">1.1.3.4.</span> <span class="nav-text">配置Mybatis</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%85%B6%E4%BB%96%E7%9A%84%E7%9B%B8%E5%85%B3%E7%9A%84%E5%B1%9E%E6%80%A7%E6%96%87%E4%BB%B6"><span class="nav-number">1.1.3.5.</span> <span class="nav-text">其他的相关的属性文件</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4%E3%80%81SSM%E5%BA%94%E7%94%A8%E5%AE%9E%E4%BE%8B"><span class="nav-number">1.1.4.</span> <span class="nav-text">4、SSM应用实例</span></a></li></ol></li></ol></li></ol>
+    </div>
+</div>
+        
+    </aside>
+
+    <!-- image viewer -->
+    <div class="image-viewer-container">
+    <div class="img-box">
+        <img src="">
+    </div>
+</div>
+
+
+</div>
+
+
+
+    <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+          <span class="search-icon">
+            <i class="fas fa-search"></i>
+          </span>
+            <div class="search-input-container">
+                <input autocomplete="off"
+                       autocorrect="off"
+                       autocapitalize="off"
+                       placeholder="Search..."
+                       spellcheck="false"
+                       type="search"
+                       class="search-input"
+                >
+            </div>
+            <span class="popup-btn-close">
+                <i class="fas fa-times"></i>
+            </span>
+        </div>
+        <div id="search-result">
+            <div id="no-result">
+                <i class="fas fa-spinner fa-pulse fa-5x fa-fw"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.0.4/source/js/utils.js"></script><script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.0.4/source/js/main.js"></script><script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.0.4/source/js/header-shrink.js"></script><script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.0.4/source/js/back2top.js"></script><script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.0.4/source/js/dark-light-toggle.js"></script>
+
+
+    <script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.0.4/source/js/local-search.js"></script>
+
+
+
+
+    <script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.0.4/source/js/left-side-toggle.js"></script>
+
+    
+        <script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.0.4/source/js/code-copy.js"></script>
+    
+
+    
+        <script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.0.4/source/js/libs/anime.min.js"></script><script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.0.4/source/js/toc.js"></script>
+    
+
+
+</body>
+</html>

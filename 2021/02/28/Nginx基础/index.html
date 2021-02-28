@@ -1,0 +1,999 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <title>
+        Nginx基础 |
+        
+        ダモクレスの剣
+    </title>
+    <link rel="shortcut icon" href="/images/1.svg">
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.0.4/source/css/font-awesome.min.css">
+    <script id="hexo-configurations">
+    let KEEP = window.KEEP || {};
+    KEEP.hexo_config = {"hostname":"alpacame.github.io","root":"/","path":"search.xml"};
+    KEEP.theme_config = {"toc":{"enable":true,"number":true,"expand_all":true},"style":{"primary_color":"#ff0000","avatar":"/images/avatar.jpg","favicon":"/images/1.svg","img_position":"left","left_side_width":"260px","content_max_width":"900px","hover":{"shadow":true,"scale":false},"first_screen":{"enable":true,"background_img":"/images/bg.svg","description":"但愿众生皆得饱，不辞羸病卧残阳"}},"local_search":{"enable":true,"trigger":"auto","unescape":true,"preload":true},"version":"3.0.4"};
+    KEEP.language = {"search":"Search...","prev":"Prev","next":"Next","prev_posts":"Prev posts","next_posts":"Next posts","page":"Page %d","recent_posts":"Recent Posts","share":"Share","powered_by":"Powered by %s","theme":"Theme","rss_feed":"RSS Feed","category":"Category","categories":"Categories","tag":"Tag","tags":"Tags","tagcloud":"Tag Cloud","comment":"Comment","home":"Home","archive":"Archive","archives":"Archives","about":"About","site_uv":"Visitor Count","site_pv":"Totalview","links":"Links","link":"Link","top":"TOP","read_more":"Read more","wordcount":"Words","min2read":"Mins","changelog":"Changelog","copyright":{"author":"Post author","title":"Post title","link":"Post link","create_time":"Create time","license_title":"Copyright Notice","license_content":"All articles in this blog are licensed under %s unless stating additionally."},"ago":{"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days age","week":"%s weeks age","month":"%s months age","year":"%s years age"}};
+  </script>
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+
+<body>
+<div class="page-container">
+
+    
+
+    <header class="page-header">
+        <div class="header-progress"></div>
+    </header>
+
+    <main class="page-main">
+
+        <div class="page-main-content">
+
+            <div class="page-main-content-top">
+                <header class="header-wrapper">
+
+    <div class="header-content">
+        <a class="logo-title" href="/">
+            ダモクレスの剣
+        </a>
+
+        <ul class="menu-list">
+            
+                <li class="menu-item">
+                    <a class=""
+                       href="/"
+                    >
+                        首页
+                    </a>
+                </li>
+            
+                <li class="menu-item">
+                    <a class=""
+                       href="/archives"
+                    >
+                        文章
+                    </a>
+                </li>
+            
+                <li class="menu-item">
+                    <a class=""
+                       href="/live"
+                    >
+                        生活
+                    </a>
+                </li>
+            
+                <li class="menu-item">
+                    <a class=""
+                       href="/links"
+                    >
+                        友链
+                    </a>
+                </li>
+            
+                <li class="menu-item">
+                    <a class=""
+                       href="/about"
+                    >
+                        关于
+                    </a>
+                </li>
+            
+        </ul>
+
+        <div class="menu-bar">
+            <div class="menu-bar-middle"></div>
+        </div>
+    </div>
+
+    <div class="header-drawer">
+        <ul class="drawer-menu-list">
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/">首页</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/archives">文章</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/live">生活</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/links">友链</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/about">关于</a>
+                </li>
+            
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+            </div>
+
+            <div class="page-main-content-middle">
+
+                <main class="main-content normal-code-theme">
+
+                    
+                        <div class="fade-in-down-animation">
+    <div class="article-content-container">
+
+        <div class="article-title">
+            <span class="title-hover-animation">Nginx基础</span>
+        </div>
+
+        
+            <div class="article-header">
+                <div class="avatar">
+                    <img src="/images/avatar.jpg">
+                </div>
+                <div class="info">
+                    <div class="author">
+                        <span>Pawn</span>
+                        <span class="level">Lv1</span>
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fas fa-calendar"></i> 2021-02-28 16:48:29
+    </span>
+    
+        <span class="article-categories article-meta-item">
+            <i class="fas fa-folder"></i>
+            <ul>
+                
+                    <li>
+                        <a href="/categories/Nginx%E6%9C%8D%E5%8A%A1%E5%99%A8/">Nginx服务器</a>
+                    </li>
+                
+            </ul>
+        </span>
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fas fa-tags"></i>
+            <ul>
+                
+                    <li>
+                        <a href="/tags/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/">编程语言</a>
+                    </li>
+                
+            </ul>
+        </span>
+    
+
+    
+    
+        <span class="article-wordcount article-meta-item">
+            <i class="fas fa-file-word"></i> <span>4.8k Words</span>
+        </span>
+    
+    
+        <span class="article-min2read article-meta-item">
+            <i class="fas fa-clock"></i> <span>18 Mins</span>
+        </span>
+    
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        <div class="article-content markdown-body">
+            <h2 style="font-weight:lighter;color:crimson;">明年此日青云去，笑看今朝举子忙</h2>
+
+<a id="more"></a>
+
+<h2 id="Nginx入门"><a href="#Nginx入门" class="headerlink" title="Nginx入门"></a>Nginx入门</h2><h3 id="1、Nginx简介"><a href="#1、Nginx简介" class="headerlink" title="1、Nginx简介"></a>1、Nginx简介</h3><p><var>Nginx是一个高性能的HTTP和反向代理服务器，也是一个IMAP/POP3/SMTP服务器。</var></p>
+<blockquote>
+<p><q>IMAP</q>：Internet Message Access Protocol，名称为因特网信息访问协议，是一个应用层的协议，用来从本地邮件客户端访问远程服务器上的邮件；</p>
+<p><q>POP3</q>：Post Office Protocol 3，是一种接收电子邮件的标准协议，允许电子邮件客户端下载服务器上的邮件。</p>
+<ol>
+<li><p><font>优点：</font>用户检查邮件信箱后，信件会被下载储存于计算机上，占用计算机的硬盘空空间；而服务器上并不保留信件备份，以免信件一直累积，造成服务器上的信箱爆满</p>
+</li>
+<li><p><font>缺点：</font>缺点是如从不同的计算机连到同一个电邮户口时，无法使各计算机所拥有的电子信箱均一致同步。</p>
+</li>
+<li><p><font>与IMAP的区别：</font>IMAP是通过邮件客户端直接连接到服务器上，可以直接对邮件进行操作，并将邮件保留在服务器上。<br>IMAP可以从数个不同的地点联机，所读取的信件仍为同一份置于服务器上的信件，可令所有电子信箱均一致同步</p>
+</li>
+</ol>
+<p><q>SMTP</q>：Simple Mail Transfer Protocol，简易邮件传输通讯协议，主要功能是用于传送电子邮件。</p>
+<p><b>(IMAP和POP3是收，SMTP是发)</b></p>
+</blockquote>
+<p>常见的应用服务器有：Apache、Microsoft IIS、Tomcat、Lighttpd、Nginx。</p>
+<h4 id="Nginx的服务器功能"><a href="#Nginx的服务器功能" class="headerlink" title="Nginx的服务器功能"></a>Nginx的服务器功能</h4><p><var>Nginx在Web应用中常用于做高并发项目中的横向扩展，集群的相关信息。</var></p>
+<ol>
+<li><p><cite>Nginx的横向扩展功能：</cite></p>
+<p><img src="Nginx的横向扩展.png"></img></p>
+<p>在一个微服务的应用，将一个完整的应用拆分成多个微服务。通过Nginx服务器对路由进行分发，来完成每一个服务的访问。</p>
+</li>
+<li><p><cite>Nginx的集群功能：</cite></p>
+<p><img src="Nginx集群模式.png"></img></p>
+<p>在一个Web应用中，有时候一台服务并不能满足高并发的需求，需要通过Nginx服务器进行负载均衡。将高并发的请求分发到多个服务器上。</p>
+</li>
+<li><p><cite>静态资源文件服务器</cite></p>
+<p>有些时候将静态资源用Nginx服务器作为单独的访问系统。</p>
+</li>
+</ol>
+<h4 id="Nginx的代理功能"><a href="#Nginx的代理功能" class="headerlink" title="Nginx的代理功能"></a>Nginx的代理功能</h4><p>一般常说的代理都指的是<var>正向代理</var>，而代理分为两种，一种是正向代理；另一种是反向代理。</p>
+<ul>
+<li><p><strong>正向代理</strong></p>
+<p>一个位于客户端和原始服务器之间的服务器，为了从原始服务器取得内容，客户端向代理发送一个请求并指定目标（原始服务器），然后代理向原始服务器转交请求并将获得的内容返回给客户端。</p>
+<p><img src="正向代理.png"></img></p>
+<p>上图中，客户端向服务器发送请求被防火墙阻拦，改为向代理服务器发送请求，由代理服务器将请求转发给服务器。（<em>类似海外代购，大家无法购买到进口的奶粉，找海外代购帮忙购买</em>）</p>
+</li>
+<li><p><strong>反向代理</strong></p>
+<p>以代理服务器来接受Internet上的连接请求，然后将请求转发给内部网络上的服务器，并将从服务器上得到的结果返回给internet上请求连接的客户端，此时代理服务器对外就表现为一个反向代理服务器。</p>
+<p><img src="反向代理.png"></img></p>
+<p>如图所示，客户端向代理服务器发送请求，代理服务器将请求转发给服务器A、B、C。代理服务器只是做单纯的请求转发，具体的业务都是服务器A、B、C来完成。（<em>类似奢侈品牌的代理店，大家都信赖这个店，大家买奢侈品都会去这个店</em>）</p>
+</li>
+</ul>
+<h3 id="2、Nginx安装"><a href="#2、Nginx安装" class="headerlink" title="2、Nginx安装"></a>2、Nginx安装</h3><p>在Cetenos 7上安装Nginx：</p>
+<ol>
+<li><p>EPEL 仓库中有 Nginx 的安装包。如果你还没有安装过 EPEL，可以通过运行下面的命令来完成安装：</p>
+<pre><code class="shell">sudo yum install epel-release</code></pre>
+</li>
+<li><p>输入以下命令安装Nginx：</p>
+<pre><code class="shell">sudo yum install nginx</code></pre>
+</li>
+</ol>
+<h4 id="Nginx的常规操作命令"><a href="#Nginx的常规操作命令" class="headerlink" title="Nginx的常规操作命令"></a>Nginx的常规操作命令</h4><ol>
+<li><p>设置Nginx开机启动：<code>sudo systemctl enable nginx</code></p>
+</li>
+<li><p>启动Nginx：<code>sudo systemctl start nginx</code></p>
+</li>
+<li><p>关闭Nginx：<code>sodu systemctl stop nginx</code></p>
+</li>
+<li><p>检查Nginx的运行状态：<code>sudo systemctl status nginx</code></p>
+</li>
+<li><p>如果服务器开启了防火墙，需要开放80（HTTP）端口和443（HTTPS）端口：</p>
+<pre><code class="shell">sudo firewall-cmd --permanent --zone=public --add-service=http
+sudo firewall-cmd --permanent --zone=public --add-service=https
+sudo firewall-cmd --reload</code></pre>
+</li>
+</ol>
+<h3 id="3、Nginx的基础概念"><a href="#3、Nginx的基础概念" class="headerlink" title="3、Nginx的基础概念"></a>3、Nginx的基础概念</h3><p>启动Nginx之后，利用命令<code>ps -ef|grep nginx</code>就可以看到如下的日志信息：</p>
+<pre><code class="shell">root      3836     1  0  2020 ?        00:00:00 nginx: master process /usr/sbin/nginx
+nginx     3837  3836  0  2020 ?        00:00:02 nginx: worker process</code></pre>
+<p><var>Nginx主要使用的就是Master线程和Worker线程。</var>其中Nginx的线程结构如下：</p>
+<ul>
+<li><p><strong>Master线程</strong></p>
+<p><font>主要作用：</font></p>
+<ol>
+<li>接收来自外界的信号</li>
+<li>向各worker进程发送信息</li>
+<li>监控worker进程的运行状态</li>
+<li>当worker进程退出后（异常情况下），会自动重新启动新的worker进程</li>
+</ol>
+<p><cite>发送信号的方式：</cite></p>
+<pre><code class="shell">kill -QUIT 进程号 # 安全停止
+kill -TERM 进程号 # 立即停止</code></pre>
+<p><cite>停止Nginx：</cite></p>
+<pre><code class="shell">./nginx -s stop # 停止
+./nginx -s quit # 退出
+./nginx -s reload # 重新加载nginx.conf</code></pre>
+</li>
+</ul>
+<h4 id="Nginx配置文件"><a href="#Nginx配置文件" class="headerlink" title="Nginx配置文件"></a>Nginx配置文件</h4><p>上述安装方法时，将配置文件存储在<code>etc/nginx/nginx.conf</code>中。其主要内容如下：</p>
+<pre><code class="python"># worker进程的用户权限，配置为Linux系统的用户名
+# user  nobody;
+# 启动一个worker进程，一般是电脑有几个CPU就启动几个worker进程
+worker_processes  1;
+
+# 打印异常日志
+error_log  logs/error.log;
+# 打印异常日志的级别为notice的日志
+# error_log  logs/error.log  notice;
+# 打印异常日志的级别为info的日志
+# error_log  logs/error.log  info;
+# Nginx的日志级别：debug, info, notice, warn, error, crit  默认为 crit , 
+# 记录Nginx启动的时候进程的ID
+# pid        logs/nginx.pid;
+
+# 设定nginx的工作模式及连接数上限 
+events &#123;
+    # 线程读文件的限制，不配置的时候就会使用默认的Linux的系统限制，在需求较大的情况下会影响Nginx的性能
+    worker_connections  1024;
+&#125;
+
+# 服务器的相关属性
+http &#123;
+    # 文件类型的配置，在当前文件夹的mime.types文件中标注
+    include       mime.types;
+    # 传输文件的格式
+    default_type  application/octet-stream;
+
+    # 定义访问日志的格式
+    #log_format  main  &#39;$remote_addr - $remote_user [$time_local] &quot;$request&quot; &#39;
+    #                  &#39;$status $body_bytes_sent &quot;$http_referer&quot; &#39;
+    #                  &#39;&quot;$http_user_agent&quot; &quot;$http_x_forwarded_for&quot;&#39;;
+    # access_log日志的存放位置，与log_format中的main参数必须一致
+    #access_log  logs/access.log  main;
+
+    # 启用高效文件传输
+    sendfile        on;
+    # 使用Linux套接字的特性来传输文件
+    #tcp_nopush     on;
+
+    # 空闲连接超时时间限制
+    #keepalive_timeout  0;
+    keepalive_timeout  65;
+
+    # 开启文件压缩，一般是对文本类的文件，例如html/js/css文件进行压缩。假如在开启了，Nginx会将文件进行压缩，在浏览器就需要解压
+    #gzip  on;
+
+    # 虚拟主机的设置
+    server &#123;
+        # 设置的端口
+        listen       80;
+        # 监听的域名
+        server_name  localhost;
+
+        #charset koi8-r;
+
+        #access_log  logs/host.access.log  main;
+
+        # 路由匹配
+        location / &#123;
+            root   html;
+            index  index.html index.html;
+        &#125;
+
+        #error_page  404              /404.html;
+
+        # redirect server error pages to the static page /50x.html
+        #
+        error_page   500 502 503 504  /50x.html;
+        location = /50x.html &#123;
+            root   html;
+        &#125;
+
+        # proxy the PHP scripts to Apache listening on 127.0.0.1:80
+        #
+        #location ~ \.php$ &#123;
+        #    proxy_pass   http://127.0.0.1;
+        #&#125;
+
+        # pass the PHP scripts to FastCGI server listening on 127.0.0.1:9000
+        #
+        #location ~ \.php$ &#123;
+        #    root           html;
+        #    fastcgi_pass   127.0.0.1:9000;
+        #    fastcgi_index  index.php;
+        #    fastcgi_param  SCRIPT_FILENAME  /scripts$fastcgi_script_name;
+        #    include        fastcgi_params;
+        #&#125;
+
+        # deny access to .htaccess files, if Apache&#39;s document root
+        # concurs with nginx&#39;s one
+        #
+        #location ~ /\.ht &#123;
+        #    deny  all;
+        #&#125;
+    &#125;
+
+
+    # another virtual host using mix of IP-, name-, and port-based configuration
+    #
+    #server &#123;
+    #    listen       8000;
+    #    listen       somename:8080;
+    #    server_name  somename  alias  another.alias;
+
+    #    location / &#123;
+    #        root   html;
+    #        index  index.html index.htm;
+    #    &#125;
+    #&#125;
+
+
+    # HTTPS server
+    #
+    #server &#123;
+    #    listen       443 ssl;
+    #    server_name  localhost;
+
+    #    ssl_certificate      cert.pem;
+    #    ssl_certificate_key  cert.key;
+
+    #    ssl_session_cache    shared:SSL:1m;
+    #    ssl_session_timeout  5m;
+
+    #    ssl_ciphers  HIGH:!aNULL:!MD5;
+    #    ssl_prefer_server_ciphers  on;
+
+    #    location / &#123;
+    #        root   html;
+    #        index  index.html index.htm;
+    #    &#125;
+    #&#125;
+
+&#125;
+</code></pre>
+<p>Nginx的日志分为三个大的模块，<tt>全局设置，event设置，http设置</tt>。</p>
+<ul>
+<li><p><strong>全局设置</strong> </p>
+<p>全局设置是用来设置Nginx的一些运行参数，例如，用户、进程数、日志之类的</p>
+</li>
+<li><p><strong>event设置</strong></p>
+<p>主要是用来设置nginx工作模式以及连接数上限。</p>
+<p>在event中存在一个log_format的设置，其中包含着Nginx的参数，其参数含义如下：</p>
+<table>
+<thead>
+<tr>
+<th>参数名称</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>$remote_addr</td>
+<td>客户端IP地址（代理服务器，显示代理服务IP）</td>
+</tr>
+<tr>
+<td>$remote_user</td>
+<td>用于记录远程客户端的用户名称（一般为<code>-</code>）</td>
+</tr>
+<tr>
+<td>$time_local</td>
+<td>用于记录访问的时间和时区</td>
+</tr>
+<tr>
+<td>$request</td>
+<td>用于记录请求的url以及请求的方法</td>
+</tr>
+<tr>
+<td>$status</td>
+<td>响应状态码，例如：200成功、404页面找不到等</td>
+</tr>
+<tr>
+<td>$body_bytes_sent</td>
+<td>给客户端发送的文件内容的字节数</td>
+</tr>
+<tr>
+<td>$http_user_agent</td>
+<td>用户所使用的代理（一般为浏览器）</td>
+</tr>
+<tr>
+<td>$http_x_forwarded_for</td>
+<td>可以记录客户端IP，通过代理服务器来记录客户端IP地址</td>
+</tr>
+<tr>
+<td>$http_referer</td>
+<td>可以记录用户是从哪个链接访问过来的</td>
+</tr>
+</tbody></table>
+</li>
+</ul>
+<ul>
+<li><p><strong>http设置</strong></p>
+<p>主要是服务器相关属性</p>
+<p><font>特点：</font></p>
+<p><var>http设置为Nginx应用的重点配置，其子标签server对应着一台虚拟主机，可以配置多个server，来达到一台主机模拟三台服务器的效果。</var></p>
+</li>
+</ul>
+<h4 id="路由匹配规则"><a href="#路由匹配规则" class="headerlink" title="路由匹配规则"></a>路由匹配规则</h4><p>在Nginx服务器中需要对路由进行拦截，就需要路由的匹配规则。最常用的有三种匹配规则：</p>
+<p><var>Nginx路由匹配的基础语法为：<code>location [ = | ~ | ~* | ^~ | @] uri &#123;...&#125;</code></var></p>
+<ol>
+<li><code>=</code> 表示精确匹配后面的url</li>
+<li><code>~</code> 表示正则匹配，但是区分大小写</li>
+<li><code>~*</code>表示正则匹配，不区分大小写 </li>
+<li><code>^~</code> 表示普通字符匹配，如果该选项匹配，只匹配该选项，不匹配别的选项，一般用来匹配目录</li>
+<li><code>@</code>定义一个命名的location，使用在内部定向时，例如，error_page</li>
+</ol>
+<p><cite>匹配的流程图：</cite></p>
+<p><img src="location匹配规则.png"></img></p>
+<ol>
+<li>先进性精准匹配，假如精准匹配命中，就返回命中结果；否则进行一般匹配。</li>
+<li>一般匹配分为普通字符匹配和正则匹配；会先进行普通字符匹配，假如匹配到最长的就将其标记，继续进行正则匹配，假如正则匹配命中，就是用正则匹配的结果；假如正则匹配失败，就是用普通字符匹配命中的最长结果。</li>
+</ol>
+<p><cite>演示location的匹配规则：</cite></p>
+<pre><code class="java">//精准匹配
+location = / &#123;
+    [ configuration A ]
+&#125;
+//普通字符匹配
+location / &#123;
+    [ configuration B ]
+&#125;
+//普通字符匹配
+location /user/ &#123;
+    [ configuration C ]
+&#125;
+//普通字符匹配
+location ^~ /images/ &#123;
+    [ configuration D ]
+&#125;
+//正则匹配 区分大小写
+location ~* \.(gif|jpg|jpeg)$ &#123;
+    [ configuration E ]
+&#125;</code></pre>
+<ul>
+<li>请求<code>/</code>，被精确查找命中，选中A</li>
+<li>请求<code>/index.html</code>没有被精确查找命中，进入一般匹配。根据命中的含义会匹配到B。</li>
+<li>请求<code>/user/index.html</code>没有被精确查找命中，进入一般匹配。首先找到最长的匹配是结果是C，继续进行正则匹配，发现正则匹配没有命中，此时就是用最长的匹配结果C。</li>
+<li>请求<code>/user/1.jpg</code>没有被精确查找命中，进入一般匹配。首先找到最长的匹配规则是C，继续进行正则匹配，发现正则匹配命中E，此时匹配的结果就是E。</li>
+<li>请求<code>/image/1.jpg</code>没有被精确查找命中，进入一般匹配。首先找到最长匹配结果是D，但是由于D前面有修饰符<code>^~</code>表示不进行正则匹配，所以直接返回最长匹配结果D。（<em>假如没有^~修饰符，匹配的结果就是E</em>）</li>
+<li>请求<code>/document/about.html</code>没有被精确查找命中，进入一般匹配。首先找到最长的匹配结果就是B，继续进行正则匹配，正则匹配没有命中，此时就是用最长匹配的结果。</li>
+</ul>
+<blockquote>
+<p>在Location的匹配规则中存在着正则覆盖的现象。假如上一个Location正则匹配已经命中了，后面的正则匹配就不会匹配上。</p>
+</blockquote>
+<h3 id="4、Nginx的进阶"><a href="#4、Nginx的进阶" class="headerlink" title="4、Nginx的进阶"></a>4、Nginx的进阶</h3><h4 id="虚拟主机"><a href="#虚拟主机" class="headerlink" title="虚拟主机"></a>虚拟主机</h4><p>服务器主机分成一台台虚拟的主机，每台虚拟主机都可以是一个独立的网站，同一台主机的虚拟主机是完全独立的；从网站访问者来看，每一台虚拟主机和一台独立的主机完全一样。</p>
+<p><font>配置方式：</font></p>
+<pre><code class="python">server&#123;
+    # 监听的端口
+    listen 80;
+    # 监听的域名
+    server_name abc.com;
+    location /&#123;
+        # 根目录路径
+        root abc;
+        # 默认跳转到index.html页面
+        index index.html index.html;
+    &#125;
+&#125;</code></pre>
+<h4 id="Nginx指令"><a href="#Nginx指令" class="headerlink" title="Nginx指令"></a>Nginx指令</h4><ul>
+<li><p><strong>root</strong></p>
+<p><var>root指令是将路由匹配到<code>root路径+location路径</code></var></p>
+<pre><code class="python">server&#123;
+    # 监听的端口
+    listen 80;
+    # 监听的域名
+    server_name abc.com;
+    location /&#123;
+        # 根目录路径
+        root html;
+        # 默认跳转到html/index.html页面
+        index index.html index.html;
+    &#125;
+&#125;</code></pre>
+<p>假如此时在浏览器输入<code>abc.com/static/a/b/c.html</code>，此时Nginx就会去读取<code>html/static/a/b/c.html</code>文件。</p>
+</li>
+<li><p><strong>alias</strong></p>
+<p>将location的匹配别名，使用alias路径替换location路径。（<em>alias后面必须要用<code>/</code>结束，否则会找不到文件，而root则可有可无</em>）</p>
+<pre><code class="python">server&#123;
+    # 监听的端口
+    listen 80;
+    # 监听的域名
+    server_name abc.com;
+    location /aaa&#123;
+        # 根目录路径
+        alias html;
+        # 默认跳转到html/index.html页面
+        index index.html index.html;
+    &#125;
+&#125;</code></pre>
+<p>假如此时在浏览器中输入<code>abc.com/aaa/a/b/c.html</code>，此时Nginx就会去读取<code>html/static/a/b/c.html</code>，这里就是将url中的<code>/aaa</code>转换成alias设置的<code>html</code>的值。(<em>假如将此时的alias换成root，那么Nginx会读取<code>/aaa/html/static/a/b/c.html</code>文件。</em>)</p>
+</li>
+<li><p><strong>set</strong></p>
+<p>设置变量，使用变量可以简化配置。其语法为<code>set $变量名 变量值</code>。Nginx中的变量必须以<code>$</code>符号开头。</p>
+<pre><code class="java">location a/ &#123;
+  return 200 $a
+&#125;
+
+location b/ &#123;
+ set $a hello nginx
+ return 200 $a
+&#125;</code></pre>
+<p><var>在Nginx中每一个变量都是全局可见的</var>（<em>并不是全局变量</em>）。由于变量是全局可见的，所以上述配置并不会出错，而第一个location中并不知道具体的值因此返回的响应结果为空字符串。</p>
+<p><font>在不同层级的标签中声明的变量性的可见性规则如下：</font></p>
+<ol>
+<li>location标签中声明的变量对这个location块可见</li>
+<li>server标签中声明的变量对server块以及server块中所有的子块可见</li>
+<li>http标签中声明的变量对http块以及http块中所有子块可见</li>
+</ol>
+</li>
+<li><p><strong>proxy_pass</strong></p>
+<p>设置反向代理。</p>
+<pre><code class="python">location /aaa &#123;
+    #设置反向代理
+    proxy_pass   https://panhao.work/;    
+&#125;</code></pre>
+<p>假如需要访问<code>http://panhao.work/links/</code>，此时需要通过Nginx服务器来进行反向代理，就需要我们在浏览器输入<code>http://abc.com/aaa/links/</code>，意思就是用<var>代理的路径去替代location路径</var>。</p>
+</li>
+<li><p><strong>upstream</strong></p>
+<p>负载均衡。Nginx能够配置代理多台服务器。当一台服务器宕机之后，仍能保持系统可用。</p>
+<p>在http节点下，假如upstream节点：</p>
+<pre><code class="java">upstream linuxdic&#123;
+    //启用ip_hash是将客户端的IP地址做哈希算法，开启ip_hash的时候，weight就没有作用了。根据IP地址分类，来进行负载均衡
+    // ip_hash;
+    server 10.0.6.108:7080 weight=5;
+    server 10.0.0.85:8980  weight=5;
+&#125;</code></pre>
+<p>然后在server中配置一个反向代理的location：</p>
+<pre><code class="java">location /&#123;
+    root html;
+    index index.html index.html;
+    proxy_pass http://linuxdic
+&#125;</code></pre>
+<p><var>upstream依照轮询（默认）方式进行负载，每一个请求按时间顺序逐一分配到不同的后端服务器。</var>假设后端服务器down掉。能自己主动剔除。尽管这样的方式简便、成本低廉。但缺点是：可靠性低和负载分配不均衡。</p>
+</li>
+<li><p><strong>return</strong></p>
+<p>该指令一般用于对请求的客户端直接返回响应状态码。在该作用于内<var>return后面的所有nginx配置都是无效的</var>。可以使用在server、location以及if配置中。除了支持状态码，还可以跟字符串或者url链接。（<em>如果需要返回字符串，必须要加上状态码，否则会报错</em>）</p>
+</li>
+</ul>
+<h4 id="Rewrite用法"><a href="#Rewrite用法" class="headerlink" title="Rewrite用法"></a>Rewrite用法</h4><p>Rewrite的基本功能就是，使用nginx提供的全局变量或自己设置的变量，结合正则表达式和标志位实现转发和重定向。</p>
+<ul>
+<li><p><strong>转发</strong></p>
+<pre><code class="java">location /a.html&#123;
+    root      /usr/share/nginx/html/static;
+&#125;
+
+location /a&#123;
+    rewrite  ^/  /a.html break;
+    root      /usr/share/nginx/html/static;
+&#125;</code></pre>
+<p>在server中添加上述配置，即可以使用服务器重定向。此时在浏览器输入<code>http://abc.com/a</code>就会匹配到下面的location中，执行rewrite的逻辑，将请求转发到匹配<code>/a.html</code>的location中去。break表示标志位，含义是服务器重定向。</p>
+</li>
+<li><p><strong>重定向</strong></p>
+<pre><code class="java">location /a.html&#123;
+    root      /usr/share/nginx/html/static;
+&#125;
+
+location /a&#123;
+    rewrite  ^/  /a.html redirect;
+    root      /usr/share/nginx/html/static;
+&#125;</code></pre>
+<p>在server中添加上述配置，即可以使用浏览器重定向。此时在浏览器中输入<code>http://abc.com/a</code>就会匹配到下面的location中，执行rewrite的逻辑，将请求转发匹配到<code>/a.html</code>的location中。redirect表示标志位，含义是浏览器重定向。</p>
+</li>
+</ul>
+<p><font>转发与重定向的区别：</font></p>
+<ol>
+<li>观察浏览器的url栏会发现，当使用的是服务器重定向是，浏览器的地址栏依旧显示<code>http://abc.com/a</code>只是内容显示的是a.html中的内容；当使用的浏览器重定向时，浏览器的地址栏显示的<code>http://abc.com/a.html</code>，将修改地址栏的内容。</li>
+</ol>
+<h4 id="Nginx的内置变量"><a href="#Nginx的内置变量" class="headerlink" title="Nginx的内置变量"></a>Nginx的内置变量</h4><p>Nginx存在很多的内置变量，内置变量在我们书写配置文件的时候会非常的方便，有利于配置文件的简洁与多功能性。</p>
+<p><font>常用变量：</font></p>
+<table>
+<thead>
+<tr>
+<th>变量名</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>$host</td>
+<td>请求中的主机头（HOST）字段，如果请求中主机头不可用或者空，则为处理请求的server名称</td>
+</tr>
+<tr>
+<td>$http_HEADER</td>
+<td>HTTP请求头中的内容，HEADER为HTTP请求中的内容转为小写，变为_（破折号或者下划线），例如：$http_user_agent（User-Agent的值）</td>
+</tr>
+<tr>
+<td>$remote_addr</td>
+<td>客户端的IP地址</td>
+</tr>
+<tr>
+<td>$remote_port</td>
+<td>客户端的端口</td>
+</tr>
+<tr>
+<td>$request_method</td>
+<td>这个变量是客户端请求的动作，通常为GET或者POST</td>
+</tr>
+<tr>
+<td>$request_uri</td>
+<td>这个变量包含一些客户端请求参数的原始URL</td>
+</tr>
+<tr>
+<td>$scheme</td>
+<td>所用的协议，比如是http或者是https</td>
+</tr>
+<tr>
+<td>$server_name</td>
+<td>服务器的名称</td>
+</tr>
+<tr>
+<td>$server_port</td>
+<td>服务器的端口</td>
+</tr>
+<tr>
+<td>$server_protocol</td>
+<td>请求使用的协议，通常是HTTP/1.0或者是HTTP/1.1</td>
+</tr>
+<tr>
+<td>$uri</td>
+<td>请求中的当前URI（<em>不带请求参数，参数位于$args</em>）</td>
+</tr>
+<tr>
+<td>$http_origin</td>
+<td>浏览器携带的orgin头</td>
+</tr>
+</tbody></table>
+<h4 id="Nginx的if语句"><a href="#Nginx的if语句" class="headerlink" title="Nginx的if语句"></a>Nginx的if语句</h4><p>在Nginx中拥有<code>if(...)</code>的语法，用于做一些筛选。（<em>只有if语句没有else语句</em>）</p>
+<p>if语句常用正则来进行匹配，其常用符号为：</p>
+<ol>
+<li><code>=</code> 等于，<code>!=</code>不等于 比较一个变量的字符串。</li>
+<li><code>~</code> <code>~*</code> 与正则表达式匹配的变量，如果这个正则表达式中包含</li>
+<li><code>-f</code> <code>!-f</code> 检查一个文件是否存在</li>
+<li><code>-d</code>  <code>!-d</code> 检查一个目录是否存在</li>
+<li><code>-e</code> <code>!-e</code> 检查一个文件、目录、符号链接是否存在</li>
+<li><code>-x</code> <code>!-x</code>检查一个文件是否可执行</li>
+</ol>
+<p><cite>演示：向服务器请求php页面的时候返回500错误</cite></p>
+<pre><code class="java">//利用变量$request_uri进行匹配以.php结尾的路由都直接返回500的错误码
+if ($request_uri ~* /(.*)\.php)&#123;
+    return 500;
+&#125;</code></pre>
+<p>此时在浏览器输入：<a class="link"   target="_blank" rel="noopener" href="http://abc.com/a.php" >http://abc.com/a.php<i class="fas fa-external-link-alt"></i></a>会进入500错误的页面。</p>
+<p><font>常用示例：</font></p>
+<pre><code class="java">//禁止谷歌浏览器访问
+if ($http_user_agent ~ Chrome)&#123;
+    return 503;
+&#125;
+
+//假如$request_filename不存在
+if (!-f $request_filename)&#123;
+    return 414;
+&#125;</code></pre>
+
+        </div>
+
+        
+            <div class="post-copyright-info">
+                <div class="article-copyright-info-container">
+    <ul>
+        <li>Post title：Nginx基础</li>
+        <li>Post author：Pawn</li>
+        <li>Create time：2021-02-28 16:48:29</li>
+        <li>
+            Post link：https://panhao.work/2021/02/28/Nginx基础/
+        </li>
+        <li>
+            Copyright Notice：All articles in this blog are licensed under <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">BY-NC-SA</a> unless stating additionally.
+        </li>
+    </ul>
+</div>
+
+            </div>
+        
+
+        
+            <div class="article-nav">
+                
+                
+                    <div class="article-next">
+                        <a class="next"
+                           rel="next"
+                           href="/2021/02/03/MySQL%E9%AB%98%E7%BA%A7%E6%9F%A5%E8%AF%A2%E6%80%BB%E7%BB%93/"
+                        >
+                            <span class="title flex-center">
+                                <span class="post-nav-title-item">MySQL高级查询总结</span>
+                                <span class="post-nav-item">Next posts</span>
+                            </span>
+                            <span class="right arrow-icon flex-center" >
+                              <i class="fas fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+        
+            <div class="comment-container">
+                <div class="comments-container">
+    <div id="comment-anchor"></div>
+    
+        
+    <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+    <div id="gitalk-container"></div>
+    <script>
+        let __gitalk__pathname = decodeURI(location.pathname);
+        const __gitalk__pathnameLength = __gitalk__pathname.length;
+        const __gitalk__pathnameMaxLength = 50;
+        if (__gitalk__pathnameLength > __gitalk__pathnameMaxLength) {
+            __gitalk__pathname = __gitalk__pathname.substring(0, __gitalk__pathnameMaxLength - 3) + '...';
+        }
+        const gitalk = new Gitalk({
+            clientID: '1b9120324a3474ac4059',
+            clientSecret: '7a2ba06a601ff45989a71b52de9c3abae66cf370',
+            repo: 'Comments',
+            owner: 'AlpacaMe',
+            admin: ['AlpacaMe'],
+            id: __gitalk__pathname,
+            language: 'en'
+        })
+        gitalk.render('gitalk-container')
+    </script>
+
+
+    
+</div>
+
+            </div>
+        
+    </div>
+</div>
+
+
+                    
+                </main>
+
+            </div>
+
+            <div class="page-main-content-bottom">
+                <footer class="footer">
+    <div class="info-container">
+        <div class="copyright-info info-item">
+            &copy;
+            
+              <span>2020</span> -
+            
+            2021 <i class="fas fa-heart icon-animate"></i> <a href="/">Pawn</a>
+        </div>
+        
+        <div class="theme-info info-item">
+            Powered by <a target="_blank" href="https://hexo.io">Hexo</a> | Theme <a class="theme-version" target="_blank"></a>
+        </div>
+    </div>
+</footer>
+
+            </div>
+        </div>
+    </main>
+
+    <div class="sidebar-tools">
+        <div class="tools-container">
+    <ul class="tools-list">
+        
+            <li class="search popup-trigger">
+                <i class="fas fa-search"></i>
+            </li>
+        
+
+        
+            <li class="go-comment">
+                <i class="fas fa-comment"></i>
+            </li>
+        
+
+        <!-- TOC aside toggle -->
+        
+            <li class="tools-item page-aside-toggle">
+                <i class="fas fa-outdent"></i>
+            </li>
+        
+
+    </ul>
+</div>
+
+    </div>
+
+    <div class="right-bottom-side-tools">
+        <div class="side-tools-container">
+
+    <ul class="side-tools-list">
+        <li class="tools-item tool-font-adjust-plus flex-center">
+            <i class="fas fa-search-plus"></i>
+        </li>
+
+        <li class="tools-item tool-font-adjust-minus flex-center">
+            <i class="fas fa-search-minus"></i>
+        </li>
+
+        <li class="tools-item tool-expand-width flex-center">
+            <i class="fas fa-arrows-alt-h"></i>
+        </li>
+
+        <li class="tools-item tool-dark-light-toggle flex-center">
+            <i class="fas fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        <li class="tools-item tool-scroll-to-top flex-center">
+            <i class="fas fa-arrow-up"></i>
+        </li>
+
+        <li class="tools-item tool-scroll-to-bottom flex-center">
+            <i class="fas fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="tools-ul-1">
+        <li class="tools-item tool-toggle-show flex-center">
+            <i class="fas fa-cog fa-spin"></i>
+        </li>
+
+    </ul>
+</div>
+
+    </div>
+
+    <!-- page aside -->
+    <aside class="page-aside">
+        
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-number">1.</span> <span class="nav-text">明年此日青云去，笑看今朝举子忙</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Nginx%E5%85%A5%E9%97%A8"><span class="nav-number">2.</span> <span class="nav-text">Nginx入门</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1%E3%80%81Nginx%E7%AE%80%E4%BB%8B"><span class="nav-number">2.1.</span> <span class="nav-text">1、Nginx简介</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Nginx%E7%9A%84%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%8A%9F%E8%83%BD"><span class="nav-number">2.1.1.</span> <span class="nav-text">Nginx的服务器功能</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Nginx%E7%9A%84%E4%BB%A3%E7%90%86%E5%8A%9F%E8%83%BD"><span class="nav-number">2.1.2.</span> <span class="nav-text">Nginx的代理功能</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2%E3%80%81Nginx%E5%AE%89%E8%A3%85"><span class="nav-number">2.2.</span> <span class="nav-text">2、Nginx安装</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Nginx%E7%9A%84%E5%B8%B8%E8%A7%84%E6%93%8D%E4%BD%9C%E5%91%BD%E4%BB%A4"><span class="nav-number">2.2.1.</span> <span class="nav-text">Nginx的常规操作命令</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3%E3%80%81Nginx%E7%9A%84%E5%9F%BA%E7%A1%80%E6%A6%82%E5%BF%B5"><span class="nav-number">2.3.</span> <span class="nav-text">3、Nginx的基础概念</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Nginx%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="nav-number">2.3.1.</span> <span class="nav-text">Nginx配置文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%B7%AF%E7%94%B1%E5%8C%B9%E9%85%8D%E8%A7%84%E5%88%99"><span class="nav-number">2.3.2.</span> <span class="nav-text">路由匹配规则</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4%E3%80%81Nginx%E7%9A%84%E8%BF%9B%E9%98%B6"><span class="nav-number">2.4.</span> <span class="nav-text">4、Nginx的进阶</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%99%9A%E6%8B%9F%E4%B8%BB%E6%9C%BA"><span class="nav-number">2.4.1.</span> <span class="nav-text">虚拟主机</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Nginx%E6%8C%87%E4%BB%A4"><span class="nav-number">2.4.2.</span> <span class="nav-text">Nginx指令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Rewrite%E7%94%A8%E6%B3%95"><span class="nav-number">2.4.3.</span> <span class="nav-text">Rewrite用法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Nginx%E7%9A%84%E5%86%85%E7%BD%AE%E5%8F%98%E9%87%8F"><span class="nav-number">2.4.4.</span> <span class="nav-text">Nginx的内置变量</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Nginx%E7%9A%84if%E8%AF%AD%E5%8F%A5"><span class="nav-number">2.4.5.</span> <span class="nav-text">Nginx的if语句</span></a></li></ol></li></ol></li></ol>
+    </div>
+</div>
+        
+    </aside>
+
+    <!-- image viewer -->
+    <div class="image-viewer-container">
+    <div class="img-box">
+        <img src="">
+    </div>
+</div>
+
+
+</div>
+
+
+
+    <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+          <span class="search-icon">
+            <i class="fas fa-search"></i>
+          </span>
+            <div class="search-input-container">
+                <input autocomplete="off"
+                       autocorrect="off"
+                       autocapitalize="off"
+                       placeholder="Search..."
+                       spellcheck="false"
+                       type="search"
+                       class="search-input"
+                >
+            </div>
+            <span class="popup-btn-close">
+                <i class="fas fa-times"></i>
+            </span>
+        </div>
+        <div id="search-result">
+            <div id="no-result">
+                <i class="fas fa-spinner fa-pulse fa-5x fa-fw"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.0.4/source/js/utils.js"></script><script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.0.4/source/js/main.js"></script><script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.0.4/source/js/header-shrink.js"></script><script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.0.4/source/js/back2top.js"></script><script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.0.4/source/js/dark-light-toggle.js"></script>
+
+
+    <script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.0.4/source/js/local-search.js"></script>
+
+
+
+
+    <script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.0.4/source/js/left-side-toggle.js"></script>
+
+    
+        <script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.0.4/source/js/code-copy.js"></script>
+    
+
+    
+        <script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.0.4/source/js/libs/anime.min.js"></script><script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.0.4/source/js/toc.js"></script>
+    
+
+
+</body>
+</html>

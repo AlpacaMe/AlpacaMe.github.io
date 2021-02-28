@@ -1,0 +1,1007 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <title>
+        缓存神器——Redis初探 |
+        
+        ダモクレスの剣
+    </title>
+    <link rel="shortcut icon" href="/images/1.svg">
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.0.4/source/css/font-awesome.min.css">
+    <script id="hexo-configurations">
+    let KEEP = window.KEEP || {};
+    KEEP.hexo_config = {"hostname":"alpacame.github.io","root":"/","path":"search.xml"};
+    KEEP.theme_config = {"toc":{"enable":true,"number":true,"expand_all":true},"style":{"primary_color":"#ff0000","avatar":"/images/avatar.jpg","favicon":"/images/1.svg","img_position":"left","left_side_width":"260px","content_max_width":"900px","hover":{"shadow":true,"scale":false},"first_screen":{"enable":true,"background_img":"/images/bg.svg","description":"但愿众生皆得饱，不辞羸病卧残阳"}},"local_search":{"enable":true,"trigger":"auto","unescape":true,"preload":true},"version":"3.0.4"};
+    KEEP.language = {"search":"Search...","prev":"Prev","next":"Next","prev_posts":"Prev posts","next_posts":"Next posts","page":"Page %d","recent_posts":"Recent Posts","share":"Share","powered_by":"Powered by %s","theme":"Theme","rss_feed":"RSS Feed","category":"Category","categories":"Categories","tag":"Tag","tags":"Tags","tagcloud":"Tag Cloud","comment":"Comment","home":"Home","archive":"Archive","archives":"Archives","about":"About","site_uv":"Visitor Count","site_pv":"Totalview","links":"Links","link":"Link","top":"TOP","read_more":"Read more","wordcount":"Words","min2read":"Mins","changelog":"Changelog","copyright":{"author":"Post author","title":"Post title","link":"Post link","create_time":"Create time","license_title":"Copyright Notice","license_content":"All articles in this blog are licensed under %s unless stating additionally."},"ago":{"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days age","week":"%s weeks age","month":"%s months age","year":"%s years age"}};
+  </script>
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+
+<body>
+<div class="page-container">
+
+    
+
+    <header class="page-header">
+        <div class="header-progress"></div>
+    </header>
+
+    <main class="page-main">
+
+        <div class="page-main-content">
+
+            <div class="page-main-content-top">
+                <header class="header-wrapper">
+
+    <div class="header-content">
+        <a class="logo-title" href="/">
+            ダモクレスの剣
+        </a>
+
+        <ul class="menu-list">
+            
+                <li class="menu-item">
+                    <a class=""
+                       href="/"
+                    >
+                        首页
+                    </a>
+                </li>
+            
+                <li class="menu-item">
+                    <a class=""
+                       href="/archives"
+                    >
+                        文章
+                    </a>
+                </li>
+            
+                <li class="menu-item">
+                    <a class=""
+                       href="/live"
+                    >
+                        生活
+                    </a>
+                </li>
+            
+                <li class="menu-item">
+                    <a class=""
+                       href="/links"
+                    >
+                        友链
+                    </a>
+                </li>
+            
+                <li class="menu-item">
+                    <a class=""
+                       href="/about"
+                    >
+                        关于
+                    </a>
+                </li>
+            
+        </ul>
+
+        <div class="menu-bar">
+            <div class="menu-bar-middle"></div>
+        </div>
+    </div>
+
+    <div class="header-drawer">
+        <ul class="drawer-menu-list">
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/">首页</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/archives">文章</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/live">生活</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/links">友链</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/about">关于</a>
+                </li>
+            
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+            </div>
+
+            <div class="page-main-content-middle">
+
+                <main class="main-content normal-code-theme">
+
+                    
+                        <div class="fade-in-down-animation">
+    <div class="article-content-container">
+
+        <div class="article-title">
+            <span class="title-hover-animation">缓存神器——Redis初探</span>
+        </div>
+
+        
+            <div class="article-header">
+                <div class="avatar">
+                    <img src="/images/avatar.jpg">
+                </div>
+                <div class="info">
+                    <div class="author">
+                        <span>Pawn</span>
+                        <span class="level">Lv1</span>
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fas fa-calendar"></i> 2020-11-11 11:09:13
+    </span>
+    
+        <span class="article-categories article-meta-item">
+            <i class="fas fa-folder"></i>
+            <ul>
+                
+                    <li>
+                        <a href="/categories/Spring%E5%AD%A6%E4%B9%A0/">Spring学习</a>
+                    </li>
+                
+            </ul>
+        </span>
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fas fa-tags"></i>
+            <ul>
+                
+                    <li>
+                        <a href="/tags/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/">编程语言</a>
+                    </li>
+                
+            </ul>
+        </span>
+    
+
+    
+    
+        <span class="article-wordcount article-meta-item">
+            <i class="fas fa-file-word"></i> <span>4.3k Words</span>
+        </span>
+    
+    
+        <span class="article-min2read article-meta-item">
+            <i class="fas fa-clock"></i> <span>18 Mins</span>
+        </span>
+    
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        <div class="article-content markdown-body">
+            <h2 id="走完该走的路，才能走想走的路"><a href="#走完该走的路，才能走想走的路" class="headerlink" title="走完该走的路，才能走想走的路"></a><span style="color:crimson;font-family: Georgia, serif;">走完该走的路，才能走想走的路</span></h2><a id="more"></a>
+
+<h2 id="缓存神器——Redis初探"><a href="#缓存神器——Redis初探" class="headerlink" title="缓存神器——Redis初探"></a><b style="color:red;">缓存神器——Redis初探</b></h2><p>Redis在企业开发中通常充当高速缓存的作用，用于保护接口或者数据库。在高并发的场景、分布式场景下也可以充当分布式锁，避免多个JVM进程在同一时间对同一资源进行修改，从而非线程安全的问题。</p>
+<p><em>以下是在Ubuntu 18.0.1作为Redis服务器，利用远程连接的方式操作Redis，IDE为IDEA</em></p>
+<h3 id="Redis安装与部署"><a href="#Redis安装与部署" class="headerlink" title="Redis安装与部署"></a><b style="color:red;">Redis安装与部署</b></h3><h4 id="1、安装"><a href="#1、安装" class="headerlink" title="1、安装"></a><b style="color:blue;">1、安装</b></h4><p>首先来说说Redis的安装吧，Redis作为最火热的缓存中间件，在很多的系统上面都有广泛的应用，兼容性是非常好的。一般的企业都会使用Linux来作为服务器的系统，一来是因为Linux是开源的，可以自己去修改系统的，其次就是相比Windows，它具有更少的附加服务。值得一提的是，大多数都会选择Centos作为服务器的系统，但是由于我在做项目的时候甲方使用的Ubuntu，所以这篇文章是按照Ubuntu来写的。</p>
+<p>安装Redis也是非常简单的，特别是在Ubuntu上面安装，在Ubuntu上面有两种安装方式，<strong>一种是使用<code>apt-get</code>来安装；一种是使用源码安装</strong>。下面介绍的是使用源码编译的方式来安装。</p>
+<pre><code class="java">//安装编译工具，Redis是基于C语言环境下的。CetenOS是自带C语言环境的，但是Ubuntu是不带，所以需要安装
+sudo apt-get install build-essential
+// 下载Redis
+wget http://download.redis.io/releases/redis-4.0.14.tar.gz
+// 解压Redis
+tar -xvzf redis-4.0.14.tar.gz
+//进入Redis目录进行编译安装
+cd redis-4.0.14
+make</code></pre>
+<p>等待编译完成，Redis的安装就已经完成了。</p>
+<h4 id="2、部署"><a href="#2、部署" class="headerlink" title="2、部署"></a><b style="color:blue;">2、部署</b></h4><p>此时Redis已经安装完成，我们可以开始启动了。<span style="color:navy">但是，Redis是默认不允许后台运行，而且不允许远程连接的</span>，所以需要先修改配置文件。</p>
+<p><strong>修改配置文件，开启后台运行</strong></p>
+<pre><code class="python"># By default Redis does not run as a daemon. Use &#39;yes&#39; if you need it.
+# Note that Redis will write a pid file in /var/run/redis.pid when daemonized.
+daemonize yes
+# 默认值是no，将daemonize的值改为yes，表示允许后台运行</code></pre>
+<p><strong>修改配置文件，开启远程连接</strong></p>
+<pre><code class="python">#  ~~~ WARNING ~~~ If the computer running Redis is directly exposed to the
+# internet, binding to all the interfaces is dangerous and will expose the
+# instance to everybody on the internet. So by default we uncomment the
+# following bind directive, that will force Redis to listen only into
+# the IPv4 loopback interface address (this means Redis will be able to
+# accept connections only from clients running into the same computer it
+# is running).
+#
+# IF YOU ARE SURE YOU WANT YOUR INSTANCE TO LISTEN TO ALL THE INTERFACES
+# JUST COMMENT THE FOLLOWING LINE.
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# bind 127.0.0.1
+# 将上一行代码注释掉，上一行代码的意思就是只允许本地连接，注释掉就所有的IP地址都会被侦测，也可以设置指定的IP地址。</code></pre>
+<p>此时Redis的准备工作就已经全部完成了，剩下来就是启动Redis服务：</p>
+<pre><code class="java">//进入Redis的目录，启动Redis服务
+src/redis-server redis.conf
+//表示按照redis.conf的配置来启动Redis服务
+//通过以下命令查看Redis是否真正启动
+ps -ef|grep redis|grep -v grep</code></pre>
+<p>出现下图即表示Redis的服务启动成功，<em>这里我修改了6379默认端口为6380，是因为6379被其他的服务占用了端口，所以我进行了修改</em></p>
+<img src="验证Redis启动.png" alt="image-20201110203032904" style="zoom: 200%;" />
+
+<p>或者使用安装的Redis客户端进入Redis服务验证Redis服务是否启动：</p>
+<pre><code class="java">//进入Redis的目录，执行下列代码，进入客户端
+src/redis-cli -h 127.0.0.1 -p 6380</code></pre>
+<p>进入下面的界面就表示进入了Redis的服务器，可以执行一些常用的Redis服务了。</p>
+<img src="Redis登陆客户端.png" alt="image-20201110203440328" style="zoom:200%;" />
+
+<p>此时服务器端的配置就基本完成了。剩下来的就是我们该如何使用Spring Boot来对其进行操作。</p>
+<h3 id="Redis的单机模式"><a href="#Redis的单机模式" class="headerlink" title="Redis的单机模式"></a><b style="color:red;">Redis的单机模式</b></h3><p>Redis的单机模式指的是只有一个服务端的Redis，Redis支持多种的拓扑结构，来实现服务的熔断机制。以保证在任何时刻，缓存机制不失效。首先介绍一下Redis的单机模式。单机模式只需要向上面一样开启远程连接即可。</p>
+<h4 id="1、引入依赖"><a href="#1、引入依赖" class="headerlink" title="1、引入依赖"></a><b style="color:blue;">1、引入依赖</b></h4><p>首先Spring Boot对Redis也有很好的支持，首先引入：</p>
+<pre><code class="xml">         &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-boot-starter-redis&lt;/artifactId&gt;
+            &lt;exclusions&gt;
+                &lt;!--不依赖Redis的异步客户端lettuce--&gt;
+                &lt;exclusion&gt;
+                    &lt;groupId&gt;io.lettuce&lt;/groupId&gt;
+                    &lt;artifactId&gt;lettuce-core&lt;/artifactId&gt;
+                &lt;/exclusion&gt;
+            &lt;/exclusions&gt;
+            &lt;version&gt;1.4.6.RELEASE&lt;/version&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;redis.clients&lt;/groupId&gt;
+            &lt;artifactId&gt;jedis&lt;/artifactId&gt;
+        &lt;/dependency&gt;</code></pre>
+<h4 id="2、Redis的连接"><a href="#2、Redis的连接" class="headerlink" title="2、Redis的连接"></a><b style="color:blue;">2、Redis的连接</b></h4><p>Redis有很多的实现方式，其中常用的有<code>Jedis</code>和<code>RedisTemplate</code>，<code>lettuce</code>，在此就介绍前面两种。</p>
+<ul>
+<li><p><b style="color:orange;">Jedis方式</b></p>
+<p><code>Jedis</code>方式的关键就是<code>JedisPool</code>，需要创建一个线程池来做Redis的相关操作。首先在<code>application.properties</code>中配置Redis相关连接参数：</p>
+<pre><code class="properties">#redis配置开始
+# Redis数据库索引（默认为0）
+spring.redis.database=0
+# Redis服务器地址
+spring.redis.host=你服务器的IP地址即可
+# Redis服务器连接端口
+spring.redis.port=你设置的端口即可，默认端口为6379
+# Redis服务器连接密码（默认为空）
+# spring.redis.password=&quot;&quot;
+# 连接池最大连接数（使用负值表示没有限制）
+spring.redis.jedis.pool.max-active=1024
+# 连接池最大阻塞等待时间（使用负值表示没有限制）
+spring.redis.jedis.pool.max-wait=10000
+# 连接池中的最大空闲连接
+spring.redis.jedis.pool.max-idle=2000
+# 连接池中的最小空闲连接
+spring.redis.jedis.pool.min-idle=0
+# 连接超时时间（毫秒）
+spring.redis.timeout=10000
+#redis配置结束</code></pre>
+<p>然后创建一个Redis的配置文件，创建一个Redis线程池：</p>
+<pre><code class="java">@Configuration
+@PropertySource(&quot;classpath:redis.properties&quot;)
+public class RedisConfig &#123;
+
+    @Value(&quot;$&#123;spring.redis.host&#125;&quot;)
+    private String host;
+
+    @Value(&quot;$&#123;spring.redis.port&#125;&quot;)
+    private int port;
+
+    @Value(&quot;$&#123;spring.redis.timeout&#125;&quot;)
+    private int timeout;
+
+    @Value(&quot;$&#123;spring.redis.jedis.pool.max-idle&#125;&quot;)
+    private int maxIdle;
+
+    @Value(&quot;$&#123;spring.redis.jedis.pool.max-wait&#125;&quot;)
+    private long maxWaitMillis;
+
+    @Value(&quot;$&#123;spring.redis.block-when-exhausted&#125;&quot;)
+    private boolean  blockWhenExhausted;
+
+    @Bean
+    public JedisPool redisPoolFactory() throws Exception&#123;
+        JedisPoolConfig  jedisPoolConfig = new JedisPoolConfig();
+        jedisPoolConfig.setMaxIdle(maxIdle);
+        jedisPoolConfig.setMaxWaitMillis(maxWaitMillis);
+        JedisPool  pool = new JedisPool(jedisPoolConfig,host,port,timeout);
+        return pool;
+    &#125;
+
+&#125;</code></pre>
+<p>然后创建有一个Redis的工具类：</p>
+<pre><code class="java">package org.panhao.mqtt.util;
+
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import redis.clients.jedis.Jedis;
+import redis.clients.jedis.JedisPool;
+import redis.clients.jedis.JedisSentinelPool;
+
+/**
+ * @program:MQTTStudy
+ * @description:创建Redis工具类
+ * @author:Mr.Pan
+ * @create:2020-11-10 10:10:35
+ */
+@Component
+@Slf4j
+public class RedisUtil &#123;
+
+    @Autowired
+    private JedisSentinelPool jedisPool;
+
+    /**
+     * @Author: PanHao
+     * @Description: 向Redis中存值，永久有效
+     * @Date: 2020/11/10 11:09
+     * @Param: [key, value]
+     * @Return: java.lang.String
+     **/
+    public String set(String key, String value) &#123;
+        Jedis jedis = null;
+        try &#123;
+            jedis = jedisPool.getResource();
+            return jedis.set(key, value);
+        &#125; catch (Exception e) &#123;
+            e.printStackTrace();
+            return &quot;error&quot;;
+        &#125; finally &#123;
+            jedis.close();
+        &#125;
+    &#125;
+
+    /**
+     * @Author: PanHao
+     * @Description: 向redis中存储键值对，并设置生命时间
+     * @Date: 2020/11/10 14:41
+     * @Param: [key, value, second]
+     * @Return: java.lang.String
+     **/
+    public String setTimeOut(String key, String value, int second) &#123;
+        Jedis jedis = null;
+        try &#123;
+            jedis = jedisPool.getResource();
+            jedis.set(key, value);
+            jedis.expire(key, second);
+            return &quot;success&quot;;
+        &#125; catch (Exception e) &#123;
+            e.printStackTrace();
+            return &quot;error&quot;;
+        &#125; finally &#123;
+            jedis.close();
+        &#125;
+    &#125;
+
+    /**
+     * @Author: PanHao
+     * @Description: 通过key向redis中读取value
+     * @Date: 2020/11/10 14:50
+     * @Param: [key]
+     * @Return: java.lang.String
+     **/
+    public String get(String key) &#123;
+        Jedis jedis = null;
+        String value = null;
+        try &#123;
+            jedis = jedisPool.getResource();
+            value = jedis.get(key);
+            return value;
+        &#125; catch (Exception e) &#123;
+            e.printStackTrace();
+            return &quot;error&quot;;
+        &#125; finally &#123;
+            jedis.close();
+        &#125;
+    &#125;
+
+    /**
+     * @Author: PanHao
+     * @Description: 通过key，判断redis中是否存在这个键值对
+     * @Date: 2020/11/10 14:53
+     * @Param: [key]
+     * @Return: boolean
+     **/
+    public boolean exists(String key) &#123;
+        Jedis jedis = null;
+        try &#123;
+            jedis = jedisPool.getResource();
+            return jedis.exists(key);
+        &#125; catch (Exception e) &#123;
+            return false;
+        &#125; finally &#123;
+            jedis.close();
+        &#125;
+    &#125;
+
+    /**
+     * @Author: PanHao
+     * @Description: 通过key来删除redis里面的键值对
+     * @Date: 2020/11/10 15:00
+     * @Param: [key]
+     * @Return: java.lang.Long
+     **/
+    public Long del(String key) &#123;
+        Jedis jedis = null;
+        try &#123;
+            jedis = jedisPool.getResource();
+            return jedis.del(key);
+        &#125; catch (Exception e) &#123;
+            return 0L;
+        &#125; finally &#123;
+            jedis.close();
+        &#125;
+    &#125;
+
+    /**
+     * @Author: PanHao
+     * @Description: 清空当前数据库中所有key
+     * @Date:  2020/11/10 15:03
+     * @Param: []
+     * @Return: java.lang.String
+     **/
+    public String flushDB() &#123;
+        Jedis jedis = null;
+        try &#123;
+            jedis = jedisPool.getResource();
+            return jedis.flushDB();
+        &#125; catch (Exception e) &#123;
+            log.info(e.getCause().toString());
+        &#125; finally &#123;
+            jedis.close();
+        &#125;
+        return null;
+    &#125;
+&#125;
+</code></pre>
+<p>此时创建测试文件，现在Redis里面存储一个<code>book 亚里士多德</code>的键值对，然后再对其进行取值：</p>
+<pre><code class="java">@RunWith(SpringRunner.class)
+@SpringBootTest
+public class TestRedis &#123;
+
+    @Autowired
+    private RedisUtil redisUtil;
+
+    @Test
+    public void  test()&#123;
+        redisUtil.set(&quot;book&quot;,&quot;亚里士多德&quot;);
+        System.out.println(redisUtil.get(&quot;book&quot;));
+    &#125;
+&#125;</code></pre>
+<p>此时控制台的输出为：</p>
+<pre><code class="java">亚里士多德</code></pre>
+<p>此时与Redis的交互就已经完成了。接下来展示使用<code>RedisTemplate</code>的方式进行Redis的一些操作。</p>
+</li>
+<li><p><b style="color:orange;">RedisTemplate的方式</b></p>
+<p><code>RedisTemplate</code>的方式与<code>Jedis</code>的方式其实差距不大，首先都是需要创建一个与客户端的连接池。在<code>RedisConfig</code>类中加入以下：</p>
+<pre><code class="java">    @Bean
+    public RedisTemplate&lt;String, Object&gt; redisTemplate(RedisConnectionFactory redisConnectionFactory) &#123;
+        StringRedisSerializer serializer = new StringRedisSerializer();
+        RedisTemplate&lt;String, Object&gt; template = new RedisTemplate&lt;&gt;();
+        template.setConnectionFactory(redisConnectionFactory);
+        template.setKeySerializer(serializer);
+        template.setValueSerializer(serializer);
+        return template;
+    &#125;</code></pre>
+<p>然后创建一个新的Redis工具类，使用RedisTemplate来操作Redis里面的键值对：</p>
+<pre><code class="java">/**
+ * @program:MQTTStudy
+ * @description:利用RedisTemplate来编写操作类
+ * @author:Mr.Pan
+ * @create:2020-11-11 08:8:47
+ */
+@Component
+public class RedisUtil2 &#123;
+
+    @Autowired
+    private RedisTemplate&lt;String,Object&gt; redisTemplate;
+
+    /**
+     * @Author: PanHao
+     * @Description: 判断Redis数据库是否存有key的键值对
+     * @Date:  2020/11/11 9:26
+     * @Param: [key]
+     * @Return: boolean
+     **/
+    public boolean hasKey(String key)&#123;
+        try &#123;
+            return redisTemplate.hasKey(key);
+        &#125; catch (Exception e) &#123;
+            e.printStackTrace();
+            return false;
+        &#125;
+    &#125;
+
+    /**
+     * @Author: PanHao
+     * @Description: 向Redis中存入(key,value)的键值对,永久有效
+     * @Date:  2020/11/11 9:29
+     * @Param: [key, value, time]
+     * @Return: boolean
+     **/
+    public boolean set(String key,String value)&#123;
+        try &#123;
+            redisTemplate.opsForValue().set(key,value);
+            return true;
+        &#125; catch (Exception e) &#123;
+            e.printStackTrace();
+            return false;
+        &#125;
+    &#125;
+
+    /**
+     * @Author: PanHao
+     * @Description: 向Redis中存入（key，value）键值对，并设置缓存失效时间为time
+     * @Date:  2020/11/11 9:36
+     * @Param: [key, value, time]
+     * @Return: boolean
+     **/
+    public boolean setKeyTimeOut(String key,String value,long time)&#123;
+        try &#123;
+            redisTemplate.opsForValue().set(key,value,time,TimeUnit.SECONDS);
+            return true;
+        &#125; catch (Exception e) &#123;
+            e.printStackTrace();
+            return false;
+        &#125;
+    &#125;
+
+    /**
+     * @Author: PanHao
+     * @Description: 将Redis中的键设置缓存失效时间，也可以达到删除键的效果
+     * @Date:  2020/11/11 9:32
+     * @Param: [key, time]
+     * @Return: boolean
+     **/
+    public boolean expire(String key,long time)&#123;
+        try &#123;
+            redisTemplate.expire(key,time,TimeUnit.SECONDS);
+            return true;
+        &#125; catch (Exception e) &#123;
+            e.printStackTrace();
+            return false;
+        &#125;
+    &#125;
+
+    /**
+     * @Author: PanHao
+     * @Description: 获取Redis中对应的key所在键值对的value值
+     * @Date:  2020/11/11 9:57
+     * @Param: [key]
+     * @Return: java.lang.Object
+     **/
+    public Object get(String key)&#123;
+        if(hasKey(key))&#123;
+            return redisTemplate.opsForValue().get(key);
+        &#125;else &#123;
+            return &quot;请输入正确的Key&quot;;
+        &#125;
+    &#125;
+
+&#125;
+</code></pre>
+<p>可以在测试类中测试其中的方法。我在这里就不赘述了，测试的方式也是很简单的，方法也比较容易看懂。</p>
+</li>
+</ul>
+<h3 id="Redis的哨兵模式"><a href="#Redis的哨兵模式" class="headerlink" title="Redis的哨兵模式"></a><b style="color:red;">Redis的哨兵模式</b></h3><p>在单机模式中，假如因为特殊原因导致缓存服务器的宕机，就会导致系统之间出现故障。这意味着Redis的服务是不可以失效的。而且当大量的数据进行读写的时候，一个Redis服务的性能是完全不够的。这时候就需要使用其他的工作方式。例如主从模式，主从模式是利用主机进行写入操作，利用从机做读取操作。主机与从机之间在一定的时间段内进行同步操作。主从模式虽然可以大大的缓解读写的压力，但是一旦主机宕机了，服务依旧会停止，这样系统的缓存机制依旧会失效，这样就会增加数据库的读写压力。</p>
+<p><span style="color:navy;">哨兵模式的出现会大大的增加主从模式的容错率，所谓哨兵模式是指在主从模式，增加哨兵，对主从模式进行侦测，一旦主机宕机，通过哨兵的选举机制可以产生新的主机，这样即使主机宕机，也会有另一个主机出来继续工作。</span></p>
+<p>哨兵模式和单机模式只是运作的方式不同，我们使用Java代码进行操作的时候，无非就是配置不同，但是对于读取，会自动的识别主机的位置，不需要我们指定主机的位置。</p>
+<h4 id="1、部署哨兵模式"><a href="#1、部署哨兵模式" class="headerlink" title="1、部署哨兵模式"></a><b style="color:blue;">1、部署哨兵模式</b></h4><p>部署哨兵模式也是非常简单的。首先来看单机Redis中，我们是通过配置文件来启动的Redis服务。在这里我们需要启动三个Redis服务，其中两个为从机，一个为主机。</p>
+<ul>
+<li><p><strong>创建Redis主从节点配置文件</strong></p>
+<pre><code class="java">//创建Redis 127.0.0.1:6380 配置文件
+cp redis.conf redis6380.conf
+//创建Redis 127.0.0.1:6381 配置文件
+cp redis.conf redis6381.conf
+//创建Redis 127.0.0.1:6382 配置文件
+cp redis.conf redis6382.conf</code></pre>
+</li>
+<li><p><strong>修改各个Redis配置文件</strong></p>
+<p>修改<code>redis6380.conf</code>配置文件，配置启动端口为6380</p>
+<pre><code class="python">port 6380</code></pre>
+<p>修改<code>redis6381.conf</code>配置文件，配置端口为6381，并配置此节点为127.0.0.1 6380的从节点</p>
+<pre><code class="python">port 6381
+slaveof 127.0.0.1 6380</code></pre>
+<p>修改<code>redis6382.conf</code>配置文件，配置端口为6382，并设置此节点为127.0.0.1 6380的从节点</p>
+<pre><code class="java">port 6382
+slave 127.0.0.1 6380</code></pre>
+</li>
+<li><p><strong>分别启动Redis主从节点</strong></p>
+<pre><code class="java">src/redis-server redis6380.conf
+src/redis-server redis6381.conf
+src/redis-server redis6382.conf</code></pre>
+</li>
+<li><p><strong>验证Redis Master节点和Slave节点启动状况：</strong></p>
+<pre><code class="java">ps -ef|grep redis|grep -v grep</code></pre>
+<p>出现下图，即可表示三个服务都启动了，对应端口为6380、6381、6382。</p>
+<img src="验证主从模式的启动.png" alt="image-20201111103645630" style="zoom:200%;" />
+
+</li>
+</ul>
+<blockquote>
+<p>以上的操作就是主从模式，其实哨兵模式就是主从模式的一个升级，核心就是主从模式，最大的区别就是：<span style="color:salmon;">哨兵模式中，在每一个主机和从机节点旁边都会有一个哨兵对其进行检测，一旦发现主机节点宕机，哨兵就通过选举机制，选出新的主机节点。在失效的节点被人为修复之后，再次加进来就会变成从机节点。</span></p>
+</blockquote>
+<ul>
+<li><p><strong>创建哨兵配置文件</strong></p>
+<p>进入Redis目录，将<code>sentinel.conf</code>配置文件复制3份，分别命名为<code>sentinel26380.conf</code> 、<code>sentinel26381.conf</code>、<code>sentinel26382.conf</code>：</p>
+<pre><code class="java">//创建Redis 127.0.0.1 6380配置文件
+cp sentinel.conf sentinel26380.conf
+//创建Redis 127.0.0.1 6381配置文件
+cp sentinel.conf sentinel26381.conf
+//创建Redis 127.0.0.1 6382配置文件
+cp sentinel.conf sentinel26382.conf</code></pre>
+</li>
+<li><p><strong>修改Redis哨兵配置文件</strong></p>
+<p>修改<code>sentinel26380.conf</code>配置文件，配置启动端口为26380，并监听127.0.0.1 6379主节点</p>
+<pre><code class="python"># 配置哨兵端口号为26379
+port 26380
+# 配置监听master节点 127.0.0.1 6380
+# 最后一个参数2表示当集群中有两个Redis哨兵认为master下线，才能真正认为该master已经不可用
+sentinel monitor mymaster 127.0.0.1 6380 2</code></pre>
+<p>修改<code>sentinel26381.conf</code>配置文件，配置启动端口为26381，并监听127.0.0.1 6380主节点</p>
+<pre><code class="python"># 配置哨兵端口号为26381
+port 26381
+# 配置监听master节点 127.0.0.1 6380
+# 最后一个参数2表示当集群中有两个Redis哨兵认为master下线，才能真正认为该master已经不可用
+sentinel monitor mymaster 127.0.0.1 6380 2</code></pre>
+<p>修改<code>sentinel26382.conf</code>配置文件，配置启动端口为26381，并监听127.0.0.1 6380主节点</p>
+<pre><code class="python"># 配置哨兵端口号为26382
+port 26382
+# 配置监听master节点 127.0.0.1 6380
+# 最后一个参数2表示当集群中有两个Redis哨兵认为master下线，才能真正认为该master已经不可用
+sentinel monitor mymaster 127.0.0.1 6380 2</code></pre>
+</li>
+</ul>
+<blockquote>
+<p>假如你是在本地做测试就无所谓，但是如果你是在服务器上面做测试，而且服务器端口有保护的，上面的<code>127.0.0.1</code>应该换成你服务器的IP地址。而且<code>sentinel.conf</code>中也是需要打开后台运行的，一样是在<code>daemonize yes</code>处修改。</p>
+</blockquote>
+<ul>
+<li><p><strong>分别启动Redis哨兵</strong></p>
+<pre><code class="java">src/redis-sentinel sentinel26380.conf
+src/redis-sentinel sentinel26381.conf
+src/redis-sentinel sentinel26382.conf</code></pre>
+<p>验证Redis哨兵启动：</p>
+<pre><code class="java">ps -ef|grep redis|grep -v grep</code></pre>
+<p>出现如图所示即表示哨兵模式已经启动了：</p>
+<img src="验证哨兵模式.png" alt="image-20201111105414999" style="zoom:200%;" />
+
+</li>
+</ul>
+<h4 id="2、连接实现Redis哨兵模式"><a href="#2、连接实现Redis哨兵模式" class="headerlink" title="2、连接实现Redis哨兵模式"></a><b style="color:blue;">2、连接实现Redis哨兵模式</b></h4><p>利用SpringBoot连接Redis哨兵模式的时候，其实和单机没什么不一样，唯一的区别就是在配置方式上面。</p>
+<ul>
+<li><p><strong>在<code>application.properties</code>文件中加入哨兵机制的配置</strong></p>
+<pre><code class="properties">spring.redis.sentinel.master=mymaster
+spring.redis.sentinel.nodes=你的IP地址:26380,你的IP地址:22</code></pre>
+</li>
+<li><p><strong>在<code>RedisConfig.java</code>中修改Jedis的客户端</strong></p>
+<p>将<code>JedisPool</code>修改为<code>JedisSentinelPool</code>，并在配置文件中加入如下代码：</p>
+<pre><code class="java">
+    @Value(&quot;$&#123;spring.redis.sentinel.master&#125;&quot;)
+    private String sentinelName;
+
+    @Value(&quot;$&#123;spring.redis.sentinel.nodes&#125;&quot;)
+    private String[] sentinels;    
+
+    @Bean
+    public JedisSentinelPool redisPoolFactory()  throws Exception&#123;
+        JedisPoolConfig  jedisPoolConfig = new JedisPoolConfig();
+        jedisPoolConfig.setMaxIdle(maxIdle);
+        jedisPoolConfig.setMaxWaitMillis(maxWaitMillis);
+        Set&lt;String&gt; sentinelSets = new HashSet&lt;String&gt;(Arrays.asList(sentinels));
+        JedisSentinelPool  pool = new JedisSentinelPool(sentinelName,sentinelSets,jedisPoolConfig);
+        return pool;
+    &#125;</code></pre>
+<p>再将<code>RedisUtil.java</code>中的<code>JedisPool</code>修改为<code>JedisSentinelPool</code>即可：</p>
+<pre><code class="java">package org.panhao.mqtt.util;
+
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import redis.clients.jedis.Jedis;
+import redis.clients.jedis.JedisSentinelPool;
+
+/**
+ * @program:MQTTStudy
+ * @description:创建Redis工具类
+ * @author:Mr.Pan
+ * @create:2020-11-10 10:10:35
+ */
+@Component
+@Slf4j
+public class RedisUtil &#123;
+
+    @Autowired
+    private JedisSentinelPool jedisPool;
+    ...
+&#125;
+</code></pre>
+<p>测试和单机模式的测试是完全一样的，此时的读写操作对于开发人员来说和单机模式没有什么不一样的。</p>
+</li>
+</ul>
+
+        </div>
+
+        
+            <div class="post-copyright-info">
+                <div class="article-copyright-info-container">
+    <ul>
+        <li>Post title：缓存神器——Redis初探</li>
+        <li>Post author：Pawn</li>
+        <li>Create time：2020-11-11 11:09:13</li>
+        <li>
+            Post link：https://panhao.work/2020/11/11/缓存神器——Redis初探/
+        </li>
+        <li>
+            Copyright Notice：All articles in this blog are licensed under <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">BY-NC-SA</a> unless stating additionally.
+        </li>
+    </ul>
+</div>
+
+            </div>
+        
+
+        
+            <div class="article-nav">
+                
+                    <div class="article-prev">
+                        <a class="prev"
+                           rel="prev"
+                           href="/2020/12/03/%E5%A4%9A%E7%BA%BF%E7%A8%8B%E5%9F%BA%E7%A1%80/"
+                        >
+                            <span class="left arrow-icon flex-center" >
+                              <i class="fas fa-chevron-left"></i>
+                            </span>
+                            <span class="title flex-center">
+                                <span class="post-nav-title-item">多线程基础</span>
+                                <span class="post-nav-item">Prev posts</span>
+                            </span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="article-next">
+                        <a class="next"
+                           rel="next"
+                           href="/2020/11/03/SSM%E6%90%AD%E5%BB%BA%E5%AE%8C%E6%95%B4%E6%95%99%E7%A8%8B/"
+                        >
+                            <span class="title flex-center">
+                                <span class="post-nav-title-item">SSM搭建完整教程</span>
+                                <span class="post-nav-item">Next posts</span>
+                            </span>
+                            <span class="right arrow-icon flex-center" >
+                              <i class="fas fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+        
+            <div class="comment-container">
+                <div class="comments-container">
+    <div id="comment-anchor"></div>
+    
+        
+    <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+    <div id="gitalk-container"></div>
+    <script>
+        let __gitalk__pathname = decodeURI(location.pathname);
+        const __gitalk__pathnameLength = __gitalk__pathname.length;
+        const __gitalk__pathnameMaxLength = 50;
+        if (__gitalk__pathnameLength > __gitalk__pathnameMaxLength) {
+            __gitalk__pathname = __gitalk__pathname.substring(0, __gitalk__pathnameMaxLength - 3) + '...';
+        }
+        const gitalk = new Gitalk({
+            clientID: '1b9120324a3474ac4059',
+            clientSecret: '7a2ba06a601ff45989a71b52de9c3abae66cf370',
+            repo: 'Comments',
+            owner: 'AlpacaMe',
+            admin: ['AlpacaMe'],
+            id: __gitalk__pathname,
+            language: 'en'
+        })
+        gitalk.render('gitalk-container')
+    </script>
+
+
+    
+</div>
+
+            </div>
+        
+    </div>
+</div>
+
+
+                    
+                </main>
+
+            </div>
+
+            <div class="page-main-content-bottom">
+                <footer class="footer">
+    <div class="info-container">
+        <div class="copyright-info info-item">
+            &copy;
+            
+              <span>2020</span> -
+            
+            2021 <i class="fas fa-heart icon-animate"></i> <a href="/">Pawn</a>
+        </div>
+        
+        <div class="theme-info info-item">
+            Powered by <a target="_blank" href="https://hexo.io">Hexo</a> | Theme <a class="theme-version" target="_blank"></a>
+        </div>
+    </div>
+</footer>
+
+            </div>
+        </div>
+    </main>
+
+    <div class="sidebar-tools">
+        <div class="tools-container">
+    <ul class="tools-list">
+        
+            <li class="search popup-trigger">
+                <i class="fas fa-search"></i>
+            </li>
+        
+
+        
+            <li class="go-comment">
+                <i class="fas fa-comment"></i>
+            </li>
+        
+
+        <!-- TOC aside toggle -->
+        
+            <li class="tools-item page-aside-toggle">
+                <i class="fas fa-outdent"></i>
+            </li>
+        
+
+    </ul>
+</div>
+
+    </div>
+
+    <div class="right-bottom-side-tools">
+        <div class="side-tools-container">
+
+    <ul class="side-tools-list">
+        <li class="tools-item tool-font-adjust-plus flex-center">
+            <i class="fas fa-search-plus"></i>
+        </li>
+
+        <li class="tools-item tool-font-adjust-minus flex-center">
+            <i class="fas fa-search-minus"></i>
+        </li>
+
+        <li class="tools-item tool-expand-width flex-center">
+            <i class="fas fa-arrows-alt-h"></i>
+        </li>
+
+        <li class="tools-item tool-dark-light-toggle flex-center">
+            <i class="fas fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        <li class="tools-item tool-scroll-to-top flex-center">
+            <i class="fas fa-arrow-up"></i>
+        </li>
+
+        <li class="tools-item tool-scroll-to-bottom flex-center">
+            <i class="fas fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="tools-ul-1">
+        <li class="tools-item tool-toggle-show flex-center">
+            <i class="fas fa-cog fa-spin"></i>
+        </li>
+
+    </ul>
+</div>
+
+    </div>
+
+    <!-- page aside -->
+    <aside class="page-aside">
+        
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B5%B0%E5%AE%8C%E8%AF%A5%E8%B5%B0%E7%9A%84%E8%B7%AF%EF%BC%8C%E6%89%8D%E8%83%BD%E8%B5%B0%E6%83%B3%E8%B5%B0%E7%9A%84%E8%B7%AF"><span class="nav-number">1.</span> <span class="nav-text">走完该走的路，才能走想走的路</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BC%93%E5%AD%98%E7%A5%9E%E5%99%A8%E2%80%94%E2%80%94Redis%E5%88%9D%E6%8E%A2"><span class="nav-number">2.</span> <span class="nav-text">缓存神器——Redis初探</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Redis%E5%AE%89%E8%A3%85%E4%B8%8E%E9%83%A8%E7%BD%B2"><span class="nav-number">2.1.</span> <span class="nav-text">Redis安装与部署</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1%E3%80%81%E5%AE%89%E8%A3%85"><span class="nav-number">2.1.1.</span> <span class="nav-text">1、安装</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2%E3%80%81%E9%83%A8%E7%BD%B2"><span class="nav-number">2.1.2.</span> <span class="nav-text">2、部署</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Redis%E7%9A%84%E5%8D%95%E6%9C%BA%E6%A8%A1%E5%BC%8F"><span class="nav-number">2.2.</span> <span class="nav-text">Redis的单机模式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1%E3%80%81%E5%BC%95%E5%85%A5%E4%BE%9D%E8%B5%96"><span class="nav-number">2.2.1.</span> <span class="nav-text">1、引入依赖</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2%E3%80%81Redis%E7%9A%84%E8%BF%9E%E6%8E%A5"><span class="nav-number">2.2.2.</span> <span class="nav-text">2、Redis的连接</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Redis%E7%9A%84%E5%93%A8%E5%85%B5%E6%A8%A1%E5%BC%8F"><span class="nav-number">2.3.</span> <span class="nav-text">Redis的哨兵模式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1%E3%80%81%E9%83%A8%E7%BD%B2%E5%93%A8%E5%85%B5%E6%A8%A1%E5%BC%8F"><span class="nav-number">2.3.1.</span> <span class="nav-text">1、部署哨兵模式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2%E3%80%81%E8%BF%9E%E6%8E%A5%E5%AE%9E%E7%8E%B0Redis%E5%93%A8%E5%85%B5%E6%A8%A1%E5%BC%8F"><span class="nav-number">2.3.2.</span> <span class="nav-text">2、连接实现Redis哨兵模式</span></a></li></ol></li></ol></li></ol>
+    </div>
+</div>
+        
+    </aside>
+
+    <!-- image viewer -->
+    <div class="image-viewer-container">
+    <div class="img-box">
+        <img src="">
+    </div>
+</div>
+
+
+</div>
+
+
+
+    <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+          <span class="search-icon">
+            <i class="fas fa-search"></i>
+          </span>
+            <div class="search-input-container">
+                <input autocomplete="off"
+                       autocorrect="off"
+                       autocapitalize="off"
+                       placeholder="Search..."
+                       spellcheck="false"
+                       type="search"
+                       class="search-input"
+                >
+            </div>
+            <span class="popup-btn-close">
+                <i class="fas fa-times"></i>
+            </span>
+        </div>
+        <div id="search-result">
+            <div id="no-result">
+                <i class="fas fa-spinner fa-pulse fa-5x fa-fw"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.0.4/source/js/utils.js"></script><script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.0.4/source/js/main.js"></script><script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.0.4/source/js/header-shrink.js"></script><script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.0.4/source/js/back2top.js"></script><script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.0.4/source/js/dark-light-toggle.js"></script>
+
+
+    <script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.0.4/source/js/local-search.js"></script>
+
+
+
+
+    <script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.0.4/source/js/left-side-toggle.js"></script>
+
+    
+        <script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.0.4/source/js/code-copy.js"></script>
+    
+
+    
+        <script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.0.4/source/js/libs/anime.min.js"></script><script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.0.4/source/js/toc.js"></script>
+    
+
+
+</body>
+</html>

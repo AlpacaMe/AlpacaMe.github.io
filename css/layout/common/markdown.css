@@ -1,0 +1,199 @@
+.markdown-body {
+  font-size: 1.2rem;
+  font-family: "Times New Roman", Times, Georgia, Comic Sans MS, Comic Sans, cursive;
+}
+.markdown-body blockquote {
+  padding: 5px 5px;
+  border-left: 8px solid #2f845e;
+  background-color: rgba(66,185,131,0.1);
+  border-radius: 10px;
+}
+.markdown-body p {
+  line-height: 2rem;
+}
+.markdown-body q {
+  color: #ff6347;
+  font-weight: bolder;
+}
+.markdown-body q::before {
+  content: '';
+}
+.markdown-body q::after {
+  content: '';
+}
+.markdown-body cite {
+  color: #2e8b57;
+  font-style: normal;
+  font-weight: bolder;
+}
+.markdown-body var {
+  color: #f0f;
+  font-style: normal;
+}
+.markdown-body a {
+  position: relative;
+  outline: 0;
+  text-decoration: none;
+  overflow-wrap: break-word;
+  cursor: pointer;
+}
+.markdown-body a .fas,
+.markdown-body a .far,
+.markdown-body a fab {
+  margin-left: 6px;
+  position: relative;
+}
+.markdown-body a:hover::after {
+  background: var(--primary-color);
+}
+.markdown-body a::after {
+  position: absolute;
+  content: '';
+  width: 100%;
+  height: 1px;
+  top: 108%;
+  left: 0;
+  background: var(--second-text-color);
+}
+.markdown-body a:hover {
+  text-decoration: underline;
+}
+.markdown-body ul > li,
+.markdown-body ol > li {
+  margin-left: 16px;
+  line-height: 2rem;
+}
+.markdown-body ul li {
+  list-style: disc;
+}
+.markdown-body ul li ul li {
+  list-style: circle;
+}
+.markdown-body ul li ul li ul li {
+  list-style: square;
+}
+.markdown-body ol li {
+  list-style: decimal;
+}
+.markdown-body ol li ol li {
+  list-style: upper-alpha;
+}
+.markdown-body ol li ol li ol li {
+  list-style: upper-roman;
+}
+.markdown-body h1,
+.markdown-body h2,
+.markdown-body h3,
+.markdown-body h4,
+.markdown-body h5,
+.markdown-body h6 {
+  color: var(--second-text-color);
+}
+.markdown-body h1 {
+  font-size: 1.8rem;
+  font-weight: 600;
+  line-height: 1.2rem;
+keep-tablet()
+}
+.markdown-body em {
+  background-color: inherit;
+  color: #949415;
+}
+.markdown-body h2 {
+  font-size: 1.7rem;
+  font-weight: 600;
+  line-height: 1.2rem;
+  color: #f00;
+keep-tablet()
+}
+.markdown-body u {
+  background-color: inherit;
+  color: inherit;
+  text-decoration: none;
+  border-bottom: 2px solid #f00;
+  padding-bottom: 1px;
+  color: rgba(189,63,132,0.918);
+}
+.markdown-body tt {
+  color: #00bfff;
+  font-size: 1.2rem;
+  font-style: normal;
+  font-weight: bolder;
+  font-family: "Times New Roman", Times, Georgia, Comic Sans MS, Comic Sans, cursive;
+}
+.markdown-body font {
+  color: #dc143c;
+  font-weight: bolder;
+font-style
+}
+.markdown-body hr {
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+  border-top: 2px dashed #abb2bf;
+}
+.markdown-body strong {
+  background-color: #fca7a6;
+  padding: 1px 4px;
+  font-weight: normal;
+  border-radius: 2px;
+  color: #ff0;
+}
+.markdown-body h3 {
+  font-size: 1.6rem;
+  font-weight: bolder;
+  line-height: 1.16rem;
+  color: #00f;
+keep-tablet()
+}
+.markdown-body h4 {
+  font-size: 1.4rem;
+  font-weight: bolder;
+  line-height: 1.16rem;
+  color: #ffa500;
+keep-tablet()
+}
+.markdown-body h5 {
+  font-size: 1.28rem;
+  font-weight: 500;
+  line-height: 1.12rem;
+keep-tablet()
+}
+.markdown-body h6 {
+  font-size: 1.2rem;
+  font-weight: 500;
+  line-height: 1.12rem;
+keep-tablet()
+}
+.markdown-body img {
+  box-sizing: border-box;
+  max-width: 100%;
+  cursor: pointer;
+  display: block;
+  box-shadow: 0 0 2px var(--shadow-color);
+  margin: 10px 0 2px;
+}
+.markdown-body > table {
+  border-spacing: 0;
+  border-collapse: collapse;
+  width: 100%;
+  overflow: auto;
+}
+.markdown-body > table td,
+.markdown-body > table th {
+  padding: 0;
+}
+.markdown-body > table th {
+  font-weight: 600;
+}
+.markdown-body > table td,
+.markdown-body > table th {
+  padding: 6px 13px;
+  border: 1px solid var(--border-color);
+}
+.markdown-body > table tr {
+  background-color: var(--background-color);
+  border: 1px solid var(--fourth-text-color);
+}
+.markdown-body > table tr:nth-child(2n) {
+  background-color: var(--second-background-color);
+}
