@@ -121,6 +121,552 @@ System.out.println(Double.doubleToLongBits(a)==Double.doubleToLongBits(b)); //�
       </tags>
   </entry>
   <entry>
+    <title>Java中的HTTP</title>
+    <url>/2021/05/08/Java%E4%B8%AD%E7%9A%84HTTP/</url>
+    <content><![CDATA[<h2 style="font-weight:lighter;color:crimson;">少年自有凌云志，不废江河万古流</h2>
+
+<a id="more"></a>
+
+<h2 id="发送HTTP请求"><a href="#发送HTTP请求" class="headerlink" title="发送HTTP请求"></a>发送HTTP请求</h2><h3 id="1-HTTP请求"><a href="#1-HTTP请求" class="headerlink" title="1 HTTP请求"></a>1 HTTP请求</h3><p> 全称—— HyperText Transfer Protocol，是一套计算机网络进行通信的规则，遵循<code>Request/Response</code>应答模型。<var>由客户端发起请求消息，即Request，这个时候客户端和服务器之间建立连接；然后服务器返回响应到客户端，即Reponse。</var></p>
+<h4 id="1-1-建立HTTP请求的步骤"><a href="#1-1-建立HTTP请求的步骤" class="headerlink" title="1.1 建立HTTP请求的步骤"></a>1.1 建立HTTP请求的步骤</h4><p>一次完整的HTTP通信过程包括下列7个步骤：</p>
+<ol>
+<li><p><font>建立TCP连接</font></p>
+<p>在HTTP工作开始之前，客户端首先要通过网络与服务器端建立连接，<u>该连接是通过TCP来完成的</u>。HTTP是比TCP/IP更高层——应用层的协议，根据规则，<var>只有低层协议建立之后才能进行更高层协议的连接。</var></p>
+</li>
+<li><p><font>客户端向服务器发送请求命令</font></p>
+<p>一旦建立了TCP连接，客户端就会向服务器发送请求命令</p>
+</li>
+<li><p><font>客户端发送请求头消息</font></p>
+<p>客户端发送其请求命令之后，还要以信息的形式向服务器发送一些别的信息，之后客户端发送了一<u>空白行</u>来通知服务器，它已结束了该头信息的发送。</p>
+</li>
+<li><p><font>服务器应答</font></p>
+<p>客户端向服务器发送请求之后，服务器端会向客户端回送应答，应答的第一部分是协议的版本号和应答状态码（<em>HTTP/1.1 200 OK</em>）</p>
+</li>
+<li><p><font>服务器发送应答头消息</font></p>
+<p>服务器会随同应答向用户发送关于它自己的数据以及被请求的文档</p>
+</li>
+<li><p><font>服务器向客户端发送消息</font></p>
+<p>服务器向客户端发送头信息后，它会发送一个<u>空白行</u>来表示头信息的发送到此结束，接着它以Content-Type应答头信息所描述格式发送用户所请求的实际数据。</p>
+</li>
+<li><p><font>服务器关闭TCP连接</font></p>
+<p>一般情况下，一旦服务器向客户端发送了请求数据，它就要关闭TCP连接，然后如果客户端或者服务器再其头信息假如了<code>Connection:keep-alive</code>，TCP连接在发送完后仍然保持打开的状态，于是客户端可以继续通过相同的链接发送请求。保持连接节省了为每个请求建立新连接所需要的时间，还节约了网络带宽。</p>
+</li>
+</ol>
+<h4 id="1-2-HTTP报文"><a href="#1-2-HTTP报文" class="headerlink" title="1.2 HTTP报文"></a>1.2 HTTP报文</h4><p>HTTP报文本身是由多行（<em>用CR+LF作换行符，即回车符+换行符=空行</em>）数据构成的字符串文本。</p>
+<p>HTTP协议的请求报文和响应报文的结构基本相同，由三大部分组成：</p>
+<ul>
+<li><strong>起始行</strong> —— 描述请求或响应的基本信息</li>
+<li><strong>头部字段集合</strong> —— 使用<code>key-value</code>的形式更详细的说明报文</li>
+<li><strong>消息正文</strong> —— 实际传输数据，它不一定是纯文本，可以是图片、视频等二进制数据</li>
+</ul>
+<p>其中<var>前两部分起始行和头部字段经常合称为请求头/响应头，消息正文又称为实体，HTTP协议规定报文必须有Header，但可以没有body；并且header后面必须有一个空行</var>。（<em>CRLF就是空行，表示回车符号+换行符号，十六进制表示为0x0D0A</em>）</p>
+<p><dfn>请求报文</dfn></p>
+<p>以下就是一个请求报文的结构：</p>
+<pre><code class="http">GET /hello.txt HTTP/1.1
+User-Agent: curl/7.16.3 libcurl/7.16.3 OpenSSL/0.9.7l zlib/1.2.3
+Host: www.example.com
+Accept-Language: en, mi</code></pre>
+<p>以下就是一个响应报文的结构：</p>
+<pre><code class="http">HTTP/1.1 200 OK
+Date: Mon, 27 Jul 2021 15:28:53 GMT
+Server: Apache
+Last-Modified: Wed, 22 Jul 2009 19:15:56 GMT
+ETag: &quot;34aa387-d-1568eb00&quot;
+Accept-Ranges: bytes
+Content-Length: 51
+Vary: Accept-Encoding
+Content-Type: text/plain</code></pre>
+<p><dfn>请求行</dfn></p>
+<p>请求行是指请求报文中的起始行，请求行由三部分构成：</p>
+<ul>
+<li><strong>请求方法</strong> —— 是一个动词，如<code>GET/POST</code>，表示对资源的操作类型</li>
+<li><strong>请求目标</strong> —— URL，标记了请求方法要操作的资源</li>
+<li><strong>版本号</strong> —— 表示报文用的HTTP协议版本</li>
+</ul>
+<p>例如请求报文第一行，<code>GET /hello.txt HTTP/1.1</code> 其中GET表示请求方法，/hello.txt表示URL，HTTP/1.1表示的协议的版本</p>
+<p><dfn>状态行</dfn></p>
+<p>状态行是指响应报文中的起始行，状态行也由三部分组成：</p>
+<ul>
+<li><strong>版本号</strong> —— 表示报文使用的HTTP协议版本</li>
+<li><strong>状态码</strong> —— 一个三位数，用代码的形式表示处理的结果</li>
+<li><strong>原因</strong> —— 作为数字状态码的补充，更详细的解释文字</li>
+</ul>
+<p>例如响应报文第一行，<code>HTTP/1.1 200 OK</code> 其中HTTP/1.1表示协议的版本，200表示状态码，OK表示响应成功</p>
+<p><dfn>请求头</dfn></p>
+<p>请求头指的是请求报文中，请求头下面的内容。请求头是由一系列的<code>key-value</code>键值对来表示的。</p>
+<p><cite>常用请求头字段的含义：</cite></p>
+<table>
+<thead>
+<tr>
+<th>请求头字段</th>
+<th>说明</th>
+<th>示例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>User-Agent</td>
+<td>客户端的版本</td>
+<td>User-Agent: Mozilla/5.0 (Linux; X11)</td>
+</tr>
+<tr>
+<td>Accept</td>
+<td>客户端能接受的MIME数据类型</td>
+<td>Accept:text/plain,text/html</td>
+</tr>
+<tr>
+<td>Accept-Charset</td>
+<td>客户端采用的编码格式</td>
+<td>Accept-Charset:iso-8859-5</td>
+</tr>
+<tr>
+<td>Authentication</td>
+<td>HTTP授权的授权证书</td>
+<td>Authorization: Basic QWxhZGRpbjpvcGVuIHNlc2FtZQ==</td>
+</tr>
+<tr>
+<td>Cookie</td>
+<td>客户端可以向服务器端带数据</td>
+<td>Cookie: $Version=1; Skin=new;</td>
+</tr>
+<tr>
+<td>From</td>
+<td>发出请求的用户的Email</td>
+<td>From:<a class="link"   href="mailto:user@email.com" >user@email.com<i class="fas fa-external-link-alt"></i></a></td>
+</tr>
+<tr>
+<td>Host</td>
+<td>客户端想连接的目标主机和端口号</td>
+<td>Host: <a class="link"   href="http://www.hao123.com:8080" >http://www.hao123.com:8080<i class="fas fa-external-link-alt"></i></a></td>
+</tr>
+<tr>
+<td>Date</td>
+<td>客户端当前请求服务器的时间</td>
+<td>Date: Tue, 15 Nov 2010 08:12:31 GMT</td>
+</tr>
+</tbody></table>
+<p><dfn>响应头</dfn></p>
+<p>响应头指的是响应报文中，响应头下面的内容。</p>
+<p><cite>常用响应头字段的含义：</cite></p>
+<table>
+<thead>
+<tr>
+<th>响应字段</th>
+<th>说明</th>
+<th>示例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Allow</td>
+<td>对某网络资源的有效请求方法，不允许返回状态码405</td>
+<td>Allow:GET,HEAD</td>
+</tr>
+<tr>
+<td>Content-Encoding</td>
+<td>服务器采用的数据压缩格式</td>
+<td>Content-Encoding:gzip</td>
+</tr>
+<tr>
+<td>Content-Length</td>
+<td>服务器返回给客户端的数据长度</td>
+<td>Content-Length:348</td>
+</tr>
+<tr>
+<td>Server</td>
+<td>服务器的类型</td>
+<td>Server:Apache</td>
+</tr>
+<tr>
+<td>Content-Type</td>
+<td>服务返回的数据类型以及编码格式</td>
+<td>Content-Type:text/html;charset=utf-8</td>
+</tr>
+<tr>
+<td>ETag</td>
+<td>与缓存相关的头</td>
+<td>ETag:”34aa387-d-1568eb00”</td>
+</tr>
+<tr>
+<td>WWW-Authenticate</td>
+<td>表明客户端请求实体应该使用的授权方案</td>
+<td>WWW-Authenticate:Basic</td>
+</tr>
+</tbody></table>
+<p><dfn>状态码</dfn></p>
+<ol>
+<li>100-199：表示成功接收请求，要求客户端继续提交下一次请求才能完成整个处理过程</li>
+<li>200-299：表示成功接收请求并已完成整个处理过程，常用200</li>
+<li>300-399：未完成请求，客户端需要进一步细化，常用302、307、304</li>
+<li>400-499：客户端的请求有错误，常用404</li>
+<li>500-599：服务器端出现错误，常用500</li>
+</ol>
+<h4 id="1-3-HTTP协议版本之间的区别"><a href="#1-3-HTTP协议版本之间的区别" class="headerlink" title="1.3 HTTP协议版本之间的区别"></a>1.3 HTTP协议版本之间的区别</h4><p>HTTP协议一共经过了四个版本的迭代，从最初的<code>HTTP/0.9</code>=&gt;<code>HTTP/1.0</code>=&gt;<code>HTTP/1.1</code>=&gt;<code>HTTP/2.0</code></p>
+<ul>
+<li><p><strong>HTTP/0.9</strong></p>
+<p>该版本出自1991年，只有一种请求方法GET，并且服务器只能影响HTML格式的数据。</p>
+</li>
+<li><p><strong>HTTP/1.0</strong></p>
+<p>该版本出自1996年，相比于HTTP/0.9</p>
+<ol>
+<li>可以发送任意格式的数据，不仅可以传输文字，还可以传输图像，视频，二进制文件等</li>
+<li>除了GET请求方式，还加入了POST、HEAD请求方法</li>
+<li>请求和响应格式改变，除了数据部分，每次通信必须包含头信息</li>
+<li>新增状态码，多字符集支持，多部分发送，权限，缓存，内容编码等</li>
+</ol>
+<p><var>HTTP/1.0版本的缺点：</var></p>
+<p>每个TCP连接只能发送一个请求，发送数据完毕，连接就关闭了，如果要请求其他资源，就必须重新建立连接。（<em>使用Connection:keep-alive字段来维持长连接</em>）</p>
+</li>
+<li><p><strong>HTTP/1.1</strong></p>
+<p>HTTP/1.1版本出自1997年，它进一步完善了HTTP协议，直到现在都是最流行的版本</p>
+<p>相比于1.0版本：</p>
+<ol>
+<li>默认支持场链接，即TCP连接默认不关闭，可以被多个请求复用，不用声明<code>Connection:keep-alive</code></li>
+<li>管道机制，即在同一个TCP连接中，客户端可以同时发送多个请求，进一步改善了HTTP协议的效率</li>
+<li>增加了PUT、PATCH、OPTION、DELET等请求方式</li>
+<li>客户端请求的头信息增加<code>Host</code>字段，用来指定服务器的域名</li>
+</ol>
+<p><var>HTTP/1.1版本的缺点：</var></p>
+<p>虽然在HTTP/1.1版本中允许复用TCP连接，但是在同一个TCP连接里面，所有的数据通信都是同步进行的。服务器只有处理完一个回应，才会进行下一个回应，容易造成响应的阻塞。</p>
+</li>
+<li><p><strong>HTTP/2.0</strong></p>
+<p>HTTP/2.0版本对于HTTP/1.x版本来说是有巨大提升的：</p>
+<ol>
+<li>二进制格式 —— HTTP/1.x是文本协议，而HTTP/2.0是以二进制帧为单位，是一个二进制协议。一帧中除了包含数据外同时还包含该帧的标识，即标识该帧属于哪个Request，即使得网络传输变得十分灵活</li>
+<li>多路复用 —— 多个请求共用一个TCP连接，多个请求可以同时在这个TCP连接上并发</li>
+<li>header头部压缩 —— 对head使用HPACK算法对header数据进行压缩，减少请求的大小，减少流量消耗，提高效率</li>
+<li>支持服务端推送 —— 2.0版本允许服务器未经请求，主动向客户端发送资源，这叫做服务器推送。</li>
+</ol>
+</li>
+</ul>
+<h4 id="1-4-HTTP与HTTPS之间的区别"><a href="#1-4-HTTP与HTTPS之间的区别" class="headerlink" title="1.4 HTTP与HTTPS之间的区别"></a>1.4 HTTP与HTTPS之间的区别</h4><p>HTTP协议的传输的数据都是未加密的，也就是明文的，因此使用HTTP协议传输隐私信息非常不安全，为了保证这些隐私数据能够加密传输，于是设计SSL协议用于对HTTP协议传输数据进行加密，从而就诞生了HTTPS。简单来说<var>HTTPS协议就是SSL+HTTP协议构建的可进行加密传输、身份认证的网络传输协议</var>。</p>
+<p><dfn>HTTPS工作原理</dfn></p>
+<ol>
+<li>客户端使用HTTPS的URL访问Web服务器，要求与Web服务器建立SSL连接</li>
+<li>Web服务器接收到客户端的请求后，会将网站的证书信息（<em>证书中包含公钥</em>）传送一份给客户端</li>
+<li>客户端的浏览器与Web服务器开始协商SSL连接的安全等级，也就是信息加密的等级</li>
+<li>客户端的浏览器根据双方同意的安全等级，建立会话秘匙，然后利用网站的公匙将会话密匙加密，并传送给网站</li>
+<li>Web服务器利用自己的私匙解密出会话密匙</li>
+<li>web服务器利用会话密匙机密与客户端之间的通信</li>
+</ol>
+<p>其与HTTP协议的区别：</p>
+<ol>
+<li>HTTPS协议需要到CA申请证书，一般免费证书较少，因此需要一定的费用。</li>
+<li>HTTP是超文本传输协议，信息是明文传输，HTTPS则是具有安全性的SSL加密传输协议</li>
+<li>HTTP和HTTPS使用的完全不同的连接方式，用的端口也不一样，前者是80端口，后者是443端口</li>
+<li>HTTP的连接很简单，是无状态的；HTTPS协议是由SSL+HTTP协议构建的可加密传输、身份认证的网络协议，比HTTP协议更安全</li>
+</ol>
+<h4 id="1-5-HTTP的参数"><a href="#1-5-HTTP的参数" class="headerlink" title="1.5 HTTP的参数"></a>1.5 HTTP的参数</h4><p>HTTP不管使用什么方法和参数放的位置都没有关系的，只是会有一些约定俗称的做法。</p>
+<p>在URL里面放参数是最简单的，就是利用<code>？</code>来分隔键值对即可。例如：<a class="link"   href="http://localhost:8443//hello?username=panhao" >http://localhost:8443//hello?username=panhao<i class="fas fa-external-link-alt"></i></a></p>
+<p>其次是在Body里面放参数，<var>在Body中存放参数的时候，就需要在Header中指明Conten-Type，告诉服务器以什么样的格式来解析Body中的参数</var></p>
+<table>
+<thead>
+<tr>
+<th>Body参数方式</th>
+<th>Content-type</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Text</td>
+<td>text/plain</td>
+</tr>
+<tr>
+<td>Form</td>
+<td>application/x-www-form-urlencoded</td>
+</tr>
+<tr>
+<td>JSON</td>
+<td>application/json</td>
+</tr>
+<tr>
+<td>File</td>
+<td>不确定</td>
+</tr>
+<tr>
+<td>Multipart</td>
+<td>multipart/form-data;boundary=X_PAW_BOUNDARY</td>
+</tr>
+</tbody></table>
+<h3 id="2-JAVA的HTTP工具类"><a href="#2-JAVA的HTTP工具类" class="headerlink" title="2 JAVA的HTTP工具类"></a>2 JAVA的HTTP工具类</h3><h4 id="2-1-Java原生发送HTTP请求"><a href="#2-1-Java原生发送HTTP请求" class="headerlink" title="2.1 Java原生发送HTTP请求"></a>2.1 Java原生发送HTTP请求</h4><p>Java原生的API可以发送HTTP请求，即java.net.URL、java.net.URLConnection，JDK自带的类。其具体步骤为：</p>
+<ol>
+<li>通过统一资源定位器获取连接器（<em>URL=&gt; URLConnection</em>）</li>
+<li>设置请求的参数</li>
+<li>发送请求</li>
+<li>以输入流的形式获取返回内容</li>
+<li>关闭输入流</li>
+</ol>
+<p><cite>发送GET请求</cite></p>
+<pre><code class="java">public String sendGet(String httpURL)&#123;
+
+        HttpURLConnection connection=null;
+        InputStream is=null;
+        BufferedReader br=null;
+        String result=null;
+
+        try &#123;
+            //创建URL连接对象
+            URL url=new URL(httpURL);
+            //通过远程URL连接对象创建一个连接，强转成HTTPURLConnection
+            connection= (HttpURLConnection) url.openConnection();
+            //设置连接方式
+            connection.setRequestMethod(&quot;GET&quot;);
+            //设置连接超时时间
+            connection.setConnectTimeout(15000);
+            //设置读取远程返回的数据时间
+            connection.setReadTimeout(60000);
+            //在请求头中设置字段的值
+            connection.setRequestProperty(&quot;Authorization&quot;,&quot;xxxx&quot;);
+            //发送连接
+            connection.connect();
+            if(connection.getResponseCode()==200)&#123;
+                is=connection.getInputStream();
+                br=new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8));
+                StringBuilder builder=new StringBuilder();
+                String temp=null;
+                while ((temp=br.readLine())!=null)&#123;
+                    builder.append(temp);
+                    builder.append(&quot;\r\n&quot;);
+                &#125;
+                result=builder.toString();
+            &#125;
+        &#125; catch (IOException e) &#123;
+            e.printStackTrace();
+        &#125; finally &#123;
+            if(br!=null)&#123;
+                try &#123;
+                    br.close();
+                &#125; catch (IOException e) &#123;
+                    e.printStackTrace();
+                &#125;
+            &#125;
+            if(is!=null)&#123;
+                try &#123;
+                    is.close();
+                &#125; catch (IOException e) &#123;
+                    e.printStackTrace();
+                &#125;
+            &#125;
+            //关闭远程连接
+            connection.disconnect();
+        &#125;
+        return result;
+    &#125;</code></pre>
+<p><cite>发送Post请求</cite></p>
+<pre><code class="java">public String sendPost(String httpUrl)&#123;
+        OutputStreamWriter out=null;
+        BufferedReader in =null;
+        StringBuilder result=new StringBuilder();
+        HttpURLConnection connection=null;
+
+        try &#123;
+            URL url=new URL(httpUrl);
+            connection= (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod(&quot;POST&quot;);
+            //发送POST请求的时候必须设置为true
+            connection.setDoInput(true);
+            connection.setDoOutput(true);
+            //设置连接超时时间和读取超时时间
+            connection.setConnectTimeout(30000);
+            connection.setReadTimeout(10000);
+            //设置请求体中的内容格式
+            connection.setRequestProperty(&quot;Content-Type&quot;,&quot;application/json&quot;);
+            connection.setRequestProperty(&quot;Accept&quot;,&quot;application/json&quot;);
+            //向POST请求中装配参数
+            out=new OutputStreamWriter(connection.getOutputStream());
+            Map&lt;String,String&gt; params=new HashMap&lt;&gt;();
+            params.put(&quot;u&quot;,&quot;xxxx&quot;);
+            params.put(&quot;p&quot;,&quot;xxxx&quot;);
+            String jsonStr= JSON.toJSONString(params);
+            out.write(jsonStr);
+            out.flush();
+            out.close();
+            //读取返回结果
+            if(connection.getResponseCode()==200)&#123;
+                in=new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                String line;
+                while ((line=in.readLine())!=null)&#123;
+                    result.append(line);
+                &#125;
+            &#125;else &#123;
+                System.out.println(&quot;ResponseCode is an error code:&quot;+connection.getResponseCode());
+            &#125;
+        &#125; catch (IOException e) &#123;
+            e.printStackTrace();
+        &#125;
+
+        return result.toString();
+    &#125;</code></pre>
+<h4 id="2-2-使用HttpClient"><a href="#2-2-使用HttpClient" class="headerlink" title="2.2 使用HttpClient"></a>2.2 使用HttpClient</h4><p>HttpClient最基本的功能就是执行http方法，执行http方法包括了一次或者几次HTTP请求和相应的变化，通常也是通过HTTPClient来处理的。只要用户提供一个Request的对象，HTTPCLient就会将用户的请求发送到目标服务器上，并且返回一个Respone对象，如果没有执行成功将抛出一个异常。</p>
+<p><font>常用步骤：</font></p>
+<ol>
+<li>创建一个<code>CloseableHttpClient</code>对象，通过<code>HttPClients</code>的静态方法<code>createDefault()</code>来获取</li>
+<li>生成一个对应方法的请求</li>
+<li>执行这个请求</li>
+<li>处理返回结果</li>
+</ol>
+<p><cite>无论是什么请求都需要先添加依赖：</cite></p>
+<p>首先添加HTTPClient的依赖：</p>
+<pre><code class="xml">     &lt;dependency&gt;
+            &lt;groupId&gt;org.apache.httpcomponents&lt;/groupId&gt;
+            &lt;artifactId&gt;httpclient&lt;/artifactId&gt;
+            &lt;version&gt;4.5.13&lt;/version&gt;
+        &lt;/dependency&gt;</code></pre>
+<p><cite>GET请求：</cite></p>
+<pre><code class="java"> public String sendGet(String url)&#123;
+        //1.获得一个HttpClient对象
+        CloseableHttpClient httpClient= HttpClients.createDefault();
+        CloseableHttpResponse response=null;
+        String result=null;
+        try &#123;
+            URIBuilder builder=new URIBuilder(url);
+            //1.第一种添加参数的方式
+            builder.addParameter(&quot;u&quot;,&quot;bridge&quot;);
+            builder.addParameter(&quot;p&quot;,&quot;bridge&quot;);
+            //2.第二种添加参数的方式
+//            List&lt;NameValuePair&gt; list=new LinkedList&lt;&gt;();
+//            BasicNameValuePair param1=new BasicNameValuePair(&quot;u&quot;,&quot;bridge&quot;);
+//            BasicNameValuePair param2=new BasicNameValuePair(&quot;p&quot;,&quot;bridge&quot;);
+//            list.add(param1);
+//            list.add(param2);
+//            builder.setParameters(list);
+            //2.创建一个GET请求
+            HttpGet httpGet=new HttpGet(builder.build());
+            //设置一个Header的属性
+            //httpGet.setHeader(&quot;Authorization&quot;,&quot;JWT &quot;);
+            //3.执行GET请求并返回结果
+            response=httpClient.execute(httpGet);
+            //4.处理返回结果
+            HttpEntity entity=response.getEntity();
+            if(entity!=null)&#123;
+                result= EntityUtils.toString(entity);
+            &#125;
+        &#125; catch (IOException | URISyntaxException e) &#123;
+            e.printStackTrace();
+        &#125; finally &#123;
+            try &#123;
+                response.close();
+            &#125; catch (IOException e) &#123;
+                e.printStackTrace();
+            &#125;
+        &#125;
+        return result;
+    &#125;</code></pre>
+<p><cite>POST请求</cite></p>
+<pre><code class="java">  public String sendPost(String url, Map&lt;String, String&gt; map) &#123;
+        CloseableHttpResponse response = null;
+        CloseableHttpClient client = HttpClients.createDefault();
+        HttpPost post = new HttpPost(url);
+        JSONObject result = null;
+        try &#123;
+            String jsonString = JSON.toJSONString(map);
+            System.out.println(jsonString);
+            StringEntity encodedFormEntity = new StringEntity(jsonString, ContentType.APPLICATION_JSON);
+            post.setEntity(encodedFormEntity);
+            post.setHeader(&quot;Content-Type&quot;, &quot;application/json;charset=UTF-8&quot;);
+            post.setHeader(&quot;Accept&quot;,&quot;application/json&quot;);
+            response = client.execute(post);
+            HttpEntity entity = response.getEntity();
+            if (entity != null) &#123;
+                result = JSON.parseObject(EntityUtils.toString(entity));
+            &#125;
+        &#125; catch (IOException e) &#123;
+            e.printStackTrace();
+        &#125;
+        return (String) result.get(&quot;data&quot;);
+    &#125;
+</code></pre>
+<h4 id="2-3-使用OkHttp"><a href="#2-3-使用OkHttp" class="headerlink" title="2.3 使用OkHttp"></a>2.3 使用OkHttp</h4><p>使用OkHttp的时候其实与HttpClient是大致类似的</p>
+<ol>
+<li>实例化一个<code>OkHttpClient</code>实例来实现的</li>
+<li>实例化一个<code>Request</code>对象，将Headers和Body装配完成</li>
+<li>实例化一个<code>Response</code>对象，执行Request</li>
+<li>最后从Response对象的<code>ResponseBody</code>对象中获取到返回后数据</li>
+</ol>
+<p><cite>GET请求</cite></p>
+<pre><code class="java">public String sendGET(String token)&#123;
+        OkHttpClient client=new OkHttpClient();
+        //添加参数
+//        HttpUrl url=HttpUrl.parse(&quot;http://www.cyjsyjy.com:7416/unifiedapi/sites&quot;)
+//                .newBuilder()
+//                .addQueryParameter(&quot;name&quot;,&quot;Http&quot;)
+//                .build();
+        Request request=new Request.Builder()
+                .url(&quot;xxxx&quot;)
+                .addHeader(&quot;Authorization&quot;,&quot;JWT &quot;+token)
+                .addHeader(&quot;Accept&quot;,&quot;application/json&quot;)
+                .build();
+        Response response=null;
+        JSONObject result=null;
+        try &#123;
+            response=client.newCall(request).execute();
+            ResponseBody body=response.body();
+            if(response.isSuccessful())&#123;
+                result= JSON.parseObject(body.string());
+            &#125;else &#123;
+                result=new JSONObject();
+                result.put(&quot;code&quot;,500);
+            &#125;
+        &#125; catch (Exception e) &#123;
+            e.printStackTrace();
+        &#125;
+        return JSON.toJSONString(result);
+    &#125;</code></pre>
+<p><cite>POST请求</cite></p>
+<pre><code class="java"> public String sendPOST()&#123;
+        OkHttpClient okHttpClient=new OkHttpClient();
+        Map&lt;String, String&gt; params = new HashMap&lt;&gt;();
+        params.put(&quot;u&quot;, &quot;xxxx&quot;);
+        params.put(&quot;p&quot;, &quot;xxxx&quot;);
+        String result=null;
+        Request request=new Request.Builder()
+                .url(&quot;xxxx&quot;)
+                .addHeader(&quot;Accept&quot;,&quot;application/json&quot;)
+                .post(RequestBody.create(MediaType.get(&quot;application/json&quot;),JSON.toJSONBytes(params)))
+                .build();
+
+        try &#123;
+            Response response=okHttpClient.newCall(request).execute();
+            ResponseBody body=response.body();
+            if(body!=null&amp;&amp;response.isSuccessful())&#123;
+                result=body.string();
+            &#125;
+        &#125; catch (IOException e) &#123;
+            e.printStackTrace();
+        &#125;
+        return (String) JSON.parseObject(result).get(&quot;data&quot;);
+    &#125;</code></pre>
+<h4 id="2-4-使用RestTemplate"><a href="#2-4-使用RestTemplate" class="headerlink" title="2.4 使用RestTemplate"></a>2.4 使用RestTemplate</h4><p>作为Java中的扛鼎者，Spring家族怎么会在这种地方沉默呢。所有RestTemplate就是Spring的杰作。</p>
+<p><cite>GET请求</cite></p>
+<pre><code class="java">  public String login() &#123;
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        MultiValueMap&lt;String, String&gt; map = new LinkedMultiValueMap&lt;&gt;();
+        map.add(&quot;u&quot;, &quot;xxxx&quot;);
+        map.add(&quot;p&quot;, &quot;xxxx&quot;);
+
+        HttpEntity&lt;MultiValueMap&lt;String, String&gt;&gt; request = new HttpEntity&lt;&gt;(map, headers);
+        ResponseEntity&lt;String&gt; response = restTemplate.postForEntity(url + &quot;/login&quot;, request, String.class);
+        JSONObject data = JSON.parseObject(response.getBody());
+        return String.valueOf(data.get(&quot;data&quot;));
+    &#125;</code></pre>
+<p><cite>POST请求</cite></p>
+<pre><code class="java"> public void site(String token) &#123;
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setContentType(MediaType.APPLICATION_JSON);
+        httpHeaders.set(&quot;Authorization&quot;,&quot;JWT &quot;+token);
+        HttpEntity&lt;MultiValueMap&lt;String, String&gt;&gt; request = new HttpEntity&lt;&gt;(httpHeaders);
+        ResponseEntity&lt;String&gt; result = restTemplate.exchange(url+&quot;/sites&quot;, HttpMethod.GET,request, String.class);
+        JSONObject data=JSON.parseObject(result.getBody());
+        System.out.println(request);
+        System.out.println(data);
+    &#125;</code></pre>
+]]></content>
+      <categories>
+        <category>Java基础</category>
+      </categories>
+      <tags>
+        <tag>编程语言</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Nginx基础</title>
     <url>/2021/02/28/Nginx%E5%9F%BA%E7%A1%80/</url>
     <content><![CDATA[<h2 style="font-weight:lighter;color:crimson;">明年此日青云去，笑看今朝举子忙</h2>
