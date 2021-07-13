@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <title>
+        Cookie与Session |
+        
+        ダモクレスの剣
+    </title>
+    <link rel="shortcut icon" href="/images/1.svg">
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.0.4/source/css/font-awesome.min.css">
+    <script id="hexo-configurations">
+    let KEEP = window.KEEP || {};
+    KEEP.hexo_config = {"hostname":"alpacame.github.io","root":"/","path":"search.xml"};
+    KEEP.theme_config = {"toc":{"enable":true,"number":true,"expand_all":true},"style":{"primary_color":"#ff0000","avatar":"/images/avatar.jpg","favicon":"/images/1.svg","img_position":"left","left_side_width":"260px","content_max_width":"900px","hover":{"shadow":true,"scale":false},"first_screen":{"enable":true,"background_img":"/images/bg.svg","description":"但愿众生皆得饱，不辞羸病卧残阳"}},"local_search":{"enable":true,"trigger":"auto","unescape":true,"preload":true},"version":"3.0.4"};
+    KEEP.language = {"search":"Search...","prev":"Prev","next":"Next","prev_posts":"Prev posts","next_posts":"Next posts","page":"Page %d","recent_posts":"Recent Posts","share":"Share","powered_by":"Powered by %s","theme":"Theme","rss_feed":"RSS Feed","category":"Category","categories":"Categories","tag":"Tag","tags":"Tags","tagcloud":"Tag Cloud","comment":"Comment","home":"Home","archive":"Archive","archives":"Archives","about":"About","site_uv":"Visitor Count","site_pv":"Totalview","links":"Links","link":"Link","top":"TOP","read_more":"Read more","wordcount":"Words","min2read":"Mins","changelog":"Changelog","copyright":{"author":"Post author","title":"Post title","link":"Post link","create_time":"Create time","license_title":"Copyright Notice","license_content":"All articles in this blog are licensed under %s unless stating additionally."},"ago":{"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days age","week":"%s weeks age","month":"%s months age","year":"%s years age"}};
+  </script>
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+
+<body>
+<div class="page-container">
+
+    
+
+    <header class="page-header">
+        <div class="header-progress"></div>
+    </header>
+
+    <main class="page-main">
+
+        <div class="page-main-content">
+
+            <div class="page-main-content-top">
+                <header class="header-wrapper">
+
+    <div class="header-content">
+        <a class="logo-title" href="/">
+            ダモクレスの剣
+        </a>
+
+        <ul class="menu-list">
+            
+                <li class="menu-item">
+                    <a class=""
+                       href="/"
+                    >
+                        首页
+                    </a>
+                </li>
+            
+                <li class="menu-item">
+                    <a class=""
+                       href="/archives"
+                    >
+                        文章
+                    </a>
+                </li>
+            
+                <li class="menu-item">
+                    <a class=""
+                       href="/live"
+                    >
+                        生活
+                    </a>
+                </li>
+            
+                <li class="menu-item">
+                    <a class=""
+                       href="/links"
+                    >
+                        友链
+                    </a>
+                </li>
+            
+                <li class="menu-item">
+                    <a class=""
+                       href="/about"
+                    >
+                        关于
+                    </a>
+                </li>
+            
+        </ul>
+
+        <div class="menu-bar">
+            <div class="menu-bar-middle"></div>
+        </div>
+    </div>
+
+    <div class="header-drawer">
+        <ul class="drawer-menu-list">
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/">首页</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/archives">文章</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/live">生活</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/links">友链</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/about">关于</a>
+                </li>
+            
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+            </div>
+
+            <div class="page-main-content-middle">
+
+                <main class="main-content normal-code-theme">
+
+                    
+                        <div class="fade-in-down-animation">
+    <div class="article-content-container">
+
+        <div class="article-title">
+            <span class="title-hover-animation">Cookie与Session</span>
+        </div>
+
+        
+            <div class="article-header">
+                <div class="avatar">
+                    <img src="/images/avatar.jpg">
+                </div>
+                <div class="info">
+                    <div class="author">
+                        <span>Pawn</span>
+                        <span class="level">Lv2</span>
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fas fa-calendar"></i> 2021-07-13 15:29:56
+    </span>
+    
+        <span class="article-categories article-meta-item">
+            <i class="fas fa-folder"></i>
+            <ul>
+                
+                    <li>
+                        <a href="/categories/JavaWeb/">JavaWeb</a>
+                    </li>
+                
+            </ul>
+        </span>
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fas fa-tags"></i>
+            <ul>
+                
+                    <li>
+                        <a href="/tags/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/">编程语言</a>
+                    </li>
+                
+            </ul>
+        </span>
+    
+
+    
+    
+        <span class="article-wordcount article-meta-item">
+            <i class="fas fa-file-word"></i> <span>2.7k Words</span>
+        </span>
+    
+    
+        <span class="article-min2read article-meta-item">
+            <i class="fas fa-clock"></i> <span>12 Mins</span>
+        </span>
+    
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        <div class="article-content markdown-body">
+            <h2 style="color:crimson;font-weight:lighter;">穷且益坚，不坠青云之志</h2>
+
+<a id="more"></a>
+
+<h2 id="会话技术"><a href="#会话技术" class="headerlink" title="会话技术"></a>会话技术</h2><h3 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h3><p><var>会话是浏览器和服务器之间的多次请求和响应。</var>从浏览器访问服务器开始，到访问服务器结束，浏览器关闭为止的这段时间产生的多次请求和响应，合起来叫做浏览器和服务器之间的一次会话。</p>
+<p>会话技术解决的是客户端与服务器之间的通信问题，通过会话技术，可以将每个用户的数据以cookie、session的形式存储，方便以后用户访问Web资源的时候使用。</p>
+<p><q>不能使用HttpServletRequest存储信息的原因？</q></p>
+<p>在一次会话中，存在多次请求和响应，而浏览器客户端的每一次请求都会产生一个HttpServletRequest对象，它只会保存此次请求的信息，而无法读取其他HttpServletRequest中存储的信息。</p>
+<p><q>不能用ServletContext的原因？</q></p>
+<p>ServletContext是被整个web应用所共享，将数据存到这里，无法准确区分信息具体是属于谁的。</p>
+<p>会话技术分为两个类别：</p>
+<p>客户端会话技术 —— <dfn>Cookie</dfn></p>
+<p>服务端会话技术 —— <dfn>Session</dfn></p>
+<h3 id="客户端会话技术——Cookie"><a href="#客户端会话技术——Cookie" class="headerlink" title="客户端会话技术——Cookie"></a>客户端会话技术——Cookie</h3><p><var>Cookie是servlet发送给web浏览器的少量信息</var>，它将你在网站上输入的一些内容或者一些选项记录下来，当下一次访问同一个网站的时候，服务器会主动去查询这个cookie资料，如果存在的话，就会根据其中的内容，提供一些特别的功能，例如记住账号密码等等。</p>
+<p>一个Cookie拥有一个名称、一个值和一些可选属性，比如注释、路径和域限定符、最大生存时间和版本号。（<em>对于这些属性的运用，在某些浏览器中存在bug，谨慎使用</em>），每个Cookie不能超过4kb。</p>
+<h4 id="创建Cookie"><a href="#创建Cookie" class="headerlink" title="创建Cookie"></a>创建Cookie</h4><p>Cookie通过HttpServletResponse的<code>addCookie()</code>方法将Cookie设置到HttpResponse的Headers的Set-Cookie属性。</p>
+<p>创建一个通知浏览器存储cookie的Controller：</p>
+<pre><code class="java">   @RequestMapping(&quot;/create&quot;)
+    public void create(HttpServletResponse response)&#123;
+        Cookie cookie=new Cookie(&quot;k1&quot;,&quot;v1&quot;);
+        response.addCookie(cookie);
+    &#125;</code></pre>
+<p>通过浏览器访问这个Controller的时候，利用浏览器的开发者工具，可以在HttpResponse的Headers属性中看到设置的Cookie的内容</p>
+<pre><code class="http">Connection: keep-alive
+Content-Length: 0
+Date: Mon, 12 Jul 2021 12:35:55 GMT
+Keep-Alive: timeout=60
+Set-Cookie: k1=v1</code></pre>
+<img src="Cookie的创建流程.png" />
+
+<p>同时Cookie的值也可以在浏览器的开发者工具中的Application选项中选中Cookie来查其值。</p>
+<h4 id="服务端获取Cookie"><a href="#服务端获取Cookie" class="headerlink" title="服务端获取Cookie"></a>服务端获取Cookie</h4><p>服务器端获取Cookie的方式为从HttpServletRequest的Cookie字段中拿到对应的属性值，其中即为<code>getCookies()</code>方法</p>
+<pre><code class="java">@RequestMapping(&quot;/get&quot;)
+    public String get(HttpServletRequest request)&#123;
+        Cookie[] cookies = request.getCookies();
+        for (Cookie cookie:cookies)&#123;
+            System.out.println(&quot;【&quot;+cookie.getName()+&quot;=&quot;+cookie.getValue()+&quot;】&quot;);
+        &#125;
+        return &quot;cookie&quot;;
+    &#125;</code></pre>
+<h4 id="修改Cookie的值"><a href="#修改Cookie的值" class="headerlink" title="修改Cookie的值"></a>修改Cookie的值</h4><p>修改Cookie的值有两种方式：</p>
+<ol>
+<li><p>第一种是直接新建一个同名Cookie，然后覆盖掉之前的值</p>
+<pre><code class="java">@RequestMapping(&quot;/update&quot;)
+    public String update(HttpServletResponse response)&#123;
+        System.out.println(&quot;修改cookie&quot;);
+        Cookie cookie=new Cookie(&quot;k1&quot;,&quot;newv1&quot;);
+        response.addCookie(cookie);
+        return &quot;index2&quot;;
+    &#125;</code></pre>
+</li>
+<li><p>先查找到需要修改的Cookie对象，调用<code>setValue()</code>方法修改Cookie的值，Cookie的查找只能通过循环遍历的方式来查找，根据Cookie的Name属性进行匹配查找</p>
+<pre><code class="java">@RequestMapping(&quot;/update&quot;)
+    @ResponseBody
+    public String update(HttpServletRequest request,HttpServletResponse response)&#123;
+        Cookie[] cookies=request.getCookies();
+        if(cookies!=null&amp;&amp;cookies.length&gt;0)&#123;
+            for (Cookie cookie : cookies) &#123;
+                if(cookie.getName().equals(&quot;k1&quot;))&#123;
+                    cookie.setValue(&quot;newValue&quot;);
+                &#125;
+            &#125; 
+        &#125;
+        return &quot;更新完成&quot;;
+    &#125;</code></pre>
+</li>
+</ol>
+<p>对于Cookie的值有如下规定：</p>
+<p>​    <var>Cookie的值不应该包含空格、方括号、圆括号、等号、逗号、双引号、斜杠、问号、@符号、冒号和分号。空值在所有浏览器上的行为不一定相同。如果必须要使用可以通过Base64进行编码。</var></p>
+<h4 id="Cookie生命控制"><a href="#Cookie生命控制" class="headerlink" title="Cookie生命控制"></a>Cookie生命控制</h4><p>Cookie的生命控制指的是如何管理Cookie什么时候被销毁掉，主要是通过<code>serMaxAge()</code>方法来设置其生命周期。</p>
+<p>该方法有需要添加一个int类型的参数：</p>
+<ul>
+<li>当参数为正数的时候，表示Cookie存活的秒数</li>
+<li>当参数为负数的时候，表示浏览关闭之后Cookie就失效，默认值为-1</li>
+<li>当参数为0的时候，表示Cookie马上失效</li>
+</ul>
+<pre><code class="java">@RequestMapping(&quot;/life&quot;)
+@ResponseBody
+public String defaultLife(HttpServletRequest request,HttpServletResponse response)&#123;
+    Cookie cookie=new Cookie(&quot;defaultLife&quot;,&quot;defaultLife&quot;);
+    cookie.setMaxAge(5);
+    response.addCookie(cookie);
+    return &quot;设置完成&quot;;
+&#125;</code></pre>
+<h4 id="Cookie的路径设置"><a href="#Cookie的路径设置" class="headerlink" title="Cookie的路径设置"></a>Cookie的路径设置</h4><p>Cookie的Path属性可以有效的过滤哪些Cookie会发送给客户端端，哪些不会被发送给Cookie。通过<code>setPath()</code>方法为Cookie设置Path属性，对于Path属性的解析如下：</p>
+<blockquote>
+<p>假如现在CookieA的Path属性为：<a class="link"   target="_blank" rel="noopener" href="http://localhost:8080/；CookieB的Path属性为：http://localhost:8080/Wind/" >http://localhost:8080/；CookieB的Path属性为：http://localhost:8080/Wind/<i class="fas fa-external-link-alt"></i></a></p>
+<p>情况一：在<a class="link"   target="_blank" rel="noopener" href="http://localhost:8080/a.html下" >http://localhost:8080/a.html下<i class="fas fa-external-link-alt"></i></a></p>
+<p>​    CookieA会发送，因为满足其Path属性，但是CookieB不会被发送</p>
+<p>情况二：在<a class="link"   target="_blank" rel="noopener" href="http://localhost:8080/abc/a.html下" >http://localhost:8080/abc/a.html下<i class="fas fa-external-link-alt"></i></a></p>
+<p>​    CookieA会发送，CookieB也会发送</p>
+</blockquote>
+<p>在SpringMVC中会将@RequestMapping值作为Cookie的默认值</p>
+<h4 id="Cookie-——-免用户名登陆实战"><a href="#Cookie-——-免用户名登陆实战" class="headerlink" title="Cookie —— 免用户名登陆实战"></a>Cookie —— 免用户名登陆实战</h4><p>首先书写一个登录页页面：</p>
+<pre><code class="java">&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;title&gt;Title&lt;/title&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;../plugins/fontawesome-free/css/all.css&quot;&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;../plugins/bootstrap-table/bootstrap-table.min.css&quot;&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;../dist/css/bootStrap-4.0/css/bootstrap.css&quot;&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;../dist/css/adminlte.css&quot;&gt;
+
+    &lt;script src=&quot;../plugins/jquery/jquery.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;../plugins/jquery/jquery.cookie.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;../plugins/bootstrap/js/bootstrap.bundle.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;../plugins/bootstrap/js/bootstrap.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;../plugins/bootstrap-table/bootstrap-table.min.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;../plugins/bootstrap-table/bootstrap-table-zh-CN.js&quot;&gt;&lt;/script&gt;
+&lt;/head&gt;
+
+&lt;body&gt;
+    &lt;div class=&quot;container&quot;&gt;
+        &lt;div class=&quot;card card-outline card-danger col-md-6 mt-5 mx-auto&quot;&gt;
+            &lt;div class=&quot;card-header&quot;&gt;
+                &lt;h2 class=&quot;card-title&quot;&gt;免登陆测试&lt;/h2&gt;
+            &lt;/div&gt;
+            &lt;div class=&quot;card-body&quot;&gt;
+                &lt;div class=&quot;form-group row&quot; style=&quot;line-height: 40px;&quot;&gt;
+                    &lt;label for=&quot;username&quot; class=&quot;col-md-2 text-center align-content-center&quot;&gt;用户名&lt;/label&gt;
+                    &lt;input type=&quot;text&quot; name=&quot;username&quot; class=&quot;form-control col-md-10&quot;&gt;
+                &lt;/div&gt;
+                &lt;div class=&quot;form-group row&quot; style=&quot;line-height: 40px;&quot;&gt;
+                    &lt;label for=&quot;password&quot; class=&quot;col-md-2 text-center align-content-center&quot;&gt;密码&lt;/label&gt;
+                    &lt;input type=&quot;password&quot; name=&quot;password&quot; class=&quot;form-control col-md-10&quot;&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+            &lt;div class=&quot;card-footer row justify-content-center&quot;&gt;
+                &lt;button id=&quot;login&quot; class=&quot;btn col-md-6 btn-primary&quot;&gt;登陆&lt;/button&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/body&gt;
+&lt;script&gt;
+    $(&#39;input[name=&quot;username&quot;]&#39;).val($.cookie(&quot;username&quot;))
+    $(&quot;#login&quot;).click(() =&gt; &#123;
+        var username = $(&#39;input[name=&quot;username&quot;]&#39;).val();
+        var password = $(&#39;input[name=&quot;password&quot;]&#39;).val();
+        if (username == null || username==&quot;&quot; || password == null || password == &quot;&quot; ) &#123;
+            alert(&quot;请输入完成的用户信息&quot;)
+        &#125; else &#123;
+            console.log(&quot;username=&quot;+username+&quot;&amp;password=&quot;+password); 
+            $.post(&#123;
+                url:&quot;../../cookie/login&quot;,
+                data:&#123;
+                    username:username,
+                    password:password
+                &#125;,
+                success:res=&gt;&#123;
+                    alert(res)
+                &#125;
+            &#125;)
+        &#125;
+    &#125;)
+&lt;/script&gt;
+&lt;/html&gt;</code></pre>
+<p>后端对应一个登陆的接口：</p>
+<pre><code class="java">@RequestMapping(value = &quot;/login&quot;,method = RequestMethod.POST)
+    @ResponseBody
+    public String login(
+            @RequestParam(&quot;username&quot;)String username,
+            @RequestParam(&quot;password&quot;)String password,
+            HttpServletResponse response)&#123;
+
+        if(&quot;panhao&quot;.equals(username)&amp;&amp;&quot;123456&quot;.equals(password))&#123;
+            Cookie cookie=new Cookie(&quot;username&quot;,username);
+            cookie.setMaxAge(20);
+            cookie.setPath(&quot;/login.html&quot;);
+            response.addCookie(cookie);
+            System.out.println(&quot;登陆成功&quot;);
+            return &quot;登陆成功&quot;;
+        &#125;else &#123;
+            System.out.println(&quot;登陆失败&quot;);
+            return &quot;登陆失败&quot;;
+        &#125;
+    &#125;</code></pre>
+<p>实现在20s的时间内，退出浏览器，再次进入的时候可以自动填写用户名。</p>
+<h3 id="服务端会话技术——Session"><a href="#服务端会话技术——Session" class="headerlink" title="服务端会话技术——Session"></a>服务端会话技术——Session</h3><p>Session就是会话，它是用来维护一个客户端和服务器之间关联的一种技术。每个客户端都有自己的一个Session会话，Session会被保存在服务器端。</p>
+<h4 id="创建Session"><a href="#创建Session" class="headerlink" title="创建Session"></a>创建Session</h4><p>通过HttpServletRequest的<code>getSession()</code>方法创建，第一次调用该方法的时候表示创建一个Session对象；往后的每次一调用都是获取到该Session对象。</p>
+<pre><code class="java">    @RequestMapping(&quot;/create&quot;)
+    @ResponseBody
+    public String create(HttpServletRequest request,HttpServletResponse response)&#123;
+        HttpSession session=request.getSession();
+        //判断当前Session是否是最新的Session
+        boolean isNew=session.isNew();
+        //获取当前Session的ID
+        String id=session.getId();
+        return &quot;该Session的id为：&quot;+id+&quot;,该Session是否是最新的：&quot;+isNew;
+    &#125;</code></pre>
+<p>在浏览器输入<a class="link"   target="_blank" rel="noopener" href="http://localhost:8080/session/create" >http://localhost:8080/session/create<i class="fas fa-external-link-alt"></i></a> 就可以返回对象的字符串，第一次返回的Session为最新的Session，再次刷新会发现isNew的值由true变为false。</p>
+<h4 id="Session域中存取数据"><a href="#Session域中存取数据" class="headerlink" title="Session域中存取数据"></a>Session域中存取数据</h4><p>Session的域中一样是可以存取数据的，使用<code>setAttribute()</code>与<code>getAttribute()</code>方法实现数据的设值和取值。</p>
+<pre><code class="java">    @RequestMapping(&quot;/set&quot;)
+    @ResponseBody
+    public String set(HttpServletRequest request,HttpServletResponse response)&#123;
+         request.getSession().setAttribute(&quot;key1&quot;,&quot;value1&quot;);
+         return &quot;设置完成&quot;;
+    &#125;
+
+    @RequestMapping(&quot;/get&quot;)
+    @ResponseBody
+    public Object get(HttpServletRequest request,HttpServletResponse response)&#123;
+        return request.getSession().getAttribute(&quot;key1&quot;);
+    &#125;</code></pre>
+<h4 id="Session的生命周期控制"><a href="#Session的生命周期控制" class="headerlink" title="Session的生命周期控制"></a>Session的生命周期控制</h4><p>Session与Cookie一样都可以对其生命周期进行控制，可以通过<code>setMaxInterval(int interval)</code>来设置Session的存活时间（<em>单位是秒</em>），默认的超时时长为1800秒即30分钟。（<em>因为在Tomcat的服务器中有默认的配置，Session-Config，表示Tomcat下面的所有Session都是默认有效30分钟</em>）</p>
+<p>也可以通过<code>getMaxInterval()</code>方法来获取Session的存活时间。</p>
+<pre><code class="java">  @RequestMapping(&quot;/life&quot;)
+    @ResponseBody
+    public void life(HttpServletRequest request,HttpServletResponse response)&#123;
+        HttpSession session=request.getSession();
+        session.setMaxInactiveInterval(3);
+    &#125;</code></pre>
+<p><var>Session的超时机制是指在一次会话中两次请求之间间隔的最长时间，当每次请求都间隔小于3秒的时候，Session永远不会超时销毁。</var></p>
+<p>当setMaxInterval()方法的时候：</p>
+<ul>
+<li>参数为整数表示超时的秒数</li>
+<li>参数为负数表示永不超时（<em>几乎不使用</em>）</li>
+</ul>
+<p>让当前Session马上超时无效需要调用方法<code>invalidate()</code>。</p>
+<h4 id="浏览器与Session之间关联"><a href="#浏览器与Session之间关联" class="headerlink" title="浏览器与Session之间关联"></a>浏览器与Session之间关联</h4><img src="Session的执行机制.png" />
+
+<h3 id="Cookie与Session的区别"><a href="#Cookie与Session的区别" class="headerlink" title="Cookie与Session的区别"></a>Cookie与Session的区别</h3><ol>
+<li>Cookie是一种发送到客户浏览器的文本串，并保存在客户端的硬盘上，可以用来在某个Web站点会话间持久化数据</li>
+<li>Session其实就是指用户从到达某个特定主页到离开为止的那段时间。Session其实就是利用Cookie进行信息处理，当用户首先进行了请求之后，服务端就在用户浏览器上创建一个Cookie，这个Cookie的name属性就是JESSIONID，value属性就是新创建的Session的ID属性。</li>
+<li>cookie和session的共同之处在与：cookie和session都会用来跟踪浏览器用户身份的会话方式</li>
+<li>cookie与session的区别就是：cookie保存在客户端而session保存在服务端</li>
+<li>cookie不是很安全，别人可以分析存放在本地的cookie并进行cookie欺骗，单个cookie在客户端的限制为4kb</li>
+</ol>
+<blockquote>
+<p>cookie欺骗是指盗取、修改、伪造的内容来欺骗Web系统，并得到相应的权限或者进行相应权限操作的一种攻击方式</p>
+</blockquote>
+
+        </div>
+
+        
+            <div class="post-copyright-info">
+                <div class="article-copyright-info-container">
+    <ul>
+        <li>Post title：Cookie与Session</li>
+        <li>Post author：Pawn</li>
+        <li>Create time：2021-07-13 15:29:56</li>
+        <li>
+            Post link：https://panhao.work/2021/07/13/Cookie与Session/
+        </li>
+        <li>
+            Copyright Notice：All articles in this blog are licensed under <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">BY-NC-SA</a> unless stating additionally.
+        </li>
+    </ul>
+</div>
+
+            </div>
+        
+
+        
+            <div class="article-nav">
+                
+                
+                    <div class="article-next">
+                        <a class="next"
+                           rel="next"
+                           href="/2021/06/04/Spring%E7%9A%84%E7%A5%9E%E5%A5%87/"
+                        >
+                            <span class="title flex-center">
+                                <span class="post-nav-title-item">Spring的神奇</span>
+                                <span class="post-nav-item">Next posts</span>
+                            </span>
+                            <span class="right arrow-icon flex-center" >
+                              <i class="fas fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+        
+            <div class="comment-container">
+                <div class="comments-container">
+    <div id="comment-anchor"></div>
+    
+        
+    <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+    <div id="gitalk-container"></div>
+    <script>
+        let __gitalk__pathname = decodeURI(location.pathname);
+        const __gitalk__pathnameLength = __gitalk__pathname.length;
+        const __gitalk__pathnameMaxLength = 50;
+        if (__gitalk__pathnameLength > __gitalk__pathnameMaxLength) {
+            __gitalk__pathname = __gitalk__pathname.substring(0, __gitalk__pathnameMaxLength - 3) + '...';
+        }
+        const gitalk = new Gitalk({
+            clientID: '1b9120324a3474ac4059',
+            clientSecret: '7a2ba06a601ff45989a71b52de9c3abae66cf370',
+            repo: 'Comments',
+            owner: 'AlpacaMe',
+            admin: ['AlpacaMe'],
+            id: __gitalk__pathname,
+            language: 'en'
+        })
+        gitalk.render('gitalk-container')
+    </script>
+
+
+    
+</div>
+
+            </div>
+        
+    </div>
+</div>
+
+
+                    
+                </main>
+
+            </div>
+
+            <div class="page-main-content-bottom">
+                <footer class="footer">
+    <div class="info-container">
+        <div class="copyright-info info-item">
+            &copy;
+            
+              <span>2020</span> -
+            
+            2021 <i class="fas fa-heart icon-animate"></i> <a href="/">Pawn</a>
+        </div>
+        
+        <div class="theme-info info-item">
+            Powered by <a target="_blank" href="https://hexo.io">Hexo</a> | Theme <a class="theme-version" target="_blank"></a>
+        </div>
+    </div>
+</footer>
+
+            </div>
+        </div>
+    </main>
+
+    <div class="sidebar-tools">
+        <div class="tools-container">
+    <ul class="tools-list">
+        
+            <li class="search popup-trigger">
+                <i class="fas fa-search"></i>
+            </li>
+        
+
+        
+            <li class="go-comment">
+                <i class="fas fa-comment"></i>
+            </li>
+        
+
+        <!-- TOC aside toggle -->
+        
+            <li class="tools-item page-aside-toggle">
+                <i class="fas fa-outdent"></i>
+            </li>
+        
+
+    </ul>
+</div>
+
+    </div>
+
+    <div class="right-bottom-side-tools">
+        <div class="side-tools-container">
+
+    <ul class="side-tools-list">
+        <li class="tools-item tool-font-adjust-plus flex-center">
+            <i class="fas fa-search-plus"></i>
+        </li>
+
+        <li class="tools-item tool-font-adjust-minus flex-center">
+            <i class="fas fa-search-minus"></i>
+        </li>
+
+        <li class="tools-item tool-expand-width flex-center">
+            <i class="fas fa-arrows-alt-h"></i>
+        </li>
+
+        <li class="tools-item tool-dark-light-toggle flex-center">
+            <i class="fas fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        <li class="tools-item tool-scroll-to-top flex-center">
+            <i class="fas fa-arrow-up"></i>
+        </li>
+
+        <li class="tools-item tool-scroll-to-bottom flex-center">
+            <i class="fas fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="tools-ul-1">
+        <li class="tools-item tool-toggle-show flex-center">
+            <i class="fas fa-cog fa-spin"></i>
+        </li>
+
+    </ul>
+</div>
+
+    </div>
+
+    <!-- page aside -->
+    <aside class="page-aside">
+        
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-number">1.</span> <span class="nav-text">穷且益坚，不坠青云之志</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BC%9A%E8%AF%9D%E6%8A%80%E6%9C%AF"><span class="nav-number">2.</span> <span class="nav-text">会话技术</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A6%82%E5%BF%B5"><span class="nav-number">2.1.</span> <span class="nav-text">概念</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%A2%E6%88%B7%E7%AB%AF%E4%BC%9A%E8%AF%9D%E6%8A%80%E6%9C%AF%E2%80%94%E2%80%94Cookie"><span class="nav-number">2.2.</span> <span class="nav-text">客户端会话技术——Cookie</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%88%9B%E5%BB%BACookie"><span class="nav-number">2.2.1.</span> <span class="nav-text">创建Cookie</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9C%8D%E5%8A%A1%E7%AB%AF%E8%8E%B7%E5%8F%96Cookie"><span class="nav-number">2.2.2.</span> <span class="nav-text">服务端获取Cookie</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BF%AE%E6%94%B9Cookie%E7%9A%84%E5%80%BC"><span class="nav-number">2.2.3.</span> <span class="nav-text">修改Cookie的值</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Cookie%E7%94%9F%E5%91%BD%E6%8E%A7%E5%88%B6"><span class="nav-number">2.2.4.</span> <span class="nav-text">Cookie生命控制</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Cookie%E7%9A%84%E8%B7%AF%E5%BE%84%E8%AE%BE%E7%BD%AE"><span class="nav-number">2.2.5.</span> <span class="nav-text">Cookie的路径设置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Cookie-%E2%80%94%E2%80%94-%E5%85%8D%E7%94%A8%E6%88%B7%E5%90%8D%E7%99%BB%E9%99%86%E5%AE%9E%E6%88%98"><span class="nav-number">2.2.6.</span> <span class="nav-text">Cookie —— 免用户名登陆实战</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9C%8D%E5%8A%A1%E7%AB%AF%E4%BC%9A%E8%AF%9D%E6%8A%80%E6%9C%AF%E2%80%94%E2%80%94Session"><span class="nav-number">2.3.</span> <span class="nav-text">服务端会话技术——Session</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%88%9B%E5%BB%BASession"><span class="nav-number">2.3.1.</span> <span class="nav-text">创建Session</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Session%E5%9F%9F%E4%B8%AD%E5%AD%98%E5%8F%96%E6%95%B0%E6%8D%AE"><span class="nav-number">2.3.2.</span> <span class="nav-text">Session域中存取数据</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Session%E7%9A%84%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E6%8E%A7%E5%88%B6"><span class="nav-number">2.3.3.</span> <span class="nav-text">Session的生命周期控制</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%B5%8F%E8%A7%88%E5%99%A8%E4%B8%8ESession%E4%B9%8B%E9%97%B4%E5%85%B3%E8%81%94"><span class="nav-number">2.3.4.</span> <span class="nav-text">浏览器与Session之间关联</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Cookie%E4%B8%8ESession%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="nav-number">2.4.</span> <span class="nav-text">Cookie与Session的区别</span></a></li></ol></li></ol>
+    </div>
+</div>
+        
+    </aside>
+
+    <!-- image viewer -->
+    <div class="image-viewer-container">
+    <div class="img-box">
+        <img src="">
+    </div>
+</div>
+
+
+</div>
+
+
+
+    <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+          <span class="search-icon">
+            <i class="fas fa-search"></i>
+          </span>
+            <div class="search-input-container">
+                <input autocomplete="off"
+                       autocorrect="off"
+                       autocapitalize="off"
+                       placeholder="Search..."
+                       spellcheck="false"
+                       type="search"
+                       class="search-input"
+                >
+            </div>
+            <span class="popup-btn-close">
+                <i class="fas fa-times"></i>
+            </span>
+        </div>
+        <div id="search-result">
+            <div id="no-result">
+                <i class="fas fa-spinner fa-pulse fa-5x fa-fw"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.0.4/source/js/utils.js"></script><script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.0.4/source/js/main.js"></script><script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.0.4/source/js/header-shrink.js"></script><script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.0.4/source/js/back2top.js"></script><script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.0.4/source/js/dark-light-toggle.js"></script>
+
+
+    <script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.0.4/source/js/local-search.js"></script>
+
+
+
+
+    <script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.0.4/source/js/left-side-toggle.js"></script>
+
+    
+        <script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.0.4/source/js/code-copy.js"></script>
+    
+
+    
+        <script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.0.4/source/js/libs/anime.min.js"></script><script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.0.4/source/js/toc.js"></script>
+    
+
+
+</body>
+</html>

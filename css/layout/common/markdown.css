@@ -1,6 +1,12 @@
+@font-face {
+  font-family: '毛笔字 CN';
+  font-weight: 500;
+  src: url("../../../webfonts/RuiZiYunZiKuWeiTiGB-1.ttf") format('opentype');
+  font-style: normal;
+}
 .markdown-body {
   font-size: 1.2rem;
-  font-family: "Times New Roman", Times, Georgia, Comic Sans MS, Comic Sans, cursive;
+  font-family: "毛笔字 CN", Times, Georgia, Comic Sans MS, Comic Sans, cursive;
 }
 .markdown-body blockquote {
   padding: 5px 5px;
@@ -22,12 +28,16 @@
   content: '';
 }
 .markdown-body cite {
-  color: #2e8b57;
+  color: #0ec50e;
+  font-style: normal;
+}
+.markdown-body dfn {
+  color: #00bfff;
   font-style: normal;
   font-weight: bolder;
 }
 .markdown-body var {
-  color: #f0f;
+  color: #ff69b4;
   font-style: normal;
 }
 .markdown-body a {
@@ -54,6 +64,18 @@
   top: 108%;
   left: 0;
   background: var(--second-text-color);
+}
+.markdown-body blockquote {
+  background-color: #f5f5f5;
+  color: #000;
+  margin: 20px 0;
+  padding: 20px !important;
+  border: 1px solid #fff;
+  border-left: 5px solid #0ff;
+  transition: border 1s;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  border-radius: 5px;
 }
 .markdown-body a:hover {
   text-decoration: underline;
@@ -110,21 +132,14 @@ keep-tablet()
   background-color: inherit;
   color: inherit;
   text-decoration: none;
-  border-bottom: 2px solid #f00;
+  border-bottom: 2px solid #f7d600;
   padding-bottom: 1px;
-  color: rgba(189,63,132,0.918);
-}
-.markdown-body tt {
-  color: #00bfff;
-  font-size: 1.2rem;
-  font-style: normal;
-  font-weight: bolder;
-  font-family: "Times New Roman", Times, Georgia, Comic Sans MS, Comic Sans, cursive;
+  color: #f7d600;
 }
 .markdown-body font {
   color: #dc143c;
+  font-size: 24px;
   font-weight: bolder;
-font-style
 }
 .markdown-body hr {
   margin-top: 2rem;
