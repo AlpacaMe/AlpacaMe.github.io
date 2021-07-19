@@ -1244,8 +1244,8 @@ sentinel auth-pass mymaster panhao</code></pre>
 </ul>
 <h3 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h3><blockquote>
 <ol>
-<li><a class="link"   href="https://www.bilibili.com/video/BV1S54y1R7SB?p=36&spm_id_from=pageDriver" >狂神说Java<i class="fas fa-external-link-alt"></i></a></li>
-<li><a class="link"   href="https://www.cnblogs.com/kevingrace/p/9004460.html" >Redis哨兵模式（sentinel）学习总结及部署记录（主从复制、读写分离、主从切换)<i class="fas fa-external-link-alt"></i></a></li>
+<li><a href="https://www.bilibili.com/video/BV1S54y1R7SB?p=36&spm_id_from=pageDriver">狂神说Java</a></li>
+<li><a href="https://www.cnblogs.com/kevingrace/p/9004460.html">Redis哨兵模式（sentinel）学习总结及部署记录（主从复制、读写分离、主从切换)</a></li>
 <li><q>如有侵权请告知 我会立即删除</q></li>
 </ol>
 </blockquote>
@@ -1346,10 +1346,10 @@ public String defaultLife(HttpServletRequest request,HttpServletResponse respons
 &#125;</code></pre>
 <h4 id="Cookie的路径设置"><a href="#Cookie的路径设置" class="headerlink" title="Cookie的路径设置"></a>Cookie的路径设置</h4><p>Cookie的Path属性可以有效的过滤哪些Cookie会发送给客户端端，哪些不会被发送给Cookie。通过<code>setPath()</code>方法为Cookie设置Path属性，对于Path属性的解析如下：</p>
 <blockquote>
-<p>假如现在CookieA的Path属性为：<a class="link"   href="http://localhost:8080/；CookieB的Path属性为：http://localhost:8080/Wind/" >http://localhost:8080/；CookieB的Path属性为：http://localhost:8080/Wind/<i class="fas fa-external-link-alt"></i></a></p>
-<p>情况一：在<a class="link"   href="http://localhost:8080/a.html下" >http://localhost:8080/a.html下<i class="fas fa-external-link-alt"></i></a></p>
+<p>假如现在CookieA的Path属性为：<a href="http://localhost:8080/；CookieB的Path属性为：http://localhost:8080/Wind/">http://localhost:8080/；CookieB的Path属性为：http://localhost:8080/Wind/</a></p>
+<p>情况一：在<a href="http://localhost:8080/a.html下">http://localhost:8080/a.html下</a></p>
 <p>​    CookieA会发送，因为满足其Path属性，但是CookieB不会被发送</p>
-<p>情况二：在<a class="link"   href="http://localhost:8080/abc/a.html下" >http://localhost:8080/abc/a.html下<i class="fas fa-external-link-alt"></i></a></p>
+<p>情况二：在<a href="http://localhost:8080/abc/a.html下">http://localhost:8080/abc/a.html下</a></p>
 <p>​    CookieA会发送，CookieB也会发送</p>
 </blockquote>
 <p>在SpringMVC中会将@RequestMapping值作为Cookie的默认值</p>
@@ -1451,7 +1451,7 @@ public String defaultLife(HttpServletRequest request,HttpServletResponse respons
         String id=session.getId();
         return &quot;该Session的id为：&quot;+id+&quot;,该Session是否是最新的：&quot;+isNew;
     &#125;</code></pre>
-<p>在浏览器输入<a class="link"   href="http://localhost:8080/session/create" >http://localhost:8080/session/create<i class="fas fa-external-link-alt"></i></a> 就可以返回对象的字符串，第一次返回的Session为最新的Session，再次刷新会发现isNew的值由true变为false。</p>
+<p>在浏览器输入<a href="http://localhost:8080/session/create">http://localhost:8080/session/create</a> 就可以返回对象的字符串，第一次返回的Session为最新的Session，再次刷新会发现isNew的值由true变为false。</p>
 <h4 id="Session域中存取数据"><a href="#Session域中存取数据" class="headerlink" title="Session域中存取数据"></a>Session域中存取数据</h4><p>Session的域中一样是可以存取数据的，使用<code>setAttribute()</code>与<code>getAttribute()</code>方法实现数据的设值和取值。</p>
 <pre><code class="java">    @RequestMapping(&quot;/set&quot;)
     @ResponseBody
@@ -2723,7 +2723,7 @@ public class Test1 &#123;
 <li>Java源文件=&gt; 编译器 =&gt; 字节码文件</li>
 <li>字节码文件 =&gt; JVM =&gt; 机器码</li>
 </ol>
-<h4 id="JVM的内存区域"><a href="#JVM的内存区域" class="headerlink" title="JVM的内存区域"></a>JVM的内存区域</h4><p><a href="https://imgtu.com/i/g21s0K"><img src="https://z3.ax1x.com/2021/05/17/g21s0K.jpg" alt="g21s0K.jpg"></a>](<a class="link"   href="https://imgtu.com/i/gaGWQJ" >https://imgtu.com/i/gaGWQJ<i class="fas fa-external-link-alt"></i></a>)</p>
+<h4 id="JVM的内存区域"><a href="#JVM的内存区域" class="headerlink" title="JVM的内存区域"></a>JVM的内存区域</h4><p><a href="https://imgtu.com/i/g21s0K"><img src="https://z3.ax1x.com/2021/05/17/g21s0K.jpg" alt="g21s0K.jpg"></a>](<a href="https://imgtu.com/i/gaGWQJ">https://imgtu.com/i/gaGWQJ</a>)</p>
 <p>JVM内存区域主要分为：</p>
 <ol>
 <li><strong>线程私有区域</strong> —— 程序计数器，虚拟机栈，本地方法栈。该区域生命周期与线程相同，依赖用户线程的启动/结束而创建/销毁。</li>
@@ -3153,12 +3153,12 @@ Content-Type: text/plain</code></pre>
 <tr>
 <td>From</td>
 <td>发出请求的用户的Email</td>
-<td>From:<a class="link"   href="mailto:user@email.com" >user@email.com<i class="fas fa-external-link-alt"></i></a></td>
+<td>From:<a href="mailto:user@email.com">user@email.com</a></td>
 </tr>
 <tr>
 <td>Host</td>
 <td>客户端想连接的目标主机和端口号</td>
-<td>Host: <a class="link"   href="http://www.hao123.com:8080" >http://www.hao123.com:8080<i class="fas fa-external-link-alt"></i></a></td>
+<td>Host: <a href="http://www.hao123.com:8080">http://www.hao123.com:8080</a></td>
 </tr>
 <tr>
 <td>Date</td>
@@ -3277,7 +3277,7 @@ Content-Type: text/plain</code></pre>
 <li>HTTP的连接很简单，是无状态的；HTTPS协议是由SSL+HTTP协议构建的可加密传输、身份认证的网络协议，比HTTP协议更安全</li>
 </ol>
 <h4 id="1-5-HTTP的参数"><a href="#1-5-HTTP的参数" class="headerlink" title="1.5 HTTP的参数"></a>1.5 HTTP的参数</h4><p>HTTP不管使用什么方法和参数放的位置都没有关系的，只是会有一些约定俗称的做法。</p>
-<p>在URL里面放参数是最简单的，就是利用<code>？</code>来分隔键值对即可。例如：<a class="link"   href="http://localhost:8443//hello?username=panhao" >http://localhost:8443//hello?username=panhao<i class="fas fa-external-link-alt"></i></a></p>
+<p>在URL里面放参数是最简单的，就是利用<code>？</code>来分隔键值对即可。例如：<a href="http://localhost:8443//hello?username=panhao">http://localhost:8443//hello?username=panhao</a></p>
 <p>其次是在Body里面放参数，<var>在Body中存放参数的时候，就需要在Header中指明Conten-Type，告诉服务器以什么样的格式来解析Body中的参数</var></p>
 <table>
 <thead>
@@ -4124,7 +4124,7 @@ location /a&#123;
 if ($request_uri ~* /(.*)\.php)&#123;
     return 500;
 &#125;</code></pre>
-<p>此时在浏览器输入：<a class="link"   href="http://abc.com/a.php" >http://abc.com/a.php<i class="fas fa-external-link-alt"></i></a>会进入500错误的页面。</p>
+<p>此时在浏览器输入：<a href="http://abc.com/a.php">http://abc.com/a.php</a>会进入500错误的页面。</p>
 <p><font>常用示例：</font></p>
 <pre><code class="java">//禁止谷歌浏览器访问
 if ($http_user_agent ~ Chrome)&#123;
@@ -6455,7 +6455,7 @@ public class UserController &#123;
     <content><![CDATA[<h2 style="color:crimson;font-weight:lighter;">我也有诗和远方，只不过诗很烂，远方也很黑暗</h2>
 <a id="more"></a>
 
-<h3 id="基于python语言的环境配置"><a href="#基于python语言的环境配置" class="headerlink" title="基于python语言的环境配置"></a><b style="color:red;">基于python语言的环境配置</b></h3><h4 id="1、Python的下载和安装"><a href="#1、Python的下载和安装" class="headerlink" title="1、Python的下载和安装"></a><b style="color:blue;">1、Python的下载和安装</b></h4><p>首先在Python官网下载：<a class="link"   href="http://www.python.org" >http://www.python.org<i class="fas fa-external-link-alt"></i></a> 下载Python安装包，在官网首页找到DownLoads按钮，鼠标悬停在上面时会出现一个下拉菜单，在下拉菜单中根据自己的操作系统选择对应的Python版本。</p>
+<h3 id="基于python语言的环境配置"><a href="#基于python语言的环境配置" class="headerlink" title="基于python语言的环境配置"></a><b style="color:red;">基于python语言的环境配置</b></h3><h4 id="1、Python的下载和安装"><a href="#1、Python的下载和安装" class="headerlink" title="1、Python的下载和安装"></a><b style="color:blue;">1、Python的下载和安装</b></h4><p>首先在Python官网下载：<a href="http://www.python.org">http://www.python.org</a> 下载Python安装包，在官网首页找到DownLoads按钮，鼠标悬停在上面时会出现一个下拉菜单，在下拉菜单中根据自己的操作系统选择对应的Python版本。</p>
 <h4 id="2、一些必须库的安装以及功能简介"><a href="#2、一些必须库的安装以及功能简介" class="headerlink" title="2、一些必须库的安装以及功能简介"></a><b style="color:blue;">2、一些必须库的安装以及功能简介</b></h4><p>学习机器学习有一些必须要安装的库作为配置的环境。这些库包括：<b style="color:crimson;">Numpy、Scipy、matplotlib、pandas、IPython以及非常核心的scikit-learn。</b></p>
 <h5 id="Numpy-基础科学计算库"><a href="#Numpy-基础科学计算库" class="headerlink" title="Numpy-基础科学计算库"></a><b style="color:orange;">Numpy-基础科学计算库</b></h5><p>Numpy是一个Python中非常基础的用于进行科学计算的库，它的功能包括高维数组（array）计算、线性代数计算、傅里叶变换以及产生伪随机数等。Numpy对于scikit-learn来说是至关重要，因为scikit-learn使用Numpy数组形式的数据来进行处理，所以需要把数据转化成Numpy数组的形式，而多维数组也是Numpy的核心功能之一。</p>
 <pre><code class="python">pip install numpy</code></pre>
@@ -7060,7 +7060,7 @@ plt.show()</code></pre>
     <content><![CDATA[<h2 style="color:crimson;font-weight:lighter;">总有一些孤独需要一个人承受</h2>
 <a id="more"></a>
 
-<h3 id="webpack-Vue-js开发准备"><a href="#webpack-Vue-js开发准备" class="headerlink" title="webpack+Vue.js开发准备"></a><b style="color:red;">webpack+Vue.js开发准备</b></h3><h4 id="1、webpack简介"><a href="#1、webpack简介" class="headerlink" title="1、webpack简介"></a><b style="color:blue;">1、webpack简介</b></h4><p>官方网站为：<a class="link"   href="https://github.com/webpack/webpack" >https://github.com/webpack/webpack<i class="fas fa-external-link-alt"></i></a></p>
+<h3 id="webpack-Vue-js开发准备"><a href="#webpack-Vue-js开发准备" class="headerlink" title="webpack+Vue.js开发准备"></a><b style="color:red;">webpack+Vue.js开发准备</b></h3><h4 id="1、webpack简介"><a href="#1、webpack简介" class="headerlink" title="1、webpack简介"></a><b style="color:blue;">1、webpack简介</b></h4><p>官方网站为：<a href="https://github.com/webpack/webpack">https://github.com/webpack/webpack</a></p>
 <p>webpack是一个打包工具，可以把js、css、node、module、coffeescrip、scss/less、图片等都打包在一起。</p>
 <h5 id="webpack的安装与使用"><a href="#webpack的安装与使用" class="headerlink" title="webpack的安装与使用"></a><b style="color:orange;">webpack的安装与使用</b></h5><p>通过node.js以及npm包管理工具完成安装：</p>
 <pre><code class="java">$  npm install -g webpack</code></pre>
@@ -7152,7 +7152,7 @@ export default new Router(&#123;
 &lt;/script&gt;
 &lt;style&gt;
 &lt;/style&gt;</code></pre>
-<p>此时输入<a class="link"   href="http:\\localhost:8080/#/say_hi" >http:\\localhost:8080/#/say_hi<i class="fas fa-external-link-alt"></i></a></p>
+<p>此时输入<a href="http:\\localhost:8080/#/say_hi">http:\\localhost:8080/#/say_hi</a></p>
 <p><b style="color:crimson;">每次创建一个的新的组件的记得使用<code>import SayHi from &#39;@components/SayHi&#39;</code></b></p>
 <p><b style="color:orange;">为组件创建样式</b></p>
 <p>修改SayHi.vue文件：</p>
@@ -7360,7 +7360,7 @@ module.exports = &#123;
   &#125;,
     ...
 &#125;</code></pre>
-<h4 id="2、渲染过程2：静态的HTML页面（index-html）"><a href="#2、渲染过程2：静态的HTML页面（index-html）" class="headerlink" title="2、渲染过程2：静态的HTML页面（index.html）"></a><b style="color:blue;">2、渲染过程2：静态的HTML页面（index.html）</b></h4><p>每次打开服务器的时候显示的URL是<a class="link"   href="http:localhost:8080/#/" >http:localhost:8080/#/<i class="fas fa-external-link-alt"></i></a> ，实际上打开的文件是<a class="link"   href="http://localhost:8080/#/index.html" >http://localhost:8080/#/index.html<i class="fas fa-external-link-alt"></i></a> ，所以找到index.html的时候，就可以看其内容：</p>
+<h4 id="2、渲染过程2：静态的HTML页面（index-html）"><a href="#2、渲染过程2：静态的HTML页面（index-html）" class="headerlink" title="2、渲染过程2：静态的HTML页面（index.html）"></a><b style="color:blue;">2、渲染过程2：静态的HTML页面（index.html）</b></h4><p>每次打开服务器的时候显示的URL是<a href="http:localhost:8080/#/">http:localhost:8080/#/</a> ，实际上打开的文件是<a href="http://localhost:8080/#/index.html">http://localhost:8080/#/index.html</a> ，所以找到index.html的时候，就可以看其内容：</p>
 <pre><code class="html">&lt;!DOCTYPE html&gt;
 &lt;html&gt;
   &lt;head&gt;
@@ -7612,8 +7612,8 @@ new Vue(&#123;
 &#125;</code></pre>
 <p>此时请求的变成了：</p>
 <ul>
-<li>原来的请求：<a class="link"   href="http://localhost:8080/api/interface/blogs/all" >http://localhost:8080/api/interface/blogs/all<i class="fas fa-external-link-alt"></i></a></li>
-<li>新的请求：<a class="link"   href="http://siwei.me/interface/blogs/all" >http://siwei.me/interface/blogs/all<i class="fas fa-external-link-alt"></i></a></li>
+<li>原来的请求：<a href="http://localhost:8080/api/interface/blogs/all">http://localhost:8080/api/interface/blogs/all</a></li>
+<li>新的请求：<a href="http://siwei.me/interface/blogs/all">http://siwei.me/interface/blogs/all</a></li>
 </ul>
 <h5 id="发送post请求"><a href="#发送post请求" class="headerlink" title="发送post请求"></a><b style="color:orange;">发送post请求</b></h5><p>与get类似，就是第二个参数是请求的body。</p>
 <pre><code class="javascript">axios.post(&#39;/user&#39;, &#123;
@@ -7639,7 +7639,7 @@ new Vue(&#123;
   &#125;);</code></pre>
 <h4 id="7、不同页面间的参数传递"><a href="#7、不同页面间的参数传递" class="headerlink" title="7、不同页面间的参数传递"></a><b style="color:blue;">7、不同页面间的参数传递</b></h4><p>在普通的web项目开发中，参数的传递有以下的几种形式：</p>
 <ul>
-<li>url：<a class="link"   href="http://localhost:8080/another_page?id=3" >http://localhost:8080/another_page?id=3<i class="fas fa-external-link-alt"></i></a></li>
+<li>url：<a href="http://localhost:8080/another_page?id=3">http://localhost:8080/another_page?id=3</a></li>
 <li>表单：<code>&lt;form&gt;</code></li>
 </ul>
 <p>而在vue.js中，不会产生表单的提交（会引起页面的整体提交），有以下两种:</p>
@@ -7679,7 +7679,7 @@ export default new Router(&#123;
 <pre><code class="html">&lt;router-link :to=&quot;&#123;name:&#39;Blog&#39;,query:&#123;id:3&#125;&quot; &gt;User&lt;/router-link&gt;</code></pre>
 <p>在<code>&lt;script&gt;</code>中：</p>
 <pre><code class="javascript">this.$router.push(&#123;name:&#39;Blog&#39;,query:&#123;id:3&#125;&#125;)</code></pre>
-<p>最后都会跳转到<a class="link"   href="http:/localhost:8080/vuetest/#/blog?id=3" >http:/localhost:8080/vuetest/#/blog?id=3<i class="fas fa-external-link-alt"></i></a></p>
+<p>最后都会跳转到<a href="http:/localhost:8080/vuetest/#/blog?id=3">http:/localhost:8080/vuetest/#/blog?id=3</a></p>
 <p><b style="color:crimson;">获取路由中的参数：</b></p>
 <pre><code class="javascript">this.$router.query.id//获取普通的参数
 this.$router.params.id//获取路由信息中定义好的参数</code></pre>
