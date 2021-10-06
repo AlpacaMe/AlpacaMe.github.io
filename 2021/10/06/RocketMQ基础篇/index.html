@@ -1,0 +1,661 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>RocketMQ基础篇 | Yumi Shoke</title><meta name="author" content="Yumi"><meta name="copyright" content="Yumi"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="RocketMQMQ概述MQ是Message Queue的简称，是一种提供消息队列服务的中间件，是一套提供了消息生产、存储、消费全过程的API软件系统。 MQ的应用场景：  限流削峰 MQ可以将系统的超量请求暂存其中，以便系统后期可以慢慢进行处理，从而避免了请求丢失或系统被压垮   异步解耦 上游系统对下游系统调用若为同步调用，则大大降低系统的吞吐量与并发度，且系统耦合度太高。而异步调用则会解决这">
+<meta property="og:type" content="article">
+<meta property="og:title" content="RocketMQ基础篇">
+<meta property="og:url" content="https://alpacame.github.io/2021/10/06/RocketMQ%E5%9F%BA%E7%A1%80%E7%AF%87/index.html">
+<meta property="og:site_name" content="Yumi Shoke">
+<meta property="og:description" content="RocketMQMQ概述MQ是Message Queue的简称，是一种提供消息队列服务的中间件，是一套提供了消息生产、存储、消费全过程的API软件系统。 MQ的应用场景：  限流削峰 MQ可以将系统的超量请求暂存其中，以便系统后期可以慢慢进行处理，从而避免了请求丢失或系统被压垮   异步解耦 上游系统对下游系统调用若为同步调用，则大大降低系统的吞吐量与并发度，且系统耦合度太高。而异步调用则会解决这">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://alpacame.github.io/img/default_top_image.jpg">
+<meta property="article:published_time" content="2021-10-06T11:15:12.000Z">
+<meta property="article:modified_time" content="2021-10-06T11:19:54.593Z">
+<meta property="article:author" content="Yumi">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://alpacame.github.io/img/default_top_image.jpg"><link rel="shortcut icon" href="/img/favicon.jpg"><link rel="canonical" href="https://alpacame.github.io/2021/10/06/RocketMQ%E5%9F%BA%E7%A1%80%E7%AF%87/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: undefined,
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: {"limitCount":50,"languages":{"author":"作者: Yumi","link":"链接: ","source":"来源: Yumi Shoke","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。"}},
+  lightbox: 'fancybox',
+  Snackbar: {"chs_to_cht":"你已切换为繁体","cht_to_chs":"你已切换为简体","day_to_night":"你已切换为深色模式","night_to_day":"你已切换为浅色模式","bgLight":"#49b1f5","bgDark":"#121212","position":"top-right"},
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: true,
+  islazyload: false,
+  isanchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'RocketMQ基础篇',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: true,
+  isToc: true,
+  postUpdate: '2021-10-06 19:19:54'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if (GLOBAL_CONFIG_SITE.isHome && /iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 5.3.0"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/favicon.jpg" onerror="onerror=null;src='/img/background.jpg'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">文章</div><div class="length-num">18</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">标签</div><div class="length-num">5</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">分类</div><div class="length-num">12</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 目录</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('/img/default_top_image.jpg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">Yumi Shoke</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 目录</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">RocketMQ基础篇</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2021-10-06T11:15:12.000Z" title="发表于 2021-10-06 19:15:12">2021-10-06</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2021-10-06T11:19:54.593Z" title="更新于 2021-10-06 19:19:54">2021-10-06</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">8.7k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>32分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="RocketMQ基础篇"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h2 id="RocketMQ"><a href="#RocketMQ" class="headerlink" title="RocketMQ"></a>RocketMQ</h2><h3 id="MQ概述"><a href="#MQ概述" class="headerlink" title="MQ概述"></a>MQ概述</h3><p>MQ是Message Queue的简称，是一种提供消息队列服务的中间件，是一套提供了消息生产、存储、消费全过程的API软件系统。</p>
+<p><cite>MQ的应用场景：</cite></p>
+<ol>
+<li><p><dfn>限流削峰</dfn></p>
+<p>MQ可以将系统的超量请求暂存其中，以便系统后期可以慢慢进行处理，从而避免了请求丢失或系统被压垮</p>
+<p><img src="RocketMQ_1.png" alt="限流削峰"></p>
+</li>
+<li><p><dfn>异步解耦</dfn></p>
+<p>上游系统对下游系统调用若为同步调用，则<var>大大降低系统的吞吐量与并发度</var>，且系统耦合度太高。而异步调用则会解决这些问题，所以两层之间实现由同步到异步的转化，一般做法就是，在两层之间添加一个MQ层。</p>
+<p><img src="RocketMQ_2.png" alt="异步解耦"></p>
+</li>
+<li><p><dfn>数据收集</dfn></p>
+<p>分布式系统会产生海量的数据， 如业务日志、监控数据、用户行为等。针对这些数据进行实时或批量采集汇总，然后对这些数据进行发数据分析，这是当前互联网平台的必备技术。通过MQ完成此类数据收集是最好的工作。</p>
+</li>
+</ol>
+<p><cite>常见MQ之间的对比：</cite></p>
+<table>
+<thead>
+<tr>
+<th>关键词</th>
+<th>ACTIVEMQ</th>
+<th>RABBITMQ</th>
+<th>KAFKA</th>
+<th>ROCKETMQ</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>开发语言</td>
+<td>Java</td>
+<td>ErLang</td>
+<td>Java</td>
+<td>Java</td>
+</tr>
+<tr>
+<td>单机吞吐量</td>
+<td>$10^4$</td>
+<td>$10^4$</td>
+<td>$10^5$</td>
+<td>$10^5$</td>
+</tr>
+<tr>
+<td>Topic</td>
+<td>-</td>
+<td>-</td>
+<td>百级Topic时会影响系统吞吐量</td>
+<td>千级Topic时会影响系统吞吐量</td>
+</tr>
+<tr>
+<td>社区活跃度</td>
+<td>低</td>
+<td>高</td>
+<td>高</td>
+<td>高</td>
+</tr>
+</tbody></table>
+<p><cite>常见的MQ协议</cite></p>
+<ul>
+<li><p><font>JMS</font></p>
+<p>JMS，Java Message Service（消息服务）。是Java平台上有关MOM（Message Oriented Middleware，面向消息的中间件）的技术规范，它便于<var>消息系统中的Java应用程序进行消息交换，并且通过提供标准的产生、发送、接收消息的接口</var>，简化企业化应用开发。ActiveMQ是该协议的典型实现。</p>
+</li>
+<li><p><font>STOMP</font></p>
+<p>STOMP，Streaming Text Orientated Message Protocol，是一种MOM设计的简单文本协议。STOMP提供一个可互操作的连接格式，允许客户端与任意STOMP消息代理进行交互。ActiveMQ是该协议的典型实现，RabbitMQ通过插件可以支持该协议。</p>
+</li>
+<li><p><font>AMQP</font></p>
+<p>AMQP，Advanced Message Queuing Protocol，一个提供统一消息服务的应用层标准，是应用层协议的一个开发标准，是一种MOM设计。基于此协议的客户端与消息中间件可传递信息，并不受客户端/中间件不同产品，不同开发语言等条件的限制。RabbitMQ是该协议的典型实现。</p>
+</li>
+<li><p><font>MQTT</font></p>
+<p>Message Queuing Telemetry Transport（<em>消息队列遥测传输</em>），是IBM开发的一个即时通讯协议，是一种二进制协议，主要用于服务器和低功耗IOT设备间的通信，该协议支持所有平台，几乎可以把所有联网物品和外部连接起来，被用来当做传感器和致动器的通信协议。RabbitMQ通过插件可以支持该协议。</p>
+</li>
+</ul>
+<h3 id="RocketMQ概述"><a href="#RocketMQ概述" class="headerlink" title="RocketMQ概述"></a>RocketMQ概述</h3><h4 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h4><p>RocketMQ是一个统一消息引擎、轻量级数据处理平台。RocketMQ是一款阿里巴巴开源的消息中间件，在2016年11月28日向Apache基金会捐赠RocketMQ，称为Apache孵化项目。2017年9月25日，Apache宣布RocketMQ孵化称为Apache顶级项目——TLP，成为中国互联网中间件在Apache上的顶级项目。</p>
+<h4 id="核心概念"><a href="#核心概念" class="headerlink" title="核心概念"></a>核心概念</h4><ul>
+<li><p><font>消息</font></p>
+<p>消息是指，<var>消息系统所传输信息的物理载体，生产和消费数据的最小单位，每条消息必须属于一个主题</var>。</p>
+</li>
+<li><p><font>主题</font></p>
+<p>Topic表示一类消息的集合，每个主题包含若干条消息，每条消息只能属于一个主题，是RocketMQ进行消息订阅的基本单位。<var>一个生产者可以同时发送多种Topic的消息，而一个消费者只能对某种特定的Topic感兴趣，即只可以订阅和消费一种Topic消息</var>。</p>
+</li>
+<li><p><font>标签</font></p>
+<p>为消息设置标签，用于同一个主题下区分不同类型的消息。来自同一个业务单元的消息，可以根据不同业务目的在同一个主题下设置不同的标签。标签能够有效地保持代码的清晰度和连贯性，并优化RocketMQ提供的查询系统。消费者可以根据Tag实现对不同子主题的不同消费逻辑，实现更好的扩展性</p>
+</li>
+<li><p><font>队列</font></p>
+<p>存储消息的物理实体，一个Topic可以包含多个Queue，每个Queue中存放的就是该Topic的消息，一个Topic的Queue也被称为Topic中消息的分区（<em>Partition</em>）</p>
+<p><img src="RocketMQ_3.png" alt="采用分区策略"></p>
+<blockquote>
+<p>一个Topic中的Queue只能被一个消费者组中的一个消费者消费。一个Queue中的消息不允许同一个消费者组中的多个消费者消费</p>
+</blockquote>
+<p><cite>分区与分片的区别：</cite></p>
+<p>在RocketMQ中，分片是指存放在相应Topic的Broker，每个分片都会创建出相应数量的分区，即Queue，每个Queue的大小都是相同的</p>
+<p><img src="E:%5Cblog%5Csource_posts%5CRocketMQ_5.png" alt="分区与分片"></p>
+</li>
+<li><p><font>消息标识</font></p>
+<p>RocketMQ中每个消息拥有唯一的MessageId，且可以携带具有业务标识的Key，以方便对消息的查询。不过需要注意的是，MessageId有两个：</p>
+<ul>
+<li>在生产者<code>send()</code>消息的时候会自动生成一个MessageId（<em>msgId</em>）</li>
+<li>当消息到达Broker后，Broker也会自动生成一个MessageId（<em>offsetMsgId</em>）</li>
+</ul>
+<p>msgId、offsetMsgId与key都称为消息的标识。</p>
+<p><cite>生成规则：</cite></p>
+<ul>
+<li>msgId：由生产者生成，其生成规则为msgId=<var>producerIp+进程pid+MessageClientIDSetter类的ClassLoader的hashCode+当前时间+AutomicInteger自增计数器</var></li>
+<li>offsetMsgId：由broker端生成，其生成规则为offsetMsgId=<var>brokerIp+物理分区offset</var></li>
+<li>key：由用户指定的业务相关的唯一标识</li>
+</ul>
+</li>
+</ul>
+<h4 id="系统架构"><a href="#系统架构" class="headerlink" title="系统架构"></a>系统架构</h4><p><img src="RocketMQ_4.png" alt="RocketMQ架构图"></p>
+<p>整个系统架构分为四个部分：</p>
+<ol>
+<li><p><font>Producer</font></p>
+<p>生产者，负责生产消息。Producer通过MQ的负载均衡模块选择相应的Broker集群队列，进行消息投递，投递的过程中支持快速失败并且低延迟。<var>RocketMQ中消息生产者都是以生产者组的形式存在的，生产者组是同一类生产者的集合，这类Producer发送相同Topic类型的消息。</var>一个生产者可以同时发送多个Topic消息。</p>
+</li>
+<li><p><font>Consumer</font></p>
+<p>消费者，负责消费消息。一个消息消费者会从Broker服务器中获取到信息，并对消息进行相关业务的处理。<var>Rocket中的消息消费者都是以消费者组的形式出现的，消费者是同一类消费者的集合，这类Consumer消费的是同一个Topic类型的消息。</var>消费者组使得消息消费方面，实现负载均衡和容错的目标变得容易。</p>
+<p><img src="RocketMQ_6.png" alt="消费者组"></p>
+<p>因为一个Topic中的一个Queue只能被一个消费者组中的一个消费者消费，所以<q>消费者中Consumer的数量应该小于等于订阅Topic的Queue的数量，如果超出Queue的数量，则多出的Consumer将不能消费消息。</q>但是一个Topic中的消息可以被多个消费者组进行消费。</p>
+<p><img src="RocketMQ_7.png" alt="消费者组"></p>
+<blockquote>
+<ul>
+<li>一个消费者组只能消费一个Topic中的消息，不能同时消费多个Topic消息</li>
+<li>一个消费者组中的消费者必须订阅完全相同的Topic</li>
+</ul>
+</blockquote>
+</li>
+<li><p><font>Name Server</font></p>
+<p>NameServer是一个Broker与Topic路由的注册中心，支持Broker的动态注册与发现。主要包括两个功能：</p>
+<ul>
+<li><dfn>Broker管理</dfn>：接受Broker集群的注册信息并且保存下来作为路由信息的基本数据；提供心跳监测机制，检查Broker是否还活着</li>
+<li><dfn>路由信息管理</dfn>：每个NameServer中都保存着Broker集群的整个路由信息和用于客户端查询的队列信息。Producer和Consumer通过NameServer可以获取整个Broker集群的路由信息，从而进行消息投递和消费。</li>
+</ul>
+<p><cite>路由注册</cite></p>
+<p>​    在Broker节点启动时，轮询NameServer列表，与每个NameServer建立长连接，发起注册请求。在NameServer内部维护一个Broker列表，用来动态存储Broker的信息。</p>
+<p>​    Broker节点为了证明自己是活着的，为了维护与NameServer间的长连接，会将最新的信息以心跳包的方式上报给NameServer，每30秒发送一个心跳。心跳中包含BrokerId、Broker地址、Broker名称、Broker所属集群名称等等。NameServer在接收到心跳包后，会更新心跳时间戳，记录这个Broker的最新存活时间。</p>
+<p><cite>路由剔除</cite></p>
+<p>​    由于Broker关机、宕机或网络抖动等原因，NameServer没有收到Broker心跳，NameServer可能会将其从Broker列表中剔除。NameServer中有一个定时任务，每隔10秒就扫描一个Broker列表，查看每一个Broker最新心跳时间戳距离当前时间是否超过120秒，如果超过，则判断Broker失效，然后将其从Broler列表中剔除。</p>
+<p><cite>路由发现</cite></p>
+<p>​    RocketMQ路油发现是采用Pull模型。当Topic路由信息发生变化时，NameServer不会主动推送给客户端，而是客户端定时拉取主题最新路由。默认客户端每30秒会拉取一次最新的路由</p>
+<blockquote>
+<p><q>Push模型与Pull模型的区别：</q></p>
+<ul>
+<li>Push模型：当服务器的数据发生变化时，将服务器最新维护的信息推送给客户端。其实时性比较好，是一个“发布-订阅”模型，需要维护一个长连接。而长连接的维护是需要资源成本的，该模型适合于场景：<ul>
+<li>实时性要求高</li>
+<li>Clients数量不多，Server数据变化较为频繁</li>
+</ul>
+</li>
+<li>Pull模型：客户端通过一个定时任务，定期去服务器中获取最新的信息。实时性较差，实现简单</li>
+<li>Long Polling模型：长轮询模型，服务器会维持客户端的连接一段时间，假如在维护连接的时间段中发生了信息变化，就将最先的信息发送给客户端，否则，在下一次连接的时候客户端主动的获取服务器的最新信息</li>
+</ul>
+</blockquote>
+<p><cite>客户端NameServer选择策略</cite></p>
+<p>​    客户端在配置的时候必须要写上NameServer集群的地址，客户端首先会生成一个随机数，然后再与NameServer节点数量取模，此时得到就是所要连接的节点索引，然后会进行连接。如果连接失败，则会采用轮询策略，逐个尝试去连接其它节点。</p>
+</li>
+<li><p><font>Broker</font></p>
+<p>Broker充当消息中转角色，负责存储消息、转发消息。Broker在RocketMQ系统中负责接收并存储从生产者发送过来的消息，同时为消费者拉取请求做准备。Broker同时也存储消息相关的元数据，包括消费者组消费进度offset、主题、队列等。</p>
+</li>
+</ol>
+<h4 id="工作流程"><a href="#工作流程" class="headerlink" title="工作流程"></a>工作流程</h4><ol>
+<li>启动NameServer，NameServer启动后开始监听端口，等待Broker、Producer、Consumer的连接</li>
+<li>启动Broker时，Broker会与所有的NameServer建立并保持长连接，然后每30秒向NameServer定时发送心跳包</li>
+<li>发送消息前，可以先创建Topic。创建Topic时需要指定该Topic要存储在哪些Broker上。当然，在创建Topic时也会将Topic与Broker的关系写入到NameServer中。不过这一步是可选的，也可以在发送消息时自动创建Topic。</li>
+<li>Producer发送消息，启动时先跟NameServer集群中其中一台建立长连接，并从NameServer中获取路由信息，即当前发送的Topic的Queue与Broker地址的映射关系。然后根据算法策略从队列中选择一个Queue，与队列所在的Broker建立长连接从而向Broker发送消息。当然在获取路由信息后，Producer会首先将路由信息缓存到本地，再每隔30秒从NameServer中更新一个路由信息。</li>
+<li>Consumer与Producer类似，跟其中一台NameServer建立长连接，获取其所订阅的Topic的路由信息，然后根据算法策略从路由信息中获取到其所要消费的Queue，然后直接跟Broker建立长连接，开始消费其中的消息。Consumer在获取路由信息后，同样也会以30秒的频率从NameServer更新一次路由信息。<u>不过不同于Producer的是，Consumer还会向Broker发送心跳，以确保Broker存活状态。</u></li>
+</ol>
+<h3 id="下载与安装"><a href="#下载与安装" class="headerlink" title="下载与安装"></a>下载与安装</h3><h4 id="RocketMQ下载与安装"><a href="#RocketMQ下载与安装" class="headerlink" title="RocketMQ下载与安装"></a>RocketMQ下载与安装</h4><ul>
+<li><p><dfn>下载地址</dfn>：<a target="_blank" rel="noopener" href="https://www.apache.org/dyn/closer.cgi?path=rocketmq/4.9.1/rocketmq-all-4.9.1-source-release.zip">https://www.apache.org/dyn/closer.cgi?path=rocketmq/4.9.1/rocketmq-all-4.9.1-source-release.zip</a></p>
+</li>
+<li><p><dfn>服务器版本：</dfn>Centos7</p>
+</li>
+</ul>
+<p>将下载好的压缩包，上传到服务器上。然后利用<code>unzip</code>命令进行解压</p>
+<pre><code class="shell">[root@localhost ~] unzip rocketmq-all-4.9.1-bin-release.zip 
+# 解压完成之后将解压之后的文件夹移动指定的位置
+[root@localhost ~] mv rocketmq-all-4.9.1 /opt/rocketmq
+# 进入/opt/rocketmq中查看相关内容
+[root@localhost rocketmq] ls
+benchmark  bin  conf  lib  LICENSE  NOTICE  README.md </code></pre>
+<p>其中配置文件存放在<code>./conf</code>文件夹下，二进制启动脚本放在<code>./bin</code>文件夹下</p>
+<pre><code class="shell">[root@localhost bin] ls
+cachedog.sh       dledger      mqbroker            mqbroker.numanode1  mqnamesrv      mqshutdown.cmd  play.cmd   runbroker.cmd  runserver.sh  tools.cmd
+cleancache.sh     mqadmin      mqbroker.cmd        mqbroker.numanode2  mqnamesrv.cmd  nohup.out       play.sh    runbroker.sh   setcache.sh   tools.sh
+cleancache.v1.sh  mqadmin.cmd  mqbroker.numanode0  mqbroker.numanode3  mqshutdown     os.sh           README.md  runserver.cmd  startfsrv.sh</code></pre>
+<p>其中有几个常用的脚本：</p>
+<ul>
+<li><code>mqnamesrv</code> —— 用于启动NameServer服务器</li>
+<li><code>mqbrooker</code> —— 用于启动Broker</li>
+<li><code>mqadmin</code> —— 用于操作和管理RockeMQ</li>
+<li><code>mqshutdown</code> —— 用于关闭RocketMQ</li>
+</ul>
+<p>完成安装之后，<var>还需要修改<code>runserver.sh</code>与<code>runbroker.sh</code>中关于堆栈大小的配置</var>，默认堆的大小为4G，所以在内存不够的情况下是无法启动的。</p>
+<pre><code class="shell">choose_gc_log_directory
+# 原本设置为-Xms4g -Xmx4g 修改为如下配置即可
+JAVA_OPT=&quot;$&#123;JAVA_OPT&#125; -server -Xms512m -Xmx512m&quot;
+JAVA_OPT=&quot;$&#123;JAVA_OPT&#125; -XX:+UseG1GC -XX:G1HeapRegionSize=16m -XX:G1ReservePercent=25 -XX:InitiatingHeapOccupancyPercent=30 -XX:SoftRefLRUPolicyMSPerMB=0&quot;</code></pre>
+<p><font>启动服务</font></p>
+<pre><code class="shell"># 首先启动NameServer服务器
+[root@localhost rocketmq] nohup sh ./bin/mqnamesrv &amp;
+# 启动Broker
+[root@localhost rocketmq] nohup sh ./bin/mqbroker -c conf/broker.conf autoCreateTopicEnable=true &amp;
+# 查看启动情况
+[root@localhost rocketmq] jps
+2213 NamesrvStartup
+3114 Jps
+2252 BrokerStartup
+# 出现NameServerStartup和BrokerStartup就表示启动成功了</code></pre>
+<p>启动之后产生的日志和数据存储文件在<code>/root</code>文件夹中</p>
+<pre><code class="shell">[root@localhost ~]# ls
+logs  rocketmq-all-4.9.1-bin-release.zip store
+# 查看相关日志
+# 查看broker的日志，可以看到Broker与NameServer进行正常的心跳反应
+[root@localhost ~] tail -f logs/rocketmqlogs/broker.log
+2021-09-28 15:46:42 INFO brokerOutApi_thread_2 - register broker[0]to name server localhost:9876 OK
+2021-09-28 15:47:12 INFO brokerOutApi_thread_3 - register broker[0]to name server localhost:9876 OK
+2021-09-28 15:47:41 INFO BrokerControllerScheduledThread1 - dispatch behind commit log 0 bytes
+2021-09-28 15:47:41 INFO BrokerControllerScheduledThread1 - Slave fall behind master: 191890 bytes
+2021-09-28 15:47:42 INFO brokerOutApi_thread_4 - register broker[0]to name server localhost:9876 OK
+2021-09-28 15:48:12 INFO brokerOutApi_thread_1 - register broker[0]to name server localhost:9876 OK
+2021-09-28 15:48:41 INFO BrokerControllerScheduledThread1 - dispatch behind commit log 0 bytes
+2021-09-28 15:48:41 INFO BrokerControllerScheduledThread1 - Slave fall behind master: 191890 bytes
+2021-09-28 15:48:42 INFO brokerOutApi_thread_2 - register broker[0]to name server localhost:9876 OK
+2021-09-28 15:49:12 INFO brokerOutApi_thread_3 - register broker[0]to name server localhost:9876 OK
+# 这是NameServer服务器的日志
+[root@localhost ~] tail -f logs/rocketmqlogs/namesrv.log
+2021-09-28 15:49:30 INFO NettyServerCodecThread_1 - NETTY SERVER PIPELINE: channelInactive, the channel[192.168.137.220:35696]
+2021-09-28 15:49:30 INFO NettyServerCodecThread_1 - NETTY SERVER PIPELINE: channelUnregistered, the channel[192.168.137.220:35696]
+2021-09-28 15:50:00 INFO NettyServerCodecThread_2 - NETTY SERVER PIPELINE: channelRegistered 192.168.137.220:35702
+2021-09-28 15:50:00 INFO NettyServerCodecThread_2 - NETTY SERVER PIPELINE: channelActive, the channel[192.168.137.220:35702]
+2021-09-28 15:50:00 INFO NettyServerCodecThread_2 - NETTY SERVER PIPELINE: channelInactive, the channel[192.168.137.220:35702]
+2021-09-28 15:50:00 INFO NettyServerCodecThread_2 - NETTY SERVER PIPELINE: channelUnregistered, the channel[192.168.137.220:35702]
+2021-09-28 15:50:30 INFO NettyServerCodecThread_3 - NETTY SERVER PIPELINE: channelRegistered 192.168.137.220:35706
+2021-09-28 15:50:30 INFO NettyServerCodecThread_3 - NETTY SERVER PIPELINE: channelActive, the channel[192.168.137.220:35706]
+2021-09-28 15:50:30 INFO NettyServerCodecThread_3 - NETTY SERVER PIPELINE: channelInactive, the channel[192.168.137.220:35706]
+2021-09-28 15:50:30 INFO NettyServerCodecThread_3 - NETTY SERVER PIPELINE: channelUnregistered, the channel[192.168.137.220:35706]</code></pre>
+<p>上述日志是我在启动了一段时间之后查看的，如果在启动的瞬间查看日志可以看到启动的详细信息。查看的方式也是一样的，就不演示了。</p>
+<p><font>关闭服务</font></p>
+<pre><code class="shell"># 关闭NameServer
+[root@localhost rocketmq] sh bin/mqshutdown namesrv
+# 关闭Broker
+[root@localhost rocketmq] sh bin/mqshutdown broker
+# 查看
+[root@localhost rocketmq] jps
+3442 Jps</code></pre>
+<h4 id="RocketMQ-Console下载与安装"><a href="#RocketMQ-Console下载与安装" class="headerlink" title="RocketMQ-Console下载与安装"></a>RocketMQ-Console下载与安装</h4><p>rocketmq-console是一款RocketMQ的可视化软件，是一个SpringBoot项目。下载地址为：<a target="_blank" rel="noopener" href="https://github.com/apache/rocketmq-externals">https://github.com/apache/rocketmq-externals</a></p>
+<p>（<em>我是2021年9月28日进入这个网址的时候，在master分支下没有发现rocketmq-console，最后是改成develop分支下面下载到了rocketmq-console</em>）</p>
+<p>可以通过Git下载，也可以直接下载压缩包。下载之后进入对应的文件夹，修改对应的配置之后将该项目打包上传到服务器上运行起来</p>
+<p><font>修改配置</font></p>
+<pre><code class="properties">server.contextPath=
+# 最好是将端口修改为不常用的端口号，我这里图省事就懒得修改
+server.port=8080
+spring.application.name=rocketmq-console
+spring.http.encoding.charset=UTF-8
+spring.http.encoding.enabled=true
+spring.http.encoding.force=true
+logging.config=classpath:logback.xml
+# 设置NameServer的地址
+rocketmq.config.namesrvAddr=192.168.137.220:9876
+rocketmq.config.isVIPChannel=
+rocketmq.config.dataPath=/tmp/rocketmq-console/data
+rocketmq.config.enableDashBoardCollect=true
+rocketmq.config.msgTrackTopicName=</code></pre>
+<p><font>项目编译</font></p>
+<pre><code class="bash">E:\支持文件\rocketmq-console&gt;mvn clean package -Dmaven.test.skip=true</code></pre>
+<p>打包编译之后会在target文件下生成一个jar包：<code>rocketmq-console-ng-1.0.0.jar</code></p>
+<blockquote>
+<p>假如打包编译的时候如果是rocketmq-version失败了，记得将其从<var>4.4.0-SNAPSHOT</var>修改为<var>4.4.0</var></p>
+</blockquote>
+<p><font>启动Jar包</font></p>
+<p>通过<code>nohup java -jar rocketmq-console-ng-1.0.0.jar &amp;</code>启动之后，在浏览器中输入<a href="http://192.168.137.220:8080即可查看rocketmq-console的界面：">http://192.168.137.220:8080即可查看rocketmq-console的界面：</a></p>
+<p><img src="RocketMQ_8.png" alt="rocketmq-console主界面"></p>
+<p>rocketmq-console还可以创建主题，修改主题，查看消息等等运维相关的操作，就不在这里赘述了。大家可以自己去亲身体验一下！！！</p>
+<h3 id="基本使用样例"><a href="#基本使用样例" class="headerlink" title="基本使用样例"></a>基本使用样例</h3><h4 id="发送普通消息"><a href="#发送普通消息" class="headerlink" title="发送普通消息"></a>发送普通消息</h4><ul>
+<li><p><font>发送同步消息</font></p>
+<p>在消息发送方发出消息之后，会在接收方响应之后才会发送下一个数据包的通讯方法，比如重要的消息通知，短信通知等等。</p>
+<pre><code class="java"> public static void main(String[] args) throws Exception &#123;        //1.创建消息生产者，并制定生产者组名        DefaultMQProducer producer=new DefaultMQProducer(&quot;please_rename_unique_group_name&quot;);        //2.设置NameServer的地址        producer.setNamesrvAddr(&quot;192.168.137.220:9876&quot;);        //3.启动Producer实例        producer.start();        for (int i = 0; i &lt;10 ; i++) &#123;            Message msg=new Message(&quot;TopicA&quot;,&quot;TagA&quot;,(&quot;Hello RocketMQ&quot;+i).getBytes(RemotingHelper.DEFAULT_CHARSET));            //4.发送消息            SendResult sendResult=producer.send(msg);            //5.使用返回的结果            System.out.printf(&quot;%s%n&quot;,sendResult);        &#125;         //6.关闭生产者        producer.shutdown();    &#125;</code></pre>
+<p>在RocketMQ的控制台中也是可以看到消息的详细信息的。</p>
+</li>
+<li><p><font>发送异步消息</font></p>
+<p>发送方发出数据后，不等接收方响应，接着发送下一个数据包的通讯方式。RocketMQ的异步发送需要使用异步发送回调接口<code>SendBack</code></p>
+<pre><code class="java">public static void main(String[] args) throws Exception &#123;        //实例化消息生产者Producer        DefaultMQProducer producer=new DefaultMQProducer(&quot;please_rename_unique_group_name&quot;);        //设置NameServer的地址        producer.setNamesrvAddr(&quot;192.168.137.220:9876&quot;);        //启动Producer实例        producer.start();        producer.setRetryTimesWhenSendAsyncFailed(0);        for (int i = 0; i &lt;10 ; i++) &#123;            Message msg=new Message(&quot;TopicA&quot;,&quot;TagA&quot;,(&quot;Hello RocketMQ Async Message&quot;+i).getBytes(RemotingHelper.DEFAULT_CHARSET));            producer.send(msg, new SendCallback() &#123;                @Override                public void onSuccess(SendResult sendResult) &#123;                    System.out.println(sendResult);                &#125;                @Override                public void onException(Throwable throwable) &#123;                    System.out.println(&quot;发送失败&quot;);                &#125;            &#125;);            Thread.sleep(1000);        &#125;        producer.shutdown();    &#125;</code></pre>
+</li>
+<li><p><font>发送单向消息</font></p>
+<p>发送方只负责发送消息，不等待服务器回应且没有回调函数触发，即只发送请求不等待应答。</p>
+<pre><code class="java">public static void oneWayProducer() throws Exception&#123;        //实例化消息生产者Producer        DefaultMQProducer producer=new DefaultMQProducer(&quot;please_rename_unique_group_name&quot;);        //设置NameServer的地址        producer.setNamesrvAddr(&quot;192.168.137.220:9876&quot;);        //启动Producer实例        producer.start();        for (int i = 0; i &lt;10 ; i++) &#123;            Message msg=new Message(&quot;TopicA&quot;,&quot;oneWayProducer&quot;,(&quot;Hello RocketMQ&quot;+i).getBytes(RemotingHelper.DEFAULT_CHARSET));            producer.sendOneway(msg);            System.out.println(LocalTime.now()+&quot; &quot;);            Thread.sleep(1000);        &#125;        producer.shutdown();    &#125;</code></pre>
+</li>
+</ul>
+<h4 id="发送顺序消息"><a href="#发送顺序消息" class="headerlink" title="发送顺序消息"></a>发送顺序消息</h4><p>在一个Broker中存在很多个队列，多个生产者向Broker中发送消息的时候并不能保证所有的消息都进入同一个Queue，自然消费者也无法保证消费消息的顺序是按照生产者发送消息的顺序。但是在某些业务场景下，例如是订单业务，就必须要严格保证顺序，那么如何去保证消息的顺序呢？在这里是有两种解决问题的方式：</p>
+<ul>
+<li><p><dfn>全局消息顺序</dfn></p>
+<p>对于一个Topic而言，所有的消息按照严格FIFO的顺序来发布和消费</p>
+</li>
+<li><p><dfn>分区消息顺序</dfn></p>
+<p>对于指定的一个Topic，所有消息根据Sharding Key进行分区。同一个分区的消息按照严格FIFO的顺序进行发布和消费。(<em>Sharding Key是顺序消息中用来区分不同分区的关键字段，和普通消息的key是完全不同的概念</em>)。</p>
+<p><img src="RocketMQ_10.png" alt="分区消息的顺序性"></p>
+<p>对于a类消息和b类消息而言，在第一种情况下，Broker中的存储顺序只需要满足a类消息的顺序和b类消息的顺序即可，至于a类消息与b类消息之间如何穿插是无所谓的。例如：$a_1 a_2 a_3 b_1 b_2 b_3$和$a_1 a_2 b_1 b_2 b_3 a_3$都是分区顺序的。</p>
+<p>发送顺序消息主要依赖两个核心的类：</p>
+<ul>
+<li><code>MessageQueueSelector</code> —— 通过Queue选择器，将需要顺序发送的消息送进Borker中同一个Queue中，就可以遵循FIFO的原则</li>
+<li><code>MessageListenerOrderly</code> —— 会为每个Consumer Queue加锁，消费每个消息前，都要获得这个消息对应的Queue对应的锁</li>
+</ul>
+<ol>
+<li><p><q>创建一个消费者</q></p>
+<pre><code class="java">public static void main(String[] args) throws Exception &#123;        List&lt;Order&gt; builder = Order.builder();        DefaultMQProducer producer=new DefaultMQProducer(&quot;Order&quot;);        producer.setNamesrvAddr(&quot;192.168.137.220:9876&quot;);        producer.start();        for (Order order : builder) &#123;            Message msg = new Message(&quot;OrderTopic&quot;, &quot;Order&quot;, order.toString().getBytes());            /*            *  第一个参数：消息对象            *  第二个参数：消息队列的选择器            *  第三个参数：选择队列的业务标识——Sharding Key            * **/            SendResult send = producer.send(msg, new MessageQueueSelector() &#123;                @Override                /*                 * 第一个参数：队列集合                 * 第二个参数：消息对象                 * 第三个参数：业务标识参数                 * **/                public MessageQueue select(List&lt;MessageQueue&gt; list, Message message, Object o) &#123;                    long orderId = (long) o;                    long index = orderId % list.size();                    return list.get((int) index);                &#125;            &#125;, order.getOrderId());            System.out.println(&quot;发送结果：&quot;+send);            TimeUnit.SECONDS.sleep(1);        &#125;        producer.shutdown();    &#125;</code></pre>
+</li>
+<li><p><q>创建一个消费者</q></p>
+<pre><code class="java"> public static void main(String[] args)  throws  Exception&#123;        DefaultMQPushConsumer consumer=new DefaultMQPushConsumer(&quot;OrderConsumer&quot;);        consumer.setNamesrvAddr(&quot;192.168.137.220:9876&quot;);        consumer.subscribe(&quot;OrderTopic&quot;,&quot;*&quot;);        consumer.registerMessageListener(new MessageListenerOrderly() &#123;            @Override            public ConsumeOrderlyStatus consumeMessage(List&lt;MessageExt&gt; list, ConsumeOrderlyContext consumeOrderlyContext) &#123;                list.forEach(e-&gt;&#123;                    System.out.println(&quot;【&quot;+Thread.currentThread().getName()+&quot;】&quot;+&quot;正在消费：&quot;+new String(e.getBody()));                &#125;);                return ConsumeOrderlyStatus.SUCCESS;            &#125;        &#125;);        consumer.start();    &#125;</code></pre>
+</li>
+<li><p><q>输出结果</q></p>
+<pre><code class="tex">【ConsumeMessageThread_1】正在消费：Order(orderId=1001, orderDesc=创建)【ConsumeMessageThread_1】正在消费：Order(orderId=1001, orderDesc=付款)【ConsumeMessageThread_1】正在消费：Order(orderId=1001, orderDesc=推送)【ConsumeMessageThread_1】正在消费：Order(orderId=1001, orderDesc=完成)【ConsumeMessageThread_2】正在消费：Order(orderId=1003, orderDesc=创建)【ConsumeMessageThread_2】正在消费：Order(orderId=1003, orderDesc=付款)【ConsumeMessageThread_2】正在消费：Order(orderId=1003, orderDesc=推送)【ConsumeMessageThread_2】正在消费：Order(orderId=1003, orderDesc=完成)【ConsumeMessageThread_3】正在消费：Order(orderId=1002, orderDesc=创建)【ConsumeMessageThread_3】正在消费：Order(orderId=1002, orderDesc=付款)【ConsumeMessageThread_3】正在消费：Order(orderId=1002, orderDesc=推送)【ConsumeMessageThread_3】正在消费：Order(orderId=1002, orderDesc=完成)</code></pre>
+<p>可以看到一个线程负责一种顺序消息的消费，保证了消息在消费的时候也是顺序性的</p>
+</li>
+</ol>
+</li>
+</ul>
+<h4 id="发送延时消息"><a href="#发送延时消息" class="headerlink" title="发送延时消息"></a>发送延时消息</h4><p>延迟消息是指生产者发送消息后，不能立刻被消费者消费，需要等待指定的时间后才能被消费。例如：订单的有效支付时间为30分钟等等。</p>
+<pre><code class="java">    public static void main(String[] args)  throws  Exception&#123;        DefaultMQProducer producer=new DefaultMQProducer(&quot;group2&quot;);        producer.setNamesrvAddr(&quot;192.168.137.220:9876&quot;);        producer.start();        int totalMessageToSend=10;        for (int i = 0; i &lt; totalMessageToSend; i++) &#123;            Message message=new Message(&quot;DelayTopic&quot;,&quot;delay&quot;,(&quot;生产者当前消息为：&quot;+ LocalTime.now()).getBytes());            message.setDelayTimeLevel(3);            SendResult send = producer.send(message);            System.out.println(send);        &#125;        producer.shutdown();    &#125;</code></pre>
+<p>通过在发送消息的时候指定一个延迟的级别，来达到延迟消息的效果。<var>延迟消息目前暂时不支持任意时间的延迟消息，</var>目前支持的延迟级别有：</p>
+<p><code>1s 2s 10s 30s 1m 2m 3m 4m 5m 6m 7m 8m 9m 10m 20m 30m 1h 2h</code>分别对应1~18。</p>
+<p>所以<code>setDelayTimeLevel(3)</code>中的3代表就是10s，最后在消费者中呈现的结果就是：</p>
+<pre><code class="tex">生产者当前消息为：09:19:08.134 当前时间为：09:19:18.869生产者当前消息为：09:19:08.859 当前时间为：09:19:18.869生产者当前消息为：09:19:08.852 当前时间为：09:19:18.869生产者当前消息为：09:19:08.856 当前时间为：09:19:18.869生产者当前消息为：09:19:08.863 当前时间为：09:19:18.873生产者当前消息为：09:19:08.869 当前时间为：09:19:18.878生产者当前消息为：09:19:08.875 当前时间为：09:19:18.893生产者当前消息为：09:19:08.891 当前时间为：09:19:18.897生产者当前消息为：09:19:08.895 当前时间为：09:19:18.902生产者当前消息为：09:19:08.899 当前时间为：09:19:18.910</code></pre>
+<h4 id="消费消息"><a href="#消费消息" class="headerlink" title="消费消息"></a>消费消息</h4><ul>
+<li><p><font>普通消费模式</font></p>
+<pre><code class="java">public static void consume() throws Exception &#123;        //创建消费者实例        DefaultMQPushConsumer consumer = new DefaultMQPushConsumer(&quot;group1&quot;);        //设置NameServer的地址        consumer.setNamesrvAddr(&quot;192.168.137.220:9876&quot;);        //订阅对应的主题        consumer.subscribe(&quot;TopicA&quot;, &quot;produce&quot;);        //注册一个回调函数        consumer.registerMessageListener(new MessageListenerConcurrently() &#123;            @Override            public ConsumeConcurrentlyStatus consumeMessage(List&lt;MessageExt&gt; list, ConsumeConcurrentlyContext consumeConcurrentlyContext) &#123;                //接收消息内容                for (MessageExt messageExt : list) &#123;                    System.out.println(new String(messageExt.getBody()));                &#125;                return ConsumeConcurrentlyStatus.CONSUME_SUCCESS;            &#125;        &#125;);        //启动Consumer        consumer.start();    &#125;</code></pre>
+</li>
+<li><p><font>负责均衡的消费模式</font></p>
+<p>在RocketMQ中自带有负载均衡的策略，在消费者消费消息的时候，同属于一个消费者组的消费者之间就是通过负载均衡来消费消息。在IDEA中启动两个一模一样的消费者，然后启动生产者生产消息。通过观察控制台可以发现：</p>
+<pre><code class="java">// consumer1                                                              //consumer2 Message - 0                                                              Message - 1 Message - 3                                                              Message - 2 Message - 4                                                              Message - 5 Message - 7                                                              Message - 6 Message - 8                                                              Message - 9 </code></pre>
+</li>
+<li><p><font>广播模式消费</font></p>
+<p>是指同一个消费者组中的消费者，消费的消息内容是完全一样的。在启动消费者之前设置对应的消费模式：</p>
+<p><code>consumer.setMessageModel(MessageModel.BROADCASTING);</code></p>
+<p>观察打印结果为：</p>
+<pre><code class="java">// consumer1                                                              //consumer2 Message - 0                                                              Message - 0 Message - 1                                                              Message - 1 Message - 2                                                              Message - 2 Message - 3                                                              Message - 3 Message - 4                                                              Message - 4 </code></pre>
+</li>
+</ul>
+<h4 id="过滤消息"><a href="#过滤消息" class="headerlink" title="过滤消息"></a>过滤消息</h4><p>在生产者生产消息的时候可以通过指定TAG，在消费者消费的时候也可以对特定TAG的消息进行消费。<var>还可以通过SQL语法的方式去过滤</var>。</p>
+<ul>
+<li><p><font>tag标识过滤消息</font></p>
+<p><code>consumer.subscribe(&quot;FilterTopic&quot;,&quot;tag1&quot;);</code>通过订阅的时候指定相应的TAG参数，这样该消费者就只会消费该TAG标识的消息，<var>假如希望即消费TAG1又消费TAG2，可以写成<code>tag1 || tag2</code>的形式即可</var>。</p>
+</li>
+<li><p><font>SQL语句过滤</font></p>
+<p>我们可以在生产消息的时候设置对应的属性，然后消费者通过属性来消费对应的消息。<var>需要修改Broker的配置才可以使用SQL过滤的功能。</var></p>
+<pre><code class="properties"># 在RocketMQ的安装目录下，/conf/broker.conf中添加#是否支持根据属性过滤 如果使用基于标准的sql92模式过滤消息则改参数必须设置为trueenablePropertyFilter=true</code></pre>
+<ol>
+<li><p><q>创建SQL的生产者</q></p>
+<pre><code class="java">public static void main(String[] args) throws Exception &#123;        DefaultMQProducer producer = new DefaultMQProducer(&quot;group2&quot;);        producer.setNamesrvAddr(&quot;192.168.137.220:9876&quot;);        producer.start();        for (int i = 0; i &lt;10 ; i++) &#123;            Message message=new Message(&quot;FilterTopic&quot;,&quot;tag1&quot;,(&quot;当前属性值a=&quot;+i).getBytes());            //为每一条消息设置一个用来过滤的属性。可以设置多个，支持SQL语法            message.putUserProperty(&quot;a&quot;,String.valueOf(i));            SendResult send = producer.send(message);            System.out.println(send);            TimeUnit.SECONDS.sleep(1);        &#125;        producer.shutdown();    &#125;</code></pre>
+</li>
+<li><p><q>创建消费者</q></p>
+<pre><code class="java"> public static void main(String[] args) throws Exception&#123;        DefaultMQPushConsumer consumer=new DefaultMQPushConsumer(&quot;delayConsumer&quot;);        consumer.setNamesrvAddr(&quot;192.168.137.220:9876&quot;);         //在订阅的时候对消息进行SQL过滤即可        consumer.subscribe(&quot;FilterTopic&quot;, MessageSelector.bySql(&quot;a&gt;4&quot;));        consumer.registerMessageListener(new MessageListenerConcurrently() &#123;            @Override            public ConsumeConcurrentlyStatus consumeMessage(List&lt;MessageExt&gt; list, ConsumeConcurrentlyContext consumeConcurrentlyContext) &#123;                list.forEach(e-&gt;&#123;                    System.out.println(&quot;消费者正在消费【&quot;+new String(e.getBody())+&quot;】&quot;);                &#125;);                return ConsumeConcurrentlyStatus.CONSUME_SUCCESS;            &#125;        &#125;);        consumer.start();        System.out.println(&quot;消费者启动了&quot;);    &#125;</code></pre>
+</li>
+</ol>
+<p>最后分别启动消费者和生产者可以，根据消息的消费情况也是可以证明SQL过滤的结果是正确的。</p>
+</li>
+</ul>
+<h3 id="集群搭建策略"><a href="#集群搭建策略" class="headerlink" title="集群搭建策略"></a>集群搭建策略</h3><h4 id="数据复制与刷盘策略"><a href="#数据复制与刷盘策略" class="headerlink" title="数据复制与刷盘策略"></a>数据复制与刷盘策略</h4><p><img src="E:%5Cblog%5Csource_posts%5CRocketMQ_9.png" alt="复制与刷盘"></p>
+<p><font>数据复制</font></p>
+<p>复制策略是指Broker的Master与Slave之间数据同步方式，分为同步复制和异步复制：</p>
+<ul>
+<li><dfn>同步复制</dfn>：消息写入到Master后，Master会等待Slave同步数据成功之后才向Producer返回成功ACK</li>
+<li><dfn>异步复制</dfn>：消息写入到Master后，Master会立即向Producer返回成功ACK，无需等待Slave同步数据成功</li>
+</ul>
+<p><font>刷盘策略</font></p>
+<p>刷盘策略指的是broker中消息的落盘方式，即消息发送到broker内存后消息持久化到磁盘的方式。分为同步刷盘和异步刷盘</p>
+<ul>
+<li><p><dfn>同步刷盘</dfn>：当消息持久化到broker的磁盘后才算是消息写入成功</p>
+</li>
+<li><p><dfn>异步刷盘</dfn>：当消息写入到broker的内存后表示消息写入成功，无需等待消息持久化到磁盘</p>
+<blockquote>
+<p>异步刷盘策略会降低系统写入的延迟，实时性变小，提高了系统的吞吐量。消息写入到Broker的内存时，一般是写入到PageCache。对于异步刷盘策略来讲，消息会写入到PageCache后立即返回成功ACK。但并不会立即做刷盘操作，而是会<var>当PageCache到达一定的量时自动进行落盘</var>。</p>
+</blockquote>
+</li>
+</ul>
+<h4 id="Broker集群的模式"><a href="#Broker集群的模式" class="headerlink" title="Broker集群的模式"></a>Broker集群的模式</h4><ul>
+<li><p><font>单Master模式</font></p>
+<p>只有一个Broker，这种方式也就是在测试的时候使用，生产环境下不能使用，因为存在单点问题</p>
+</li>
+<li><p><font>多Master模式</font></p>
+<p>Broker集群仅由多个Master构成，不存在Slave。同一个Topic的各个Queue会分布在各个节点上。</p>
+<p><cite>优点：</cite></p>
+<p>配置简单，单个Master宕机或重启维护对应用无影响，在磁盘配置为RAID10时，即使机器宕机不可恢复情况下，由于RAID10磁盘非常可靠，消息也不会丢失，（<em>异步刷盘会丢失少量的信息，同步刷盘一条不丢</em>），性能最高。</p>
+<p><cite>缺点：</cite></p>
+<p>单台机器宕机期间，这台机器上未被消费的消息在机器恢复之间不可订阅、不可消费，消息实时性受到影响。</p>
+</li>
+<li><p><font>多Master多Slave模式-异步复制</font></p>
+<p>broker集群由多个Master构成，每个Master又配置了多个Slave（<em>在配置RAID磁盘阵列的情况下，一个master一般配置一个slave即可</em>）。<var>Master与Slave之间是主备关系，即Master负责处理消息的读写请求，而Slave负责消息的备份与Master宕机后的角色互换。</var></p>
+<p>消息写入Master成功后，Master立即向producer返回成功ACK，无需等待Slave同步数据成功。该模式下最大的特点就是，当Master宕机后，Slave能够自动切换为Master，不过由于Slave从Master同步具有短暂的延迟，所以当Master宕机后，这种异步复制的方式可能会存在少量的消息丢失的问题。</p>
+</li>
+<li><p><font>多Master多Slave模式-同步双写</font></p>
+<p>消息写入Master成功，Master会等待Slave同步数据成功后才向Producer返回成功ACK，即Master与Slave都要写入成功后才返回成功ACK，也即双写</p>
+<p>该模式与异步复制相比，优点是消息的安全性更高，不存在消息丢失的情况。但单个消息的耗时更多，导致性能会降低10%左右。<var>对于目前版本的存在一个大的问题就是，当Master宕机过后，Slave无法自动切换到Maser。</var></p>
+</li>
+</ul>
+<blockquote>
+<p>一般会为Master配置RAID10磁盘阵列，然后再为其配置一个Slave。即利用了磁盘阵列的高效、安全性，又解决了可能会影响订阅的问题</p>
+</blockquote>
+<h4 id="双主双从集群搭建"><a href="#双主双从集群搭建" class="headerlink" title="双主双从集群搭建"></a>双主双从集群搭建</h4><p>首先在RocketMQ的安装目录下面已经了一些集群的搭建模板，双主双从异步复制的模板也是直接存在的。进入RocketMQ安装目录下：<code>/conf/2m-2s-async</code>目录中就表示双主双从异步复制的配置文件模板。</p>
+<p>进入里面会有四个文件：broker-a.properties broker-a-s.properties broker-b.properties broker-b-s.properties，从名称中很容易区分出来，broker-a和broker-b表示两个Master的配置文件，broker-a-s和broker-b-s表示两个Slave的配置文件。</p>
+<p>其中<cite>broker-a.properties</cite>的配置文件为：</p>
+<pre><code class="properties"># 指定整个Broker集群的名称，或者说RocketMQ集群的名称brokerClusterName=DefaultCluster# 指定Master-Slave集群的名称，一个RocketMQ集群可以包含多个master-slave集群brokerName=broker-a# master的brokerid为0brokerId=0# 指定删除消息存储过期文件的时间为凌晨4点deleteWhen=04#指定未发生更新的消息存储文件的保留时长为48小时，48小时候过期，将会被删除fileReservedTime=48# 指定当前broker为异步复制brokerRole=ASYNC_MASTER# 指定刷盘策略为异步刷盘flushDiskType=ASYNC_FLUSH</code></pre>
+<p>除了以上的配置外我们还需要增加配置</p>
+<pre><code class="properties"># 配置NameSrv服务器的地址
+namesrvAddr=192.168.137.220:9876;192.168.137.221:9876;
+# 指定Broker对外提供服务的端口，即Broker与Producer、Consumer的通信端口。默认为10911
+# 由于当前主机同时充当这Master与Slave，而前面的Master1使用的默认端口。这里需要将两个端口加以区分，用以区分Master1和Slave2
+listenPort=10911
+# 指定消息存储相关的路径。默认路径为~/store目录，由于当前主机同时充当这Master1与Slave2，Master1使用的默认的地址，Slave2就需要修改为其他的地址
+storePathRootDir=/data/store-s
+storePathCommitLog=/data/store-s/Commitlog
+storePathConsumeQueue=/data/store-s/ConsumeQueue
+storePathIndex=/data/store-s/index
+storeCheckpoint=/data/store-s/checkpoint
+abortFile=/data/store-s/abort</code></pre>
+<p>在broker-a.properties broker-a-s.properties broker-b.properties broker-b-s.properties 中增加相同的配置。需要注意的点有两个：</p>
+<p><q>端口号的问题</q></p>
+<p>在设置端口号的时候，假如broker-a是10911，broker-a-s就不要设置成10912，因为broker-a也会占用附近的端口，尽量设置的开一点。例如：broker-a设置为10911，broker-a-s设置为10921，broker-b设置为10931，broker-b-s设置为10941。因为我只有一台虚拟机，就直接在一台虚拟机上部署的，实际上存在单点问题的。通常情况下，会将Master与Slave放在不同的机器上，例如将broker-a与broker-b-s放在同一台机器上；将broker-b和broker-a-s放置在一台机器上</p>
+<p><q>存储文件的问题</q></p>
+<p>通过tail -f查看日志文件的时候，有时会出现文件夹找不到的问题。在对应的文件夹利用mkdir新建好文件夹即可</p>
+<p>此时启动之后，在rocketmq-console中查看集群的使用情况：</p>
+<p><img src="RocketMQ_11.png" alt="集群模式"></p>
+<blockquote>
+<p>假如是在两台电脑上面均部署了NameServer，需要在rooketmq-console的配置文件中修改相应的配置，将两个NameServer的IP地址都设置上</p>
+</blockquote>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">Yumi</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://alpacame.github.io/2021/10/06/RocketMQ%E5%9F%BA%E7%A1%80%E7%AF%87/">https://alpacame.github.io/2021/10/06/RocketMQ%E5%9F%BA%E7%A1%80%E7%AF%87/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://AlpacaMe.github.io" target="_blank">Yumi Shoke</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"><div class="social-share" data-image="/img/default_top_image.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><div class="post-reward"><div class="reward-button button--animated"><i class="fas fa-qrcode"></i> 打赏</div><div class="reward-main"><ul class="reward-all"><li class="reward-item"><a href="/img/weixin.jpg" target="_blank"><img class="post-qr-code-img" src="/img/weixin.jpg" alt="wechat"/></a><div class="post-qr-code-desc">wechat</div></li><li class="reward-item"><a href="/img/alipay.jpg" target="_blank"><img class="post-qr-code-img" src="/img/alipay.jpg" alt="alipay"/></a><div class="post-qr-code-desc">alipay</div></li></ul></div></div><nav class="pagination-post" id="pagination"><div class="next-post pull-full"><a href="/2021/08/19/Docker/"><img class="next-cover" src="http://pic4.zhimg.com/v2-3ab9ae89da1c5fbf6cbe0b162e6e1ebf_180x120.jpg" onerror="onerror=null;src='/img/background.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">Docker</div></div></a></div></nav><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div><div id="comment-switch"><span class="first-comment">Gitalk</span><span class="switch-btn"></span><span class="second-comment">Disqus</span></div></div><div class="comment-wrap"><div><div id="gitalk-container"></div></div><div><div id="disqus_thread"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/favicon.jpg" onerror="this.onerror=null;this.src='/img/background.jpg'" alt="avatar"/></div><div class="author-info__name">Yumi</div><div class="author-info__description">念去去，千里烟波，暮霭沉沉楚天阔</div></div><div class="card-info-data"><div class="card-info-data-item is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">18</div></a></div><div class="card-info-data-item is-center"><a href="/tags/"><div class="headline">标签</div><div class="length-num">5</div></a></div><div class="card-info-data-item is-center"><a href="/categories/"><div class="headline">分类</div><div class="length-num">12</div></a></div></div><a class="button--animated" id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/AlpacaMe"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/AlpacaMe" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="/1920734752@qq.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#RocketMQ"><span class="toc-number">1.</span> <span class="toc-text">RocketMQ</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#MQ%E6%A6%82%E8%BF%B0"><span class="toc-number">1.1.</span> <span class="toc-text">MQ概述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#RocketMQ%E6%A6%82%E8%BF%B0"><span class="toc-number">1.2.</span> <span class="toc-text">RocketMQ概述</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%AE%80%E4%BB%8B"><span class="toc-number">1.2.1.</span> <span class="toc-text">简介</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5"><span class="toc-number">1.2.2.</span> <span class="toc-text">核心概念</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84"><span class="toc-number">1.2.3.</span> <span class="toc-text">系统架构</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%A8%8B"><span class="toc-number">1.2.4.</span> <span class="toc-text">工作流程</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%8B%E8%BD%BD%E4%B8%8E%E5%AE%89%E8%A3%85"><span class="toc-number">1.3.</span> <span class="toc-text">下载与安装</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#RocketMQ%E4%B8%8B%E8%BD%BD%E4%B8%8E%E5%AE%89%E8%A3%85"><span class="toc-number">1.3.1.</span> <span class="toc-text">RocketMQ下载与安装</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#RocketMQ-Console%E4%B8%8B%E8%BD%BD%E4%B8%8E%E5%AE%89%E8%A3%85"><span class="toc-number">1.3.2.</span> <span class="toc-text">RocketMQ-Console下载与安装</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8%E6%A0%B7%E4%BE%8B"><span class="toc-number">1.4.</span> <span class="toc-text">基本使用样例</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8F%91%E9%80%81%E6%99%AE%E9%80%9A%E6%B6%88%E6%81%AF"><span class="toc-number">1.4.1.</span> <span class="toc-text">发送普通消息</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8F%91%E9%80%81%E9%A1%BA%E5%BA%8F%E6%B6%88%E6%81%AF"><span class="toc-number">1.4.2.</span> <span class="toc-text">发送顺序消息</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8F%91%E9%80%81%E5%BB%B6%E6%97%B6%E6%B6%88%E6%81%AF"><span class="toc-number">1.4.3.</span> <span class="toc-text">发送延时消息</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%B6%88%E8%B4%B9%E6%B6%88%E6%81%AF"><span class="toc-number">1.4.4.</span> <span class="toc-text">消费消息</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%BF%87%E6%BB%A4%E6%B6%88%E6%81%AF"><span class="toc-number">1.4.5.</span> <span class="toc-text">过滤消息</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA%E7%AD%96%E7%95%A5"><span class="toc-number">1.5.</span> <span class="toc-text">集群搭建策略</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E5%A4%8D%E5%88%B6%E4%B8%8E%E5%88%B7%E7%9B%98%E7%AD%96%E7%95%A5"><span class="toc-number">1.5.1.</span> <span class="toc-text">数据复制与刷盘策略</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Broker%E9%9B%86%E7%BE%A4%E7%9A%84%E6%A8%A1%E5%BC%8F"><span class="toc-number">1.5.2.</span> <span class="toc-text">Broker集群的模式</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8F%8C%E4%B8%BB%E5%8F%8C%E4%BB%8E%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA"><span class="toc-number">1.5.3.</span> <span class="toc-text">双主双从集群搭建</span></a></li></ol></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2021/10/06/RocketMQ%E5%9F%BA%E7%A1%80%E7%AF%87/" title="RocketMQ基础篇"><img src="/img/default_top_image.jpg" onerror="this.onerror=null;this.src='/img/background.jpg'" alt="RocketMQ基础篇"/></a><div class="content"><a class="title" href="/2021/10/06/RocketMQ%E5%9F%BA%E7%A1%80%E7%AF%87/" title="RocketMQ基础篇">RocketMQ基础篇</a><time datetime="2021-10-06T11:15:12.000Z" title="发表于 2021-10-06 19:15:12">2021-10-06</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/08/19/Docker/" title="Docker"><img src="http://pic4.zhimg.com/v2-3ab9ae89da1c5fbf6cbe0b162e6e1ebf_180x120.jpg" onerror="this.onerror=null;this.src='/img/background.jpg'" alt="Docker"/></a><div class="content"><a class="title" href="/2021/08/19/Docker/" title="Docker">Docker</a><time datetime="2021-08-19T07:20:24.000Z" title="发表于 2021-08-19 15:20:24">2021-08-19</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/08/12/%E6%B6%88%E6%81%AF%E4%B8%AD%E9%97%B4%E4%BB%B6%E2%80%94%E2%80%94Kafka/" title="消息中间件——Kafka"><img src="https://w.wallhaven.cc/full/3z/wallhaven-3z32j3.jpg" onerror="this.onerror=null;this.src='/img/background.jpg'" alt="消息中间件——Kafka"/></a><div class="content"><a class="title" href="/2021/08/12/%E6%B6%88%E6%81%AF%E4%B8%AD%E9%97%B4%E4%BB%B6%E2%80%94%E2%80%94Kafka/" title="消息中间件——Kafka">消息中间件——Kafka</a><time datetime="2021-08-12T11:45:02.000Z" title="发表于 2021-08-12 19:45:02">2021-08-12</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/07/15/Redis%E5%88%9D%E7%BA%A7%E5%AD%A6%E4%B9%A0/" title="Redis初级学习"><img src="https://w.wallhaven.cc/full/9m/wallhaven-9m2q1w.jpg" onerror="this.onerror=null;this.src='/img/background.jpg'" alt="Redis初级学习"/></a><div class="content"><a class="title" href="/2021/07/15/Redis%E5%88%9D%E7%BA%A7%E5%AD%A6%E4%B9%A0/" title="Redis初级学习">Redis初级学习</a><time datetime="2021-07-15T09:05:37.000Z" title="发表于 2021-07-15 17:05:37">2021-07-15</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/07/13/Cookie%E4%B8%8ESession/" title="Cookie与Session"><img src="/img/default_top_image.jpg" onerror="this.onerror=null;this.src='/img/background.jpg'" alt="Cookie与Session"/></a><div class="content"><a class="title" href="/2021/07/13/Cookie%E4%B8%8ESession/" title="Cookie与Session">Cookie与Session</a><time datetime="2021-07-13T07:29:56.000Z" title="发表于 2021-07-13 15:29:56">2021-07-13</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2021 By Yumi</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.js"></script><script>var preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',preloader.endLoading())</script><div class="js-pjax"><script>function addGitalkSource () {
+  const ele = document.createElement('link')
+  ele.rel = 'stylesheet'
+  ele.href= 'https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.css'
+  document.getElementsByTagName('head')[0].appendChild(ele)
+}
+
+function loadGitalk () {
+  function initGitalk () {
+    var gitalk = new Gitalk(Object.assign({
+      clientID: '1b9120324a3474ac4059',
+      clientSecret: '7a2ba06a601ff45989a71b52de9c3abae66cf370',
+      repo: 'Comments',
+      owner: 'AlpacaMe',
+      admin: ['AlpacaMe'],
+      id: '1a44de7842b5217e4cc85c9766753395',
+      language: 'en',
+      perPage: 10,
+      distractionFreeMode: false,
+      pagerDirection: 'last',
+      createIssueManually: false,
+      updateCountCallback: commentCount
+    },null))
+
+    gitalk.render('gitalk-container')
+  }
+
+  if (typeof Gitalk === 'function') initGitalk()
+  else {
+    addGitalkSource()
+    getScript('https://cdn.jsdelivr.net/npm/gitalk@latest/dist/gitalk.min.js').then(initGitalk)
+  }
+}
+
+function commentCount(n){
+  let isCommentCount = document.querySelector('#post-meta .gitalk-comment-count')
+  if (isCommentCount) {
+    isCommentCount.innerHTML= n
+  }
+}
+
+if ('Gitalk' === 'Gitalk' || !false) {
+  if (false) btf.loadComment(document.getElementById('gitalk-container'), loadGitalk)
+  else loadGitalk()
+} else {
+  function loadOtherComment () {
+    loadGitalk()
+  }
+}</script><script>function loadDisqus () {
+  var disqus_config = function () {
+    this.page.url = 'https://alpacame.github.io/2021/10/06/RocketMQ%E5%9F%BA%E7%A1%80%E7%AF%87/'
+    this.page.identifier = '2021/10/06/RocketMQ基础篇/'
+    this.page.title = 'RocketMQ基础篇'
+  };
+
+  window.disqusReset = () => {
+    DISQUS.reset({
+      reload: true,
+      config: disqus_config
+    })
+  }
+
+  if (window.DISQUS) disqusReset()
+  else {
+    (function() { 
+      var d = document, s = d.createElement('script');
+      s.src = 'https://.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  }
+}
+
+if ('Gitalk' === 'Disqus' || !false) {
+  if (false) btf.loadComment(document.getElementById('disqus_thread'), loadDisqus)
+  else loadDisqus()
+} else {
+  function loadOtherComment () {
+    loadDisqus()
+  }
+}
+</script></div><canvas class="fireworks" mobile="false"></canvas><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/fireworks.min.js"></script><script defer="defer" id="fluttering_ribbon" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/canvas-fluttering-ribbon.min.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
